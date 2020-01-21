@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="概述 (me)交叉熵是用来衡量两个分布之间相似程度的一种度量方法，假设$p(x)$为真实分布，$q(x)$为预测的分布，我们通过下面的交叉熵定义来衡量它们之间的相似度：$H &#x3D; -\sum \limits_{x \in X} p(x) \log q(x)$ 信息量与熵若有时间最好是看看文献[1]，时间紧迫可以先看参考文献[3]，另外可以再看看文献[2,6]。 熵和对数似然函数的关系，参考文献[4]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ml&#x2F;【机器学习基础】交叉熵">
+<meta property="og:url" content="http://yoursite.com/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E4%BA%A4%E5%8F%89%E7%86%B5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="概述 (me)交叉熵是用来衡量两个分布之间相似程度的一种度量方法，假设$p(x)$为真实分布，$q(x)$为预测的分布，我们通过下面的交叉熵定义来衡量它们之间的相似度：$H &#x3D; -\sum \limits_{x \in X} p(x) \log q(x)$ 信息量与熵若有时间最好是看看文献[1]，时间紧迫可以先看参考文献[3]，另外可以再看看文献[2,6]。 熵和对数似然函数的关系，参考文献[4]">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-21T07:06:07.432Z">
+<meta property="article:modified_time" content="2020-01-21T07:06:07.432Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E4%BA%A4%E5%8F%89%E7%86%B5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>ml/【机器学习基础】交叉熵 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E4%BA%A4%E5%8F%89%E7%86%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ml/【机器学习基础】交叉熵
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-01-21 15:06:07" itemprop="dateCreated datePublished" datetime="2020-01-21T15:06:07+08:00">2020-01-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="概述-me"><a href="#概述-me" class="headerlink" title="概述 (me)"></a>概述 (me)</h2><p>交叉熵是用来衡量两个分布之间相似程度的一种度量方法，假设$p(x)$为真实分布，$q(x)$为预测的分布，我们通过下面的交叉熵定义来衡量它们之间的相似度：<br>$H = -\sum \limits_{x \in X} p(x) \log q(x)$</p>
+<h2 id="信息量与熵"><a href="#信息量与熵" class="headerlink" title="信息量与熵"></a>信息量与熵</h2><p>若有时间最好是看看文献[1]，时间紧迫可以先看参考文献[3]，另外可以再看看文献[2,6]。</p>
+<p>熵和对数似然函数的关系，参考文献[4]</p>
+<h2 id="使用tensorflow基础api实现的交叉熵（不推荐使用）"><a href="#使用tensorflow基础api实现的交叉熵（不推荐使用）" class="headerlink" title="使用tensorflow基础api实现的交叉熵（不推荐使用）"></a>使用tensorflow基础api实现的交叉熵（不推荐使用）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 借用【Softmax函数】中介绍的softmax_NumStability</span><br><span class="line">def softmax_NumStability(x):</span><br><span class="line">    reduce_max &#x3D; tf.reduce_max(x, 1, keepdims&#x3D;True)</span><br><span class="line">    prob &#x3D; tf.nn.softmax(x - reduce_max)</span><br><span class="line">    return prob</span><br><span class="line">    </span><br><span class="line">def tf_baseAPI_cross_entropy_loss(labels, prob):</span><br><span class="line">    &#39;&#39;&#39;</span><br><span class="line">    随着训练的进行，模型准确率越来越高，softmax的输出概率在相异类别上越来越趋近于0，对这些趋近于0的数取log将会得到很大的数，即nan了。</span><br><span class="line">    所以我们这里使用tf.clip_by_value对prob数值进行裁剪，过滤掉太小的prob值</span><br><span class="line">    &#39;&#39;&#39;</span><br><span class="line">    clip_prob &#x3D; tf.clip_by_value(prob, 1e-10, 1.0)</span><br><span class="line">    cross_entropy &#x3D; -tf.reduce_sum(labels * tf.log(clip_prob), 1)</span><br><span class="line">    loss &#x3D; tf.reduce_mean(cross_entropy)</span><br><span class="line"></span><br><span class="line">    return loss</span><br><span class="line"></span><br><span class="line">prob &#x3D; softmax_NumStability(fc_layer)</span><br><span class="line">loss &#x3D; tf_baseAPI_cross_entropy_loss(labels_hold, prob)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="logit变换"><a href="#logit变换" class="headerlink" title="logit变换"></a>logit变换</h2><p>参考文献[5]</p>
+<h2 id="softmax、交叉熵、logit变换等在计算loss时的应用"><a href="#softmax、交叉熵、logit变换等在计算loss时的应用" class="headerlink" title="softmax、交叉熵、logit变换等在计算loss时的应用"></a>softmax、交叉熵、logit变换等在计算loss时的应用</h2><p>参考文献[5,7,8]</p>
+<blockquote>
+<p>注意：<br>&emsp; 本文通过softmax_NumStability和tf.clip_by_value等处理手段实现的交叉熵，虽然在数值稳定性方面有了不少改进，但还是推荐谷歌实现的tf.nn.softmax_cross_entropy_with_logits，相信谷歌牛人定会在内部有更好的优化（比如我还是没有弄明白logit变换是如何应用于交叉熵的，python程序如何实现）。<br>&emsp; 另外，tf.nn.softmax_cross_entropy_with_logits函数已经过时 (deprecated)，它在TensorFlow未来的版本中将被去除。取而代之的是tf.nn.softmax_cross_entropy_with_logits_v2.</p>
+</blockquote>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] 信息论与编码 第三版. 曹雪虹，张宗橙. 清华大学出版社<br>[2] <a href="https://www.zhihu.com/question/41252833" target="_blank" rel="noopener">如何通俗的解释交叉熵与相对熵?</a> 主要看网友CyberRep的回答<br>[3] <a href="https://blog.csdn.net/rtygbwwwerr/article/details/50778098" target="_blank" rel="noopener">交叉熵（Cross-Entropy）</a><br>[4] <a href="https://zhuanlan.zhihu.com/p/27223959" target="_blank" rel="noopener">Softmax函数与交叉熵</a><br>[5] <a href="https://zhuanlan.zhihu.com/p/51431626" target="_blank" rel="noopener">softmax_cross_entropy_with_logits中“logits”是个什么意思？</a><br>[6] <a href="https://zhuanlan.zhihu.com/p/33542937" target="_blank" rel="noopener">复习：常见的损失函数</a><br>[7] <a href="https://zhuanlan.zhihu.com/p/33560183" target="_blank" rel="noopener">TF里几种loss和注意事项</a><br>[8] <a href="https://sthsf.github.io/wiki/Algorithm/DeepLearning/Tensorflow%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Tensorflow%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86---%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E8%AF%A6%E8%A7%A3.html" target="_blank" rel="noopener">Tensorflow基础知识—损失函数详解</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/" rel="prev" title="ml/【机器学习基础】范数与正则化">
+      <i class="fa fa-chevron-left"></i> ml/【机器学习基础】范数与正则化
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.3%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92TensorFlow%E5%AE%9E%E8%B7%B5/" rel="next" title="【机器学习笔记-正则化2.1】weight decay">
+      【机器学习笔记-正则化2.1】weight decay <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述-me"><span class="nav-number">1.</span> <span class="nav-text">概述 (me)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信息量与熵"><span class="nav-number">2.</span> <span class="nav-text">信息量与熵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用tensorflow基础api实现的交叉熵（不推荐使用）"><span class="nav-number">3.</span> <span class="nav-text">使用tensorflow基础api实现的交叉熵（不推荐使用）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#logit变换"><span class="nav-number">4.</span> <span class="nav-text">logit变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#softmax、交叉熵、logit变换等在计算loss时的应用"><span class="nav-number">5.</span> <span class="nav-text">softmax、交叉熵、logit变换等在计算loss时的应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

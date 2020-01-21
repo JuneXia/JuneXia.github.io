@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="代码示例先生成10个样本数据[1]【例1】 123456789101112131415# 一元线性回归import tensorflow as tfimport numpy as npimport matplotlib.pyplot as pltn &#x3D; 10# 产生n维标准正太分布随机数x_data &#x3D; np.random.randn(n)  #[2]# 我们假设模型为 y &#x3D; 0.3x + 0.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【机器学习笔记-正则化2.1】weight decay">
+<meta property="og:url" content="http://yoursite.com/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.3%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92TensorFlow%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="代码示例先生成10个样本数据[1]【例1】 123456789101112131415# 一元线性回归import tensorflow as tfimport numpy as npimport matplotlib.pyplot as pltn &#x3D; 10# 产生n维标准正太分布随机数x_data &#x3D; np.random.randn(n)  #[2]# 我们假设模型为 y &#x3D; 0.3x + 0.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-xYPfXgwDRO0/Wy34By8AOdI/AAAAAAAAAAk/W0fyuqRgacoPXg1r_ZFpgUqcz_UL7JOyQCLcBGAs/s0/%25E7%25BA%25BF%25E6%2580%25A7%25E5%259B%259E%25E5%25BD%25921.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-l04C_1txHF0/Wy345sMzZ5I/AAAAAAAAAAw/J9CpLP7LcoU0_2-LA_Ncsai9ziktldIsQCE0YBhgL/s0/%25E7%25BA%25BF%25E6%2580%25A7%25E5%259B%259E%25E5%25BD%25922.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-4iuUOHCAUto/WzDWufbhnoI/AAAAAAAAABM/bLr6pZw24HYEhuBUNPJoU6rWApHeQ3l8wCLcBGAs/s0/%25E7%25BA%25BF%25E6%2580%25A7%25E5%259B%259E%25E5%25BD%25923.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-RK1yW_BPd98/WzDdGzv79rI/AAAAAAAAABc/Oy1u6bElXu4J5139OnnSGnhFVYVQFkGtgCLcBGAs/s0/%25E7%25BA%25BF%25E6%2580%25A7%25E5%259B%259E%25E5%25BD%25924.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-3yrK7dohzmc/WzDeeOeiOyI/AAAAAAAAABs/pYnXGLo3r_Qss4MWhFupRhhwXum3z39PwCLcBGAs/s0/%25E7%25BA%25BF%25E6%2580%25A7%25E5%259B%259E%25E5%25BD%25925.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-xOzYg-cjFKo/WzcTvpPp4uI/AAAAAAAAACw/H4tbSPFh_bEjbeSmd6SnWc5-K-ljmHsDQCLcBGAs/s0/%25E7%25BA%25BF%25E6%2580%25A7%25E5%259B%259E%25E5%25BD%25926.png">
+<meta property="article:published_time" content="2020-01-21T09:28:05.000Z">
+<meta property="article:modified_time" content="2020-01-21T07:02:57.643Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/-xYPfXgwDRO0/Wy34By8AOdI/AAAAAAAAAAk/W0fyuqRgacoPXg1r_ZFpgUqcz_UL7JOyQCLcBGAs/s0/%25E7%25BA%25BF%25E6%2580%25A7%25E5%259B%259E%25E5%25BD%25921.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.3%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92TensorFlow%E5%AE%9E%E8%B7%B5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>【机器学习笔记-正则化2.1】weight decay | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.3%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92TensorFlow%E5%AE%9E%E8%B7%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【机器学习笔记-正则化2.1】weight decay
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-01-21 17:28:05 / Modified: 15:02:57" itemprop="dateCreated datePublished" datetime="2020-01-21T17:28:05+08:00">2020-01-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><p>先生成10个样本数据[1]<br>【例1】</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一元线性回归</span></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">n = <span class="number">10</span></span><br><span class="line"><span class="comment"># 产生n维标准正太分布随机数</span></span><br><span class="line">x_data = np.random.randn(n)  <span class="comment">#[2]</span></span><br><span class="line"><span class="comment"># 我们假设模型为 y = 0.3x + 0.15，这里还要为其添加均值为0.0、标准差为0.05的服从正太(高斯)分布、维度为n的噪声</span></span><br><span class="line">y_data = x_data * <span class="number">0.3</span> + <span class="number">0.15</span> + np.random.normal(<span class="number">0.0</span>, <span class="number">0.05</span>, n)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 画出原数据散点图</span></span><br><span class="line">plt.plot(x_data, y_data, <span class="string">'ro'</span>, label=<span class="string">'Original data'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://lh3.googleusercontent.com/-xYPfXgwDRO0/Wy34By8AOdI/AAAAAAAAAAk/W0fyuqRgacoPXg1r_ZFpgUqcz_UL7JOyQCLcBGAs/s0/%25E7%25BA%25BF%25E6%2580%25A7%25E5%259B%259E%25E5%25BD%25921.png" alt="enter image description here" title="线性回归1.png"></p>
+<p>线性回归拟合直线<br>【接例1】</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">weight = tf.Variable(<span class="number">0.5</span>, dtype=tf.float64)</span><br><span class="line">bias = tf.Variable(<span class="number">0.0</span>, dtype=tf.float64)</span><br><span class="line">y_model = weight * x_data + bias</span><br><span class="line"></span><br><span class="line">loss = tf.pow((y_model - y_data), <span class="number">2</span>) <span class="comment"># 求数组(y_model - y_data)的2次幂</span></span><br><span class="line">train_op = tf.train.GradientDescentOptimizer(<span class="number">0.01</span>).minimize(loss)</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line">init = tf.initialize_all_variables()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">2000</span>):</span><br><span class="line">    sess.run(train_op)</span><br><span class="line">    print(weight.eval(sess), bias.eval(sess))</span><br><span class="line"></span><br><span class="line">plt.plot(x_data, y_data, <span class="string">'ro'</span>, label=<span class="string">'Original data'</span>)</span><br><span class="line">plt.plot(x_data, sess.run(weight) * x_data + sess.run(bias), label=<span class="string">'Fitted line'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://lh3.googleusercontent.com/-l04C_1txHF0/Wy345sMzZ5I/AAAAAAAAAAw/J9CpLP7LcoU0_2-LA_Ncsai9ziktldIsQCE0YBhgL/s0/%25E7%25BA%25BF%25E6%2580%25A7%25E5%259B%259E%25E5%25BD%25922.png" alt="enter image description here" title="线性回归2.png"></p>
+<p>##改进1：改批量输入为使用占位符逐个输入<br>对于训练模型来说，数据量的多少是训练模型能否成功的一个最为关键性的问题[1]。上述程序中只有10个数据，但是如果数据量增大，达到100个的时候会产生什么问题呢？<br>实验结果如下：<br><img src="https://lh3.googleusercontent.com/-4iuUOHCAUto/WzDWufbhnoI/AAAAAAAAABM/bLr6pZw24HYEhuBUNPJoU6rWApHeQ3l8wCLcBGAs/s0/%25E7%25BA%25BF%25E6%2580%25A7%25E5%259B%259E%25E5%25BD%25923.png" alt="enter image description here" title="线性回归3.png"><br><img src="https://lh3.googleusercontent.com/-RK1yW_BPd98/WzDdGzv79rI/AAAAAAAAABc/Oy1u6bElXu4J5139OnnSGnhFVYVQFkGtgCLcBGAs/s0/%25E7%25BA%25BF%25E6%2580%25A7%25E5%259B%259E%25E5%25BD%25924.png" alt="enter image description here" title="线性回归4.png"></p>
+<p>上面几幅图中的拟合直线都有可能出现（这主要跟数据集有关），由上图可知，生成的模型严重偏离正确的数据曲线。权重值w和偏置bias并不能收敛到一个固定的常数。<br>这时候需要转化数据的输入方式，将批量输入改为逐个输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (x, y) <span class="keyword">in</span> zip(x_data, y_data):</span><br><span class="line">    sess.run(train_op, feed_dict=&#123;x_:x, y_:y&#125;)</span><br></pre></td></tr></table></figure>
+<p>相应的，使用占位符作为数据输入的占位点：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x_ = tf.placeholder(tf.float64)</span><br><span class="line">y_ = tf.placeholder(tf.float64)</span><br></pre></td></tr></table></figure>
+<p>完整示例代码如下：<br>【例2】</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">n = <span class="number">100</span></span><br><span class="line"><span class="comment"># 产生n维标准正太分布随机数</span></span><br><span class="line">x_data = np.random.randn(n)  <span class="comment">#[2]</span></span><br><span class="line"><span class="comment"># 我们假设模型为 y = 0.3x + 0.15，这里还要为其添加均值为0.0、标准差为0.05的服从正太(高斯)分布、维度为n的噪声</span></span><br><span class="line">y_data = x_data * <span class="number">0.3</span> + <span class="number">0.15</span> + np.random.normal(<span class="number">0.0</span>, <span class="number">0.05</span>, n)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 画出原数据散点图</span></span><br><span class="line">plt.plot(x_data, y_data, <span class="string">'ro'</span>, label=<span class="string">'Original data'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line">weight = tf.Variable(<span class="number">0.5</span>, dtype=tf.float64)</span><br><span class="line">bias = tf.Variable(<span class="number">0.0</span>, dtype=tf.float64)</span><br><span class="line">x_ = tf.placeholder(tf.float64)</span><br><span class="line">y_ = tf.placeholder(tf.float64)</span><br><span class="line">y_model = weight * x_ + bias</span><br><span class="line"></span><br><span class="line">loss = tf.pow((y_model - y_), <span class="number">2</span>) <span class="comment"># 求(y_model - y)的2次幂</span></span><br><span class="line">train_op = tf.train.GradientDescentOptimizer(<span class="number">0.01</span>).minimize(loss)</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line">init = tf.initialize_all_variables()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    <span class="keyword">for</span> (x, y) <span class="keyword">in</span> zip(x_data, y_data):</span><br><span class="line">        sess.run(train_op, feed_dict=&#123;x_:x, y_:y&#125;)</span><br><span class="line">    print(weight.eval(sess), bias.eval(sess))</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">221</span>)</span><br><span class="line">plt.plot(x_data, y_data, <span class="string">'ro'</span>, label=<span class="string">'Original data'</span>)</span><br><span class="line">plt.subplot(<span class="number">222</span>)</span><br><span class="line">plt.plot(x_data, y_data, <span class="string">'ro'</span>, label=<span class="string">'Original data'</span>)</span><br><span class="line">plt.plot(x_data, sess.run(weight) * x_data + sess.run(bias), label=<span class="string">'Fitted line'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>实验结果如下图所示：<br><img src="https://lh3.googleusercontent.com/-3yrK7dohzmc/WzDeeOeiOyI/AAAAAAAAABs/pYnXGLo3r_Qss4MWhFupRhhwXum3z39PwCLcBGAs/s0/%25E7%25BA%25BF%25E6%2580%25A7%25E5%259B%259E%25E5%25BD%25925.png" alt="enter image description here" title="线性回归5.png"></p>
+<p>##改进2：改传统的加减乘除运算为tensorflow特有的函数处理<br>主要改进的地方有：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">y_model = tf.add(tf.multiply(x_, weight), bias)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loss = tf.reduce_mean(tf.pow((y_model - y_), <span class="number">2</span>)) <span class="comment"># 求(y_model - y_)的2次幂，然后再求其均值</span></span><br></pre></td></tr></table></figure>
+<p>这里将损失函数改为${(y_model - y_)}^2$的均值是因为要计算出一个能够代表整体损失的loss_val值，以便于用该loss_val与threshold作比较。</p>
+<p>完整代码如下：<br>【例3】</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">threshold = <span class="number">1.0e-2</span></span><br><span class="line">n = <span class="number">100</span></span><br><span class="line"><span class="comment"># 产生n维标准正太分布随机数</span></span><br><span class="line">x_data = np.random.randn(n)  <span class="comment">#[2]</span></span><br><span class="line"><span class="comment"># 我们假设模型为 y = 0.3x + 0.15，这里还要为其添加均值为0.0、标准差为0.05的服从正太(高斯)分布、维度为n的噪声</span></span><br><span class="line">y_data = x_data * <span class="number">0.3</span> + <span class="number">0.15</span> + np.random.normal(<span class="number">0.0</span>, <span class="number">0.05</span>, n)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 画出原数据散点图</span></span><br><span class="line">plt.plot(x_data, y_data, <span class="string">'ro'</span>, label=<span class="string">'Original data'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">weight = tf.Variable(<span class="number">1.0</span>, dtype=tf.float64)</span><br><span class="line">bias = tf.Variable(<span class="number">1.0</span>, dtype=tf.float64)</span><br><span class="line">x_ = tf.placeholder(tf.float64)</span><br><span class="line">y_ = tf.placeholder(tf.float64)</span><br><span class="line">y_model = tf.add(tf.multiply(x_, weight), bias)</span><br><span class="line"></span><br><span class="line">loss = tf.reduce_mean(tf.pow((y_model - y_), <span class="number">2</span>)) <span class="comment"># 求(y_model - y_)的2次幂，然后再求其均值</span></span><br><span class="line">train_op = tf.train.GradientDescentOptimizer(<span class="number">0.01</span>).minimize(loss)</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line">init = tf.initialize_all_variables()</span><br><span class="line">sess.run(init)</span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line">loss_buf = []</span><br><span class="line"><span class="keyword">while</span>(flag):</span><br><span class="line">    <span class="keyword">for</span> (x,y) <span class="keyword">in</span> zip(x_data,y_data):</span><br><span class="line">        sess.run(train_op,feed_dict=&#123;x_:x,y_:y&#125;)</span><br><span class="line">        <span class="comment">#print(weight.eval(sess), bias.eval(sess))</span></span><br><span class="line">        </span><br><span class="line">        loss_val = sess.run(loss, feed_dict=&#123;x_: x, y_: y&#125;)</span><br><span class="line">        print(loss_val)</span><br><span class="line">        loss_buf.append(loss_val) <span class="comment"># 用于画出损失曲线</span></span><br><span class="line">        <span class="keyword">if</span> loss_val &lt;= threshold:</span><br><span class="line">            flag = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">loss_ndarray = np.array(loss_buf)</span><br><span class="line">loss_size = np.arange(len(loss_ndarray))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">221</span>)</span><br><span class="line">plt.plot(x_data, y_data, <span class="string">'ro'</span>, label=<span class="string">'Original data'</span>)</span><br><span class="line">plt.subplot(<span class="number">222</span>)</span><br><span class="line">plt.plot(x_data, y_data, <span class="string">'ro'</span>, label=<span class="string">'Original data'</span>)</span><br><span class="line">plt.plot(x_data, sess.run(weight) * x_data + sess.run(bias), label=<span class="string">'Fitted line'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.subplot(<span class="number">212</span>)</span><br><span class="line">plt.plot(loss_size, loss_ndarray, <span class="string">'b+'</span>, label=<span class="string">'loss'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>实验结果如下：<br><img src="https://lh3.googleusercontent.com/-xOzYg-cjFKo/WzcTvpPp4uI/AAAAAAAAACw/H4tbSPFh_bEjbeSmd6SnWc5-K-ljmHsDQCLcBGAs/s0/%25E7%25BA%25BF%25E6%2580%25A7%25E5%259B%259E%25E5%25BD%25926.png" alt="enter image description here" title="线性回归6.png"></p>
+<h2 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h2><p>在后来的调试中发现，对于本节例1代码中的loss取值，如果将“tf.pow((y_model - y_data), 2)”改为“tf.reduce_mean(tf.pow((y_model - y_data), 2))”则当n&gt;100时例1代码也能够收敛。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] 王晓华. TensorFlow深度学习应用实践<br>[2] numpy产生随机数 <a href="">https://blog.csdn.net/jinxiaonian11/article/details/53143141</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E4%BA%A4%E5%8F%89%E7%86%B5/" rel="prev" title="ml/【机器学习基础】交叉熵">
+      <i class="fa fa-chevron-left"></i> ml/【机器学习基础】交叉熵
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码示例"><span class="nav-number">1.</span> <span class="nav-text">代码示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充说明"><span class="nav-number">2.</span> <span class="nav-text">补充说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
