@@ -54,7 +54,7 @@
 <meta property="og:description" content="参见 【机器学习笔记2.1】线性模型之逻辑回归">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-01-21T09:28:05.000Z">
-<meta property="article:modified_time" content="2020-01-21T07:37:15.614Z">
+<meta property="article:modified_time" content="2020-01-21T08:57:32.873Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -198,7 +198,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-01-21 17:28:05 / Modified: 15:37:15" itemprop="dateCreated datePublished" datetime="2020-01-21T17:28:05+08:00">2020-01-21</time>
+              <time title="Created: 2020-01-21 17:28:05 / Modified: 16:57:32" itemprop="dateCreated datePublished" datetime="2020-01-21T17:28:05+08:00">2020-01-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -223,7 +223,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>参见 <a href="https://blog.csdn.net/yahstudio/article/details/80615752" target="_blank" rel="noopener">【机器学习笔记2.1】线性模型之逻辑回归</a></p>
+        <a id="more"></a>
+<p>参见 <a href="https://blog.csdn.net/yahstudio/article/details/80615752" target="_blank" rel="noopener">【机器学习笔记2.1】线性模型之逻辑回归</a></p>
 
     </div>
 
@@ -239,12 +240,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E9%A2%84%E6%B5%8B%E9%A9%AC%E7%96%9D%E7%97%85%E7%9A%84%E6%AD%BB%E4%BA%A1%E7%8E%87/" rel="prev" title="【机器学习笔记2.2】用逻辑回归预测马疝病的死亡率">
-      <i class="fa fa-chevron-left"></i> 【机器学习笔记2.2】用逻辑回归预测马疝病的死亡率
+    <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.4%E3%80%91%E7%94%A8tensorflow%E7%9F%A9%E9%98%B5%E6%80%9D%E6%83%B3%E5%81%9A%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/" rel="prev" title="【机器学习笔记1.4】用tensorflow矩阵思想做线性回归">
+      <i class="fa fa-chevron-left"></i> 【机器学习笔记1.4】用tensorflow矩阵思想做线性回归
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.4%E3%80%91%E7%94%A8tensorflow%E7%9F%A9%E9%98%B5%E6%80%9D%E6%83%B3%E5%81%9A%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/" rel="next" title="【机器学习笔记1.4】用tensorflow矩阵思想做线性回归">
-      【机器学习笔记1.4】用tensorflow矩阵思想做线性回归 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E4%BA%A4%E5%8F%89%E7%86%B5/" rel="next" title="【机器学习基础】交叉熵">
+      【机器学习基础】交叉熵 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -414,6 +415,58 @@
 
 
   
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 

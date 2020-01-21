@@ -46,16 +46,16 @@
   };
 </script>
 
-  <meta name="description" content="Softmax回归和逻辑回归的区别&amp;emsp; 在本节中，我们介绍Softmax回归模型，该模型是logistic回归模型在多分类问题上的推广，在多分类问题中，类标签$y$可以取两个以上的值[1]。当类别数$k&#x3D;2$时，softmax 回归退化为 logistic 回归。 Softmax回归 vs. k个logistic回归&amp;emsp; 如果你在开发一个音乐分类的应用，需要对k种类型的音乐进行识别">
+  <meta name="description" content="Softmax回归和逻辑回归的区别&amp;emsp; 在本节中，我们介绍Softmax回归模型，该模型是logistic回归模型在多分类问题上的推广，在多分类问题中，类标签$y$可以取两个以上的值[1]。当类别数$k&#x3D;2$时，softmax 回归退化为 logistic 回归。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【机器学习笔记2.5】用Softmax回归做二分类（Tensorflow实现）">
 <meta property="og:url" content="http://yoursite.com/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.5%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88Tensorflow%E5%AE%9E%E7%8E%B0%EF%BC%89/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Softmax回归和逻辑回归的区别&amp;emsp; 在本节中，我们介绍Softmax回归模型，该模型是logistic回归模型在多分类问题上的推广，在多分类问题中，类标签$y$可以取两个以上的值[1]。当类别数$k&#x3D;2$时，softmax 回归退化为 logistic 回归。 Softmax回归 vs. k个logistic回归&amp;emsp; 如果你在开发一个音乐分类的应用，需要对k种类型的音乐进行识别">
+<meta property="og:description" content="Softmax回归和逻辑回归的区别&amp;emsp; 在本节中，我们介绍Softmax回归模型，该模型是logistic回归模型在多分类问题上的推广，在多分类问题中，类标签$y$可以取两个以上的值[1]。当类别数$k&#x3D;2$时，softmax 回归退化为 logistic 回归。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-H6IdPXaqq9w/W1weFSXmnII/AAAAAAAAADc/1yO9gC-BkHkEZbo2eyg-Tb-pxevsnY1KgCLcBGAs/s0/%25E9%2580%25BB%25E8%25BE%2591%25E5%259B%259E%25E5%25BD%25923_softmax.png">
 <meta property="article:published_time" content="2020-01-21T09:28:05.000Z">
-<meta property="article:modified_time" content="2020-01-21T07:36:34.958Z">
+<meta property="article:modified_time" content="2020-01-21T08:57:46.741Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://lh3.googleusercontent.com/-H6IdPXaqq9w/W1weFSXmnII/AAAAAAAAADc/1yO9gC-BkHkEZbo2eyg-Tb-pxevsnY1KgCLcBGAs/s0/%25E9%2580%25BB%25E8%25BE%2591%25E5%259B%259E%25E5%25BD%25923_softmax.png">
@@ -200,7 +200,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-01-21 17:28:05 / Modified: 15:36:34" itemprop="dateCreated datePublished" datetime="2020-01-21T17:28:05+08:00">2020-01-21</time>
+              <time title="Created: 2020-01-21 17:28:05 / Modified: 16:57:46" itemprop="dateCreated datePublished" datetime="2020-01-21T17:28:05+08:00">2020-01-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -225,14 +225,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="Softmax回归和逻辑回归的区别"><a href="#Softmax回归和逻辑回归的区别" class="headerlink" title="Softmax回归和逻辑回归的区别"></a>Softmax回归和逻辑回归的区别</h2><p>&emsp; 在本节中，我们介绍Softmax回归模型，该模型是logistic回归模型在多分类问题上的推广，在多分类问题中，类标签$y$可以取两个以上的值[1]。当类别数$k=2$时，softmax 回归退化为 logistic 回归。</p>
+        <h2 id="Softmax回归和逻辑回归的区别"><a href="#Softmax回归和逻辑回归的区别" class="headerlink" title="Softmax回归和逻辑回归的区别"></a>Softmax回归和逻辑回归的区别</h2><p>&emsp; 在本节中，我们介绍Softmax回归模型，该模型是logistic回归模型在多分类问题上的推广，在多分类问题中，类标签$y$可以取两个以上的值[1]。当类别数$k=2$时，softmax 回归退化为 logistic 回归。<br><a id="more"></a></p>
 <h2 id="Softmax回归-vs-k个logistic回归"><a href="#Softmax回归-vs-k个logistic回归" class="headerlink" title="Softmax回归 vs. k个logistic回归"></a>Softmax回归 vs. k个logistic回归</h2><p>&emsp; 如果你在开发一个音乐分类的应用，需要对k种类型的音乐进行识别，那么是选择使用 softmax 分类器呢，还是使用 logistic 回归算法建立 k 个独立的二元分类器呢？</p>
 <p>&emsp; 这一选择取决于你的类别之间是否互斥，例如，如果你有四个类别的音乐，分别为：古典音乐、乡村音乐、摇滚乐和爵士乐，那么你可以假设每个训练样本只会被打上一个标签（即：一首歌只能属于这四种音乐类型的其中一种），此时你应该使用类别数 k = 4 的softmax回归。（如果在你的数据集中，有的歌曲不属于以上四类的其中任何一类，那么你可以添加一个“其他类”，并将类别数 k 设为5。）</p>
 <p>如果你的四个类别如下：人声音乐、舞曲、影视原声、流行歌曲，那么这些类别之间并不是互斥的。例如：一首歌曲可以来源于影视原声，同时也包含人声 。这种情况下，使用4个二分类的 logistic 回归分类器更为合适。这样，对于每个新的音乐作品 ，我们的算法可以分别判断它是否属于各个类别。</p>
 <p>现在我们来看一个计算视觉领域的例子，你的任务是将图像分到三个不同类别中。(i) 假设这三个类别分别是：室内场景、户外城区场景、户外荒野场景。你会使用sofmax回归还是 3个logistic 回归分类器呢？ (ii) 现在假设这三个类别分别是室内场景、黑白图片、包含人物的图片，你又会选择 softmax 回归还是多个 logistic 回归分类器呢？</p>
 <p>在第一个例子中，三个类别是互斥的，因此更适于选择softmax回归分类器 。而在第二个例子中，建立三个独立的 logistic回归分类器更加合适。 </p>
 <h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">import numpy as np</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def loadDataSet(file_path):</span><br><span class="line">    dataMat &#x3D; []</span><br><span class="line">    labelMat &#x3D; []</span><br><span class="line">    fr &#x3D; open(file_path)</span><br><span class="line">    for line in fr.readlines():</span><br><span class="line">        lineArr &#x3D; line.strip().split()</span><br><span class="line">        dataMat.append([float(lineArr[0]), float(lineArr[1])])</span><br><span class="line">        labelMat.append(int(lineArr[2]))</span><br><span class="line">    return dataMat, labelMat</span><br><span class="line"></span><br><span class="line"># 加载数据</span><br><span class="line">dataMat, labelMat &#x3D; loadDataSet(&#39;testSet.txt&#39;)  # 《机器学习实战》逻辑回归中用的数据集</span><br><span class="line">dataMat &#x3D; np.mat(dataMat).astype(np.float32)</span><br><span class="line">labelMat &#x3D; np.mat(labelMat).transpose()</span><br><span class="line"></span><br><span class="line"># 制作one-hot格式的label</span><br><span class="line">onehot_list &#x3D; []</span><br><span class="line">for i in range(len(labelMat)):</span><br><span class="line">    onehot &#x3D; [0, 0]</span><br><span class="line">    onehot[labelMat[i].item()] &#x3D; 1</span><br><span class="line">    onehot_list.append(onehot)</span><br><span class="line">labelMat &#x3D; np.array(onehot_list).astype(np.float32)</span><br><span class="line"></span><br><span class="line">class_num &#x3D; 2</span><br><span class="line">threshold &#x3D; 1.0e-2</span><br><span class="line"></span><br><span class="line">x_data &#x3D; tf.placeholder(&quot;float32&quot;, [None, 2])</span><br><span class="line">y_data &#x3D; tf.placeholder(&quot;float32&quot;, [None, class_num])</span><br><span class="line">weight &#x3D; tf.Variable(tf.ones([2, class_num]))</span><br><span class="line">bias &#x3D; tf.Variable(tf.ones([class_num]))</span><br><span class="line">y_model &#x3D; tf.nn.softmax(tf.matmul(x_data, weight) + bias)</span><br><span class="line"></span><br><span class="line">loss &#x3D; tf.reduce_sum(tf.pow((y_model - y_data), 2))</span><br><span class="line">train_step &#x3D; tf.train.GradientDescentOptimizer(0.01).minimize(loss)</span><br><span class="line">init &#x3D; tf.initialize_all_variables()</span><br><span class="line">sess &#x3D; tf.Session()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line">step &#x3D; 0</span><br><span class="line">loss_buf &#x3D; []</span><br><span class="line">train_num &#x3D; 70  # 一共就100个样本，拿出70个出来用于训练，剩下的30个用于测试</span><br><span class="line">for _ in range(100):</span><br><span class="line">    for data, label in zip(dataMat[0:train_num, :], labelMat[0:train_num, :]):</span><br><span class="line">        label &#x3D; label.reshape([1, 2])</span><br><span class="line">        sess.run(train_step, feed_dict&#x3D;&#123;x_data: data, y_data: label&#125;)</span><br><span class="line"></span><br><span class="line">        step +&#x3D; 1</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        if step % 10 &#x3D;&#x3D; 0:</span><br><span class="line">            print(step, sess.run(weight).flatten(), sess.run(bias).flatten())</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line"></span><br><span class="line">    loss_val &#x3D; sess.run(loss, feed_dict&#x3D;&#123;x_data: data, y_data: label&#125;)</span><br><span class="line">    print(&#39;loss_val &#x3D; &#39;, loss_val)</span><br><span class="line">    loss_buf.append(loss_val)</span><br><span class="line">    if loss_val &lt;&#x3D; threshold:</span><br><span class="line">        flag &#x3D; 0</span><br><span class="line">    #print(&#39;weight &#x3D; &#39;, weight.eval(sess))</span><br><span class="line"></span><br><span class="line"># 测试准确率</span><br><span class="line">correct_prediction &#x3D; tf.equal(tf.argmax(y_model, 1), tf.argmax(y_data, 1))</span><br><span class="line">accuracy &#x3D; tf.reduce_mean(tf.cast(correct_prediction, &quot;float&quot;))</span><br><span class="line">print(sess.run(accuracy, feed_dict&#x3D;&#123;x_data: dataMat[train_num+1:100, :], y_data: labelMat[train_num+1:100, :]&#125;))</span><br><span class="line">sess.close()</span><br><span class="line"></span><br><span class="line"># 画出loss曲线</span><br><span class="line">loss_ndarray &#x3D; np.array(loss_buf)</span><br><span class="line">loss_size &#x3D; np.arange(len(loss_ndarray))</span><br><span class="line">plt.plot(loss_size, loss_ndarray, &#39;b+&#39;, label&#x3D;&#39;loss&#39;)</span><br><span class="line">plt.show()</span><br><span class="line">print(&#39;end&#39;)</span><br></pre></td></tr></table></figure>
-
 <p>loss曲线：<br><img src="https://lh3.googleusercontent.com/-H6IdPXaqq9w/W1weFSXmnII/AAAAAAAAADc/1yO9gC-BkHkEZbo2eyg-Tb-pxevsnY1KgCLcBGAs/s0/%25E9%2580%25BB%25E8%25BE%2591%25E5%259B%259E%25E5%25BD%25923_softmax.png" alt="enter image description here" title="逻辑回归3_softmax.png"></p>
 <p>疑问：怎样画出Softmax回归得到的分类直线？<br>答：会提出这样的问题应该是Softmax回归和逻辑回归的概念还没弄清楚。<br>（me）在Softmax回归中，输出结果是one-hot形式的向量，向量的每一维的输出非0即1，根据Softmax回归的假设模型$h_{\theta}(x^{(i)})$可知，每一维的参数${\theta}_j$都不相同，所以也不能像逻辑回归中那样画出一条分类直线了。</p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="http://deeplearning.stanford.edu/wiki/index.php/Softmax%E5%9B%9E%E5%BD%92" target="_blank" rel="noopener">Softmax回归</a></p>
@@ -251,8 +250,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.6%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9Amnist%E6%89%8B%E5%86%99%E4%BD%93%E8%AF%86%E5%88%AB/" rel="prev" title="【机器学习笔记2.6】用Softmax回归做mnist手写体识别">
-      <i class="fa fa-chevron-left"></i> 【机器学习笔记2.6】用Softmax回归做mnist手写体识别
+    <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E6%AD%A3%E5%88%99%E5%8C%96/" rel="prev" title="【机器学习笔记3.1】线性模型正则化">
+      <i class="fa fa-chevron-left"></i> 【机器学习笔记3.1】线性模型正则化
     </a></div>
       <div class="post-nav-item">
     <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88TensorFlow%E5%AE%9E%E7%8E%B0%EF%BC%89/" rel="next" title="【机器学习笔记2.4】用逻辑回归做二分类（TensorFlow实现）">
@@ -427,6 +426,58 @@
 
 
   
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 

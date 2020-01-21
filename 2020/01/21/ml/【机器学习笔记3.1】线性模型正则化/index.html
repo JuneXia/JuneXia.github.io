@@ -46,19 +46,19 @@
   };
 </script>
 
-  <meta name="description" content="过拟合问题描述在机器学习应用时，会遇到过拟合(over-fitting)问题，本文将介绍一种被称为正则化(regularization)的技术，它可以有效改善或者减少过拟合问题[1]。如果我们有非常多的特征，我们通过学习得到的假设可能能够非常好地适应训练集（代价函数可能几乎为0），但是可能会无法推广到新的数据，也就是泛化能力比较差。下图是一个回归问题的例子：下图是分类问题的例子： 就以多项式为例来">
+  <meta name="description" content="过拟合问题描述在机器学习应用时，会遇到过拟合(over-fitting)问题，本文将介绍一种被称为正则化(regularization)的技术，它可以有效改善或者减少过拟合问题[1]。如果我们有非常多的特征，我们通过学习得到的假设可能能够非常好地适应训练集（代价函数可能几乎为0），但是可能会无法推广到新的数据，也就是泛化能力比较差。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【机器学习笔记3.1】线性模型正则化">
 <meta property="og:url" content="http://yoursite.com/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E6%AD%A3%E5%88%99%E5%8C%96/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="过拟合问题描述在机器学习应用时，会遇到过拟合(over-fitting)问题，本文将介绍一种被称为正则化(regularization)的技术，它可以有效改善或者减少过拟合问题[1]。如果我们有非常多的特征，我们通过学习得到的假设可能能够非常好地适应训练集（代价函数可能几乎为0），但是可能会无法推广到新的数据，也就是泛化能力比较差。下图是一个回归问题的例子：下图是分类问题的例子： 就以多项式为例来">
+<meta property="og:description" content="过拟合问题描述在机器学习应用时，会遇到过拟合(over-fitting)问题，本文将介绍一种被称为正则化(regularization)的技术，它可以有效改善或者减少过拟合问题[1]。如果我们有非常多的特征，我们通过学习得到的假设可能能够非常好地适应训练集（代价函数可能几乎为0），但是可能会无法推广到新的数据，也就是泛化能力比较差。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://img-blog.csdn.net/20180620202927320?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzNjIyOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 <meta property="og:image" content="https://img-blog.csdn.net/20180620203050563?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzNjIyOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 <meta property="og:image" content="https://img-blog.csdn.net/20180620224049370?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzNjIyOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 <meta property="og:image" content="https://img-blog.csdn.net/2018062022411966?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzNjIyOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 <meta property="article:published_time" content="2020-01-21T09:28:05.000Z">
-<meta property="article:modified_time" content="2020-01-21T07:34:19.399Z">
+<meta property="article:modified_time" content="2020-01-21T08:57:54.377Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://img-blog.csdn.net/20180620202927320?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzNjIyOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
@@ -203,7 +203,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-01-21 17:28:05 / Modified: 15:34:19" itemprop="dateCreated datePublished" datetime="2020-01-21T17:28:05+08:00">2020-01-21</time>
+              <time title="Created: 2020-01-21 17:28:05 / Modified: 16:57:54" itemprop="dateCreated datePublished" datetime="2020-01-21T17:28:05+08:00">2020-01-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -228,18 +228,46 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="过拟合问题描述"><a href="#过拟合问题描述" class="headerlink" title="过拟合问题描述"></a>过拟合问题描述</h2><p>在机器学习应用时，会遇到过拟合(over-fitting)问题，本文将介绍一种被称为正则化(regularization)的技术，它可以有效改善或者减少过拟合问题[1]。<br>如果我们有非常多的特征，我们通过学习得到的假设可能能够非常好地适应训练集（代价函数可能几乎为0），但是可能会无法推广到新的数据，也就是泛化能力比较差。<br>下图是一个回归问题的例子：<br><img src="https://img-blog.csdn.net/20180620202927320?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzNjIyOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"><br>下图是分类问题的例子：<br><img src="https://img-blog.csdn.net/20180620203050563?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzNjIyOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+        <h2 id="过拟合问题描述"><a href="#过拟合问题描述" class="headerlink" title="过拟合问题描述"></a>过拟合问题描述</h2><p>在机器学习应用时，会遇到过拟合(over-fitting)问题，本文将介绍一种被称为正则化(regularization)的技术，它可以有效改善或者减少过拟合问题[1]。<br>如果我们有非常多的特征，我们通过学习得到的假设可能能够非常好地适应训练集（代价函数可能几乎为0），但是可能会无法推广到新的数据，也就是泛化能力比较差。<br><a id="more"></a></p>
+<p>下图是一个回归问题的例子：\<br><img src="https://img-blog.csdn.net/20180620202927320?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzNjIyOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"><br>下图是分类问题的例子：\<br><img src="https://img-blog.csdn.net/20180620203050563?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzNjIyOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
 <p>就以多项式为例来理解，x的次数越高，则拟合的越好，但相应的预测能力就可能变差。<br>那么当我们发现过拟合问题时，应该如何处理呢？</p>
 <ol>
 <li>丢弃一些不能帮助我们正确预测的特征。可以是手工选择保留哪些特征，或者使用一些模型选择的算法来帮忙（例如PCA）</li>
 <li>正则化。保留所有特征，但是减少参数的大小。</li>
 </ol>
-<h2 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h2><p>上面的回归问题中如果我们的模型是：<br>$h_{\theta}(x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2^2 + \theta_3 x_3^3 + \theta_4 x_4^4$<br>我们可以从之前的事例中看出，正是那些高次项导致了过拟合的产生，所以如果我们能让这些高次项的系数近于0的话，我们就能很好的拟合了。<br>所以我们要做的就是在一定程度上减少这些参数θ的值，这就是正则化的基本方法。我们这里决定要减少$\theta_3$和$\theta_4$的大小，我们要做的便是修改代价函数，在其中$\theta_3$和$\theta_4$设置一点惩罚，修改后的代价函数如下：<br>\begin{equation}<br>    \mathop{\min}<em>{\theta} \dfrac{1}{2m}[\mathop{\sum}</em>{i=1}^m (h_{\theta}(x^{(i)}) - y^{(i)})^2 + 1000 \theta_3^2 + 10000 \theta_4^2] \tag{1}<br>\end{equation}<br>通过这样的代价函数选择出的 θ3和 θ4对预测结果的影响就比之前要小许多。假如我们有非常多的特征，我们并不知道其中哪些特征我们要惩罚，我们将对所有的特征进行惩罚，并且让代价函数最优化的软件来选择这些惩罚的程度。这样的结果是得到了一个较为简单的能防止过拟合问题的假设：<br>\begin{equation}<br>    \mathop{\min}<em>{\theta} \dfrac{1}{2m}[\mathop{\sum}</em>{i=1}^m (h_{\theta}(x^{(i)}) - y^{(i)})^2 + \lambda \mathop{\sum}<em>{j=1}^n {\theta_j}^2] \tag{2}<br>\end{equation}<br>其中 λ 又称为正则化参数（Regularization Parameter）。 注： 根据惯例， 我们不对 θ0 进行惩罚。经过正则化处理的模型与原模型的可能对比如下图所示：<br><img src="https://img-blog.csdn.net/20180620224049370?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzNjIyOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"><br>如果选择的正则化参数 λ 过大，则会把所有的参数都最小化了，导致模型变成$h</em>{\theta}(x) = \theta_0$，也就是上图中红色直线所示的情况，造成欠拟合。<br>那为什么增加一项$\lambda = \mathop{\sum}_{j=1}^n {\theta}_j^2$就可以是θ的值减小呢？<br>因为如果我们令λ的值很大的话，为了使 Cost Function 尽可能的小，所有的 θ 的值（不包括 θ0） 都会在一定程度上减小。<br>但若λ的值太大了， 那么 θ（不包括 θ0） 都会趋近于 0， 这样我们所得到的只能是一条平行于 x 轴的直线。<br>所以对于正则化，我们要取一个合理的λ的值，这样才能更好的应用正则化。<br>下面介绍正则化在线性回归和逻辑回归中的应用。</p>
-<h2 id="正则化线性回归"><a href="#正则化线性回归" class="headerlink" title="正则化线性回归"></a>正则化线性回归</h2><p>正则化线性回归的代价函数为：<br>\begin{equation}<br>    J(\theta) = \dfrac{1}{2m}[\mathop{\sum}<em>{i=1}^m (h</em>{\theta}(x^{(i)}) - y^{(i)})^2 + \lambda \mathop{\sum}_{j=1}^n {\theta_j}^2],  \qquad  其中j \not= 0\tag{3}<br>\end{equation}<br>如果我们使用梯度下降法来使这个代价函数最小化，因为我们未对$\theta_0$进行正则化，所以梯度下降算法将分两种情形：<br><img src="https://img-blog.csdn.net/2018062022411966?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzNjIyOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<h2 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h2><p>上面的回归问题中如果我们的模型是：<br>$h_{\theta}(x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2^2 + \theta_3 x_3^3 + \theta_4 x_4^4$<br>我们可以从之前的事例中看出，正是那些高次项导致了过拟合的产生，所以如果我们能让这些高次项的系数近于0的话，我们就能很好的拟合了。<br>所以我们要做的就是在一定程度上减少这些参数θ的值，这就是正则化的基本方法。我们这里决定要减少$\theta_3$和$\theta_4$的大小，我们要做的便是修改代价函数，在其中$\theta_3$和$\theta_4$设置一点惩罚，修改后的代价函数如下：<br>\begin{equation}<br>    \mathop{\min}_{\theta} \dfrac{1}{2m}[\mathop{\sum}_{i=1}^m (h_{\theta}(x^{(i)}) - y^{(i)})^2 + 1000 \theta_3^2 + 10000 \theta_4^2] \tag{1}<br>\end{equation}<br>通过这样的代价函数选择出的 θ3和 θ4对预测结果的影响就比之前要小许多。假如我们有非常多的特征，我们并不知道其中哪些特征我们要惩罚，我们将对所有的特征进行惩罚，并且让代价函数最优化的软件来选择这些惩罚的程度。这样的结果是得到了一个较为简单的能防止过拟合问题的假设：<br>\begin{equation}<br>    \mathop{\min}_{\theta} \dfrac{1}{2m}[\mathop{\sum}_{i=1}^m (h_{\theta}(x^{(i)}) - y^{(i)})^2 + \lambda \mathop{\sum}_{j=1}^n {\theta_j}^2] \tag{2}<br>\end{equation}<br>其中 λ 又称为正则化参数（Regularization Parameter）。 注： 根据惯例， 我们不对 θ0 进行惩罚。经过正则化处理的模型与原模型的可能对比如下图所示：<br><img src="https://img-blog.csdn.net/20180620224049370?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzNjIyOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"><br>如果选择的正则化参数 λ 过大，则会把所有的参数都最小化了，导致模型变成$h_{\theta}(x) = \theta_0$，也就是上图中红色直线所示的情况，造成欠拟合。<br>那为什么增加一项$\lambda = \mathop{\sum}_{j=1}^n {\theta}_j^2$就可以是θ的值减小呢？<br>因为如果我们令λ的值很大的话，为了使 Cost Function 尽可能的小，所有的 θ 的值（不包括 θ0） 都会在一定程度上减小。<br>但若λ的值太大了， 那么 θ（不包括 θ0） 都会趋近于 0， 这样我们所得到的只能是一条平行于 x 轴的直线。<br>所以对于正则化，我们要取一个合理的λ的值，这样才能更好的应用正则化。<br>下面介绍正则化在线性回归和逻辑回归中的应用。</p>
+<h2 id="正则化线性回归"><a href="#正则化线性回归" class="headerlink" title="正则化线性回归"></a>正则化线性回归</h2><p>正则化线性回归的代价函数为：<br>\begin{equation}<br>    J(\theta) = \dfrac{1}{2m}[\mathop{\sum}_{i=1}^m (h_{\theta}(x^{(i)}) - y^{(i)})^2 + \lambda \mathop{\sum}_{j=1}^n {\theta_j}^2],  \qquad  其中j \not= 0\tag{3}<br>\end{equation}<br>如果我们使用梯度下降法来使这个代价函数最小化，因为我们未对$\theta_0$进行正则化，所以梯度下降算法将分两种情形：<br><img src="https://img-blog.csdn.net/2018062022411966?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzNjIyOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
 <blockquote>
-<p>j≠0时的求导过程如下：<br>$$\dfrac{\partial J(\theta)}{\partial \theta_j} = \frac{1}{m}[\mathop{\sum}<em>{i=1}^m (h</em>{\theta}(x^{(i)}) - y^{(i)}) x_j^{(i)} + \lambda \theta_j]$$<br>(me)注：这里θ共有n项，当对第j项$\theta_j$求偏导时只有$\theta_j$项被保留下来，其他的都被当成常数求导等于0了。</p>
+<p>j≠0时的求导过程如下：</p>
+<script type="math/tex; mode=display">\dfrac{\partial J(\theta)}{\partial \theta_j} = \frac{1}{m}[\mathop{\sum}_{i=1}^m (h_{\theta}(x^{(i)}) - y^{(i)}) x_j^{(i)} + \lambda \theta_j]</script><p>(me)注：这里θ共有n项，当对第j项$\theta_j$求偏导时只有$\theta_j$项被保留下来，其他的都被当成常数求导等于0了。</p>
 </blockquote>
-<p>也可以利用正规方程来求解正则化线性回归模型，参考<a href="https://blog.csdn.net/yahstudio/article/details/80679404" target="_blank" rel="noopener">【机器学习笔记1.1】</a>中的方法，我们可以把这里的代价函数式(3)写成矩阵的形式<br>$$J(\vec{\theta}) = (\vec{y} - \matrix{X}\vec{\theta})^T(\vec{y} - \matrix{X}\vec{\theta}) + \lambda \vec{\theta}^T \vec{\theta} \tag{4}$$<br>其中$\matrix{X}是一个m \times n$的矩阵，$\vec{y}是m \times 1$的向量，$\vec{\theta}是n \times 1$的向量。<br>将$J(\vec{\theta})$对$\vec{\theta}$求导得<br>$$<br>\frac{\partial J(\vec{\theta})}{\partial \vec{\theta}} = -2\matrix{X}^T(\vec{y} - \matrix{X}\vec{\theta}) + 2\lambda \vec{\theta} \tag{5}$$<br>令$$\dfrac{\partial J(\vec{\theta})}{\partial \vec{\theta}_j} = 0$$<br>解得<br>$$\vec{\theta} = \left(<br>\matrix{X}^T\matrix{X} + \lambda<br> \left[<br> \begin{matrix}<br>   1 \<br>     &amp; 1 \<br>     &amp; &amp; \ddots \<br>     &amp; &amp; &amp; 1<br>  \end{matrix}<br>  \right]<br>  \right)^{-1} \matrix{X}^T \vec{y}<br>$$<br>考虑$\theta_0$时的求解结果<br>$$\vec{\theta} = \left(<br>\matrix{X}^T\matrix{X} + \lambda<br> \left[<br> \begin{matrix}<br>   0  &amp; \<br>       &amp; 1\<br>       &amp; &amp; 1 \<br>       &amp; &amp; &amp; \ddots \<br>       &amp; &amp; &amp; &amp; 1<br>  \end{matrix}<br>  \right]<br>  \right)^{-1} \matrix{X}^T \vec{y}<br>$$<br>此时$\matrix{X}是一个m \times (n+1)$的矩阵，$\vec{y}是m \times 1$的向量，$\vec{\theta}是(n+1) \times 1$的向量。</p>
+<p>也可以利用正规方程来求解正则化线性回归模型，参考<a href="https://blog.csdn.net/yahstudio/article/details/80679404" target="_blank" rel="noopener">【机器学习笔记1.1】</a>中的方法，我们可以把这里的代价函数式(3)写成矩阵的形式</p>
+<script type="math/tex; mode=display">J(\vec{\theta}) = (\vec{y} - \matrix{X}\vec{\theta})^T(\vec{y} - \matrix{X}\vec{\theta}) + \lambda \vec{\theta}^T \vec{\theta} \tag{4}</script><p>其中$\matrix{X}是一个m \times n$的矩阵，$\vec{y}是m \times 1$的向量，$\vec{\theta}是n \times 1$的向量。<br>将$J(\vec{\theta})$对$\vec{\theta}$求导得</p>
+<script type="math/tex; mode=display">
+\frac{\partial J(\vec{\theta})}{\partial \vec{\theta}} = -2\matrix{X}^T(\vec{y} - \matrix{X}\vec{\theta}) + 2\lambda \vec{\theta} \tag{5}</script><p>令<script type="math/tex">\dfrac{\partial J(\vec{\theta})}{\partial \vec{\theta}_j} = 0</script><br>解得</p>
+<script type="math/tex; mode=display">\vec{\theta} = \left(
+\matrix{X}^T\matrix{X} + \lambda
+ \left[
+ \begin{matrix}
+   1 \\
+     & 1 \\
+     & & \ddots \\
+     & & & 1
+  \end{matrix}
+  \right]
+  \right)^{-1} \matrix{X}^T \vec{y}</script><p>考虑$\theta_0$时的求解结果</p>
+<script type="math/tex; mode=display">\vec{\theta} = \left(
+\matrix{X}^T\matrix{X} + \lambda
+ \left[
+ \begin{matrix}
+   0  & \\
+       & 1\\
+       & & 1 \\
+       & & & \ddots \\
+       & & & & 1
+  \end{matrix}
+  \right]
+  \right)^{-1} \matrix{X}^T \vec{y}</script><p>此时$\matrix{X}是一个m \times (n+1)$的矩阵，$\vec{y}是m \times 1$的向量，$\vec{\theta}是(n+1) \times 1$的向量。</p>
 <h2 id="正则化逻辑回归"><a href="#正则化逻辑回归" class="headerlink" title="正则化逻辑回归"></a>正则化逻辑回归</h2><p>逻辑回归参见<a href="https://blog.csdn.net/yahstudio/article/details/80615752" target="_blank" rel="noopener">【机器学习笔记2.1】</a>，我们这里为逻辑回归的代价函数增加一个正则化的表达式：<br>5！！！！！！！！！！！！！！！！！</p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] 黄海广. MIT 机器学习教程</p>
 
@@ -257,12 +285,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/01/21/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%20blog1%E3%80%91vscode+markdown+hexo+github%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/" rel="prev" title="【开发环境与工具 blog1】vscode+markdown+hexo+github搭建博客">
-      <i class="fa fa-chevron-left"></i> 【开发环境与工具 blog1】vscode+markdown+hexo+github搭建博客
+    <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.6%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9Amnist%E6%89%8B%E5%86%99%E4%BD%93%E8%AF%86%E5%88%AB/" rel="prev" title="【机器学习笔记2.6】用Softmax回归做mnist手写体识别">
+      <i class="fa fa-chevron-left"></i> 【机器学习笔记2.6】用Softmax回归做mnist手写体识别
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.6%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9Amnist%E6%89%8B%E5%86%99%E4%BD%93%E8%AF%86%E5%88%AB/" rel="next" title="【机器学习笔记2.6】用Softmax回归做mnist手写体识别">
-      【机器学习笔记2.6】用Softmax回归做mnist手写体识别 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.5%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88Tensorflow%E5%AE%9E%E7%8E%B0%EF%BC%89/" rel="next" title="【机器学习笔记2.5】用Softmax回归做二分类（Tensorflow实现）">
+      【机器学习笔记2.5】用Softmax回归做二分类（Tensorflow实现） <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -433,6 +461,58 @@
 
 
   
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 
