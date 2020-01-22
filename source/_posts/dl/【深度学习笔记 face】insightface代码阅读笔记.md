@@ -7,6 +7,7 @@ mathjax: true
 ---
 <!-- more -->
 
->>> 看https://www.cnblogs.com/darkknightzh/p/8525287.html，发现sphereface是这一系列角度损失函数优化的鼻祖
->>> 于是看https://www.cnblogs.com/darkknightzh/p/8524937.html，发现看不懂
->>> 于是又看介绍sphereface的知乎：https://zhuanlan.zhihu.com/p/40775212，发现对softmax还有些不明白，于是又看https://zhuanlan.zhihu.com/p/25723112
+> 看https://www.cnblogs.com/darkknightzh/p/8525287.html，sphereface是这一系列角度损失函数优化的鼻祖
+> 看https://www.cnblogs.com/darkknightzh/p/8524937.html
+> sphereface的知乎：https://zhuanlan.zhihu.com/p/40775212
+> 关于softmax: https://zhuanlan.zhihu.com/p/25723112
