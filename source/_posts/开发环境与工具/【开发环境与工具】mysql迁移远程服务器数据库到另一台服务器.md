@@ -17,7 +17,7 @@ mathjax: true
 
 2. 导入数据库文件到服务器
 
-![](/开发环境与工具/chart/MySQL-Workbench导入数据库到服务器.jpg)
+![](https://github.com/JuneXia/JuneXia.github.io/raw/master/images/envtool/MySQL-Workbench%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg)
 
 
 [1] [# MySQL Workbench导出数据库](https://blog.csdn.net/konglongaa/article/details/54923248)
