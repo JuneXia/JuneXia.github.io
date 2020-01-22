@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+<meta property="og:type" content="website">
+<meta property="og:title" content="春播秋芒">
+<meta property="og:url" content="http://yoursite.com/page/3/index.html">
+<meta property="og:site_name" content="春播秋芒">
+<meta property="og:description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/page/3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: true,
+    isPost: false
+  };
+</script>
+
+  <title>春播秋芒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">春播秋芒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/25/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91Ubuntu16.04+RTX750+CUDA10.0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/08/25/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91Ubuntu16.04+RTX750+CUDA10.0/" class="post-title-link" itemprop="url">【开发环境与工具】Ubuntu16.04+RTX750+CUDA10.0</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-08-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-08-25T00:00:00+08:00">2018-08-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:27:57" itemprop="dateModified" datetime="2020-01-22T13:27:57+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">开发环境与工具</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h2 id="0-基本环境配置"><a href="#0-基本环境配置" class="headerlink" title="0. 基本环境配置"></a>0. 基本环境配置</h2><ol>
+<li>检查gcc版本<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc --version</span><br></pre></td></tr></table></figure>
+对于Ubuntu 16.04来说，gcc版本需要&gt;5.4.0。</li>
+</ol>
+<p>如果没有gcc命令，则需要安装gcc<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update  <span class="comment"># 一定要记得先update，不然找不到gcc</span></span><br><span class="line">sudo apt install gcc</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>检查Kernel版本<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -r</span><br></pre></td></tr></table></figure>
+对于Ubuntu 16.04来说，内核版本需要&gt;4.4.0</li>
+</ol>
+<p>然后需要安装对应版本的Kernel Header：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install linux-headers-$(uname -r)</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>安装对应的库<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev \</span><br><span class="line">libboost-all-dev libhdf5-serial-dev libgflags-dev libgoogle-glog-dev liblmdb-dev \</span><br><span class="line">protobuf-compiler g++ freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev \</span><br><span class="line">libgl1-mesa-glx libglu1-mesa libglu1-mesa-dev</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="1-卸载旧的显卡驱动"><a href="#1-卸载旧的显卡驱动" class="headerlink" title="1. 卸载旧的显卡驱动"></a>1. 卸载旧的显卡驱动</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># for case1: original driver installed by apt-get:</span></span><br><span class="line">sudo apt-get remove --purge nvidia*</span><br><span class="line"><span class="comment"># 亲测上述命令执行不成功，改如下面这条命令便ok了：</span></span><br><span class="line">sudo apt-get remove nvidia*</span><br><span class="line"></span><br><span class="line"><span class="comment"># for case2: original driver installed by runfile:</span></span><br><span class="line">sudo chmod +x *.run</span><br><span class="line">sudo ./NVIDIA-Linux-x86_64-384.59.run --uninstall</span><br></pre></td></tr></table></figure>
+<p> NVIDIA Software Installer for Unix/Linux</p>
+<p>  If you plan to no longer use the NVIDIA driver, you should make sure that no X screens are<br>  configured to use the NVIDIA X driver in your X configuration file. If you used nvidia-xconfig to<br>  configure X, it may have created a backup of your original configuration. Would you like to run<br>  <code>nvidia-xconfig --restore-original-backup</code> to attempt restoration of the original X configuration<br>  file?</p>
+<pre><code>                             Yes                              No   
+</code></pre><p>  WARNING: Your driver installation has been altered since it was initially installed; this may<br>           happen, for example, if you have since installed the NVIDIA driver through a mechanism<br>           other than nvidia-installer (such as your distribution’s native package management<br>           system).  nvidia-installer will attempt to uninstall as best it can.  Please see the<br>           file ‘/var/log/nvidia-uninstall.log’ for details.                                        </p>
+<pre><code>                                             OK  
+</code></pre><p>  WARNING: Failed to delete some directories. See /var/log/nvidia-uninstall.log for details.        </p>
+<pre><code>                                             OK       
+</code></pre><p>如果原驱动是用apt-get安装的，就用第1种方法卸载。如果原驱动是用runfile安装的，就用–uninstall命令卸载。其实，用runfile安装的时候也会卸载掉之前的驱动，所以不手动卸载亦可。</p>
+<blockquote>
+<p>卸载完成后，注意此时千万不能重启，重启电脑可能会导致无法进入系统。(亲测：其实重启也没事，笔者后面在禁用X-Window服务后遇到疑似“死机”现象，于是便强制关机重启后再继续其他步骤的。)</p>
+</blockquote>
+<h2 id="2-禁用nouveau驱动"><a href="#2-禁用nouveau驱动" class="headerlink" title="2. 禁用nouveau驱动"></a>2. 禁用nouveau驱动</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打开blacklist.conf文件：</span></span><br><span class="line">sudo vim /etc/modprobe.d/blacklist.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在文本最后添加：</span></span><br><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后执行：</span></span><br><span class="line">sudo update-initramfs -u</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启后，执行以下命令，如果没有屏幕输出，说明禁用nouveau成功：</span></span><br><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
+<h2 id="3-禁用X-Window服务"><a href="#3-禁用X-Window服务" class="headerlink" title="3. 禁用X-Window服务"></a>3. 禁用X-Window服务</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop <span class="comment">#这会关闭图形界面，但不用紧张</span></span><br></pre></td></tr></table></figure>
+<p>按Ctrl-Alt+F1进入命令行界面，输入用户名和密码登录即可。</p>
+<blockquote>
+<p>小提示：在命令行输入：sudo service lightdm start ，然后按Ctrl-Alt+F7即可恢复到图形界面。</p>
+</blockquote>
+<h2 id="4-命令行安装显卡驱动"><a href="#4-命令行安装显卡驱动" class="headerlink" title="4. 命令行安装显卡驱动"></a>4. 命令行安装显卡驱动</h2><p><a href="https://www.nvidia.cn/Download/index.aspx" target="_blank" rel="noopener">点此下载显卡驱动</a><br><img src="https://lh3.googleusercontent.com/-o6jQ09C2HfM/XYhRwKi2jeI/AAAAAAAAAO4/GcwJPgUtw4kwfM94ML3fo4BmdzdjtGzwQCLcBGAsYHQ/s0/nvidia-driver-download.png" alt="enter image description here" title="nvidia-driver-download.png"><br>笔者亲测：对于我的ubuntu16.04 server系统，Language如若选Chinese(Simplified)则安装不成功。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#给驱动run文件赋予执行权限：</span></span><br><span class="line">sudo chmod +x NVIDIA-Linux-x86_64-384.59.run</span><br><span class="line"><span class="comment">#后面的参数非常重要，不可省略：</span></span><br><span class="line">sudo ./NVIDIA-Linux-x86_64-384.59.run -–no-x-check -no-nouveau-check -no-opengl-files</span><br></pre></td></tr></table></figure>
+<ul>
+<li>no-opengl-files：表示只安装驱动文件，不安装OpenGL文件。这个参数不可省略，否则会导致登陆界面死循环，英语一般称为”login loop”或者”stuck in login”。</li>
+<li>no-x-check：表示安装驱动时不检查X服务，非必需。</li>
+<li>no-nouveau-check：表示安装驱动时不检查nouveau，非必需。</li>
+<li>Z, —disable-nouveau：禁用nouveau。此参数非必需，因为之前已经手动禁用了nouveau。</li>
+<li>A：查看更多高级选项。</li>
+</ul>
+<blockquote>
+<p>必选参数解释：因为NVIDIA的驱动默认会安装OpenGL，而Ubuntu的内核本身也有OpenGL、且与GUI显示息息相关，一旦NVIDIA的驱动覆写了OpenGL，在GUI需要动态链接OpenGL库的时候就引起问题。</p>
+</blockquote>
+<p><strong>安装选项：</strong></p>
+<blockquote>
+<ol>
+<li>There appears to already be a driver installed on your system (version:<br>390.42).  As part of installing this driver (version: 390.42), the existing<br>driver will be uninstalled.  Are you sure you want to continue?<br>Continue installation      Abort installation<br>（选择 Coninue，如果是重装的话）  </li>
+<li>The distribution-provided pre-install script failed!  Are you sure you want<br>to continue?<br>Continue installation      Abort installation<br>（选择 Cotinue)  </li>
+<li>Would you like to register the kernel module sources with DKMS? This will<br>allow DKMS to automatically build a new module, if you install a different<br>kernel later.<br>Yes                       No<br>（这里选 No）  </li>
+<li>Install NVIDIA’s 32-bit compatibility libraries?<br>Yes                       No<br>（这里选 No）  </li>
+<li>Installation of the kernel module for the NVIDIA Accelerated Graphics Driver<br>for Linux-x86_64 (version 390.42) is now complete.<br>  OK</li>
+</ol>
+</blockquote>
+<p>之后，按照提示安装，成功后重启即可。<br>如果提示安装失败，不要急着重启电脑，重复以上步骤，多安装几次即可。</p>
+<p><strong>Driver测试：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi #若列出GPU的信息列表，表示驱动安装成功</span><br><span class="line">nvidia-settings #若弹出设置对话框，亦表示驱动安装成功</span><br></pre></td></tr></table></figure></p>
+<h2 id="5-安装CUDA"><a href="#5-安装CUDA" class="headerlink" title="5. 安装CUDA"></a>5. 安装CUDA</h2><p><strong>卸载旧的CUDA</strong><br>（也可以不卸载试试，据说显卡驱动可以向下兼容多个CUDA版本共存）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/<span class="built_in">local</span>/cuda-8.0/bin/uninstall_cuda_8.0.pl</span><br><span class="line"></span><br><span class="line">卸载之后，还有一些残留的文件夹，之前安装的是CUDA 8.0。可以一并删除：</span><br><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/cuda-8.0/</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="noopener">点此下载CUDA</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./cuda_8.0.61_375.26_linux.run --no-opengl-libs</span><br></pre></td></tr></table></figure>
+<ul>
+<li>no-opengl-libs：表示只安装驱动文件，不安装OpenGL文件。必需参数，原因同上。注意：不是-no-opengl-files。</li>
+<li>uninstall (deprecated)：用于卸载CUDA Driver（已废弃）。</li>
+<li>toolkit：表示只安装CUDA Toolkit，不安装Driver和Samples。</li>
+<li>help：查看更多高级选项。<br>之后，按照提示安装即可。我依次选择了：</li>
+</ul>
+<blockquote>
+<p>accept #同意安装<br>n #不安装Driver，因为已安装最新驱动<br>y #安装CUDA Toolkit</p>
+<p><Enter> #安装到默认目录<br>y #创建安装目录的软链接<br>n #不复制Samples，因为在安装目录下有/samples</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">导出CUDA的bin和lib路径： </span><br><span class="line">方法1：终端直接执行以下命令</span><br><span class="line"><span class="built_in">export</span> CUDA_HOME=/usr/<span class="built_in">local</span>/cuda</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$CUDA_HOME</span>/bin</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="variable">$LD_LIBRARY_PATH</span>:<span class="variable">$CUDA_HOME</span>/lib64:<span class="variable">$CUDA_HOME</span>/extras/CUPTI/lib64</span><br><span class="line"></span><br><span class="line">方法2：如果这台电脑只有自己一个用户，则可以在主目录下的.bashrc文件最后加入上述命令并保存，然后回到终端执行下面的命令即可</span><br><span class="line">```bash</span><br><span class="line"><span class="built_in">source</span> .bashrc</span><br><span class="line"></span><br><span class="line">方法3：如果电脑有多个用户使用，则方法2对其他用户无效，此时要将方法1中的命令加到 /etc/profile 文件的最后，然后执行下面的命令</span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
+<p>安装及路径测试：输入nvcc -V 查看CUDA版本。</p>
+<p>CUDA Sample测试：</p>
+<h1 id="编译并测试设备-deviceQuery："><a href="#编译并测试设备-deviceQuery：" class="headerlink" title="编译并测试设备 deviceQuery："></a>编译并测试设备 deviceQuery：</h1><p>cd /usr/local/cuda-8.0/samples/1_Utilities/deviceQuery<br>sudo make<br>./deviceQuery</p>
+<h1 id="编译并测试带宽-bandwidthTest："><a href="#编译并测试带宽-bandwidthTest：" class="headerlink" title="编译并测试带宽 bandwidthTest："></a>编译并测试带宽 bandwidthTest：</h1><p>cd ../bandwidthTest<br>sudo make<br>./bandwidthTest</p>
+<p>如果这两个测试的最后结果都是Result = PASS，说明CUDA安装成功啦。</p>
+<h3 id="笔者这一步没有安装补丁"><a href="#笔者这一步没有安装补丁" class="headerlink" title="笔者这一步没有安装补丁"></a>笔者这一步没有安装补丁</h3><p>sudo ./cuda_8.0.61.2_linux.run #最后安装补丁CUDA官方补丁</p>
+<h2 id="6-安装cuDNN"><a href="#6-安装cuDNN" class="headerlink" title="6. 安装cuDNN"></a>6. 安装cuDNN</h2><p><a href="https://developer.nvidia.com/cudnn" target="_blank" rel="noopener">下载</a>与CUDA版本匹配的cuDNN库，解压后执行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo cp cuda/include/cudnn.h /usr/<span class="built_in">local</span>/cuda/include</span><br><span class="line">sudo cp cuda/lib64/libcudnn* /usr/<span class="built_in">local</span>/cuda/lib64</span><br></pre></td></tr></table></figure></p>
+<h2 id="7-安装TensorFlow"><a href="#7-安装TensorFlow" class="headerlink" title="7. 安装TensorFlow"></a>7. 安装TensorFlow</h2><p>如果没有pip，则需要先安装pip<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python3-pip python3-dev</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install tensorflow-gpu==1.14.0 -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+<h2 id="8-其他python库的安装"><a href="#8-其他python库的安装" class="headerlink" title="8. 其他python库的安装"></a>8. 其他python库的安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install opencv-python -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">sudo pip3 install opencv-contrib-python -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">sudo pip3 install matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+<p>[1] <a href="https://blog.csdn.net/CosmosHua/article/details/76644029" target="_blank" rel="noopener">Ubuntu 16.04安装NVIDIA驱动</a><br>[2] <a href="https://onlycaptain.github.io/2018/08/18/Ubuntu%E4%B8%8BNvidia%E9%A9%B1%E5%8A%A8%E5%AE%89%E8%A3%85/" target="_blank" rel="noopener">Ubuntu下Nvidia驱动安装</a><br>[3] <a href="https://bluesmilery.github.io/blogs/a687003b/" target="_blank" rel="noopener">多版本CUDA和TensorFlow共存</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/" class="post-title-link" itemprop="url">【机器学习基础】范数与正则化</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:18:59" itemprop="dateModified" datetime="2020-01-22T13:18:59+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本篇主要介绍范数以及使用范数的正则化策略。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/" class="post-title-link" itemprop="url">【深度学习笔记 face】基于Inception-Resnet的FaceID</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-21 17:58:59" itemprop="dateModified" datetime="2020-01-21T17:58:59+08:00">2020-01-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Inception-Resnet-V2网络结构"><a href="#Inception-Resnet-V2网络结构" class="headerlink" title="Inception-Resnet-V2网络结构"></a>Inception-Resnet-V2网络结构</h1><blockquote>
+<p>因markdown 语法绘制表格不能实现单元格合并，故这里将部分Inception和Residual结构统一放到一个表格中，仅为个人记录学习所用。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20[%E8%BD%AC]%E3%80%91%E8%BF%AD%E4%BB%A3%E5%99%A8(Iterator)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/25/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20%5B%E8%BD%AC%5D%E3%80%91%E8%BF%AD%E4%BB%A3%E5%99%A8(Iterator)/" class="post-title-link" itemprop="url">【Python笔记 [转]】迭代器(Iterator)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:19:52" itemprop="dateModified" datetime="2020-01-22T13:19:52+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">Python笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本文转自文献[1]</p>
+<h1 id="迭代和可迭代"><a href="#迭代和可迭代" class="headerlink" title="迭代和可迭代"></a>迭代和可迭代</h1><p>迭代器这个概念在很多语言中（比如 C++，Java）都是存在的，但是不同语言实现迭代器的方式各不相同。<strong>在 Python 中，迭代器是指遵循迭代器协议（iterator protocol）的对象</strong>。至于什么是迭代器协议，稍后自然会说明。为了更好地理解迭代器，我先介绍和迭代器相关的两个概念：<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/06/25/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20%5B%E8%BD%AC%5D%E3%80%91%E8%BF%AD%E4%BB%A3%E5%99%A8(Iterator)/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91weight%20decay/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91weight%20decay/" class="post-title-link" itemprop="url">【深度学习笔记3.1 正则化】weight decay</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-19 17:28:05" itemprop="dateCreated datePublished" datetime="2018-06-19T17:28:05+08:00">2018-06-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:49" itemprop="dateModified" datetime="2020-01-22T13:25:49+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://zh.gluon.ai/chapter_deep-learning-basics/weight-decay.html" target="_blank" rel="noopener">动手学深度学习-&gt;3.12 权重衰减</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%20[%E8%BD%AC]%E3%80%91Softmax%E5%87%BD%E6%95%B0%E4%B8%8E%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%20%5B%E8%BD%AC%5D%E3%80%91Softmax%E5%87%BD%E6%95%B0%E4%B8%8E%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7/" class="post-title-link" itemprop="url">【机器学习基础 [转]】Softmax函数与数值稳定性</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-19 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-19T00:00:00+08:00">2018-06-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:18:43" itemprop="dateModified" datetime="2020-01-22T13:18:43+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Softmax函数"><a href="#Softmax函数" class="headerlink" title="Softmax函数"></a>Softmax函数</h2><p>本文参考文献[1].</p>
+<p>&emsp; 在Logistic regression二分类问题中，我们可以使用sigmoid函数将输入$\boldsymbol Wx + \boldsymbol b$映射到(0, 1)区间中，从而得到属于某个类别的概率。将这个问题进行泛化，推广到多分类问题中，我们可以使用softmax函数，对输出的值归一化为概率值。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/06/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%20%5B%E8%BD%AC%5D%E3%80%91Softmax%E5%87%BD%E6%95%B0%E4%B8%8E%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/10/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2.1%E3%80%91AlexNet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/10/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2.1%E3%80%91AlexNet/" class="post-title-link" itemprop="url">【深度学习笔记2.2.1】AlexNet</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-10 17:28:05" itemprop="dateCreated datePublished" datetime="2018-06-10T17:28:05+08:00">2018-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:23" itemprop="dateModified" datetime="2020-01-22T13:25:23+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp; 2012年，Hinton的学生Alex Krizhevsky提出的深度卷积神经网络模型AlexNet获得了2012年ILSVRC比赛分类项目的冠军。AlexNet是在LeNet的基础上发展起来的，AlexNet首次引入了Dropout层来处理过拟合以及使用ReLU替代sigmoid来作为激活函数。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/06/10/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2.1%E3%80%91AlexNet/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.3%E3%80%91Batch%20Normalization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/05/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.3%E3%80%91Batch%20Normalization/" class="post-title-link" itemprop="url">【深度学习笔记3.3】Batch Normalization</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-05-25 17:28:05" itemprop="dateCreated datePublished" datetime="2018-05-25T17:28:05+08:00">2018-05-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:57" itemprop="dateModified" datetime="2020-01-22T13:25:57+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://www.cnblogs.com/guoyaohua/p/8724433.html" target="_blank" rel="noopener">【深度学习】深入理解Batch Normalization批标准化</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91%E6%9D%83%E9%87%8D%E8%A1%B0%E5%87%8F(weight%20decay)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/05/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91%E6%9D%83%E9%87%8D%E8%A1%B0%E5%87%8F(weight%20decay)/" class="post-title-link" itemprop="url">【深度学习笔记3.1 正则化】权重衰减(weight decay)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-05-22 17:28:05" itemprop="dateCreated datePublished" datetime="2018-05-22T17:28:05+08:00">2018-05-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:44" itemprop="dateModified" datetime="2020-01-22T13:25:44+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<p>权重衰减是什么？参考有关文献</p>
+<p>这里参考文献[1]整理成如下代码：(详见文献[5]regularization/WeightDecay.py)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">import tensorflow as tf</span><br><span class="line"></span><br><span class="line">from matplotlib import pyplot as plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">n_train &#x3D; 20</span><br><span class="line">n_test &#x3D; 100</span><br><span class="line">num_inputs &#x3D; 200</span><br><span class="line"></span><br><span class="line">true_w &#x3D; np.ones((num_inputs, 1)) * 0.01</span><br><span class="line">true_b &#x3D; 0.05</span><br><span class="line">features &#x3D; np.random.normal(size&#x3D;(n_train+n_test, num_inputs))</span><br><span class="line">np.random.shuffle(features)</span><br><span class="line">labels &#x3D; np.dot(features, true_w) + true_b</span><br><span class="line">labels +&#x3D; np.random.normal(scale&#x3D;0.01, size&#x3D;labels.shape)</span><br><span class="line"></span><br><span class="line">train_features, test_features &#x3D; features[:n_train], features[n_train:]</span><br><span class="line">train_labels, test_labels &#x3D; labels[:n_train], labels[n_train:]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">batch_size &#x3D; 1</span><br><span class="line">epochs &#x3D; 100</span><br><span class="line">learning_rate &#x3D; 0.003</span><br><span class="line">lambd &#x3D; 5</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x &#x3D; tf.placeholder(tf.float32, shape&#x3D;(None, num_inputs))</span><br><span class="line">y &#x3D; tf.placeholder(tf.float32, shape&#x3D;(None, 1))</span><br><span class="line"></span><br><span class="line">w &#x3D; tf.Variable(tf.random_normal((num_inputs, 1)))</span><br><span class="line">b &#x3D; tf.Variable(tf.zeros(1))</span><br><span class="line">y_hat &#x3D; tf.add(tf.matmul(x, w), b)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">loss &#x3D; tf.reduce_mean(tf.square(y-y_hat)) + lambd * (tf.reduce_sum(tf.pow(w, 2)) &#x2F; 2)</span><br><span class="line">train &#x3D; tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">dataset &#x3D; tf.data.Dataset.from_tensor_slices((train_features, train_labels))</span><br><span class="line">dataset &#x3D; dataset.repeat().batch(batch_size)</span><br><span class="line">iterator &#x3D; dataset.make_initializable_iterator()</span><br><span class="line">next_data &#x3D; iterator.get_next()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">train_loss &#x3D; []</span><br><span class="line">test_loss &#x3D; []</span><br><span class="line">init &#x3D; [tf.global_variables_initializer(), iterator.initializer]</span><br><span class="line">with tf.Session() as sess:</span><br><span class="line">    sess.run(init)</span><br><span class="line">    for i in range(epochs):</span><br><span class="line">        for _ in range(20):</span><br><span class="line">            batch_x, batch_y &#x3D; sess.run(next_data)</span><br><span class="line">            sess.run(train, feed_dict&#x3D;&#123;</span><br><span class="line">                x: batch_x,</span><br><span class="line">                y: batch_y</span><br><span class="line">            &#125;)</span><br><span class="line">        train_loss.append(sess.run(loss, feed_dict&#x3D;&#123;</span><br><span class="line">            x: train_features,</span><br><span class="line">            y: train_labels</span><br><span class="line">        &#125;))</span><br><span class="line">        test_loss.append(sess.run(loss, feed_dict&#x3D;&#123;</span><br><span class="line">            x: test_features,</span><br><span class="line">            y: test_labels</span><br><span class="line">        &#125;))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.semilogy(range(1, epochs+1), train_loss)</span><br><span class="line">plt.semilogy(range(1, epochs+1), test_loss)</span><br><span class="line">plt.xlabel(&#39;epochs&#39;)</span><br><span class="line">plt.ylabel(&#39;loss&#39;)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://medium.com/@prairie5270/%E4%BD%BF%E7%94%A8-tensorflow-%E4%BA%86%E8%A7%A3%E6%AC%8A%E9%87%8D%E8%A1%B0%E6%B8%9B-70d4dfac9e15" target="_blank" rel="noopener">使用 TensorFlow 了解權重衰減</a><br>[2] <a href="https://zhuanlan.zhihu.com/p/40814046" target="_blank" rel="noopener">L2正则=Weight Decay？并不是这样</a><br>[3] <a href="https://blog.csdn.net/u011995719/article/details/73822672" target="_blank" rel="noopener">【TensorFlow-windows】(五) CNN（卷积神经网络）对cifar10的识别</a><br>[4] <a href="https://zh.gluon.ai/chapter_deep-learning-basics/weight-decay.html#%E6%9D%83%E9%87%8D%E8%A1%B0%E5%87%8F" target="_blank" rel="noopener">动手学深度学习-&gt;权重衰减</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91Inception-ResNet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91Inception-ResNet/" class="post-title-link" itemprop="url">【深度学习笔记2.4】Inception-ResNet</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-19 17:28:05" itemprop="dateCreated datePublished" datetime="2018-04-19T17:28:05+08:00">2018-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:39" itemprop="dateModified" datetime="2020-01-22T13:25:39+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<p>[1] <a href="https://www.jiqizhixin.com/articles/2018-05-30-7" target="_blank" rel="noopener">从Inception v1到Inception-ResNet，一文概览Inception家族的「奋斗史」</a><br>[2] <a href="https://my.oschina.net/u/876354/blog/1637819" target="_blank" rel="noopener">大话CNN经典模型：GoogLeNet（从Inception v1到v4的演进）</a><br>[3] <a href="https://www.imooc.com/article/69476" target="_blank" rel="noopener">Inception v4与Inception-Resnet v1/v2</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+  </div>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

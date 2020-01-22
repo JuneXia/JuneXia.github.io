@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="概述&amp;emsp; 除了典型的CSV文件存储方式外，TensorFlow还有专门的文件存储格式：TFRecords文件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow笔记&#x2F;【TensorFlow笔记1.3】TFRecords文件读写">
+<meta property="og:url" content="http://yoursite.com/2017/10/23/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.3%E3%80%91TFRecords%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/index.html">
+<meta property="og:site_name" content="春播秋芒">
+<meta property="og:description" content="概述&amp;emsp; 除了典型的CSV文件存储方式外，TensorFlow还有专门的文件存储格式：TFRecords文件。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-10-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-01-22T05:22:12.360Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/10/23/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.3%E3%80%91TFRecords%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>TensorFlow笔记/【TensorFlow笔记1.3】TFRecords文件读写 | 春播秋芒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">春播秋芒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/23/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.3%E3%80%91TFRecords%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TensorFlow笔记/【TensorFlow笔记1.3】TFRecords文件读写
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-10-23 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-23T00:00:00+08:00">2017-10-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:22:12" itemprop="dateModified" datetime="2020-01-22T13:22:12+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp; 除了典型的CSV文件存储方式外，TensorFlow还有专门的文件存储格式：TFRecords文件。<br><a id="more"></a></p>
+<h2 id="TFRecords文件创建"><a href="#TFRecords文件创建" class="headerlink" title="TFRecords文件创建"></a>TFRecords文件创建</h2><p>&emsp; TFRecords文件一般用来存储特征值和其对应的标签。TFRecords文件中存储的内容是用通过 tf.train.Example 来创建的，我们可以将 tf.train.Example 创建的数据理解为sample(样本)。而 tf.train.Example 中的内容是通过 tf.train.Features 来创建的，tf.train.Features 中的内容是通过 tf.train.Feature 来创建的。</p>
+<p>新建文件结构如下：<br>jpg<br>├── 001<br>│   ├── cat.0.jpg<br>│   ├── cat.1.jpg<br>│   ├── cat.2.jpg<br>│   ├── cat.3.jpg<br>│   ├── cat.4.jpg<br>│   ├── cat.5.jpg<br>│   ├── cat.6.jpg<br>│   ├── cat.7.jpg<br>│   ├── cat.8.jpg<br>│   └── cat.9.jpg<br>└── 002<br>    ├── dog.0.jpg<br>    ├── dog.1.jpg<br>    ├── dog.2.jpg<br>    ├── dog.3.jpg<br>    ├── dog.4.jpg<br>    ├── dog.5.jpg<br>    ├── dog.6.jpg<br>    ├── dog.7.jpg<br>    ├── dog.8.jpg<br>    └── dog.9.jpg</p>
+<p>代码示例1（参考[1]例10-10）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line">import tensorflow as tf</span><br><span class="line">from PIL import Image</span><br><span class="line"></span><br><span class="line">path &#x3D; &quot;jpg&quot;</span><br><span class="line">filenames&#x3D;os.listdir(path)</span><br><span class="line">writer &#x3D; tf.python_io.TFRecordWriter(&quot;train.tfrecords&quot;)</span><br><span class="line"># 同一个文件夹下的文件并不是按顺序来读取的，但一定会现将当前文件夹下的文件全部读完才会读下一个文件夹。</span><br><span class="line"></span><br><span class="line">for name in os.listdir(path):</span><br><span class="line">    class_path &#x3D; path + os.sep + name</span><br><span class="line">    for img_name in os.listdir(class_path):</span><br><span class="line">        img_path &#x3D; class_path+os.sep+img_name</span><br><span class="line">        print(img_path)</span><br><span class="line">        img &#x3D; Image.open(img_path)</span><br><span class="line">        img &#x3D; img.resize((300,300))</span><br><span class="line">        img_raw &#x3D; img.tobytes()</span><br><span class="line">        example &#x3D; tf.train.Example(features&#x3D;tf.train.Features(feature&#x3D;&#123;</span><br><span class="line">            &quot;label&quot;: tf.train.Feature(int64_list&#x3D;tf.train.Int64List(value&#x3D;[int(name)])),</span><br><span class="line">            &#39;image&#39;: tf.train.Feature(bytes_list&#x3D;tf.train.BytesList(value&#x3D;[img_raw]))</span><br><span class="line">        &#125;))</span><br><span class="line">        writer.write(example.SerializeToString())</span><br></pre></td></tr></table></figure></p>
+<h2 id="TFRecords文件读取"><a href="#TFRecords文件读取" class="headerlink" title="TFRecords文件读取"></a>TFRecords文件读取</h2><p>&emsp; 要读取TFRecords的文件，使用 tf.TFRecordReader 与 tf.parse_single_example 解码器，然后使用 tf.FixedLengthRecordReader 和 tf.decode_raw 操作读取每个记录(即样本)[2]。</p>
+<p>代码示例2（参考[1]例10-13）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">import cv2</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">def read_and_decode(filename):</span><br><span class="line">    filename_queue &#x3D; tf.train.string_input_producer([filename])</span><br><span class="line"></span><br><span class="line">    reader &#x3D; tf.TFRecordReader()</span><br><span class="line">    _, serialized_example &#x3D; reader.read(filename_queue)  # 返回文件名和文件</span><br><span class="line">    features &#x3D; tf.parse_single_example(serialized_example,</span><br><span class="line">                                       features&#x3D;&#123;</span><br><span class="line">                                           &#39;label&#39;: tf.FixedLenFeature([], tf.int64),</span><br><span class="line">                                           &#39;image&#39;: tf.FixedLenFeature([], tf.string),</span><br><span class="line">                                       &#125;)</span><br><span class="line"></span><br><span class="line">    image &#x3D; tf.decode_raw(features[&#39;image&#39;], tf.uint8)</span><br><span class="line">    # tf.decode_raw解码出来的Tensor还没有shape，tensorflow运算中需要的是有shape的张量。</span><br><span class="line">    image &#x3D; tf.reshape(image, [300, 300, 3])</span><br><span class="line"></span><br><span class="line">    #image &#x3D; tf.cast(image, tf.float32) * (1. &#x2F; 128) - 0.5 # 归一化操作</span><br><span class="line">    label &#x3D; tf.cast(features[&#39;label&#39;], tf.int32)</span><br><span class="line">    # tf.cast(x, dtype, name&#x3D;None), 类型转换函数，将x转换为dtype类型</span><br><span class="line"></span><br><span class="line">    return image, label</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">filename &#x3D; &quot;train.tfrecords&quot;</span><br><span class="line">image, label &#x3D; read_and_decode(filename)</span><br><span class="line"></span><br><span class="line"># image_batch, label_batch &#x3D; tf.train.batch([image, label], batch_size&#x3D;1, num_threads&#x3D;1, capacity&#x3D;10) # 按顺序批处理</span><br><span class="line">image_batch, label_batch &#x3D; tf.train.shuffle_batch([image, label], batch_size&#x3D;1, capacity&#x3D;10, min_after_dequeue&#x3D;3) # 随机批处理</span><br><span class="line"># tf.train.shuffle_batch的capacity一定要比min_after_dequeue大</span><br><span class="line"></span><br><span class="line">init &#x3D; tf.initialize_all_variables()</span><br><span class="line">sess &#x3D; tf.Session()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line">coord &#x3D; tf.train.Coordinator()</span><br><span class="line">threads &#x3D; tf.train.start_queue_runners(sess&#x3D;sess, coord&#x3D;coord)</span><br><span class="line"></span><br><span class="line">count &#x3D; 0</span><br><span class="line">for _ in range(100):</span><br><span class="line">    count +&#x3D; 1</span><br><span class="line">    # img, lab &#x3D; sess.run([image, label]) # 只能正确输出9个样本，然后程序崩溃出错</span><br><span class="line">    img, lab &#x3D; sess.run([image_batch, label_batch]) # 能正确输出19个样本，然后程序崩溃出错</span><br><span class="line">    img.resize((300, 300, 3))</span><br><span class="line">    img &#x3D; cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR) # val原本是用PIL.Image读取的，要想用opencv显示，则要将其转换为opencv的通道格式。</span><br><span class="line">    #cv2.imshow(&quot;show&quot;, img)</span><br><span class="line">    #cv2.waitKey()</span><br><span class="line">    print(count, lab)</span><br><span class="line"></span><br><span class="line">coord.request_stop()</span><br><span class="line">coord.join(threads)</span><br><span class="line">sess.close()</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">语句1：img, lab &#x3D; sess.run([image, label]) # 只能正确输出9个样本，然后程序崩溃出错</span><br><span class="line">语句2：img, lab &#x3D; sess.run([image_batch, label_batch]) # 能正确输出19个样本，然后程序崩溃出错</span><br></pre></td></tr></table></figure>
+<p>对于上述代码现象提出的疑问和自己猜测解释，如有错误还请指正。</p>
+<p>疑问：相比语句2能正确输出19个样本，语句1为什么只能正确输出9个样本？<br>答：语句1直接sess.run的是filename_queue中的结果，可能filename_queue中的文件是并行输出的吧。而语句2中通过batch或shuffle_batch将filename_queue中的文件队列整合了一下。</p>
+<p>疑问：无论是语句1还是语句2，为什么它们最后都崩溃出错了呢？<br>答：可能是没有设置成可以循环输入的方式吧。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] 王晓华. TensorFlow深度学习应用实践<br>[2] <a href="http://cwiki.apachecn.org/pages/viewpage.action?pageId=10029497" target="_blank" rel="noopener">ApacheCN &gt;&gt; Tensorflow &gt;&gt; 编程指南 &gt;&gt; 阅读数据</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/10/22/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.2%E3%80%91TensorFlow%E9%98%9F%E5%88%97%E5%92%8CCSV%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" rel="prev" title="TensorFlow笔记/【TensorFlow笔记1.2】TensorFlow队列和CSV文件读写">
+      <i class="fa fa-chevron-left"></i> TensorFlow笔记/【TensorFlow笔记1.2】TensorFlow队列和CSV文件读写
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/" rel="next" title="TensorFlow笔记/【TensorFlow笔记2.1】tf.nn.conv2d，tf.nn.max_pool">
+      TensorFlow笔记/【TensorFlow笔记2.1】tf.nn.conv2d，tf.nn.max_pool <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TFRecords文件创建"><span class="nav-number">2.</span> <span class="nav-text">TFRecords文件创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TFRecords文件读取"><span class="nav-number">3.</span> <span class="nav-text">TFRecords文件读取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

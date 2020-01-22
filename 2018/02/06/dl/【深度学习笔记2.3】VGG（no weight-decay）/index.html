@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="vgg16_1代码示例如下(详见文献[2]vgg16_1.py)：1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【深度学习笔记2.3】VGG（no weight-decay）">
+<meta property="og:url" content="http://yoursite.com/2018/02/06/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.3%E3%80%91VGG%EF%BC%88no%20weight-decay%EF%BC%89/index.html">
+<meta property="og:site_name" content="春播秋芒">
+<meta property="og:description" content="vgg16_1代码示例如下(详见文献[2]vgg16_1.py)：1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-02-06T09:28:05.000Z">
+<meta property="article:modified_time" content="2020-01-22T05:25:35.955Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2018/02/06/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.3%E3%80%91VGG%EF%BC%88no%20weight-decay%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>【深度学习笔记2.3】VGG（no weight-decay） | 春播秋芒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">春播秋芒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/06/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.3%E3%80%91VGG%EF%BC%88no%20weight-decay%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【深度学习笔记2.3】VGG（no weight-decay）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-02-06 17:28:05" itemprop="dateCreated datePublished" datetime="2018-02-06T17:28:05+08:00">2018-02-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:35" itemprop="dateModified" datetime="2020-01-22T13:25:35+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+<h2 id="vgg16-1"><a href="#vgg16-1" class="headerlink" title="vgg16_1"></a>vgg16_1</h2><p>代码示例如下(详见文献[2]vgg16_1.py)：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</span><br><span class="line"></span><br><span class="line">datapath = <span class="string">'/home/***/res/MNIST_data'</span></span><br><span class="line">mnist_data_set = input_data.read_data_sets(datapath, validation_size=<span class="number">0</span>, one_hot=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">num_classes = <span class="number">10</span></span><br><span class="line">learning_rate = <span class="number">1e-4</span></span><br><span class="line">training_epoch = <span class="number">50</span></span><br><span class="line">batch_size = <span class="number">16</span></span><br><span class="line">input_image_shape = (<span class="number">224</span>, <span class="number">224</span>, <span class="number">1</span>)</span><br><span class="line">conv_layer_trainable = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">image_shape_scale</span><span class="params">(batch_xs, input_image_shape)</span>:</span></span><br><span class="line">    images = np.reshape(batch_xs, [batch_xs.shape[<span class="number">0</span>], <span class="number">28</span>, <span class="number">28</span>])</span><br><span class="line">    imlist = []</span><br><span class="line">    [imlist.append(cv2.resize(img, input_image_shape[<span class="number">0</span>:<span class="number">2</span>])) <span class="keyword">for</span> img <span class="keyword">in</span> images]</span><br><span class="line">    images = np.array(imlist)</span><br><span class="line">    <span class="comment"># cv2.imwrite('scale1.jpg', images[0]*200)</span></span><br><span class="line">    <span class="comment"># cv2.imwrite('scale2.jpg', images[1]*200)</span></span><br><span class="line">    <span class="comment"># batch_xs = np.reshape(images, [batch_xs.shape[0], 227 * 227 * input_image_channel])</span></span><br><span class="line">    batch_xs = np.reshape(images, [batch_xs.shape[<span class="number">0</span>], input_image_shape[<span class="number">0</span>], input_image_shape[<span class="number">1</span>], input_image_shape[<span class="number">2</span>]])</span><br><span class="line">    <span class="keyword">return</span> batch_xs</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vgg16</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, imgs)</span>:</span></span><br><span class="line">        self.parameters = []</span><br><span class="line">        self.imgs = imgs</span><br><span class="line">        self.convlayers()</span><br><span class="line">        self.fc_layers()</span><br><span class="line">        self.probs = self.fc8</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">saver</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> tf.train.Saver()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxpool</span><span class="params">(self, name, input_data)</span>:</span></span><br><span class="line">        out = tf.nn.max_pool(input_data, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>, name=name)</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">conv</span><span class="params">(self, name, input_data, out_channel)</span>:</span></span><br><span class="line">        in_channel = input_data.get_shape()[<span class="number">-1</span>]</span><br><span class="line">        <span class="keyword">with</span> tf.variable_scope(name):</span><br><span class="line">            kernel = tf.get_variable(<span class="string">'weights'</span>, [<span class="number">3</span>, <span class="number">3</span>, in_channel, out_channel], dtype=tf.float32, trainable=conv_layer_trainable)</span><br><span class="line">            biases = tf.get_variable(<span class="string">'biases'</span>, [out_channel], dtype=tf.float32, trainable=conv_layer_trainable)</span><br><span class="line">            conv_res = tf.nn.conv2d(input_data, kernel, [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line">            res = tf.nn.bias_add(conv_res, biases)</span><br><span class="line">            out = tf.nn.relu(res, name=name)</span><br><span class="line"></span><br><span class="line">        self.parameters += [kernel, biases]</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fc</span><span class="params">(self, name, input_data, out_channel, is_output=False)</span>:</span></span><br><span class="line">        shape = input_data.get_shape().as_list()</span><br><span class="line">        <span class="keyword">if</span> len(shape) == <span class="number">4</span>:</span><br><span class="line">            size = shape[<span class="number">-1</span>] * shape[<span class="number">-2</span>] * shape[<span class="number">-3</span>]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            size = shape[<span class="number">1</span>]</span><br><span class="line">        input_data_flat = tf.reshape(input_data, [<span class="number">-1</span>, size])</span><br><span class="line">        <span class="keyword">with</span> tf.variable_scope(name):</span><br><span class="line">            weights = tf.get_variable(name=<span class="string">"weights"</span>, shape=[size, out_channel], dtype=tf.float32)</span><br><span class="line">            biases = tf.get_variable(name=<span class="string">"biases"</span>, shape=[out_channel], dtype=tf.float32)</span><br><span class="line">            res = tf.matmul(input_data_flat, weights)</span><br><span class="line">            out = tf.nn.bias_add(res, biases)</span><br><span class="line">            <span class="keyword">if</span> is_output <span class="keyword">is</span> <span class="literal">False</span>:</span><br><span class="line">                out = tf.nn.relu(out, name=name)</span><br><span class="line"></span><br><span class="line">        self.parameters += [weights, biases]</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">convlayers</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># zero-mean input</span></span><br><span class="line">        <span class="comment"># conv1</span></span><br><span class="line">        self.conv1_1 = self.conv(<span class="string">"conv1_1"</span>, self.imgs, <span class="number">64</span>)</span><br><span class="line">        self.conv1_2 = self.conv(<span class="string">"conv1_2"</span>, self.conv1_1, <span class="number">64</span>)</span><br><span class="line">        self.pool1 = self.maxpool(<span class="string">"pool1"</span>, self.conv1_2)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># conv2</span></span><br><span class="line">        self.conv2_1 = self.conv(<span class="string">"conv2_1"</span>, self.pool1, <span class="number">128</span>)</span><br><span class="line">        self.conv2_2 = self.conv(<span class="string">"conv2_2"</span>, self.conv2_1, <span class="number">128</span>)</span><br><span class="line">        self.pool2 = self.maxpool(<span class="string">"pool2"</span>, self.conv2_2)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># conv3</span></span><br><span class="line">        self.conv3_1 = self.conv(<span class="string">"conv3_1"</span>, self.pool2, <span class="number">256</span>)</span><br><span class="line">        self.conv3_2 = self.conv(<span class="string">"conv3_2"</span>, self.conv3_1, <span class="number">256</span>)</span><br><span class="line">        self.conv3_3 = self.conv(<span class="string">"conv3_3"</span>, self.conv3_2, <span class="number">256</span>)</span><br><span class="line">        self.pool3 = self.maxpool(<span class="string">"pool3"</span>, self.conv3_3)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># conv4</span></span><br><span class="line">        self.conv4_1 = self.conv(<span class="string">"conv4_1"</span>, self.pool3, <span class="number">512</span>)</span><br><span class="line">        self.conv4_2 = self.conv(<span class="string">"conv4_2"</span>, self.conv4_1, <span class="number">512</span>)</span><br><span class="line">        self.conv4_3 = self.conv(<span class="string">"conv4_3"</span>, self.conv4_2, <span class="number">512</span>)</span><br><span class="line">        self.pool4 = self.maxpool(<span class="string">"pool4"</span>, self.conv4_3)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># conv5</span></span><br><span class="line">        self.conv5_1 = self.conv(<span class="string">"conv5_1"</span>, self.pool4, <span class="number">512</span>)</span><br><span class="line">        self.conv5_2 = self.conv(<span class="string">"conv5_2"</span>, self.conv5_1, <span class="number">512</span>)</span><br><span class="line">        self.conv5_3 = self.conv(<span class="string">"conv5_3"</span>, self.conv5_2, <span class="number">512</span>)</span><br><span class="line">        self.pool5 = self.maxpool(<span class="string">"pool5"</span>, self.conv5_3)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fc_layers</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.fc6 = self.fc(<span class="string">"fc1"</span>, self.pool5, <span class="number">4096</span>)</span><br><span class="line">        <span class="comment"># self.fc6 = tf.nn.dropout(self.fc6, 0.5)</span></span><br><span class="line"></span><br><span class="line">        self.fc7 = self.fc(<span class="string">"fc2"</span>, self.fc6, <span class="number">4096</span>)</span><br><span class="line">        <span class="comment"># self.fc7 = tf.nn.dropout(self.fc7, 0.5)</span></span><br><span class="line"></span><br><span class="line">        self.fc8 = self.fc(<span class="string">"fc3"</span>, self.fc7, num_classes, is_output=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">load_weights</span><span class="params">(self, weight_file, sess)</span>:</span></span><br><span class="line">        weights = np.load(weight_file)</span><br><span class="line">        keys = sorted(weights.keys())</span><br><span class="line">        <span class="keyword">for</span> i, k <span class="keyword">in</span> enumerate(keys):</span><br><span class="line">            sess.run(self.parameters[i].assign(weights[k]))</span><br><span class="line">        print(<span class="string">"-----------all done---------------"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    X = tf.placeholder(tf.float32, [<span class="literal">None</span>, input_image_shape[<span class="number">0</span>], input_image_shape[<span class="number">1</span>], input_image_shape[<span class="number">2</span>]])</span><br><span class="line">    y = tf.placeholder(tf.float32, [<span class="literal">None</span>, num_classes])</span><br><span class="line">    learning_rate_holder = tf.placeholder(tf.float32)</span><br><span class="line"></span><br><span class="line">    vgg = vgg16(X)</span><br><span class="line">    prob = vgg.probs</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">"cross_ent"</span>):</span><br><span class="line">        y_output = tf.nn.softmax(prob)</span><br><span class="line">        cross_entropy = -tf.reduce_sum(y * tf.log(y_output))</span><br><span class="line">        loss = tf.reduce_mean(cross_entropy)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Train op</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">"train"</span>):</span><br><span class="line">        optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate_holder)</span><br><span class="line">        train_op = optimizer.minimize(loss)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Evaluation op: Accuracy of the model</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">"accuracy"</span>):</span><br><span class="line">        correct_pred = tf.equal(tf.argmax(y_output, <span class="number">1</span>), tf.argmax(y, <span class="number">1</span>))</span><br><span class="line">        accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))</span><br><span class="line"></span><br><span class="line">    init = tf.global_variables_initializer()</span><br><span class="line">    <span class="comment"># init = tf.glorot_normal_initializer()  # failed, 也称之为 Xavier normal initializer. 参考文献[A]</span></span><br><span class="line"></span><br><span class="line">    loss_buf = []</span><br><span class="line">    accuracy_buf = []</span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">        sess.run(init)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Load the pretrained weights into the non-trainable layer</span></span><br><span class="line">        <span class="comment"># model.load_initial_weights(sess)</span></span><br><span class="line"></span><br><span class="line">        total_batch = mnist_data_set.train.num_examples // batch_size</span><br><span class="line">        <span class="keyword">for</span> step <span class="keyword">in</span> range(training_epoch):</span><br><span class="line">            print(<span class="string">"&#123;&#125; Epoch number: &#123;&#125;"</span>.format(datetime.now(), step + <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">            tmp_loss = []</span><br><span class="line">            <span class="keyword">for</span> iteration <span class="keyword">in</span> range(total_batch):</span><br><span class="line">                batch_xs, batch_ys = mnist_data_set.train.next_batch(batch_size)</span><br><span class="line">                batch_xs = image_shape_scale(batch_xs, input_image_shape)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> step &lt; <span class="number">10</span>:</span><br><span class="line">                    sess.run(train_op, feed_dict=&#123;X: batch_xs, y: batch_ys, learning_rate_holder: learning_rate&#125;)</span><br><span class="line">                <span class="keyword">elif</span> step &lt; <span class="number">20</span>:</span><br><span class="line">                    sess.run(train_op, feed_dict=&#123;X: batch_xs, y: batch_ys, learning_rate_holder: learning_rate/<span class="number">10.0</span>&#125;)</span><br><span class="line">                <span class="keyword">elif</span> step &lt; <span class="number">30</span>:</span><br><span class="line">                    sess.run(train_op, feed_dict=&#123;X: batch_xs, y: batch_ys, learning_rate_holder: learning_rate/<span class="number">100.0</span>&#125;)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    sess.run(train_op, feed_dict=&#123;X: batch_xs, y: batch_ys, learning_rate_holder: learning_rate/<span class="number">1000.0</span>&#125;)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> iteration % <span class="number">50</span> == <span class="number">0</span>:</span><br><span class="line">                    loss_val = sess.run(loss, feed_dict=&#123;X: batch_xs, y: batch_ys&#125;)</span><br><span class="line">                    train_accuracy = sess.run(accuracy, feed_dict=&#123;X: batch_xs, y: batch_ys&#125;)</span><br><span class="line">                    print(<span class="string">"step &#123;&#125;, iteration &#123;&#125;, loss &#123;&#125;, training accuracy &#123;&#125;"</span>.format(step, iteration, loss_val, train_accuracy))</span><br><span class="line"></span><br><span class="line">            _loss_buf = []</span><br><span class="line">            _accuracy_buf = []</span><br><span class="line">            test_total_batch = mnist_data_set.test.num_examples // batch_size</span><br><span class="line">            <span class="keyword">for</span> iteration <span class="keyword">in</span> range(test_total_batch):</span><br><span class="line">                batch_xs, batch_ys = mnist_data_set.test.next_batch(batch_size)  <span class="comment"># GPU内存不足，只好分批测试准确率</span></span><br><span class="line">                batch_xs = image_shape_scale(batch_xs, input_image_shape)</span><br><span class="line"></span><br><span class="line">                loss_val = sess.run(loss, feed_dict=&#123;X: batch_xs, y: batch_ys&#125;)</span><br><span class="line">                test_accuracy = sess.run(accuracy, feed_dict=&#123;X: batch_xs, y: batch_ys&#125;)</span><br><span class="line"></span><br><span class="line">                _loss_buf.append(loss_val)</span><br><span class="line">                _accuracy_buf.append(test_accuracy)</span><br><span class="line">            loss_val = np.array(_loss_buf).mean()</span><br><span class="line">            test_accuracy = np.array(_accuracy_buf).mean()</span><br><span class="line">            print(<span class="string">"step &#123;&#125;, loss &#123;&#125;, testing accuracy &#123;&#125;"</span>.format(step, loss_val, test_accuracy))</span><br><span class="line">            loss_buf.append(loss_val)</span><br><span class="line">            accuracy_buf.append(test_accuracy)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 画出准确率曲线</span></span><br><span class="line">accuracy_ndarray = np.array(accuracy_buf)</span><br><span class="line">accuracy_size = np.arange(len(accuracy_ndarray))</span><br><span class="line">plt.plot(accuracy_size, accuracy_ndarray, <span class="string">'b+'</span>, label=<span class="string">'accuracy'</span>)</span><br><span class="line"></span><br><span class="line">loss_ndarray = np.array(loss_buf)</span><br><span class="line">loss_size = np.arange(len(loss_ndarray))</span><br><span class="line">plt.plot(loss_size, loss_ndarray, <span class="string">'r*'</span>, label=<span class="string">'loss'</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存loss和测试准确率到csv文件</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'VGGNet16.csv'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> fid:</span><br><span class="line">    <span class="keyword">for</span> loss, acc <span class="keyword">in</span> zip(loss_buf, accuracy_buf):</span><br><span class="line">        strText = str(loss) + <span class="string">','</span> + str(acc) + <span class="string">'\n'</span></span><br><span class="line">        fid.write(strText)</span><br><span class="line">fid.close()</span><br><span class="line"></span><br><span class="line">print(<span class="string">'end'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 参考文献</span></span><br><span class="line"><span class="comment"># [A]：tensorflow参数初始化, https://blog.csdn.net/m0_37167788/article/details/79073070</span></span><br></pre></td></tr></table></figure><br>训练测试结果打印如下：<br>step 1, loss 8.525571823120117, testing accuracy 0.9576321840286255<br>step 2, loss 3.323066234588623, testing accuracy 0.9828726053237915<br>… …<br>step 12, loss 2.2948389053344727, testing accuracy 0.9907852411270142<br>step 13, loss 2.297200918197632, testing accuracy 0.9905849099159241<br>step 14, loss nan, testing accuracy 0.09865785390138626<br>… …</p>
+<h2 id="使用dropout优化"><a href="#使用dropout优化" class="headerlink" title="使用dropout优化"></a>使用dropout优化</h2><p>关于dropout的理解与总结请参考文献[5].</p>
+<p>&emsp; vgg16共有3个fc-layer，这里在前两个fc-layer后面都使用dropout，即对vgg16_1.py中的fc_layers做如下改进（此部分完整代码详见文献[2]vgg16_2.py）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def fc_layers(self):</span><br><span class="line">    self.fc6 &#x3D; self.fc(&quot;fc1&quot;, self.pool5, 4096)</span><br><span class="line">    self.fc6 &#x3D; tf.nn.dropout(self.fc6, 0.5)</span><br><span class="line"></span><br><span class="line">    self.fc7 &#x3D; self.fc(&quot;fc2&quot;, self.fc6, 4096)</span><br><span class="line">    self.fc7 &#x3D; tf.nn.dropout(self.fc7, 0.5)</span><br><span class="line"></span><br><span class="line">    self.fc8 &#x3D; self.fc(&quot;fc3&quot;, self.fc7, num_classes, is_output&#x3D;True)</span><br></pre></td></tr></table></figure><br>其他代码不变，训练测试结果打印如下：<br>step 1, loss 146.34462, testing accuracy 0.1280048<br>step 2, loss 7.3694496, testing accuracy 0.9635417<br>step 3, loss 3.3861883, testing accuracy 0.9823718<br>… …<br>step 17, loss 2.1597393, testing accuracy 0.9910857<br>step 18, loss 2.096352, testing accuracy 0.99138623<br>step 19, loss nan, testing accuracy 0.098958336<br>… …</p>
+<h2 id="使用Batch-Normalization优化"><a href="#使用Batch-Normalization优化" class="headerlink" title="使用Batch Normalization优化"></a>使用Batch Normalization优化</h2><p>在vgg16_1.py的基础上做如下改动：（此部分代码详见vgg16_3.py）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"># batch_norm定义同文献[3]</span><br><span class="line">def batch_norm(inputs, is_training, is_conv_out&#x3D;True, decay&#x3D;0.999):</span><br><span class="line">    scale &#x3D; tf.Variable(tf.ones([inputs.get_shape()[-1]]))</span><br><span class="line">    beta &#x3D; tf.Variable(tf.zeros([inputs.get_shape()[-1]]))</span><br><span class="line">    pop_mean &#x3D; tf.Variable(tf.zeros([inputs.get_shape()[-1]]), trainable&#x3D;False)</span><br><span class="line">    pop_var &#x3D; tf.Variable(tf.ones([inputs.get_shape()[-1]]), trainable&#x3D;False)</span><br><span class="line"></span><br><span class="line">    if is_training:</span><br><span class="line">        if is_conv_out:</span><br><span class="line">            batch_mean, batch_var &#x3D; tf.nn.moments(inputs, [0, 1, 2])</span><br><span class="line">        else:</span><br><span class="line">            batch_mean, batch_var &#x3D; tf.nn.moments(inputs, [0])</span><br><span class="line"></span><br><span class="line">        train_mean &#x3D; tf.assign(pop_mean, pop_mean*decay+batch_mean*(1-decay))</span><br><span class="line">        train_var &#x3D; tf.assign(pop_var, pop_var*decay+batch_var*(1-decay))</span><br><span class="line"></span><br><span class="line">        with tf.control_dependencies([train_mean, train_var]):</span><br><span class="line">            return tf.nn.batch_normalization(inputs, batch_mean, batch_var, beta, scale, 0.001)</span><br><span class="line">    else:</span><br><span class="line">        return tf.nn.batch_normalization(inputs, pop_mean, pop_var, beta, scale, 0.001)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class vgg16:</span><br><span class="line">    ... ...</span><br><span class="line"></span><br><span class="line">    def conv(self, name, input_data, out_channel):</span><br><span class="line">        ... ...</span><br><span class="line">        with tf.variable_scope(name):</span><br><span class="line">            ... ...</span><br><span class="line">            res &#x3D; tf.nn.bias_add(conv_res, biases)</span><br><span class="line">            res &#x3D; batch_norm(res, True)</span><br><span class="line">            out &#x3D; tf.nn.relu(res, name&#x3D;name)</span><br><span class="line"></span><br><span class="line">        self.parameters +&#x3D; [kernel, biases]</span><br><span class="line">        return out</span><br><span class="line"></span><br><span class="line">    def fc(self, name, input_data, out_channel, is_output&#x3D;False):</span><br><span class="line">        ... ...</span><br><span class="line">        with tf.variable_scope(name):</span><br><span class="line">            ... ...</span><br><span class="line">            out &#x3D; tf.nn.bias_add(res, biases)</span><br><span class="line">            if is_output is False:</span><br><span class="line">                out &#x3D; batch_norm(out, True, False)</span><br><span class="line">                out &#x3D; tf.nn.relu(out, name&#x3D;name)</span><br><span class="line"></span><br><span class="line">        self.parameters +&#x3D; [weights, biases]</span><br><span class="line">        return out</span><br></pre></td></tr></table></figure><br>其他代码不变，训练测试结果打印如下：<br>step 1, loss 2.2608318, testing accuracy 0.9890825<br>step 2, loss 1.5252224, testing accuracy 0.9931891<br>… …<br>step 49, loss 1.1548673, testing accuracy 0.99348956<br>step 50, loss 1.1780967, testing accuracy 0.9938902<br>end<br>可以看到，相比之前不适用BN，使用BN可以有效避免梯度爆炸。</p>
+<h2 id="使用权重衰减-Weight-Decay-优化"><a href="#使用权重衰减-Weight-Decay-优化" class="headerlink" title="使用权重衰减(Weight Decay)优化"></a>使用权重衰减(Weight Decay)优化</h2><p>权重衰减是什么？参考文献[4]<br>在VGG中如何使用权重衰减？待解决。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] 王晓华. TensorFlow深度学习应用实践<br>[2] <a href="https://github.com/JuneXia/handml" target="_blank" rel="noopener">我的handml仓库</a><br>[3]【深度学习笔记2.2】AlexNet<br>[4]【深度学习笔记3.1】权重衰减(weight decay)<br>[5]【深度学习笔记3.2】Dropout</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/01/26/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2.3%E3%80%91AlexNet%E8%AE%AD%E7%BB%8317flowers/" rel="prev" title="【深度学习笔记2.2.3】AlexNet训练17flowers">
+      <i class="fa fa-chevron-left"></i> 【深度学习笔记2.2.3】AlexNet训练17flowers
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/03/16/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91Ubuntu16.04%20Server+RTX2080Ti+CUDA10.0+Tensorflow1.13/" rel="next" title="【开发环境与工具】Ubuntu16.04 Server+RTX2080Ti+CUDA10.0+Tensorflow1.13">
+      【开发环境与工具】Ubuntu16.04 Server+RTX2080Ti+CUDA10.0+Tensorflow1.13 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vgg16-1"><span class="nav-number">1.</span> <span class="nav-text">vgg16_1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用dropout优化"><span class="nav-number">2.</span> <span class="nav-text">使用dropout优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Batch-Normalization优化"><span class="nav-number">3.</span> <span class="nav-text">使用Batch Normalization优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用权重衰减-Weight-Decay-优化"><span class="nav-number">4.</span> <span class="nav-text">使用权重衰减(Weight Decay)优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

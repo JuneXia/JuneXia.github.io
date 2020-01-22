@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="tf.image下的各种resize123456789101112131415161718192021222324252627282930313233343536373839404142434445import tensorflow as tf  import cv2  import numpy as np      if __name__ &#x3D;&#x3D; &#39;__main__&#39;:      image_s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow笔记&#x2F;【TensorFlow笔记】tf.image">
+<meta property="og:url" content="http://yoursite.com/2017/10/15/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91tf.image/index.html">
+<meta property="og:site_name" content="春播秋芒">
+<meta property="og:description" content="tf.image下的各种resize123456789101112131415161718192021222324252627282930313233343536373839404142434445import tensorflow as tf  import cv2  import numpy as np      if __name__ &#x3D;&#x3D; &#39;__main__&#39;:      image_s">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-10-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-01-22T05:21:03.500Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/10/15/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91tf.image/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>TensorFlow笔记/【TensorFlow笔记】tf.image | 春播秋芒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">春播秋芒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/15/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91tf.image/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TensorFlow笔记/【TensorFlow笔记】tf.image
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-10-15 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-15T00:00:00+08:00">2017-10-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:21:03" itemprop="dateModified" datetime="2020-01-22T13:21:03+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+<h1 id="tf-image下的各种resize"><a href="#tf-image下的各种resize" class="headerlink" title="tf.image下的各种resize"></a>tf.image下的各种resize</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf  </span><br><span class="line"><span class="keyword">import</span> cv2  </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    image_size = (<span class="number">300</span>, <span class="number">400</span>)  </span><br><span class="line">    filename = <span class="string">'/home/xiajun/res/face/VGGFace2/Experiment/mtcnn_align182x182_margin44/n000020/0001_01.png'</span>  </span><br><span class="line">  file_contents = tf.read_file(filename)  </span><br><span class="line">    <span class="comment"># image = tf.image.decode_image(file_contents, 3)  </span></span><br><span class="line">  image = tf.image.decode_png(file_contents, <span class="number">3</span>)  </span><br><span class="line">    rawimage = tf.identity(image)  </span><br><span class="line">  </span><br><span class="line">    resize_images = tf.image.resize_images(image, image_size, align_corners=<span class="literal">True</span>, preserve_aspect_ratio=<span class="literal">True</span>)  <span class="comment"># 如果preserve_aspect_ratio为True，则保持宽高比对原图进行缩放，缩放后的图像宽或高等于image_size中的最小值  </span></span><br><span class="line">  resize_images = tf.cast(resize_images, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 双三次插值  </span></span><br><span class="line">  resize_bicubic = tf.image.resize_bicubic(tf.expand_dims(image, axis=<span class="number">0</span>), image_size)  <span class="comment"># 实测如果设置 half_pixel_centers 参数，会报错  </span></span><br><span class="line">  resize_bicubic = tf.cast(resize_bicubic, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 双线性插值  </span></span><br><span class="line">  resize_bilinear = tf.image.resize_bilinear(tf.expand_dims(image, axis=<span class="number">0</span>), image_size)  <span class="comment"># 实测如果设置 half_pixel_centers 参数，会报错  </span></span><br><span class="line">  resize_bilinear = tf.cast(resize_bilinear, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 最近邻插值  </span></span><br><span class="line">  resize_nearest_neighbor = tf.image.resize_nearest_neighbor(tf.expand_dims(image, axis=<span class="number">0</span>), image_size)  <span class="comment"># 实测如果设置 half_pixel_centers 参数，会报错  </span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 区域插值  </span></span><br><span class="line">  resize_area = tf.image.resize_area(tf.expand_dims(image, axis=<span class="number">0</span>), image_size)  <span class="comment"># 基于区域像素关系的一种重采样或者插值方式.该方法是图像抽取的首选方法,它可以产生更少的波纹,但是当图像放大时,它的效果与INTER_NEAREST效果相似.  </span></span><br><span class="line">  resize_area = tf.cast(resize_area, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    init = tf.initialize_all_variables()  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:  </span><br><span class="line">        sess.run(init)  </span><br><span class="line">  </span><br><span class="line">        cv2.imshow(<span class="string">'rawimg'</span>, sess.run(rawimage))  </span><br><span class="line">  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_images'</span>, sess.run(resize_images))  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_bicubic'</span>, sess.run(resize_bicubic)[<span class="number">0</span>])  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_bilinear'</span>, sess.run(resize_bilinear)[<span class="number">0</span>])  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_nearest_neighbor'</span>, sess.run(resize_nearest_neighbor)[<span class="number">0</span>])  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_area'</span>, sess.run(resize_area)[<span class="number">0</span>])  </span><br><span class="line">  </span><br><span class="line">        cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="tf-image下的各种resize、crop、pad"><a href="#tf-image下的各种resize、crop、pad" class="headerlink" title="tf.image下的各种resize、crop、pad"></a>tf.image下的各种resize、crop、pad</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  <span class="comment"># resize_crop_pad  </span></span><br><span class="line">  image_size = (<span class="number">128</span>, <span class="number">128</span>)  </span><br><span class="line">    filename = <span class="string">'/home/xiajun/res/face/VGGFace2/Experiment/mtcnn_align182x182_margin44/n000020/0001_01.png'</span>  </span><br><span class="line">  file_contents = tf.read_file(filename)  </span><br><span class="line">    <span class="comment"># image = tf.image.decode_image(file_contents, 3)  </span></span><br><span class="line">  image = tf.image.decode_png(file_contents, <span class="number">3</span>)  </span><br><span class="line">    rawimage = tf.identity(image)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 随机裁剪  </span></span><br><span class="line">  random_crop = tf.random_crop(image, image_size + (<span class="number">3</span>,))  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 如果图像宽高小于目标宽高，则使用中心裁剪至目标宽高  </span></span><br><span class="line">  <span class="comment"># 如果图像宽高大于目标宽高，则pad 0 至目标宽高  </span></span><br><span class="line">  resize_image_with_crop_or_pad = tf.image.resize_image_with_crop_or_pad(image, image_size[<span class="number">0</span>], image_size[<span class="number">1</span>])  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># failed  </span></span><br><span class="line"> <span class="comment"># resize_with_crop_or_pad = tf.image.resize_with_crop_or_pad(image, image_size[0], image_size[1])  </span></span><br><span class="line"> <span class="comment"># 先对图像缩放到目标尺寸（保持宽高比），然后如果还是和目标尺寸不匹配则用0填充到目标宽高  </span></span><br><span class="line">  resize_image_with_pad = tf.image.resize_image_with_pad(image, image_size[<span class="number">0</span>], image_size[<span class="number">1</span>])  </span><br><span class="line">    resize_image_with_pad = tf.cast(resize_image_with_pad, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 中心裁剪  </span></span><br><span class="line">  central_crop = tf.image.central_crop(image, <span class="number">0.8</span>)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 先从左上角偏移一个offset作为左上角点，然后以offset_height + target_height, offset_width + target_width为右下角点  </span></span><br><span class="line">  crop_to_bounding_box = tf.image.crop_to_bounding_box(image, <span class="number">10</span>, <span class="number">20</span>, image_size[<span class="number">0</span>], image_size[<span class="number">1</span>])  <span class="comment"># target + offset &lt;= image width&amp;height, 目标图像宽高+offset之和一定要&lt;=原始图像宽高。  </span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 先裁剪后缩放，目前感觉这个函数有点不大好用啊。  </span></span><br><span class="line">  <span class="comment"># crop_and_resize = tf.image.crop_and_resize(tf.expand_dims(image, axis=0), [[0.5, 0.6, 0.9, 0.8]], box_ind=[0], crop_size=(300, 400))  # [1]  </span></span><br><span class="line">  crop_and_resize = tf.image.crop_and_resize(tf.expand_dims(image, axis=<span class="number">0</span>), [[<span class="number">0.5</span>, <span class="number">0.6</span>, <span class="number">0.9</span>, <span class="number">0.8</span>], [<span class="number">0.2</span>, <span class="number">0.6</span>, <span class="number">1.3</span>, <span class="number">0.9</span>]], box_ind=[<span class="number">0</span>, <span class="number">0</span>], crop_size=(<span class="number">300</span>, <span class="number">400</span>))  </span><br><span class="line">    crop_and_resize = tf.cast(crop_and_resize, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 在图片外围填充0  </span></span><br><span class="line">  pad_to_bounding_box = tf.image.pad_to_bounding_box(image, offset_height=<span class="number">10</span>, offset_width=<span class="number">10</span>, target_height=<span class="number">200</span>, target_width=<span class="number">200</span>)  </span><br><span class="line">  </span><br><span class="line">    init = tf.initialize_all_variables()  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:  </span><br><span class="line">        sess.run(init)  </span><br><span class="line">        cv2.imshow(<span class="string">'rawimg'</span>, sess.run(rawimage))  </span><br><span class="line">        cv2.imshow(<span class="string">'random_crop1'</span>, sess.run(random_crop))  </span><br><span class="line">        <span class="comment">#cv2.imshow('random_crop2', sess.run(random_crop))  </span></span><br><span class="line"> <span class="comment">#cv2.imshow('random_crop3', sess.run(random_crop))  cv2.imshow('resize_image_with_crop_or_pad1', sess.run(resize_image_with_crop_or_pad))  </span></span><br><span class="line">        cv2.imshow(<span class="string">'resize_image_with_pad1'</span>, sess.run(resize_image_with_pad))  </span><br><span class="line">        cv2.imshow(<span class="string">'central_crop'</span>, sess.run(central_crop))  </span><br><span class="line">        cv2.imshow(<span class="string">'crop_to_bounding_box'</span>, sess.run(crop_to_bounding_box))  </span><br><span class="line">        cv2.imshow(<span class="string">'pad_to_bounding_box'</span>, sess.run(pad_to_bounding_box))  </span><br><span class="line">  </span><br><span class="line">        images = sess.run(crop_and_resize)  </span><br><span class="line">        <span class="keyword">for</span> i, image <span class="keyword">in</span> enumerate(images):  </span><br><span class="line">            cv2.imshow(<span class="string">'crop_and_resize'</span> + str(i), image)  </span><br><span class="line">  </span><br><span class="line">        cv2.waitKey(<span class="number">1000000</span>)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/10/13/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.3%E3%80%91%E5%A4%8D%E7%94%A8%E9%A2%84%E8%AE%AD%E7%BB%83%E5%B1%82/" rel="prev" title="【深度学习笔记1.3】复用预训练层">
+      <i class="fa fa-chevron-left"></i> 【深度学习笔记1.3】复用预训练层
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/10/20/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.1%E3%80%91%E5%90%84%E7%A7%8D%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="next" title="TensorFlow笔记/【TensorFlow笔记1.1】各种函数的使用">
+      TensorFlow笔记/【TensorFlow笔记1.1】各种函数的使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tf-image下的各种resize"><span class="nav-number">1.</span> <span class="nav-text">tf.image下的各种resize</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tf-image下的各种resize、crop、pad"><span class="nav-number">2.</span> <span class="nav-text">tf.image下的各种resize、crop、pad</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

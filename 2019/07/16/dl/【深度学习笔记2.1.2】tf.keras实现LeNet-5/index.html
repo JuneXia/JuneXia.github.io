@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="构建简单的模型tf.keras简洁高效，本实验尝试使用tf.keras.Sequential来实现LeNet。1234567891011121314151617181920212223242526272829import numpy as np  import tensorflow as tf  from tensorflow.keras import layers  from tensorfl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【深度学习笔记2.1.2】tf.keras实现LeNet-5">
+<meta property="og:url" content="http://yoursite.com/2019/07/16/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1.2%E3%80%91tf.keras%E5%AE%9E%E7%8E%B0LeNet-5/index.html">
+<meta property="og:site_name" content="春播秋芒">
+<meta property="og:description" content="构建简单的模型tf.keras简洁高效，本实验尝试使用tf.keras.Sequential来实现LeNet。1234567891011121314151617181920212223242526272829import numpy as np  import tensorflow as tf  from tensorflow.keras import layers  from tensorfl">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-16T09:28:05.000Z">
+<meta property="article:modified_time" content="2020-01-22T05:25:20.339Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2019/07/16/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1.2%E3%80%91tf.keras%E5%AE%9E%E7%8E%B0LeNet-5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>【深度学习笔记2.1.2】tf.keras实现LeNet-5 | 春播秋芒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">春播秋芒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/16/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1.2%E3%80%91tf.keras%E5%AE%9E%E7%8E%B0LeNet-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【深度学习笔记2.1.2】tf.keras实现LeNet-5
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-07-16 17:28:05" itemprop="dateCreated datePublished" datetime="2019-07-16T17:28:05+08:00">2019-07-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:20" itemprop="dateModified" datetime="2020-01-22T13:25:20+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+<h1 id="构建简单的模型"><a href="#构建简单的模型" class="headerlink" title="构建简单的模型"></a>构建简单的模型</h1><p>tf.keras简洁高效，本实验尝试使用tf.keras.Sequential来实现LeNet。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf  </span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers  </span><br><span class="line"><span class="keyword">from</span> tensorflow.keras.utils <span class="keyword">import</span> to_categorical  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    (mnist_images, mnist_labels), a = tf.keras.datasets.mnist.load_data()  </span><br><span class="line">    mnist_labels = to_categorical(mnist_labels, <span class="number">10</span>)  </span><br><span class="line">    mnist_images = np.expand_dims(mnist_images, axis=<span class="number">3</span>) / <span class="number">255</span>  </span><br><span class="line">  mnist_labels = mnist_labels.astype(np.float)  </span><br><span class="line">  </span><br><span class="line">    model = tf.keras.Sequential([  </span><br><span class="line">        layers.Conv2D(<span class="number">6</span>, (<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>, name=<span class="string">'conv1'</span>),  </span><br><span class="line">  layers.MaxPool2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>), name=<span class="string">'pool1'</span>),  </span><br><span class="line">  layers.Conv2D(<span class="number">16</span>, (<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'valid'</span>, name=<span class="string">'conv2'</span>),  </span><br><span class="line">  layers.MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>), name=<span class="string">'pool2'</span>),  </span><br><span class="line">  layers.Conv2D(<span class="number">120</span>, [<span class="number">5</span>, <span class="number">5</span>], activation=<span class="string">'relu'</span>, padding=<span class="string">'valid'</span>, name=<span class="string">'conv3'</span>),  </span><br><span class="line">  layers.Flatten(name=<span class="string">'flatten'</span>),  </span><br><span class="line">  layers.Dense(units=<span class="number">84</span>, activation=<span class="string">'relu'</span>, name=<span class="string">'fc2'</span>),  </span><br><span class="line">  </span><br><span class="line">  layers.Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>)  </span><br><span class="line">    ])  </span><br><span class="line">  </span><br><span class="line">    model.compile(optimizer=tf.train.RMSPropOptimizer(<span class="number">0.001</span>),  </span><br><span class="line">  loss=<span class="string">'categorical_crossentropy'</span>,  </span><br><span class="line">  metrics=[<span class="string">'accuracy'</span>])  </span><br><span class="line">  </span><br><span class="line">    model.fit(mnist_images, mnist_labels, batch_size=<span class="number">32</span>, epochs=<span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
+<h1 id="函数式API"><a href="#函数式API" class="headerlink" title="函数式API"></a>函数式API</h1><p><a href="https://www.tensorflow.org/api_docs/python/tf/keras/models/Sequential" target="_blank" rel="noopener"><code>tf.keras.Sequential</code></a>  模型是层的简单堆叠，无法表示任意模型。使用  <a href="https://keras.io/getting-started/functional-api-guide/" target="_blank" rel="noopener">Keras 函数式 API</a>  可以构建复杂的模型拓扑[1]，例如：</p>
+<ul>
+<li>多输入模型，</li>
+<li>多输出模型，</li>
+<li>具有共享层的模型（同一层被调用多次），</li>
+<li>具有非序列数据流的模型（例如，剩余连接）。</li>
+</ul>
+<p>使用函数式 API 构建的模型具有以下特征：</p>
+<ol>
+<li>层实例可调用并返回张量。</li>
+<li>输入张量和输出张量用于定义  <a href="https://www.tensorflow.org/api_docs/python/tf/keras/models/Model" target="_blank" rel="noopener"><code>tf.keras.Model</code></a>  实例。</li>
+<li>此模型的训练方式和  <code>Sequential</code>  模型一样。</li>
+</ol>
+<p>以下示例使用函数式 API 构建的LeNet：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf  </span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras  </span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers  </span><br><span class="line"><span class="keyword">from</span> tensorflow.keras.utils <span class="keyword">import</span> to_categorical  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LeNet</span><span class="params">(keras.Model)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, input_shape=<span class="params">(<span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>)</span>, num_classes=<span class="number">10</span>)</span>:</span>  </span><br><span class="line">        <span class="comment"># super(LeNet, self).__init__(name="LeNet")  </span></span><br><span class="line">  self.num_classes = num_classes  </span><br><span class="line">  </span><br><span class="line">        img_input = layers.Input(shape=input_shape)  </span><br><span class="line">  </span><br><span class="line">        x = layers.Conv2D(<span class="number">6</span>, (<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>, name=<span class="string">'conv1'</span>)(img_input)  </span><br><span class="line">        x = layers.MaxPool2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>), name=<span class="string">'pool1'</span>)(x)  </span><br><span class="line">        x = layers.Conv2D(<span class="number">16</span>, (<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'valid'</span>, name=<span class="string">'conv2'</span>)(x)  </span><br><span class="line">        x = layers.MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>), name=<span class="string">'pool2'</span>)(x)  </span><br><span class="line">        x = layers.Conv2D(<span class="number">120</span>, [<span class="number">5</span>, <span class="number">5</span>], activation=<span class="string">'relu'</span>, padding=<span class="string">'valid'</span>, name=<span class="string">'conv3'</span>)(x)  </span><br><span class="line">        x = layers.Flatten(name=<span class="string">'flatten'</span>)(x)  </span><br><span class="line">        x = layers.Dense(units=<span class="number">84</span>, activation=<span class="string">'relu'</span>, name=<span class="string">'fc2'</span>)(x)  </span><br><span class="line">  </span><br><span class="line">        x = layers.Dense(units=num_classes, activation=<span class="string">'softmax'</span>, name=<span class="string">'prediction'</span>)(x)  </span><br><span class="line">  </span><br><span class="line">        <span class="comment"># 调用Model类的Model(input, output, name="***")构造方法  </span></span><br><span class="line">  super(LeNet, self).__init__(img_input, x, name=<span class="string">'LeNet'</span>)  </span><br><span class="line">        <span class="comment"># 本次实验是使用tf.keras的函数式API编程，上面这种调用父类构造的方法和下面的直接创建父类对象效果是一样的。  </span></span><br><span class="line">  <span class="comment"># tf.keras.Model(inputs=img_input, outputs=x, name='LeNet')  </span></span><br><span class="line"> <span class="comment"># 如果要用tf.keras.Model创建父类对象的话，那么子类LeNet也没有必要继承keras.Model了。  </span></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, *args, **kwargs)</span>:</span>  </span><br><span class="line">        <span class="string">'''  </span></span><br><span class="line"><span class="string">  TODO: 实实测该函数并不会被调用  </span></span><br><span class="line"><span class="string"> '''</span>  print(<span class="string">'debug'</span>)  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, inputs)</span>:</span>  </span><br><span class="line">        <span class="string">'''  </span></span><br><span class="line"><span class="string">  TODO: 实测该函数并不会被调用  </span></span><br><span class="line"><span class="string"> '''</span>  <span class="comment"># 前向传播计算  </span></span><br><span class="line">  <span class="comment"># 使用在__init__方法中定义的层  </span></span><br><span class="line">  <span class="keyword">return</span> self.output(inputs)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    (mnist_images, mnist_labels), a = tf.keras.datasets.mnist.load_data()  </span><br><span class="line">    mnist_labels = to_categorical(mnist_labels, <span class="number">10</span>)  </span><br><span class="line">    mnist_images = np.expand_dims(mnist_images, axis=<span class="number">3</span>) / <span class="number">255</span>  </span><br><span class="line">  mnist_labels = mnist_labels.astype(np.float)  </span><br><span class="line">  </span><br><span class="line">    model = LeNet()  </span><br><span class="line">  </span><br><span class="line">    model.compile(optimizer=tf.train.RMSPropOptimizer(<span class="number">0.001</span>),  </span><br><span class="line">  loss=<span class="string">'categorical_crossentropy'</span>,  </span><br><span class="line">  metrics=[<span class="string">'accuracy'</span>])  </span><br><span class="line">  </span><br><span class="line">    model.fit(mnist_images, mnist_labels, batch_size=<span class="number">32</span>, epochs=<span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
+<p>上述LeNet代码的输出是分类标签，然而有的时候我们希望得到一个embedding特征向量，这时候可以将上述LeNet中的分类层拿出来，此时LeNet得到的输出是一个embedding，我们再用tf.keras.Sequential对其进行一层封装即可：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">...重复代码省略...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Change Mark: 相对于lenet2.py，本次实验必须使用eager模式，否则会报错  </span></span><br><span class="line">tf.enable_eager_execution()  </span><br><span class="line">print(<span class="string">'is eager executing: '</span>, tf.executing_eagerly())  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LeNet</span><span class="params">(keras.Model)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, input_shape=<span class="params">(<span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>)</span>, num_classes=<span class="number">10</span>)</span>:</span>  </span><br><span class="line">        ...略</span><br><span class="line">        <span class="comment"># 从__init__函数中去掉layers.Dense(units=num_classes, ...)层，其他不变。</span></span><br><span class="line">        ...</span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Change Mark: 相对于lenet2.py，本次实验中的LeNet只是整个网络中的一部分，使用tf.keras.Sequential对网络进行拼接。  </span></span><br><span class="line">  model = tf.keras.Sequential([  </span><br><span class="line">        LeNet(),  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 这种先用sigmoid再用softmax的方法也可以，但是实测准确率没有直接用softmax高  </span></span><br><span class="line">    <span class="comment"># ****************************************  </span></span><br><span class="line">    <span class="comment"># layers.Dense(10, activation='sigmoid') </span></span><br><span class="line">    <span class="comment"># layers.Activation('softmax') </span></span><br><span class="line">    <span class="comment"># ****************************************  </span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># OK, GOOD </span></span><br><span class="line">    <span class="comment"># ****************************************  </span></span><br><span class="line">    layers.Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>)  </span><br><span class="line">    <span class="comment"># ****************************************  </span></span><br><span class="line">  ])  </span><br><span class="line">  </span><br><span class="line">  ...</span><br></pre></td></tr></table></figure></p>
+<h1 id="模型子类化"><a href="#模型子类化" class="headerlink" title="模型子类化"></a>模型子类化</h1><p>通过对  <a href="https://www.tensorflow.org/api_docs/python/tf/keras/models/Model" target="_blank" rel="noopener"><code>tf.keras.Model</code></a>  进行子类化并定义您自己的前向传播来构建完全可自定义的模型。在  <code>__init__</code>  方法中创建层并将它们设置为类实例的属性。在  <code>call</code>  方法中定义前向传播[1]。</p>
+<p>在启用  <a href="https://www.tensorflow.org/guide/eager" target="_blank" rel="noopener">Eager Execution</a>  时，模型子类化特别有用，因为可以命令式地编写前向传播。</p>
+<blockquote>
+<p><strong>要点</strong>：针对作业使用正确的 API。虽然模型子类化较为灵活，但代价是复杂性更高且用户出错率更高。如果可能，请首选函数式 API。</p>
+</blockquote>
+<p>以下示例展示了使用自定义前向传播进行子类化的  <a href="https://www.tensorflow.org/api_docs/python/tf/keras/models/Model" target="_blank" rel="noopener"><code>tf.keras.Model</code></a>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf  </span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras  </span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers  </span><br><span class="line"><span class="keyword">from</span> tensorflow.keras.utils <span class="keyword">import</span> to_categorical  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># Change Mark: 相对于lenet2.py，本次实验使用eager模式时，在第一次调用call函数时，  </span></span><br><span class="line"><span class="comment"># 传入的inputs是整个训练集（亲测第二次及以后都是每次只传入batch_size个训练集），这将导致内存溢出。  </span></span><br><span class="line"><span class="comment"># 但本次实验不使用eager模式是ok的。如果非要想使用eager模式，可以试试将训练用tf.data封装后再传入model.fit。  </span></span><br><span class="line"><span class="comment"># tf.enable_eager_execution()  </span></span><br><span class="line">print(<span class="string">'is eager executing: '</span>, tf.executing_eagerly())  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LeNet</span><span class="params">(tf.keras.Model)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num_classes=<span class="number">10</span>)</span>:</span>  </span><br><span class="line">        super(LeNet, self).__init__()  </span><br><span class="line">        self.num_classes = num_classes  </span><br><span class="line">  </span><br><span class="line">        self.conv1_fn = layers.Conv2D(<span class="number">6</span>, (<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>, name=<span class="string">'conv1'</span>)  </span><br><span class="line">        self.pool1_fn = layers.MaxPool2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>), name=<span class="string">'pool1'</span>)  </span><br><span class="line">        self.conv2_fn = layers.Conv2D(<span class="number">16</span>, (<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'valid'</span>, name=<span class="string">'conv2'</span>)  </span><br><span class="line">        self.pool2_fn = layers.MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>), name=<span class="string">'pool2'</span>)  </span><br><span class="line">        self.conv3_fn = layers.Conv2D(<span class="number">120</span>, [<span class="number">5</span>, <span class="number">5</span>], activation=<span class="string">'relu'</span>, padding=<span class="string">'valid'</span>, name=<span class="string">'conv3'</span>)  </span><br><span class="line">        self.flat_fn = layers.Flatten(name=<span class="string">'flatten'</span>)  </span><br><span class="line">        self.dense1_fn = layers.Dense(units=<span class="number">84</span>, activation=<span class="string">'relu'</span>, name=<span class="string">'fc2'</span>)  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, inputs)</span>:</span>  </span><br><span class="line">        x = self.conv1_fn(inputs)  </span><br><span class="line">        x = self.pool1_fn(x)  </span><br><span class="line">        x = self.conv2_fn(x)  </span><br><span class="line">        x = self.pool2_fn(x)  </span><br><span class="line">        x = self.conv3_fn(x)  </span><br><span class="line">        x = self.flat_fn(x)  </span><br><span class="line">        x = self.dense1_fn(x)  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">return</span> x  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">compute_output_shape</span><span class="params">(self, input_shape)</span>:</span>  </span><br><span class="line">        <span class="comment"># You need to override this function if you want to use the subclassed model  </span></span><br><span class="line"> <span class="comment"># as part of a functional-style model. # Otherwise, this method is optional.  shape = tf.TensorShape(input_shape).as_list()  </span></span><br><span class="line">        shape = [shape[<span class="number">0</span>], <span class="number">84</span>]  </span><br><span class="line">        <span class="keyword">return</span> tf.TensorShape(shape)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    (mnist_images, mnist_labels), a = tf.keras.datasets.mnist.load_data()  </span><br><span class="line">    mnist_labels = to_categorical(mnist_labels, <span class="number">10</span>)  </span><br><span class="line">    mnist_images = np.expand_dims(mnist_images, axis=<span class="number">3</span>) / <span class="number">255</span>  </span><br><span class="line">  mnist_labels = mnist_labels.astype(np.float)  </span><br><span class="line">  </span><br><span class="line">    model = tf.keras.Sequential([  </span><br><span class="line">        LeNet(),  </span><br><span class="line">  layers.Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>)  </span><br><span class="line">    ])  </span><br><span class="line">  </span><br><span class="line">    model.compile(optimizer=tf.train.RMSPropOptimizer(<span class="number">0.001</span>),  </span><br><span class="line">  loss=<span class="string">'categorical_crossentropy'</span>,  </span><br><span class="line">  metrics=[<span class="string">'accuracy'</span>])  </span><br><span class="line">  </span><br><span class="line">    model.fit(mnist_images, mnist_labels, batch_size=<span class="number">32</span>, epochs=<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://www.tensorflow.org/guide/keras#model_subclassing" target="_blank" rel="noopener">TensorFlow学习指南&gt;高阶API&gt;Keras</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/05/14/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91mysql%E5%BC%82%E5%B8%B8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" rel="prev" title="【开发环境与工具】mysql异常问题解决">
+      <i class="fa fa-chevron-left"></i> 【开发环境与工具】mysql异常问题解决
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/07/18/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%E3%80%91collections.namedtuple/" rel="next" title="【Python笔记】collections.namedtuple">
+      【Python笔记】collections.namedtuple <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#构建简单的模型"><span class="nav-number">1.</span> <span class="nav-text">构建简单的模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数式API"><span class="nav-number">2.</span> <span class="nav-text">函数式API</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模型子类化"><span class="nav-number">3.</span> <span class="nav-text">模型子类化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

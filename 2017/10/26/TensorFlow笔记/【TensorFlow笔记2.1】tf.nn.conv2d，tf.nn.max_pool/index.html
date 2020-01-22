@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="tf.nn.conv2d函数解析tf.nn.conv2d(input, filter, strides, padding, use_cudnn_on_gpu&#x3D;None, name&#x3D;None) 除去name参数用以指定该操作的name，与方法有关的一共五个参数：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow笔记&#x2F;【TensorFlow笔记2.1】tf.nn.conv2d，tf.nn.max_pool">
+<meta property="og:url" content="http://yoursite.com/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/index.html">
+<meta property="og:site_name" content="春播秋芒">
+<meta property="og:description" content="tf.nn.conv2d函数解析tf.nn.conv2d(input, filter, strides, padding, use_cudnn_on_gpu&#x3D;None, name&#x3D;None) 除去name参数用以指定该操作的name，与方法有关的一共五个参数：">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-bjuZbJNmYfI/W2MPCpHol4I/AAAAAAAAAEM/k45cej5ffe41ZbREtCSC2-Mr25vDcwIBQCLcBGAs/s0/conv2d_1.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-j-WfJrhi8CY/W2MPs4D66hI/AAAAAAAAAEY/QDrVqWHgt_gQTC1Yqc1gG9VZxq-SeedmgCLcBGAs/s0/conv2d_2.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-Kxiq_PH02fI/W2UylTE0_-I/AAAAAAAAAEs/Hm7cjyYSv7sKDjM376ovDpbGcPSLVO0twCLcBGAs/s0/conv2d_5.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-kMruiy2HpWs/W2UyqLUuuLI/AAAAAAAAAE0/xEInC1TXLX0_N8XXwcW9sA7A8cpF2noKwCLcBGAs/s0/conv2d_4.png">
+<meta property="article:published_time" content="2017-10-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-01-22T05:22:41.840Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/-bjuZbJNmYfI/W2MPCpHol4I/AAAAAAAAAEM/k45cej5ffe41ZbREtCSC2-Mr25vDcwIBQCLcBGAs/s0/conv2d_1.png">
+
+<link rel="canonical" href="http://yoursite.com/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>TensorFlow笔记/【TensorFlow笔记2.1】tf.nn.conv2d，tf.nn.max_pool | 春播秋芒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">春播秋芒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TensorFlow笔记/【TensorFlow笔记2.1】tf.nn.conv2d，tf.nn.max_pool
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-10-26 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-26T00:00:00+08:00">2017-10-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:22:41" itemprop="dateModified" datetime="2020-01-22T13:22:41+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="tf-nn-conv2d函数解析"><a href="#tf-nn-conv2d函数解析" class="headerlink" title="tf.nn.conv2d函数解析"></a>tf.nn.conv2d函数解析</h2><p><strong>tf.nn.conv2d(input, filter, strides, padding, use_cudnn_on_gpu=None, name=None)</strong></p>
+<p>除去name参数用以指定该操作的name，与方法有关的一共五个参数：<br><a id="more"></a></p>
+<p>第一个参数input：指需要做卷积的输入图像，它要求是一个Tensor，具有[batch, in_height, in_width, in_channels]这样的shape，具体含义是[训练时一个batch的图片数量, 图片高度, 图片宽度, 图像通道数]，注意这是一个4维的Tensor，要求类型为float32和float64其中之一</p>
+<p>第二个参数filter：相当于CNN中的卷积核，它要求是一个Tensor，具有[filter_height, filter_width, in_channels, out_channels]这样的shape，具体含义是[卷积核的高度，卷积核的宽度，图像通道数，卷积核个数]，要求类型与参数input相同，有一个地方需要注意，第三维in_channels，就是参数input的第四维</p>
+<p>第三个参数strides：卷积时在图像每一维的步长，这是一个一维的向量，长度4</p>
+<p>第四个参数padding：string类型的量，只能是”SAME”,”VALID”其中之一，这个值决定了不同的卷积方式（后面会介绍）</p>
+<p>第五个参数：use_cudnn_on_gpu:bool类型，是否使用cudnn加速，默认为true</p>
+<p>结果返回一个Tensor，这个输出，就是我们常说的feature map，shape仍然是[batch, height, width, channels]这种形式。</p>
+<p>那么TensorFlow的卷积具体是怎样实现的呢，用一些例子去解释它：</p>
+<h3 id="示例1：-1，3，3，1-图像，-1，1，1，1-卷积核"><a href="#示例1：-1，3，3，1-图像，-1，1，1，1-卷积核" class="headerlink" title="示例1：[1，3，3，1]图像，[1，1，1，1]卷积核"></a>示例1：[1，3，3，1]图像，[1，1，1，1]卷积核</h3><p>考虑一种最简单的情况，现在有一张3×3单通道的图像（对应的shape：[1，3，3，1]），用一个1×1的卷积核（对应的shape：[1，1，1，1]）去做卷积，最后会得到一张3×3的feature map</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">input = tf.Variable(tf.ones([<span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>]))</span><br><span class="line">filter = tf.Variable(tf.ones([<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.device(<span class="string">"/cpu:0"</span>):</span><br><span class="line">    config = tf.ConfigProto(allow_soft_placement=<span class="literal">True</span>, log_device_placement=<span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">with</span> tf.Session(config=config) <span class="keyword">as</span> sess:</span><br><span class="line">        init = tf.global_variables_initializer()</span><br><span class="line">        sess.run(init)</span><br><span class="line">        conv2d_SAME = tf.nn.conv2d(input, filter, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>, use_cudnn_on_gpu=<span class="literal">False</span>)</span><br><span class="line">        conv2d_VALID = tf.nn.conv2d(input, filter, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'VALID'</span>, use_cudnn_on_gpu=<span class="literal">False</span>)</span><br><span class="line">        ret_SAME = sess.run(conv2d_SAME)</span><br><span class="line">        ret_VALID = sess.run(conv2d_VALID)</span><br><span class="line">        print(<span class="string">'ret_SAME.shape = '</span>, ret_SAME.shape)</span><br><span class="line">        print(ret_SAME)</span><br><span class="line">        print(<span class="string">'ret_VALID.shape = '</span>, ret_VALID.shape)</span><br><span class="line">        print(ret_VALID)</span><br><span class="line">print(<span class="string">'end'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">输出结果：</span><br><span class="line">ret_SAME.shape =  (<span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>)</span><br><span class="line">[[[[<span class="number">1.</span>]</span><br><span class="line">   [<span class="number">1.</span>]</span><br><span class="line">   [<span class="number">1.</span>]]</span><br><span class="line">   </span><br><span class="line">  [[<span class="number">1.</span>]</span><br><span class="line">   [<span class="number">1.</span>]</span><br><span class="line">   [<span class="number">1.</span>]]</span><br><span class="line">   </span><br><span class="line">  [[<span class="number">1.</span>]</span><br><span class="line">   [<span class="number">1.</span>]</span><br><span class="line">   [<span class="number">1.</span>]]]]</span><br><span class="line">ret_VALID.shape =  (<span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>)</span><br><span class="line">[[[[<span class="number">1.</span>]</span><br><span class="line">   [<span class="number">1.</span>]</span><br><span class="line">   [<span class="number">1.</span>]]</span><br><span class="line">   </span><br><span class="line">  [[<span class="number">1.</span>]</span><br><span class="line">   [<span class="number">1.</span>]</span><br><span class="line">   [<span class="number">1.</span>]]</span><br><span class="line">   </span><br><span class="line">  [[<span class="number">1.</span>]</span><br><span class="line">   [<span class="number">1.</span>]</span><br><span class="line">   [<span class="number">1.</span>]]]]</span><br></pre></td></tr></table></figure>
+<h3 id="示例2：-1，3，3，1-图像，-2，2，1，1-卷积核"><a href="#示例2：-1，3，3，1-图像，-2，2，1，1-卷积核" class="headerlink" title="示例2：[1，3，3，1]图像，[2，2，1，1]卷积核"></a>示例2：[1，3，3，1]图像，[2，2，1，1]卷积核</h3><p>输出图像不变，采用2x2的卷积核，其他不变<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">filter &#x3D; tf.Variable(tf.ones([2, 2, 1, 1]))</span><br><span class="line"></span><br><span class="line">输出结果：</span><br><span class="line">ret_SAME.shape &#x3D;  (1, 3, 3, 1)</span><br><span class="line">[[[[4.]</span><br><span class="line">   [4.]</span><br><span class="line">   [2.]]</span><br><span class="line">   </span><br><span class="line">  [[4.]</span><br><span class="line">   [4.]</span><br><span class="line">   [2.]]</span><br><span class="line">   </span><br><span class="line">  [[2.]</span><br><span class="line">   [2.]</span><br><span class="line">   [1.]]]]</span><br><span class="line">ret_VALID.shape &#x3D;  (1, 2, 2, 1)</span><br><span class="line">[[[[4.]</span><br><span class="line">   [4.]]</span><br><span class="line">   </span><br><span class="line">  [[4.]</span><br><span class="line">   [4.]]]]</span><br></pre></td></tr></table></figure></p>
+<p>对于1x1的过滤器，无论padding是SAME还是VALID，其输出结果都很容易理解。下面主要说下对于2x2的过滤器。</p>
+<p>对于3x3的图像，当过滤器是2x2，padding=SAME时，填充方式如下图(图片来自[1]，这里只看其填充方式，不要在意图中的具体数值)：<br><img src="https://lh3.googleusercontent.com/-bjuZbJNmYfI/W2MPCpHol4I/AAAAAAAAAEM/k45cej5ffe41ZbREtCSC2-Mr25vDcwIBQCLcBGAs/s0/conv2d_1.png" alt="enter image description here" title="conv2d_1.png"></p>
+<p>如果是2x2的图像，过滤器是3x3，padding=SAME，则填充方式如下图：<br><img src="https://lh3.googleusercontent.com/-j-WfJrhi8CY/W2MPs4D66hI/AAAAAAAAAEY/QDrVqWHgt_gQTC1Yqc1gG9VZxq-SeedmgCLcBGAs/s0/conv2d_2.png" alt="enter image description here" title="conv2d_2.png"></p>
+<h3 id="tf-nn-conv2d总结"><a href="#tf-nn-conv2d总结" class="headerlink" title="tf.nn.conv2d总结"></a>tf.nn.conv2d总结</h3><p>下面以输入Tensor宽度为例(高度类似)简要说明在进行conv2d运算的时候，是如何在输入Tensor周围填充的。<br>（1）$input_width=10，filter_width=5，stride_width=2$<br>&emsp; &emsp; 当padding=’SAME’时，<br><img src="https://lh3.googleusercontent.com/-Kxiq_PH02fI/W2UylTE0_-I/AAAAAAAAAEs/Hm7cjyYSv7sKDjM376ovDpbGcPSLVO0twCLcBGAs/s0/conv2d_5.png" alt="enter image description here" title="conv2d_5.png"></p>
+<ul>
+<li>此时$input_width=10$是偶数，由于$stride_width=2$，相当于是把$10$分成$10/2$份，也即：<script type="math/tex; mode=display">卷积之后的宽度 = \frac{input\_width}{stride\_width}，当input\_width为偶数，padding=SAME时. \tag{1}</script></li>
+<li>对于第5份来说，需要补充$filter_width-stride_width=5-2$个0，也即：<script type="math/tex; mode=display">input需要扩充的宽度=filter\_width-stride\_width，当input\_width为偶数，padding=SAME时. \tag{2}</script>注意实际操作时并不是将3个0都是放在后面的，而是拿出1个0到前面；</li>
+</ul>
+<p>&emsp; &emsp; 当padding=’VALID’时，此时不会对input周围进行填充，而只在input内部计算。而此时卷积后的宽度可以这样计算：另卷积后的宽度为n，当然n为正整数，且n必须满足不等式：</p>
+<script type="math/tex; mode=display">filter\_width+(n-1)*stride\_width≤input\_width，当padding=VALID时 \tag{3}</script><p>带入数值可解得$n≤3.5$，由于n为正整数，故n取3.<br>注：该不等式实际上是笔者根据n≤$\frac{input_width-filter_width}{stride_width}+1$反推过来的。</p>
+<p>（2）$input_width=11，filter_width=5，stride_width=2$<br>&emsp; &emsp; 当padding=’SAME’时，<br><img src="https://lh3.googleusercontent.com/-kMruiy2HpWs/W2UyqLUuuLI/AAAAAAAAAE0/xEInC1TXLX0_N8XXwcW9sA7A8cpF2noKwCLcBGAs/s0/conv2d_4.png" alt="enter image description here" title="conv2d_4.png"></p>
+<ul>
+<li>此时$input_width=11$是奇数，由于$stride_width=2$，又由于padding=’SAME’，所以要先把$input_width$加1变成偶数，即在input后面添1个0，此时的$input_width$相当于是12，这时候也就是把$12$分成$12/2$份，也即：<script type="math/tex; mode=display">卷积之后的宽度 = \frac{input\_width+1}{stride\_width}，当input\_width为奇数，padding=SAME时. \tag{4}</script></li>
+<li>对于第6份来说，需要补充$filter_width-stride_width = 5-2$个0。</li>
+<li>注意：由于$input_width$由11变成了12时添加了1个0，故这里一共添加了4个0，也即：<script type="math/tex; mode=display">input需要扩充的宽度=filter\_width-stride\_width+1，当input\_width为奇数，padding=SAME时. \tag{5}</script>当然实际应用中会拿出4/2个0到前面去。</li>
+</ul>
+<p>&emsp; &emsp; 当padding=’VALID’时，计算方法同(3)式，此时解得卷积之后的宽度$n≤4$，n取正整数4.</p>
+<p>（3）$input_width=4，filter_width=5，stride_width=2$</p>
+<ul>
+<li>对于$filter_widht&gt;input_width$这种情况来说，padding只能为’SAME’，padding=’VALID’时会出错；</li>
+<li>计算方法同上。</li>
+</ul>
+<h2 id="tf-nn-max-pool函数解析"><a href="#tf-nn-max-pool函数解析" class="headerlink" title="tf.nn.max_pool函数解析"></a>tf.nn.max_pool函数解析</h2><p><strong>tf.nn.max_pool(value, ksize, strides, padding, name=None)</strong>   [2]<br>参数是四个，和卷积很类似：<br>第一个参数value：需要池化的输入，一般池化层接在卷积层后面，所以输入通常是feature map，依然是[batch, height, width, channels]这样的shape<br>第二个参数ksize：池化窗口的大小，取一个四维向量，一般是[1, height, width, 1]，因为我们不想在batch和channels上做池化，所以这两个维度设为了1<br>第三个参数strides：和卷积类似，窗口在每一个维度上滑动的步长，一般也是[1, stride,stride, 1]<br>第四个参数padding：和卷积类似，可以取’VALID’ 或者’SAME’<br>返回一个Tensor，类型不变，shape仍然是[batch, height, width, channels]这种形式</p>
+<p>max_pooling用法和conv2d类似，这里就不贴代码了。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://blog.csdn.net/u013713117/article/details/55517458" target="_blank" rel="noopener">tf.nn.conv2d理解</a><br>[2] 王晓华. TensorFlow深度学习应用实践</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/10/23/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.3%E3%80%91TFRecords%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" rel="prev" title="TensorFlow笔记/【TensorFlow笔记1.3】TFRecords文件读写">
+      <i class="fa fa-chevron-left"></i> TensorFlow笔记/【TensorFlow笔记1.3】TFRecords文件读写
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/11/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/" rel="next" title="【深度学习笔记1.2】梯度消失与梯度爆炸">
+      【深度学习笔记1.2】梯度消失与梯度爆炸 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tf-nn-conv2d函数解析"><span class="nav-number">1.</span> <span class="nav-text">tf.nn.conv2d函数解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例1：-1，3，3，1-图像，-1，1，1，1-卷积核"><span class="nav-number">1.1.</span> <span class="nav-text">示例1：[1，3，3，1]图像，[1，1，1，1]卷积核</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例2：-1，3，3，1-图像，-2，2，1，1-卷积核"><span class="nav-number">1.2.</span> <span class="nav-text">示例2：[1，3，3，1]图像，[2，2，1，1]卷积核</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tf-nn-conv2d总结"><span class="nav-number">1.3.</span> <span class="nav-text">tf.nn.conv2d总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tf-nn-max-pool函数解析"><span class="nav-number">2.</span> <span class="nav-text">tf.nn.max_pool函数解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

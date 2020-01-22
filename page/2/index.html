@@ -21,7 +21,7 @@
   var CONFIG = {
     hostname: new URL('http://yoursite.com').hostname,
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Gemini',
     version: '7.7.0',
     exturl: false,
     sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
@@ -46,12 +46,13 @@
   };
 </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+  <meta name="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+<meta property="og:type" content="website">
+<meta property="og:title" content="春播秋芒">
 <meta property="og:url" content="http://yoursite.com/page/2/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="春播秋芒">
+<meta property="og:description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/page/2/">
@@ -66,7 +67,7 @@
   };
 </script>
 
-  <title>Hexo</title>
+  <title>春播秋芒</title>
   
 
 
@@ -110,7 +111,7 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Hexo</span>
+        <span class="site-title">春播秋芒</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -170,21 +171,21 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/15/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91MegaFace%E6%95%B0%E6%8D%AE%E9%9B%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="春播秋芒">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/" class="post-title-link" itemprop="url">【机器学习基础】范数与正则化</a>
+            <a href="/2019/08/15/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91MegaFace%E6%95%B0%E6%8D%AE%E9%9B%86/" class="post-title-link" itemprop="url">【深度学习笔记 face】MegaFace数据集</a>
         </h1>
 
         <div class="post-meta">
@@ -193,95 +194,24 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-01-21 17:28:05 / Modified: 16:58:01" itemprop="dateCreated datePublished" datetime="2020-01-21T17:28:05+08:00">2020-01-21</time>
+              <time title="Created: 2019-08-15 17:28:05" itemprop="dateCreated datePublished" datetime="2019-08-15T17:28:05+08:00">2019-08-15</time>
             </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
-                  </a>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
                 </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本篇主要介绍范数以及使用范数的正则化策略。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E9%A2%84%E6%B5%8B%E9%A9%AC%E7%96%9D%E7%97%85%E7%9A%84%E6%AD%BB%E4%BA%A1%E7%8E%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E9%A2%84%E6%B5%8B%E9%A9%AC%E7%96%9D%E7%97%85%E7%9A%84%E6%AD%BB%E4%BA%A1%E7%8E%87/" class="post-title-link" itemprop="url">【机器学习笔记2.2】用逻辑回归预测马疝病的死亡率</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:23:42" itemprop="dateModified" datetime="2020-01-22T13:23:42+08:00">2020-01-22</time>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-01-21 17:28:05 / Modified: 16:57:36" itemprop="dateCreated datePublished" datetime="2020-01-21T17:28:05+08:00">2020-01-21</time>
-            </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
                   </a>
                 </span>
             </span>
@@ -298,7 +228,7 @@
 
       
           <a id="more"></a>
-<p>参见 <a href="https://blog.csdn.net/yahstudio/article/details/80664812" target="_blank" rel="noopener">【机器学习笔记2.2】用逻辑回归预测马疝病的死亡率</a></p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://blog.csdn.net/realmanma/article/details/77429726" target="_blank" rel="noopener">megaface测试流程</a></p>
 
       
     </div>
@@ -318,21 +248,21 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/21/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%20blog1%E3%80%91vscode+markdown+hexo+github%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/21/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91ubuntu%E6%B7%BB%E5%8A%A0%E6%9C%BA%E6%A2%B0%E7%A1%AC%E7%9B%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="春播秋芒">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/21/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%20blog1%E3%80%91vscode+markdown+hexo+github%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/" class="post-title-link" itemprop="url">【开发环境与工具 blog1】vscode+markdown+hexo+github搭建博客</a>
+            <a href="/2019/07/21/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91ubuntu%E6%B7%BB%E5%8A%A0%E6%9C%BA%E6%A2%B0%E7%A1%AC%E7%9B%98/" class="post-title-link" itemprop="url">【开发环境与工具】ubuntu添加机械硬盘</a>
         </h1>
 
         <div class="post-meta">
@@ -341,10 +271,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-01-21 00:00:00 / Modified: 14:48:07" itemprop="dateCreated datePublished" datetime="2020-01-21T00:00:00+08:00">2020-01-21</time>
+              <time title="Created: 2019-07-21 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-21T00:00:00+08:00">2019-07-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:28:09" itemprop="dateModified" datetime="2020-01-22T13:28:09+08:00">2020-01-22</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -368,8 +304,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="从剪贴板插入图片解决方案"><a href="#从剪贴板插入图片解决方案" class="headerlink" title="从剪贴板插入图片解决方案"></a>从剪贴板插入图片解决方案</h2><p>只不过要写个博客记录些日常而已，感觉这个很繁琐，故目前还未尝试</p>
-<p>参考文献： <a href="https://www.njleonzhang.com/2018/08/14/vs-code-paste-image.html" target="_blank" rel="noopener">实现一个 vscode 粘贴图片的插件</a></p>
+          <a id="more"></a>
+<p>不对硬盘分区的方法：<br><a href="https://blog.csdn.net/stoic163/article/details/79401739" target="_blank" rel="noopener">Ubuntu 16.04添加全新硬盘操作方法</a></p>
+<p>对硬盘分区的方法：<br><a href="https://blog.csdn.net/u012318074/article/details/74551405" target="_blank" rel="noopener">ubuntu 使用 fdisk 磁盘分区</a></p>
 
       
     </div>
@@ -389,21 +326,21 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%AD%A3%E5%88%99%E5%8C%962.1%E3%80%91weight%20decay/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/18/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%E3%80%91collections.namedtuple/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="春播秋芒">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%AD%A3%E5%88%99%E5%8C%962.1%E3%80%91weight%20decay/" class="post-title-link" itemprop="url">【机器学习笔记-正则化2.1】weight decay</a>
+            <a href="/2019/07/18/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%E3%80%91collections.namedtuple/" class="post-title-link" itemprop="url">【Python笔记】collections.namedtuple</a>
         </h1>
 
         <div class="post-meta">
@@ -413,14 +350,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-01-19 17:28:05" itemprop="dateCreated datePublished" datetime="2020-01-19T17:28:05+08:00">2020-01-19</time>
+              <time title="Created: 2019-07-18 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-18T00:00:00+08:00">2019-07-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-21 15:41:55" itemprop="dateModified" datetime="2020-01-21T15:41:55+08:00">2020-01-21</time>
+                <time title="Modified: 2020-01-22 13:20:05" itemprop="dateModified" datetime="2020-01-22T13:20:05+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -428,8 +365,8 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
+                  <a href="/categories/Python%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">Python笔记</span>
                   </a>
                 </span>
             </span>
@@ -445,7 +382,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://zh.gluon.ai/chapter_deep-learning-basics/weight-decay.html" target="_blank" rel="noopener">动手学深度学习-&gt;3.12 权重衰减</a></p>
+          <a id="more"></a>
+<h2 id="使用案例1"><a href="#使用案例1" class="headerlink" title="使用案例1"></a>使用案例1</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> collections  </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    TPoint = collections.namedtuple(<span class="string">'TPoint'</span>, [<span class="string">'x'</span>, <span class="string">'y'</span>])  <span class="comment"># 定义一个TPoint class类型，而且带有属性x,y  </span></span><br><span class="line">  p = TPoint(x=<span class="number">10</span>, y=<span class="number">10</span>)  <span class="comment"># 创建TPoint对象  </span></span><br><span class="line">  print(p.x, p.y)  <span class="comment"># 通过类成员变量访问  </span></span><br><span class="line">  print(p[<span class="number">0</span>], p[<span class="number">1</span>])  <span class="comment"># 通过元祖索引访问  </span></span><br><span class="line">  <span class="keyword">for</span> v <span class="keyword">in</span> p:  <span class="comment"># 通过for循环迭代访问  </span></span><br><span class="line">  print(v)</span><br></pre></td></tr></table></figure>
+<h2 id="使用案例2"><a href="#使用案例2" class="headerlink" title="使用案例2"></a>使用案例2</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> collections  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Block</span><span class="params">(collections.namedtuple<span class="params">(<span class="string">'Block'</span>, [<span class="string">'scope'</span>, <span class="string">'unit_fn'</span>, <span class="string">'args'</span>])</span>)</span>:</span>  </span><br><span class="line">    <span class="string">"""  </span></span><br><span class="line"><span class="string">    :param</span></span><br><span class="line"><span class="string">    """</span>  </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    b = Block(<span class="string">'block1'</span>, max, [&#123;<span class="string">'stride'</span>: <span class="number">2</span>, <span class="string">'depth_bottleneck'</span>: <span class="number">4</span>, <span class="string">'depth'</span>: <span class="number">4</span>, <span class="string">'rate'</span>: <span class="number">1</span>&#125;])  </span><br><span class="line">  </span><br><span class="line">    print(<span class="string">'debug'</span>)</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -465,21 +404,21 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B1%82%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/16/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1.2%E3%80%91tf.keras%E5%AE%9E%E7%8E%B0LeNet-5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="春播秋芒">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B1%82%E8%A7%A3/" class="post-title-link" itemprop="url">【机器学习笔记1.2】线性回归之梯度下降求解</a>
+            <a href="/2019/07/16/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1.2%E3%80%91tf.keras%E5%AE%9E%E7%8E%B0LeNet-5/" class="post-title-link" itemprop="url">【深度学习笔记2.1.2】tf.keras实现LeNet-5</a>
         </h1>
 
         <div class="post-meta">
@@ -489,14 +428,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-01-19 17:28:05" itemprop="dateCreated datePublished" datetime="2020-01-19T17:28:05+08:00">2020-01-19</time>
+              <time title="Created: 2019-07-16 17:28:05" itemprop="dateCreated datePublished" datetime="2019-07-16T17:28:05+08:00">2019-07-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-21 17:15:55" itemprop="dateModified" datetime="2020-01-21T17:15:55+08:00">2020-01-21</time>
+                <time title="Modified: 2020-01-22 13:25:20" itemprop="dateModified" datetime="2020-01-22T13:25:20+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -504,8 +443,8 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
                   </a>
                 </span>
             </span>
@@ -521,18 +460,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote>
-<p>原文参考文献[1]</p>
+          <a id="more"></a>
+<h1 id="构建简单的模型"><a href="#构建简单的模型" class="headerlink" title="构建简单的模型"></a>构建简单的模型</h1><p>tf.keras简洁高效，本实验尝试使用tf.keras.Sequential来实现LeNet。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf  </span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers  </span><br><span class="line"><span class="keyword">from</span> tensorflow.keras.utils <span class="keyword">import</span> to_categorical  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    (mnist_images, mnist_labels), a = tf.keras.datasets.mnist.load_data()  </span><br><span class="line">    mnist_labels = to_categorical(mnist_labels, <span class="number">10</span>)  </span><br><span class="line">    mnist_images = np.expand_dims(mnist_images, axis=<span class="number">3</span>) / <span class="number">255</span>  </span><br><span class="line">  mnist_labels = mnist_labels.astype(np.float)  </span><br><span class="line">  </span><br><span class="line">    model = tf.keras.Sequential([  </span><br><span class="line">        layers.Conv2D(<span class="number">6</span>, (<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>, name=<span class="string">'conv1'</span>),  </span><br><span class="line">  layers.MaxPool2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>), name=<span class="string">'pool1'</span>),  </span><br><span class="line">  layers.Conv2D(<span class="number">16</span>, (<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'valid'</span>, name=<span class="string">'conv2'</span>),  </span><br><span class="line">  layers.MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>), name=<span class="string">'pool2'</span>),  </span><br><span class="line">  layers.Conv2D(<span class="number">120</span>, [<span class="number">5</span>, <span class="number">5</span>], activation=<span class="string">'relu'</span>, padding=<span class="string">'valid'</span>, name=<span class="string">'conv3'</span>),  </span><br><span class="line">  layers.Flatten(name=<span class="string">'flatten'</span>),  </span><br><span class="line">  layers.Dense(units=<span class="number">84</span>, activation=<span class="string">'relu'</span>, name=<span class="string">'fc2'</span>),  </span><br><span class="line">  </span><br><span class="line">  layers.Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>)  </span><br><span class="line">    ])  </span><br><span class="line">  </span><br><span class="line">    model.compile(optimizer=tf.train.RMSPropOptimizer(<span class="number">0.001</span>),  </span><br><span class="line">  loss=<span class="string">'categorical_crossentropy'</span>,  </span><br><span class="line">  metrics=[<span class="string">'accuracy'</span>])  </span><br><span class="line">  </span><br><span class="line">    model.fit(mnist_images, mnist_labels, batch_size=<span class="number">32</span>, epochs=<span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
+<h1 id="函数式API"><a href="#函数式API" class="headerlink" title="函数式API"></a>函数式API</h1><p><a href="https://www.tensorflow.org/api_docs/python/tf/keras/models/Sequential" target="_blank" rel="noopener"><code>tf.keras.Sequential</code></a>  模型是层的简单堆叠，无法表示任意模型。使用  <a href="https://keras.io/getting-started/functional-api-guide/" target="_blank" rel="noopener">Keras 函数式 API</a>  可以构建复杂的模型拓扑[1]，例如：</p>
+<ul>
+<li>多输入模型，</li>
+<li>多输出模型，</li>
+<li>具有共享层的模型（同一层被调用多次），</li>
+<li>具有非序列数据流的模型（例如，剩余连接）。</li>
+</ul>
+<p>使用函数式 API 构建的模型具有以下特征：</p>
+<ol>
+<li>层实例可调用并返回张量。</li>
+<li>输入张量和输出张量用于定义  <a href="https://www.tensorflow.org/api_docs/python/tf/keras/models/Model" target="_blank" rel="noopener"><code>tf.keras.Model</code></a>  实例。</li>
+<li>此模型的训练方式和  <code>Sequential</code>  模型一样。</li>
+</ol>
+<p>以下示例使用函数式 API 构建的LeNet：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf  </span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras  </span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers  </span><br><span class="line"><span class="keyword">from</span> tensorflow.keras.utils <span class="keyword">import</span> to_categorical  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LeNet</span><span class="params">(keras.Model)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, input_shape=<span class="params">(<span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>)</span>, num_classes=<span class="number">10</span>)</span>:</span>  </span><br><span class="line">        <span class="comment"># super(LeNet, self).__init__(name="LeNet")  </span></span><br><span class="line">  self.num_classes = num_classes  </span><br><span class="line">  </span><br><span class="line">        img_input = layers.Input(shape=input_shape)  </span><br><span class="line">  </span><br><span class="line">        x = layers.Conv2D(<span class="number">6</span>, (<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>, name=<span class="string">'conv1'</span>)(img_input)  </span><br><span class="line">        x = layers.MaxPool2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>), name=<span class="string">'pool1'</span>)(x)  </span><br><span class="line">        x = layers.Conv2D(<span class="number">16</span>, (<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'valid'</span>, name=<span class="string">'conv2'</span>)(x)  </span><br><span class="line">        x = layers.MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>), name=<span class="string">'pool2'</span>)(x)  </span><br><span class="line">        x = layers.Conv2D(<span class="number">120</span>, [<span class="number">5</span>, <span class="number">5</span>], activation=<span class="string">'relu'</span>, padding=<span class="string">'valid'</span>, name=<span class="string">'conv3'</span>)(x)  </span><br><span class="line">        x = layers.Flatten(name=<span class="string">'flatten'</span>)(x)  </span><br><span class="line">        x = layers.Dense(units=<span class="number">84</span>, activation=<span class="string">'relu'</span>, name=<span class="string">'fc2'</span>)(x)  </span><br><span class="line">  </span><br><span class="line">        x = layers.Dense(units=num_classes, activation=<span class="string">'softmax'</span>, name=<span class="string">'prediction'</span>)(x)  </span><br><span class="line">  </span><br><span class="line">        <span class="comment"># 调用Model类的Model(input, output, name="***")构造方法  </span></span><br><span class="line">  super(LeNet, self).__init__(img_input, x, name=<span class="string">'LeNet'</span>)  </span><br><span class="line">        <span class="comment"># 本次实验是使用tf.keras的函数式API编程，上面这种调用父类构造的方法和下面的直接创建父类对象效果是一样的。  </span></span><br><span class="line">  <span class="comment"># tf.keras.Model(inputs=img_input, outputs=x, name='LeNet')  </span></span><br><span class="line"> <span class="comment"># 如果要用tf.keras.Model创建父类对象的话，那么子类LeNet也没有必要继承keras.Model了。  </span></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, *args, **kwargs)</span>:</span>  </span><br><span class="line">        <span class="string">'''  </span></span><br><span class="line"><span class="string">  TODO: 实实测该函数并不会被调用  </span></span><br><span class="line"><span class="string"> '''</span>  print(<span class="string">'debug'</span>)  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, inputs)</span>:</span>  </span><br><span class="line">        <span class="string">'''  </span></span><br><span class="line"><span class="string">  TODO: 实测该函数并不会被调用  </span></span><br><span class="line"><span class="string"> '''</span>  <span class="comment"># 前向传播计算  </span></span><br><span class="line">  <span class="comment"># 使用在__init__方法中定义的层  </span></span><br><span class="line">  <span class="keyword">return</span> self.output(inputs)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    (mnist_images, mnist_labels), a = tf.keras.datasets.mnist.load_data()  </span><br><span class="line">    mnist_labels = to_categorical(mnist_labels, <span class="number">10</span>)  </span><br><span class="line">    mnist_images = np.expand_dims(mnist_images, axis=<span class="number">3</span>) / <span class="number">255</span>  </span><br><span class="line">  mnist_labels = mnist_labels.astype(np.float)  </span><br><span class="line">  </span><br><span class="line">    model = LeNet()  </span><br><span class="line">  </span><br><span class="line">    model.compile(optimizer=tf.train.RMSPropOptimizer(<span class="number">0.001</span>),  </span><br><span class="line">  loss=<span class="string">'categorical_crossentropy'</span>,  </span><br><span class="line">  metrics=[<span class="string">'accuracy'</span>])  </span><br><span class="line">  </span><br><span class="line">    model.fit(mnist_images, mnist_labels, batch_size=<span class="number">32</span>, epochs=<span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
+<p>上述LeNet代码的输出是分类标签，然而有的时候我们希望得到一个embedding特征向量，这时候可以将上述LeNet中的分类层拿出来，此时LeNet得到的输出是一个embedding，我们再用tf.keras.Sequential对其进行一层封装即可：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">...重复代码省略...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Change Mark: 相对于lenet2.py，本次实验必须使用eager模式，否则会报错  </span></span><br><span class="line">tf.enable_eager_execution()  </span><br><span class="line">print(<span class="string">'is eager executing: '</span>, tf.executing_eagerly())  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LeNet</span><span class="params">(keras.Model)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, input_shape=<span class="params">(<span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>)</span>, num_classes=<span class="number">10</span>)</span>:</span>  </span><br><span class="line">        ...略</span><br><span class="line">        <span class="comment"># 从__init__函数中去掉layers.Dense(units=num_classes, ...)层，其他不变。</span></span><br><span class="line">        ...</span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Change Mark: 相对于lenet2.py，本次实验中的LeNet只是整个网络中的一部分，使用tf.keras.Sequential对网络进行拼接。  </span></span><br><span class="line">  model = tf.keras.Sequential([  </span><br><span class="line">        LeNet(),  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 这种先用sigmoid再用softmax的方法也可以，但是实测准确率没有直接用softmax高  </span></span><br><span class="line">    <span class="comment"># ****************************************  </span></span><br><span class="line">    <span class="comment"># layers.Dense(10, activation='sigmoid') </span></span><br><span class="line">    <span class="comment"># layers.Activation('softmax') </span></span><br><span class="line">    <span class="comment"># ****************************************  </span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># OK, GOOD </span></span><br><span class="line">    <span class="comment"># ****************************************  </span></span><br><span class="line">    layers.Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>)  </span><br><span class="line">    <span class="comment"># ****************************************  </span></span><br><span class="line">  ])  </span><br><span class="line">  </span><br><span class="line">  ...</span><br></pre></td></tr></table></figure></p>
+<h1 id="模型子类化"><a href="#模型子类化" class="headerlink" title="模型子类化"></a>模型子类化</h1><p>通过对  <a href="https://www.tensorflow.org/api_docs/python/tf/keras/models/Model" target="_blank" rel="noopener"><code>tf.keras.Model</code></a>  进行子类化并定义您自己的前向传播来构建完全可自定义的模型。在  <code>__init__</code>  方法中创建层并将它们设置为类实例的属性。在  <code>call</code>  方法中定义前向传播[1]。</p>
+<p>在启用  <a href="https://www.tensorflow.org/guide/eager" target="_blank" rel="noopener">Eager Execution</a>  时，模型子类化特别有用，因为可以命令式地编写前向传播。</p>
+<blockquote>
+<p><strong>要点</strong>：针对作业使用正确的 API。虽然模型子类化较为灵活，但代价是复杂性更高且用户出错率更高。如果可能，请首选函数式 API。</p>
 </blockquote>
-<h2 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h2><p>&emsp; 首先，我们把生物神经元(Neuron)的模型抽象为如图 2.2(a)所示的数学结构：神经元输入向量$\mathbf{x} = [x_1, x_2, x_3, …, x_n ]^T$ ,经过函数映射:$f_θ:x→y$后得到输出y，其中θ为函数f自身的参数。考虑一种简化的情况，即线性变换:$f(\mathbf{x}) = \mathbf{w}^T \mathbf{x} + b$，展开为标量形式:$f(\mathbf{x}) = w_1 x_1 + w_2 x_2 + w_3 x_3 + ⋯ + w_n x_n + b$.<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B1%82%E8%A7%A3/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+<p>以下示例展示了使用自定义前向传播进行子类化的  <a href="https://www.tensorflow.org/api_docs/python/tf/keras/models/Model" target="_blank" rel="noopener"><code>tf.keras.Model</code></a>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf  </span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras  </span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers  </span><br><span class="line"><span class="keyword">from</span> tensorflow.keras.utils <span class="keyword">import</span> to_categorical  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># Change Mark: 相对于lenet2.py，本次实验使用eager模式时，在第一次调用call函数时，  </span></span><br><span class="line"><span class="comment"># 传入的inputs是整个训练集（亲测第二次及以后都是每次只传入batch_size个训练集），这将导致内存溢出。  </span></span><br><span class="line"><span class="comment"># 但本次实验不使用eager模式是ok的。如果非要想使用eager模式，可以试试将训练用tf.data封装后再传入model.fit。  </span></span><br><span class="line"><span class="comment"># tf.enable_eager_execution()  </span></span><br><span class="line">print(<span class="string">'is eager executing: '</span>, tf.executing_eagerly())  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LeNet</span><span class="params">(tf.keras.Model)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num_classes=<span class="number">10</span>)</span>:</span>  </span><br><span class="line">        super(LeNet, self).__init__()  </span><br><span class="line">        self.num_classes = num_classes  </span><br><span class="line">  </span><br><span class="line">        self.conv1_fn = layers.Conv2D(<span class="number">6</span>, (<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>, name=<span class="string">'conv1'</span>)  </span><br><span class="line">        self.pool1_fn = layers.MaxPool2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>), name=<span class="string">'pool1'</span>)  </span><br><span class="line">        self.conv2_fn = layers.Conv2D(<span class="number">16</span>, (<span class="number">5</span>, <span class="number">5</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'valid'</span>, name=<span class="string">'conv2'</span>)  </span><br><span class="line">        self.pool2_fn = layers.MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>), name=<span class="string">'pool2'</span>)  </span><br><span class="line">        self.conv3_fn = layers.Conv2D(<span class="number">120</span>, [<span class="number">5</span>, <span class="number">5</span>], activation=<span class="string">'relu'</span>, padding=<span class="string">'valid'</span>, name=<span class="string">'conv3'</span>)  </span><br><span class="line">        self.flat_fn = layers.Flatten(name=<span class="string">'flatten'</span>)  </span><br><span class="line">        self.dense1_fn = layers.Dense(units=<span class="number">84</span>, activation=<span class="string">'relu'</span>, name=<span class="string">'fc2'</span>)  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, inputs)</span>:</span>  </span><br><span class="line">        x = self.conv1_fn(inputs)  </span><br><span class="line">        x = self.pool1_fn(x)  </span><br><span class="line">        x = self.conv2_fn(x)  </span><br><span class="line">        x = self.pool2_fn(x)  </span><br><span class="line">        x = self.conv3_fn(x)  </span><br><span class="line">        x = self.flat_fn(x)  </span><br><span class="line">        x = self.dense1_fn(x)  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">return</span> x  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">compute_output_shape</span><span class="params">(self, input_shape)</span>:</span>  </span><br><span class="line">        <span class="comment"># You need to override this function if you want to use the subclassed model  </span></span><br><span class="line"> <span class="comment"># as part of a functional-style model. # Otherwise, this method is optional.  shape = tf.TensorShape(input_shape).as_list()  </span></span><br><span class="line">        shape = [shape[<span class="number">0</span>], <span class="number">84</span>]  </span><br><span class="line">        <span class="keyword">return</span> tf.TensorShape(shape)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    (mnist_images, mnist_labels), a = tf.keras.datasets.mnist.load_data()  </span><br><span class="line">    mnist_labels = to_categorical(mnist_labels, <span class="number">10</span>)  </span><br><span class="line">    mnist_images = np.expand_dims(mnist_images, axis=<span class="number">3</span>) / <span class="number">255</span>  </span><br><span class="line">  mnist_labels = mnist_labels.astype(np.float)  </span><br><span class="line">  </span><br><span class="line">    model = tf.keras.Sequential([  </span><br><span class="line">        LeNet(),  </span><br><span class="line">  layers.Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>)  </span><br><span class="line">    ])  </span><br><span class="line">  </span><br><span class="line">    model.compile(optimizer=tf.train.RMSPropOptimizer(<span class="number">0.001</span>),  </span><br><span class="line">  loss=<span class="string">'categorical_crossentropy'</span>,  </span><br><span class="line">  metrics=[<span class="string">'accuracy'</span>])  </span><br><span class="line">  </span><br><span class="line">    model.fit(mnist_images, mnist_labels, batch_size=<span class="number">32</span>, epochs=<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://www.tensorflow.org/guide/keras#model_subclassing" target="_blank" rel="noopener">TensorFlow学习指南&gt;高阶API&gt;Keras</a></p>
+
       
     </div>
 
@@ -551,21 +504,21 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/14/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91mysql%E5%BC%82%E5%B8%B8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="春播秋芒">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3/" class="post-title-link" itemprop="url">【机器学习笔记1.1】线性回归之正规方程求解</a>
+            <a href="/2019/05/14/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91mysql%E5%BC%82%E5%B8%B8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="post-title-link" itemprop="url">【开发环境与工具】mysql异常问题解决</a>
         </h1>
 
         <div class="post-meta">
@@ -575,14 +528,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-01-19 17:28:05" itemprop="dateCreated datePublished" datetime="2020-01-19T17:28:05+08:00">2020-01-19</time>
+              <time title="Created: 2019-05-14 00:00:00" itemprop="dateCreated datePublished" datetime="2019-05-14T00:00:00+08:00">2019-05-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-21 16:57:11" itemprop="dateModified" datetime="2020-01-21T16:57:11+08:00">2020-01-21</time>
+                <time title="Modified: 2020-01-22 13:27:39" itemprop="dateModified" datetime="2020-01-22T13:27:39+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -590,8 +543,8 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">开发环境与工具</span>
                   </a>
                 </span>
             </span>
@@ -607,11 +560,355 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="线性回归概述"><a href="#线性回归概述" class="headerlink" title="线性回归概述"></a>线性回归概述</h2><p>在这里：<br>我们先考虑最简单的一种情况，即输入属性的数目只有一个，线性回归试图学得[1]</p>
-<script type="math/tex; mode=display">f(x_i) = w x_i + b，使得f(x_i) \approx y_i \tag{1}</script><p>那么如何确定$\vec{w}$和b呢？关键在于如何衡量$f(\vec{x})$与y之间的差别。<br>均方误差是回归任务中最常用的性能度量，因此我们可以试图让均方误差最小化，即<br>
+          <a id="more"></a>
+<h1 id="mysql-异常问题解决"><a href="#mysql-异常问题解决" class="headerlink" title="mysql 异常问题解决"></a>mysql 异常问题解决</h1><h2 id="异常1"><a href="#异常1" class="headerlink" title="异常1"></a>异常1</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">~$ mysql -u root -p</span><br><span class="line">Enter password:</span><br><span class="line">ERROR 1698 (28000): Access denied <span class="keyword">for</span> user <span class="string">'root'</span>@<span class="string">'localhost'</span></span><br></pre></td></tr></table></figure>
+<p>解决方案：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 试了诸多方法，最后发现直接以下面这条命令就能进入mysql</span></span><br><span class="line">~$ mysql -u root</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入mysql后，设置root用户的密码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看一下user表，错误的起因就是在这里， root的plugin被修改成了auth_socket，用密码登陆的plugin应该是mysql_native_password。</span></span><br><span class="line">mysql&gt; select user, plugin from mysql.user; </span><br><span class="line">+-----------+-----------------------+</span><br><span class="line">| user      | plugin                |</span><br><span class="line">+-----------+-----------------------+</span><br><span class="line">| root      | auth_socket           |</span><br><span class="line">| mysql.sys | mysql_native_password |</span><br><span class="line">| dev       | mysql_native_password |</span><br><span class="line">+-----------+-----------------------+</span><br><span class="line">3 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.01 sec)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解决办法1: 参考文献[1]</span></span><br><span class="line">mysql&gt; USE mysql;</span><br><span class="line">mysql&gt; UPDATE user SET plugin=<span class="string">'mysql_native_password'</span> WHERE User=<span class="string">'root'</span>;</span><br><span class="line">mysql&gt; FLUSH PRIVILEGES;</span><br><span class="line">mysql&gt; <span class="built_in">exit</span>;</span><br><span class="line"></span><br><span class="line">$ service mysql restart</span><br></pre></td></tr></table></figure></p>
+<h2 id="异常2"><a href="#异常2" class="headerlink" title="异常2"></a>异常2</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">~$ mysql -u root -p</span><br><span class="line">Enter password: </span><br><span class="line">ERROR 1045 (28000): Access denied <span class="keyword">for</span> user <span class="string">'root'</span>@<span class="string">'localhost'</span> (using password: YES)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">~$ mysql -u root</span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 2 Server version: 5.7.10 MySQL Community Server (GPL)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置root用户密码，参考文献[2]</span></span><br><span class="line">mysql&gt; update mysql.user <span class="built_in">set</span> authentication_string=PASSWORD(<span class="string">'newPwd'</span>), plugin=<span class="string">'mysql_native_password'</span> <span class="built_in">where</span> user=<span class="string">'root'</span>;</span><br><span class="line">Query OK, 1 row affected, 1 warning (0.00 sec)</span><br><span class="line">Rows matched: 1  Changed: 1  Warnings: 1 mysql&gt; flush privileges;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://blog.csdn.net/jlu16/article/details/82809937" target="_blank" rel="noopener">解决 MySQL 的 ERROR 1698 (28000): Access denied for user ‘root’@’localhost’</a><br>[2] <a href="https://blog.csdn.net/qq_34771403/article/details/73927962" target="_blank" rel="noopener">Mysql ERROR 1698 (28000) 解决</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91ubuntu%20python%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84flask+mysql%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91ubuntu%20python%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84flask+mysql%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">【开发环境与工具】ubuntu python环境下的flask+mysql安装部署</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-04-12T00:00:00+08:00">2019-04-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:27:49" itemprop="dateModified" datetime="2020-01-22T13:27:49+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">开发环境与工具</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h2 id="flask-安装"><a href="#flask-安装" class="headerlink" title="flask 安装"></a>flask 安装</h2><p>sudo pip3 install flask</p>
+<h2 id="mysql-安装"><a href="#mysql-安装" class="headerlink" title="mysql 安装"></a>mysql 安装</h2><p>sudo apt-get install mysql-server<br>sudo apt-get install mysql-client<br>sudo apt install libmysqlclient-dev</p>
+<p>安装成功后可以通过下面的命令测试是否安装成功：<br>sudo netstat -tap | grep mysql</p>
+<p>检查mysql服务状态：<br>systemctl status mysql.service</p>
+<p>安装mysql  python调用接口<br>sudo pip3 install pymysql</p>
+<p>进入mysql的方式（quit退出）<br>mysql -uroot -p</p>
+<p>进入mysql后的可以通过mysql命令行操作<br>mysql&gt; show user</p>
+<h2 id="创建数据库和表"><a href="#创建数据库和表" class="headerlink" title="创建数据库和表"></a>创建数据库和表</h2><p>下面开始创建数据库有表，例如可以新建一个名为face_recognization.sql的文件，然后输入一下内容：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建数据库</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> db_face_recognization;</span><br><span class="line"><span class="keyword">use</span> db_face_recognization;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 特征表</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> tb_face_feature;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> tb_face_feature (</span><br><span class="line">    person_id <span class="built_in">smallint</span> <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"person_id"</span>,</span><br><span class="line">    img <span class="built_in">varchar</span>(<span class="number">256</span>) <span class="keyword">default</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"图片路径"</span>,</span><br><span class="line">    feature <span class="built_in">blob</span> <span class="keyword">default</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"特征值"</span>,</span><br><span class="line">    create_time <span class="built_in">timestamp</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="keyword">current_timestamp</span> <span class="keyword">comment</span> <span class="string">"创建时间"</span>,</span><br><span class="line">    primary <span class="keyword">key</span> (person_id)</span><br><span class="line">) <span class="keyword">engine</span>=<span class="keyword">InnoDB</span> <span class="keyword">default</span> <span class="keyword">charset</span>=utf8mb4 <span class="keyword">comment</span>=<span class="string">"人脸特征表"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>通过下面的命令进入mysql环境：<br>mysql -uroot -p</p>
+<p>在mysql环境下执行下面的命令即可创建数据库和表：<br>source  /<strong>/pathto/</strong>/face_recognization.sql<br>注意：该sql文件一定要给全路径</p>
+<h2 id="mysql常用命令"><a href="#mysql常用命令" class="headerlink" title="mysql常用命令"></a>mysql常用命令</h2><p><strong>进入数据库基本操作</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 显示当前用户下的所有数据库</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">databases</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用某个数据库</span></span><br><span class="line"><span class="keyword">use</span> db_face_recognization;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 显示当前数据库下所有表</span></span><br><span class="line">mysql&gt; show tables;</span><br><span class="line">+<span class="comment">---------------------------------+</span></span><br><span class="line">| Tables_in_db_face_recognization |</span><br><span class="line">+<span class="comment">---------------------------------+</span></span><br><span class="line">| tb_admin_user                   |</span><br><span class="line">| tb_face_feature                 |</span><br><span class="line">+<span class="comment">---------------------------------+</span></span><br><span class="line">2 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看表的字段信息</span></span><br><span class="line"><span class="keyword">desc</span> tb_face_feature</span><br></pre></td></tr></table></figure></p>
+<p><strong>显示表中的所有字段</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">columns</span> <span class="keyword">from</span> tb_face_feature;</span><br></pre></td></tr></table></figure></p>
+<p><strong>添加新字段</strong>[3]<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_face_feature <span class="keyword">add</span> <span class="keyword">column</span> person_name <span class="built_in">varchar</span>(<span class="number">128</span>) <span class="keyword">default</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"person_name"</span> <span class="keyword">after</span> person_id;</span><br><span class="line"><span class="comment">-- 往tb_face_feature表中增加字段 person_name，长度128，默认为null，备注：person_name，添加在person_id后面</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>删除字段</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_face_feature <span class="keyword">drop</span> person_name;</span><br></pre></td></tr></table></figure></p>
+<p><strong>创建表时设置主键自增，且指定自增初始值</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> tb_test2;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> tb_test2 (</span><br><span class="line">    person_id <span class="built_in">smallint</span> <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> auto_increment <span class="keyword">comment</span> <span class="string">"person_id"</span>,</span><br><span class="line">    person_name <span class="built_in">varchar</span>(<span class="number">128</span>) <span class="keyword">default</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"person_name"</span>,</span><br><span class="line">    img <span class="built_in">varchar</span>(<span class="number">256</span>) <span class="keyword">default</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"图片路径"</span>,</span><br><span class="line">    feature <span class="built_in">blob</span> <span class="keyword">default</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"特征值"</span>,</span><br><span class="line">    create_time <span class="built_in">timestamp</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="keyword">current_timestamp</span> <span class="keyword">comment</span> <span class="string">"创建时间"</span>,</span><br><span class="line">    primary <span class="keyword">key</span> (person_id)</span><br><span class="line">) <span class="keyword">engine</span>=<span class="keyword">InnoDB</span> auto_increment=<span class="number">1</span> <span class="keyword">default</span> <span class="keyword">charset</span>=utf8mb4 <span class="keyword">comment</span>=<span class="string">"人脸特征表"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 注意上述语句中的auto_increment</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>已有主键，仅设置主键自增</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_face_feature <span class="keyword">change</span> person_id person_id <span class="built_in">smallint</span> <span class="keyword">unsigned</span> AUTO_INCREMENT;  <span class="comment">-- 设置主键自增</span></span><br><span class="line"><span class="comment">-- 改变tb_face_feature表的person_id字段名为person_id, 数据类型为smallint unsigned，自增</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_face_feature AUTO_INCREMENT=<span class="number">1</span>;  <span class="comment">-- 设置主键从1开始自增</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>修改主键字段名称</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_face_feature <span class="keyword">change</span> person_id feature_id <span class="built_in">smallint</span> <span class="keyword">unsigned</span> auto_increment;</span><br><span class="line"><span class="comment">-- 将tb_face_feature表的person_id字段名改为feature_id，并指定其数据类型为smallint unsigned,且数值自增</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>从一个表导入数据到另一个表</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_person(person_id, person_name, create_time) <span class="keyword">select</span> feature_id, person_name, create_time <span class="keyword">from</span> tb_face_feature;</span><br><span class="line"><span class="comment">-- 上述语句要求目标表tb_person和源表tb_face_feature相应的数据类型要相同。</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>将同一个表中的某个字段复制到另一个字段</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> tb_face_feature <span class="keyword">set</span> person_id=feature_id</span><br></pre></td></tr></table></figure></p>
+<p><strong>批量插入</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_face_feature(person_name, feature_mark, feature) <span class="keyword">values</span>(<span class="string">'lucy'</span>,<span class="string">'A'</span>,<span class="number">10010</span>),(<span class="string">'andy'</span>,<span class="string">'B'</span>,<span class="number">10012</span>);</span><br></pre></td></tr></table></figure></p>
+<p><strong>同时修改多个表</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> tb_person tbp, tb_face_feature tbf <span class="keyword">set</span> tbp.person_name=<span class="string">'吴三桂'</span>, tbf.img=<span class="string">'./xxoo/xx00.jpg'</span>, tbf.feature=<span class="number">10011</span> <span class="keyword">where</span> tbp.person_id=tbf.person_id <span class="keyword">and</span> tbp.person_id=<span class="number">56</span> <span class="keyword">and</span> tbf.feature_mark=<span class="string">'A'</span>;</span><br></pre></td></tr></table></figure></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://blog.csdn.net/xiangwanpeng/article/details/54562362" target="_blank" rel="noopener">在Ubuntu16.04下安装mysql</a><br>[2] <a href="https://blog.csdn.net/weixx3/article/details/80782479" target="_blank" rel="noopener">Ubuntu18.04 安装MySQL</a><br>[3] <a href="https://www.runoob.com/mysql/mysql-alter.html" target="_blank" rel="noopener">MySQL ALTER命令</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20loss%E3%80%91Focal-Loss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20loss%E3%80%91Focal-Loss/" class="post-title-link" itemprop="url">【深度学习笔记】Focal-Loss</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-05 17:28:05" itemprop="dateCreated datePublished" datetime="2019-04-05T17:28:05+08:00">2019-04-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:23:45" itemprop="dateModified" datetime="2020-01-22T13:23:45+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://blog.csdn.net/u014380165/article/details/77019084" target="_blank" rel="noopener">Focal Loss</a><br>[2] <a href="https://blog.csdn.net/u011583927/article/details/90716942" target="_blank" rel="noopener">focal loss的几种实现版本(Keras/Tensorflow)</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.2%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91Dropout/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/03/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.2%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91Dropout/" class="post-title-link" itemprop="url">【深度学习笔记3.2 正则化】Dropout</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-11 17:28:05" itemprop="dateCreated datePublished" datetime="2019-03-11T17:28:05+08:00">2019-03-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:54" itemprop="dateModified" datetime="2020-01-22T13:25:54+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<p>关于dropout的理解与总结：</p>
+<ul>
+<li>dropout是什么？参考文献[1]</li>
+<li>dropout会让train变差，让test变好。一般的如果在train-set上表现好，在test-set上表现差，用dropout才有效果。使用dropout是为了避免过拟合。(来自网友)</li>
+<li>下图来自文献[3]<br><img src="https://lh3.googleusercontent.com/-HPmIrBCprd8/XFOjxz5a3YI/AAAAAAAAAL0/IoAB49sKhHUdL1ea25P9KJkwRmDyL0CfACLcBGAs/s0/dropout1.png" alt="enter image description here" title="dropout1.png"><br>&emsp; 上图中的思想就是说：Dropout是一种正则化技术，是防止过拟合最有效的方法，然而在以下几种情况下使用dropout会损害性能。<br>1). 放在最后一层之前(即softmax之前)。这通常是一个不适合使用dropout的地方，因为网络没有能力在分类之前“纠正”drop引起的错误；<br>2). 当网络较小时，通常不需要正则化。如果模型capacity已经很低时，那么增加正则化会进一步降低模型capacity以至于损害模型性能；<br>3). 使用dropout的网络收敛速度比较慢，但它最终收敛时的误差会比较低，所以如果你没有那么多时间训练网络直至收敛的话，你可能不应该使用dropout.</li>
+<li>当数据量不大的时候，通常不考虑使用dropout.</li>
+<li>目前dropout已经很少使用，已经被一种称为Batch Normalization的技术有取代，当然这并不是说dropout就不是一个有效的工具[3]。</li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://blog.csdn.net/stdcoutzyx/article/details/49022443" target="_blank" rel="noopener">理解dropout</a><br>[2] <a href="https://zhuanlan.zhihu.com/p/38200980" target="_blank" rel="noopener">深度学习中Dropout原理解析</a><br>[3] <a href="https://stats.stackexchange.com/questions/299292/dropout-makes-performance-worse" target="_blank" rel="noopener">Dropout makes performance worse</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/02/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B01.4%E3%80%91Python%20C%20API%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/02/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B01.4%E3%80%91Python%20C%20API%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">【Python笔记1.4】Python C API使用记录</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-11-02 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-02T00:00:00+08:00">2018-11-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:20:15" itemprop="dateModified" datetime="2020-01-22T13:20:15+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">Python笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本节知识点：</p>
+<ol>
+<li>用Python/C API实现Python class的实例化，并调用Python class的成员函数;</li>
+<li>Python class的__init__函数需要传参；</li>
+<li>Python class的成员函数需要传递列表，解析Python返回的列表。
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/01/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3/#more" rel="contents">
+              <a class="btn" href="/2018/11/02/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B01.4%E3%80%91Python%20C%20API%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -635,21 +932,21 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/19/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="春播秋芒">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/19/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+            <a href="/2018/10/21/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
         </h1>
 
         <div class="post-meta">
@@ -659,14 +956,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-01-19 16:10:17" itemprop="dateCreated datePublished" datetime="2020-01-19T16:10:17+08:00">2020-01-19</time>
+              <time title="Created: 2018-10-21 00:00:00" itemprop="dateCreated datePublished" datetime="2018-10-21T00:00:00+08:00">2018-10-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-21 16:38:01" itemprop="dateModified" datetime="2020-01-21T16:38:01+08:00">2020-01-21</time>
+                <time title="Modified: 2020-01-22 12:33:18" itemprop="dateModified" datetime="2020-01-22T12:33:18+08:00">2020-01-22</time>
               </span>
 
           
@@ -708,7 +1005,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -766,27 +1063,23 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">tags</span>
       </div>
   </nav>
 </div>
@@ -814,12 +1107,12 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder"></span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.0
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
   </div>
 
         
@@ -845,7 +1138,7 @@
 <script src="/js/motion.js"></script>
 
 
-<script src="/js/schemes/muse.js"></script>
+<script src="/js/schemes/pisces.js"></script>
 
 
 <script src="/js/next-boot.js"></script>

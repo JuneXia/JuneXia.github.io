@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="梯度下降&amp;emsp; 梯度下降法（Gradient descent）是一种基于函数一阶性质的优化算法，其本质是在某个位置将目标函数一阶展开，利用其一阶性质持续向函数值下降最快的方向前进，以期找到函数的全局最小解。梯度下降属于梯度优化方法大类，此外还有最速下降法，共轭梯度法等等。还有其他方法基于目标函数的二阶性质，比如牛顿法、拟牛顿法等[1]。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【深度学习笔记1.2】梯度消失与梯度爆炸">
+<meta property="og:url" content="http://yoursite.com/2017/11/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/index.html">
+<meta property="og:site_name" content="春播秋芒">
+<meta property="og:description" content="梯度下降&amp;emsp; 梯度下降法（Gradient descent）是一种基于函数一阶性质的优化算法，其本质是在某个位置将目标函数一阶展开，利用其一阶性质持续向函数值下降最快的方向前进，以期找到函数的全局最小解。梯度下降属于梯度优化方法大类，此外还有最速下降法，共轭梯度法等等。还有其他方法基于目标函数的二阶性质，比如牛顿法、拟牛顿法等[1]。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-Ct5ypbJsA40/W87lWrvh79I/AAAAAAAAAGc/nVMkkzv-ATcJV4H2ZByWRz0bIqPM_A7WQCLcBGAs/s0/Xavier%25E5%2588%259D%25E5%25A7%258B%25E5%258C%2596.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-e5T_6_feghs/W87q48fykuI/AAAAAAAAAGs/PSRccyXZQFsYGO6iE4tJflzsNzbkfUFBwCLcBGAs/s0/WeightInit_about_activation_function.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-PKheMt9KTEI/W8_I8Pc_fAI/AAAAAAAAAG8/zCnftIQWoL0oEp5IM5JANzdwvicRqrK2QCLcBGAs/s0/leakyReLU.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-6T6P6f9SwtM/W8_JBtYUjrI/AAAAAAAAAHE/OvG_B8zoM_s1Mitq-DpzgTQZgOaQTg7UgCLcBGAs/s0/elu.png">
+<meta property="article:published_time" content="2017-11-11T09:28:05.000Z">
+<meta property="article:modified_time" content="2020-01-22T05:25:00.495Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/-Ct5ypbJsA40/W87lWrvh79I/AAAAAAAAAGc/nVMkkzv-ATcJV4H2ZByWRz0bIqPM_A7WQCLcBGAs/s0/Xavier%25E5%2588%259D%25E5%25A7%258B%25E5%258C%2596.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2017/11/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>【深度学习笔记1.2】梯度消失与梯度爆炸 | 春播秋芒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">春播秋芒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【深度学习笔记1.2】梯度消失与梯度爆炸
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-11-11 17:28:05" itemprop="dateCreated datePublished" datetime="2017-11-11T17:28:05+08:00">2017-11-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:00" itemprop="dateModified" datetime="2020-01-22T13:25:00+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h2><p>&emsp; 梯度下降法（Gradient descent）是一种基于函数一阶性质的优化算法，其本质是在某个位置将目标函数一阶展开，利用其一阶性质持续向函数值下降最快的方向前进，以期找到函数的全局最小解。梯度下降属于梯度优化方法大类，此外还有最速下降法，共轭梯度法等等。还有其他方法基于目标函数的二阶性质，比如牛顿法、拟牛顿法等[1]。<br><a id="more"></a></p>
+<pre><code>注意：梯度下降法就是最速下降法，很多地方、很多人、包括维基百科、百度百科都这么说的，这导致大家都认为，梯度的反方向就是下降最快的方向，然后事实并非如此，其细微差别参见[2]。
+</code></pre><h2 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h2><p>&emsp; 反向传播（BackPropagation，缩写为BP）是“误差反向传播”的简称，是一种与最优化方法（如梯度下降法）结合使用的，用来训练人工神经网络的常见方法[3]。其基本思想就是根据当前网络参数计算出当前输入样本的输出y，再根据y和实际结果的误差来计算各层神经元的梯度项，最后按梯度的反方向更新网络参数，直到达到停止条件。<br>&emsp; 人工神经网络的参数多，梯度计算比较复杂。在人工神经网络模型提出几十年后才有研究者提出了反向传播算法来解决深层参数的训练问题。</p>
+<h2 id="梯度消失-爆炸"><a href="#梯度消失-爆炸" class="headerlink" title="梯度消失/爆炸"></a>梯度消失/爆炸</h2><h3 id="什么是梯度消失-爆炸"><a href="#什么是梯度消失-爆炸" class="headerlink" title="什么是梯度消失/爆炸"></a>什么是梯度消失/爆炸</h3><p>&emsp; 反向传播算法的工作原理是从输出层向输入层传播误差的梯度。不幸的是，梯度下降更新使梯度往往越变得越来越小，以至于使得低层连接权重实际上保持不变，并且训练永远不会收敛到良好的解决方案，这被称为梯度消失问题。在某些情况下，可能会发生相反的情况：梯度可能变得越来越大，许多层得到了非常大的权重更新，算法发散。这是梯度爆炸的问题，在循环神经网络中最为常见。更一般地说，深度神经网络受梯度不稳定之苦，不同的层次可能以非常不同的速度学习。</p>
+<h3 id="产生梯度消失-爆炸的原因"><a href="#产生梯度消失-爆炸的原因" class="headerlink" title="产生梯度消失/爆炸的原因"></a>产生梯度消失/爆炸的原因</h3><p>&emsp; 梯度消失/爆炸是造成深度神经网络大部分时间都被抛弃的原因之一。直到2010年才有所缓解，Xavier Glorot 和 Yoshua Bengio 发表的题为《Understanding the Difficulty of Training Deep Feedforward Neural Networks》的论文提出了一些疑问，sigmoid 激活函数和当时最受欢迎的权重随机初始化（即随机初始化时使用平均值为 0，标准差为 1 的正态分布）这个方案组合，使得每层输出的方差远大于其输入的方差（<font color=#FF0000>为什么？</font>）。网络正向计算时，每层的方差持续增加，直到激活函数在顶层饱和[4]，即在顶层激活函数的导数接近0，因此当反向传播开始时，它几乎没有梯度通过网络传播回来。而且由于反向传播通过顶层向下传递，所以有些较小的梯度也会不断地被稀释，因此较低层确实没有任何东西可用。</p>
+<h3 id="如何解决梯度消失-爆炸"><a href="#如何解决梯度消失-爆炸" class="headerlink" title="如何解决梯度消失/爆炸"></a>如何解决梯度消失/爆炸</h3><h4 id="改变权重初始化方法"><a href="#改变权重初始化方法" class="headerlink" title="改变权重初始化方法"></a>改变权重初始化方法</h4><p>&emsp; Glorot和Xavier在他们的论文中提出了一种能显著缓解这个问题的方法。我们需要信号在两个方向上正确地流动：即在进行预测时是正向的，在反向传播梯度时是反向的。 我们不希望信号消失，也不希望它爆炸并饱和。为了使信号能够正确流动，作者认为，我们需要每层输出的方差等于其输入的方差，也需要梯度在相反方向上流过一层之前和之后有相同的方差。然而实际上不可能保证两者都是一样的，除非这个层具有相同数量的输入和输出连接，但是他们提出了一个很好的折衷办法，在实践中证明这个折中办法非常好：随机初始化连接权重必须如下图1公式所描述的那样。其中n_inputs和n_outputs是权重正在被初始化的层（也称为扇入和扇出）的输入和输出连接的数量。 这种初始化策略通常被称为Xavier初始化，或者有时是 Glorot 初始化。</p>
+<p><div align="center"><img src="https://lh3.googleusercontent.com/-Ct5ypbJsA40/W87lWrvh79I/AAAAAAAAAGc/nVMkkzv-ATcJV4H2ZByWRz0bIqPM_A7WQCLcBGAs/s0/Xavier%25E5%2588%259D%25E5%25A7%258B%25E5%258C%2596.jpg" alt="enter image description here" title="Xavier初始化.jpg"></p>
+<center>图1 &nbsp;  Xavier 初始化</center>
+
+<p>当输入连接的数量大致等于输出连接的数量时，可以得到更简单的等式：<br>e.g. $\quad  \sigma = \dfrac{1}{\sqrt{n_{inputs}}}  \quad  or \quad  r = \dfrac{\sqrt{3}}{\sqrt{n_{inputs}}}$</p>
+<p>&emsp; 使用 Xavier 初始化策略可以大大加快训练速度，这是导致深度学习目前取得成功的技巧之一。 另外，最近的一些论文也针对不同的激活函数提供了类似的策略，如下图2所示。 ReLU 激活函数（及其变体，包括简称为 ELU 的激活）的初始化策略有时也称为 He 初始化。</p>
+<p><div align="center"><img src="https://lh3.googleusercontent.com/-e5T_6_feghs/W87q48fykuI/AAAAAAAAAGs/PSRccyXZQFsYGO6iE4tJflzsNzbkfUFBwCLcBGAs/s0/WeightInit_about_activation_function.jpg" alt="enter image description here" title="WeightInit_about_activation_function.jpg"></p>
+<center>图2 &nbsp;  不同激活函数的参数初始化方法 </center>
+
+<p>&emsp; 默认情况下，fully_connected() 函数使用 Xavier 初始化（具有统一的分布）。 你也可以通过使用如下所示的variance_scaling_initializer() 函数来将其更改为 He 初始化[4]：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">he_init = tf.contrib.layers.variance_scaling_initializer()</span><br><span class="line">hidden1 = tf.layers.dense(X, n_hidden1, activation=tf.nn.relu,</span><br><span class="line">                          kernel_initializer=he_init, name=<span class="string">"hidden1"</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>疑问，文献[4]中说 “He 初始化只考虑了扇入，而不是像 Xavier 初始化那样扇入和扇出之间的平均值。”，但是从图2中公式来看，He初始化(对应这ReLU激活函数)也是同时考虑了扇入和扇出的呀。这是为何？</p>
+</blockquote>
+<h4 id="使用非饱和激活函数"><a href="#使用非饱和激活函数" class="headerlink" title="使用非饱和激活函数"></a>使用非饱和激活函数</h4><p>&emsp; Glorot 和 Bengio 在 2010 年的论文中的一个见解是，梯度消失/爆炸部分是由于激活函数的选择不好造成的。 在那之前，大多数人都认为，如果大自然选择在生物神经元中使用 sigmoid 激活函数，它们必定是一个很好的选择。 但事实证明，其他激活函数在深度神经网络中表现得更好，特别是 ReLU 激活函数，主要是因为它对正值不会饱和（也因为它的计算速度很快）[4]。</p>
+<p>&emsp; 不幸的是，ReLU激活函数并不完美。 它有一个被称为 “ReLU 死区” 的问题：在训练期间，如果神经元的权重得到更新，并且使得神经元输入的加权和为负时，则它将一直输出 0（ReLU函数的梯度为0），神经元不可能恢复生机。在某些情况下，你可能会发现你网络的一半神经元已经死亡，特别是如果你使用大学习率 [4]。</p>
+<p>&emsp; 为了解决这个问题，你可能需要使用 ReLU 函数的一个变体，比如 leaky ReLU。这个函数定义为$LeakyReLU_α(z)= max(αz，z)$（见图3）。超参数α定义了函数“leaks”的程度：它是z &lt; 0时函数的斜率，通常设置为 0.01。这个小斜坡确保 leaky ReLU 永不死亡，他们可能会长期昏迷，但他们有机会最终醒来。事实上，设定α= 0.2（巨大 leak）似乎导致比α= 0.01（小 leak）更好的性能。他们还评估了随机化 leaky ReLU（RReLU），其中α在训练期间在给定范围内随机挑选，并在测试期间固定为平均值。它表现相当好，似乎是一个正则项（减少训练集的过拟合风险）。最后，他们还评估了参数 leaky ReLU（PReLU），其中α被授权在训练期间被学习（而不是超参数，它变成可以像任何其他参数一样被反向传播修改的参数）。据报道这在大型图像数据集上的表现强于 ReLU，但是对于较小的数据集，其具有过度拟合训练集的风险 [4]。</p>
+<p><div align="center"><img src="https://lh3.googleusercontent.com/-PKheMt9KTEI/W8_I8Pc_fAI/AAAAAAAAAG8/zCnftIQWoL0oEp5IM5JANzdwvicRqrK2QCLcBGAs/s0/leakyReLU.png" alt="enter image description here" title="leakyReLU.png"></p>
+<center>图3 &nbsp;  Leaky ReLU </center>
+
+<p>&emsp; 最后，Djork-Arné Clevert 等人在 2015 年的一篇论文中提出了一种称为指数线性单元（exponential linear unit，ELU）的新的激活函数（见图4），在他们的实验中表现优于所有的 ReLU 变体：训练时间减少，神经网络在测试集上表现的更好 [4]。</p>
+<p><div align="center"><img src="https://lh3.googleusercontent.com/-6T6P6f9SwtM/W8_JBtYUjrI/AAAAAAAAAHE/OvG_B8zoM_s1Mitq-DpzgTQZgOaQTg7UgCLcBGAs/s0/elu.png" alt="enter image description here" title="elu.png"></p>
+<center>图4 &nbsp; ELU activation function </center>
+
+<p>&emsp; ELU 激活函数的主要缺点是计算速度慢于 ReLU 及其变体（由于使用指数函数），但是在训练过程中，这可以换来更快的收敛速度。 然而，在测试期间，ELU 网络将比 ReLU 网络慢。</p>
+<p>&emsp; 那么你应该使用哪个激活函数来处理深层神经网络的隐藏层？ 一般 ELU &gt; leaky ReLU(及其变体) &gt; ReLU &gt; tanh &gt; sigmoid，详见文献[4]。</p>
+<p>TensorFlow 提供了一个可以用来建立神经网络的elu()函数。 调用fully_connected()函数时，只需设置activation_fn参数即可：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.contrib.layers <span class="keyword">import</span> fully_connected</span><br><span class="line">hidden1 = fully_connected(X, n_hidden1, activation_fn=tf.nn.elu)</span><br></pre></td></tr></table></figure></p>
+<p>TensorFlow 没有针对 leaky ReLU 的预定义函数，但是很容易定义：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.contrib.layers <span class="keyword">import</span> fully_connected</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">leaky_relu</span><span class="params">(z, name=None)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.maximum(<span class="number">0.01</span> * z, z, name=name)</span><br><span class="line">    </span><br><span class="line">hidden1 = fully_connected(X, n_hidden1, activation_fn=leaky_relu)</span><br></pre></td></tr></table></figure></p>
+<h4 id="批量标准化"><a href="#批量标准化" class="headerlink" title="批量标准化"></a>批量标准化</h4><p>&emsp; 尽管使用 He初始化和 ELU（或任何 ReLU 变体）可以显著减少训练开始阶段的梯度消失/爆炸问题，但不保证在训练期间问题不会回来。</p>
+<p>&emsp; 在 2015 年的一篇论文中，Sergey Ioffe 和 Christian Szegedy 提出了一种称为批量标准化（Batch Normalization，BN）的技术来解决梯度消失/爆炸问题 [4]。（论文名称：《Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift》）</p>
+<p>&emsp; BatchNorm就是在深度神经网络训练过程中使得每一层神经网络的输入保持相同分布的，关于BN的思想在文献 [5] 中已经描述的很清楚了（文献[4]描述的不是很清楚），我这里不再赘述。</p>
+<p>&emsp; 作者证明，这项技术大大改善了他们试验的所有深度神经网络。梯度消失问题大大减少了，他们可以使用饱和激活函数，如 tanh 甚至 sigmoid 激活函数。网络对权重初始化也不那么敏感。他们能够使用更大的学习率，显著加快了学习过程。批量标准化也像一个正则化项一样，减少了对其他正则化技术的需求（如 dropout）[4]。</p>
+<p>&emsp; 然而，批量标准化的确会增加模型的复杂性，您可能会发现，训练起初相当缓慢，而渐变下降正在寻找每层的最佳尺度和偏移量，但一旦找到合理的好值，它就会加速 [4]。</p>
+<h4 id="代码示例1"><a href="#代码示例1" class="headerlink" title="代码示例1"></a>代码示例1</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># He初始化，ELU激活函数</span></span><br><span class="line"><span class="comment"># Batch⧸⧸Batch⧸⧸ Normalization, 批量标准化</span></span><br><span class="line"><span class="comment"># 梯度裁剪</span></span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</span><br><span class="line"></span><br><span class="line">datapath = <span class="string">"/home/xiajun/res/MNIST_data"</span></span><br><span class="line">mnist = input_data.read_data_sets(datapath, validation_size=<span class="number">0</span>, one_hot=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    n_inputs = <span class="number">28</span> * <span class="number">28</span></span><br><span class="line">    n_hidden1 = <span class="number">300</span></span><br><span class="line">    n_hidden2 = <span class="number">100</span></span><br><span class="line">    n_outputs = <span class="number">10</span></span><br><span class="line"></span><br><span class="line">    batch_norm_momentum = <span class="number">0.9</span></span><br><span class="line">    learning_rate = <span class="number">0.01</span></span><br><span class="line"></span><br><span class="line">    X = tf.placeholder(tf.float32, shape=(<span class="literal">None</span>, n_inputs), name = <span class="string">'X'</span>)</span><br><span class="line">    y = tf.placeholder(tf.int64, shape=<span class="literal">None</span>, name = <span class="string">'y'</span>)</span><br><span class="line">    training = tf.placeholder_with_default(<span class="literal">False</span>, shape=(), name = <span class="string">'training'</span>)<span class="comment">#给Batch norm加一个placeholder</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">"dnn"</span>):</span><br><span class="line">        he_init = tf.contrib.layers.variance_scaling_initializer()</span><br><span class="line">        <span class="comment">#对权重的初始化</span></span><br><span class="line"></span><br><span class="line">        my_batch_norm_layer = partial(</span><br><span class="line">            tf.layers.batch_normalization,</span><br><span class="line">            training=training,</span><br><span class="line">            momentum=batch_norm_momentum</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        my_dense_layer = partial(</span><br><span class="line">            tf.layers.dense,</span><br><span class="line">            kernel_initializer=he_init</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        hidden1 = my_dense_layer(X, n_hidden1, name=<span class="string">'hidden1'</span>)</span><br><span class="line">        bn1 = tf.nn.elu(my_batch_norm_layer(hidden1))</span><br><span class="line">        hidden2 = my_dense_layer(bn1, n_hidden2, name=<span class="string">'hidden2'</span>)</span><br><span class="line">        bn2 = tf.nn.elu(my_batch_norm_layer(hidden2))</span><br><span class="line">        logists_before_bn = my_dense_layer(bn2, n_outputs, name=<span class="string">'outputs'</span>)</span><br><span class="line">        logists = my_batch_norm_layer(logists_before_bn)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'loss'</span>):</span><br><span class="line">        xentropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logists)</span><br><span class="line">        loss = tf.reduce_mean(xentropy, name=<span class="string">'loss'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 训练操作1, ok</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    with tf.name_scope('train'):</span></span><br><span class="line"><span class="string">        optimizer = tf.train.GradientDescentOptimizer(learning_rate)</span></span><br><span class="line"><span class="string">        training_op = optimizer.minimize(loss)</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 训练操作2, ok</span></span><br><span class="line">    <span class="string">''</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">"train"</span>):</span><br><span class="line">        optimizer = tf.train.GradientDescentOptimizer(learning_rate)</span><br><span class="line">        extra_update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)</span><br><span class="line">        <span class="keyword">with</span> tf.control_dependencies(extra_update_ops):</span><br><span class="line">            training_op = optimizer.minimize(loss)</span><br><span class="line">    <span class="string">''</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 梯度裁剪, ok</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    threshold = 1.0</span></span><br><span class="line"><span class="string">    optimizer = tf.train.GradientDescentOptimizer(learning_rate)</span></span><br><span class="line"><span class="string">    grads_and_vars = optimizer.compute_gradients(loss)</span></span><br><span class="line"><span class="string">    capped_gvs = [(tf.clip_by_value(grad, -threshold, threshold), var) for grad, var in grads_and_vars]  # 将梯度裁剪到 -1.0 和 1.0 之间</span></span><br><span class="line"><span class="string">    training_op = optimizer.apply_gradients(capped_gvs)</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">"eval"</span>):</span><br><span class="line">        correct = tf.nn.in_top_k(logists, y, <span class="number">1</span>)</span><br><span class="line">        accuracy = tf.reduce_mean(tf.cast(correct, tf.float32))</span><br><span class="line"></span><br><span class="line">    init = tf.global_variables_initializer()</span><br><span class="line">    saver = tf.train.Saver()</span><br><span class="line"></span><br><span class="line">    n_epoches = <span class="number">20</span></span><br><span class="line">    batch_size = <span class="number">200</span></span><br><span class="line"><span class="comment"># 注意：由于我们使用的是 tf.layers.batch_normalization() 而不是 tf.contrib.layers.batch_norm()（如本书所述），</span></span><br><span class="line"><span class="comment"># 所以我们需要明确运行批量规范化所需的额外更新操作（sess.run([ training_op，extra_update_ops], ...)。</span></span><br><span class="line">    extra_update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">        init.run()</span><br><span class="line">        <span class="keyword">for</span> epoch <span class="keyword">in</span> range(n_epoches):</span><br><span class="line">            <span class="keyword">for</span> iteraton <span class="keyword">in</span> range(mnist.train.num_examples//batch_size):</span><br><span class="line">                X_batch, y_batch = mnist.train.next_batch(batch_size)</span><br><span class="line">                y_batch = np.argmax(y_batch, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 训练操作1 用下面的sess.run</span></span><br><span class="line">                <span class="comment"># sess.run([training_op, extra_update_ops], feed_dict=&#123;training: True, X: X_batch, y: y_batch&#125;)</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># 训练操作2 用下面的sess.run</span></span><br><span class="line">                sess.run(training_op, feed_dict=&#123;training: <span class="literal">True</span>, X: X_batch, y: y_batch&#125;)</span><br><span class="line"></span><br><span class="line">            y_batch = np.argmax(mnist.test.labels, <span class="number">1</span>)</span><br><span class="line">            accuracy_val = accuracy.eval(feed_dict=&#123;X: mnist.test.images, y: y_batch&#125;)</span><br><span class="line">            print(epoch, <span class="string">'Test accuracy:'</span>, accuracy_val)</span><br></pre></td></tr></table></figure>
+<p>使用BN优化时的准确率：</p>
+<blockquote>
+<p>0 Test accuracy: 0.8815<br>1 Test accuracy: 0.9044<br>…<br>18 Test accuracy: 0.9651<br>19 Test accuracy: 0.9652</p>
+</blockquote>
+<p>这对 MNIST 来说不是一个很好的准确性。 当然，如果你训练的时间越长，准确性就越好，但是由于这样一个浅的网络，批量范数和 ELU 不太可能产生非常积极的影响：它们大部分都是为了更深的网络而发光[4]。</p>
+<h4 id="梯度裁剪"><a href="#梯度裁剪" class="headerlink" title="梯度裁剪"></a>梯度裁剪</h4><p>&emsp; 减少梯度爆炸问题的一种常用技术是在反向传播过程中简单地剪切梯度，使它们不超过某个阈值。 这就是所谓的梯度裁剪。一般来说，人们更喜欢批量标准化，但了解梯度裁剪以及如何实现它仍然是有用的[4]。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">threshold = <span class="number">1.0</span>  <span class="comment"># threshold是可以调整的超参数</span></span><br><span class="line"></span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(learning_rate)</span><br><span class="line">grads_and_vars = optimizer.compute_gradients(loss)</span><br><span class="line">capped_gvs = [(tf.clip_by_value(grad, -threshold, threshold), var)</span><br><span class="line">              <span class="keyword">for</span> grad, var <span class="keyword">in</span> grads_and_vars]  <span class="comment"># 将梯度裁剪到 -1.0 和 1.0 之间</span></span><br><span class="line">training_op = optimizer.apply_gradients(capped_gvs)</span><br></pre></td></tr></table></figure><br>将上述梯度裁剪代码添加到代码示例1中即可检验其效果。</p>
+<p>使用梯度裁剪时的准确率：</p>
+<blockquote>
+<p>0 Test accuracy: 0.6869<br>1 Test accuracy: 0.7291<br>…<br>18 Test accuracy: 0.8823<br>19 Test accuracy: 0.8957</p>
+</blockquote>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://zhuanlan.zhihu.com/p/25387613" target="_blank" rel="noopener">梯度下降</a><br>[2] <a href="https://blog.csdn.net/Timingspace/article/details/50963564" target="_blank" rel="noopener">梯度下降法和最速下降法的细微差别</a><br>[3] <a href="https://zh.wikipedia.org/wiki/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95" target="_blank" rel="noopener">反向传播算法</a><br>[4] <a href="https://github.com/apachecn/hands_on_Ml_with_Sklearn_and_TF/blob/dev/docs/11.%E8%AE%AD%E7%BB%83%E6%B7%B1%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.md" target="_blank" rel="noopener">hands_on_Ml_with_Sklearn_and_TF.第10章.训练深层神经网络</a><br>[5] <a href="https://www.cnblogs.com/guoyaohua/p/8724433.html" target="_blank" rel="noopener">【深度学习】深入理解Batch Normalization批标准化</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/" rel="prev" title="TensorFlow笔记/【TensorFlow笔记2.1】tf.nn.conv2d，tf.nn.max_pool">
+      <i class="fa fa-chevron-left"></i> TensorFlow笔记/【TensorFlow笔记2.1】tf.nn.conv2d，tf.nn.max_pool
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/11/19/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B03.1%E3%80%91Tensorflow%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%94%A8%E6%80%BB%E7%BB%93/" rel="next" title="TensorFlow笔记/【TensorFlow笔记3.1】Tensorflow模型复用总结">
+      TensorFlow笔记/【TensorFlow笔记3.1】Tensorflow模型复用总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#梯度下降"><span class="nav-number">1.</span> <span class="nav-text">梯度下降</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反向传播"><span class="nav-number">2.</span> <span class="nav-text">反向传播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#梯度消失-爆炸"><span class="nav-number">3.</span> <span class="nav-text">梯度消失&#x2F;爆炸</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是梯度消失-爆炸"><span class="nav-number">3.1.</span> <span class="nav-text">什么是梯度消失&#x2F;爆炸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#产生梯度消失-爆炸的原因"><span class="nav-number">3.2.</span> <span class="nav-text">产生梯度消失&#x2F;爆炸的原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何解决梯度消失-爆炸"><span class="nav-number">3.3.</span> <span class="nav-text">如何解决梯度消失&#x2F;爆炸</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#改变权重初始化方法"><span class="nav-number">3.3.1.</span> <span class="nav-text">改变权重初始化方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用非饱和激活函数"><span class="nav-number">3.3.2.</span> <span class="nav-text">使用非饱和激活函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#批量标准化"><span class="nav-number">3.3.3.</span> <span class="nav-text">批量标准化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码示例1"><span class="nav-number">3.3.4.</span> <span class="nav-text">代码示例1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#梯度裁剪"><span class="nav-number">3.3.5.</span> <span class="nav-text">梯度裁剪</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

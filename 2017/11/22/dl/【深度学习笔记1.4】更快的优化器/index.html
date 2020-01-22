@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="概述&amp;emsp; 训练一个非常大的深度神经网络可能会非常缓慢。 到目前为止，我们已经看到了四种加速训练的方法：对连接权重应用良好的初始化策略，使用良好的激活函数，使用批量规范化以及重用预训练网络的部分。另一个巨大的速度提升来自使用比普通渐变下降优化器更快的优化器。 在本节中，我们将介绍最流行的：动量优化，Nesterov 加速梯度，AdaGrad，RMSProp，最后是 Adam 优化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【深度学习笔记1.4】更快的优化器">
+<meta property="og:url" content="http://yoursite.com/2017/11/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.4%E3%80%91%E6%9B%B4%E5%BF%AB%E7%9A%84%E4%BC%98%E5%8C%96%E5%99%A8/index.html">
+<meta property="og:site_name" content="春播秋芒">
+<meta property="og:description" content="概述&amp;emsp; 训练一个非常大的深度神经网络可能会非常缓慢。 到目前为止，我们已经看到了四种加速训练的方法：对连接权重应用良好的初始化策略，使用良好的激活函数，使用批量规范化以及重用预训练网络的部分。另一个巨大的速度提升来自使用比普通渐变下降优化器更快的优化器。 在本节中，我们将介绍最流行的：动量优化，Nesterov 加速梯度，AdaGrad，RMSProp，最后是 Adam 优化。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-IXbxcKq8DqM/XBJBx1mH2kI/AAAAAAAAAKI/6DsNehf43-0XT7gul9wz5d_qXxtwr23HgCLcBGAs/s0/%25E5%258A%25A8%25E9%2587%258F%25E4%25BC%2598%25E5%258C%25961.jpg">
+<meta property="article:published_time" content="2017-11-22T09:28:05.000Z">
+<meta property="article:modified_time" content="2020-01-22T05:25:08.263Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/-IXbxcKq8DqM/XBJBx1mH2kI/AAAAAAAAAKI/6DsNehf43-0XT7gul9wz5d_qXxtwr23HgCLcBGAs/s0/%25E5%258A%25A8%25E9%2587%258F%25E4%25BC%2598%25E5%258C%25961.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2017/11/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.4%E3%80%91%E6%9B%B4%E5%BF%AB%E7%9A%84%E4%BC%98%E5%8C%96%E5%99%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>【深度学习笔记1.4】更快的优化器 | 春播秋芒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">春播秋芒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.4%E3%80%91%E6%9B%B4%E5%BF%AB%E7%9A%84%E4%BC%98%E5%8C%96%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【深度学习笔记1.4】更快的优化器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-11-22 17:28:05" itemprop="dateCreated datePublished" datetime="2017-11-22T17:28:05+08:00">2017-11-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:08" itemprop="dateModified" datetime="2020-01-22T13:25:08+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp; 训练一个非常大的深度神经网络可能会非常缓慢。 到目前为止，我们已经看到了四种加速训练的方法：对连接权重应用良好的初始化策略，使用良好的激活函数，使用批量规范化以及重用预训练网络的部分。另一个巨大的速度提升来自使用比普通渐变下降优化器更快的优化器。 在本节中，我们将介绍最流行的：动量优化，Nesterov 加速梯度，AdaGrad，RMSProp，最后是 Adam 优化。<br><a id="more"></a></p>
+<p>&emsp; 剧透：本节的结论是，您几乎总是应该使用Adam_optimization，只需要这么小的改动，训练通常会快几倍。Adam 优化有三个可以调整的超参数（加上学习率）。 默认值通常工作的不错，但如果您需要调整它们，知道他们怎么实现的可能会有帮助。 Adam 优化结合了来自其他优化算法的几个想法，所以先看看这些算法是有用的。</p>
+<h2 id="动量优化（Momentum-optimization）"><a href="#动量优化（Momentum-optimization）" class="headerlink" title="动量优化（Momentum optimization）"></a>动量优化（Momentum optimization）</h2><p>&emsp; 如果把梯度下降法想象成一个小球从山坡到山谷的过程，那么梯度下降的小球是这样移动的：从A点开始，计算当前A点的坡度，沿着坡度最大的方向走一步到B点，在B点再看一看周围坡度最大的地方，沿着这个坡度方向再走一步后到C点。确切的来说，这并不像一个球，更像是一个正在下山的盲人，每走一步都要停下来，用拐杖来来探探四周的路，再走一步停下来，周而复始，直到走到山谷。而一个真正的小球要比这聪明多了，从A点滚动到B点的时候，小球带有一定的初速度，在当前初速度下继续加速下降，小球会越滚越快，更快的奔向谷底。动量法就是模拟这一过程来加速神经网络优化的[1]。（动量优化由Boris Polyak 在 1964年提出）</p>
+<p><img src="https://lh3.googleusercontent.com/-IXbxcKq8DqM/XBJBx1mH2kI/AAAAAAAAAKI/6DsNehf43-0XT7gul9wz5d_qXxtwr23HgCLcBGAs/s0/%25E5%258A%25A8%25E9%2587%258F%25E4%25BC%2598%25E5%258C%25961.jpg" alt="enter image description here" title="动量优化1.jpg"></p>
+<center>图1. 动量优化直观图解</center>
+上图直观的解释了动量法的全部内容。
+
+梯度下降权重$\theta$的更新方程是$\boldsymbol \theta := \boldsymbol \theta - \eta \nabla_\boldsymbol\theta J(\boldsymbol \theta)$，它不关心早期的梯度是什么。如果局部梯度很小，则会非常缓慢。
+
+**Momentum梯度下降权重 $\boldsymbol\theta$ 更新规则如下**：
+$$
+\begin{array} \
+\boldsymbol v_t = \gamma \boldsymbol v_{t-1} + \eta \nabla_ \boldsymbol \theta \\
+\boldsymbol \theta \leftarrow \boldsymbol \theta - \boldsymbol v_t
+\end{array} \
+$$
+
+这里的 $\boldsymbol v$ 为动量矢量，为了模拟某种摩擦机制[2]，避免动量过大，该算法引入了一个新的超参数 $\gamma$，它必须设置在 0（高摩擦）和 1（无摩擦）之间（$0≤\gamma<1$）[3]，典型的取值是 0.9。
+
+![enter image description here](https://lh3.googleusercontent.com/-ZQb7f3TIjck/XBJN9TRND-I/AAAAAAAAAKY/OaN5uLOpcX44gIWNvkJIndJ6G1PiWS-TgCLcBGAs/s0/%25E5%258A%25A8%25E9%2587%258F%25E4%25BC%2598%25E5%258C%25962.png "动量优化2.png")
+<center>图2. SGD with momentum or not</center>
+
+<p>&emsp; SGD在ravines(沟谷)很容易被困住，如图2左图所示，这时候SGD来回震荡而缓慢接近极小值，Momentum 通过加入 $\eta \boldsymbol v_{t-1}$ 这一项，这使得当 $t$ 时刻梯度方向和 $(t-1)$ 时刻相近时速度加快，当$t$ 时刻梯度方向有所改变时更新速度变慢，这样可以加快收敛并减小震荡，如图2右图所示。</p>
+<blockquote>
+<p>(me)由 Momentum 可以联想到速度公式 $v_t = v_{t-1} + at$，只不过Momentum为了避免动量 $\boldsymbol v_t$ 过大，从而引入了超参数 $\gamma$，而Momentum中的 $\eta \nabla_\boldsymbol \theta J(\boldsymbol \theta)$ 则相当于 $at$，为当前时刻新增加的动量。</p>
+</blockquote>
+<p><em>下面这段话来自文献[2]，但我没看懂这部分内容。该内容在文献[3]中也有所提及。</em></p>
+<font color=#ff0000>*如果梯度保持不变，则最终速度（即，权重更新的最大大小）等于该梯度乘以学习率η乘以1/(1-β)。 例如，如果β = 0.9，则最终速度等于学习率的梯度乘以 10 倍，因此动量优化比梯度下降快 10 倍[2]！*</font>
+
+<blockquote>
+<p>在不使用Batch Normalization的深层神经网络中，较高层往往会得到具有不同的尺度的输入，所以使用动量优化会有很大的帮助。 它也可以帮助滚过局部最优值[2]。</p>
+</blockquote>
+<p>&emsp; 在 TensorFlow 中实现动量优化是一件简单的事情：只需用MomentumOptimizer替换GradientDescentOptimizer.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">optimizer &#x3D; tf.train.MomentumOptimizer(learning_rate&#x3D;learning_rate, momentum&#x3D;0.9)</span><br></pre></td></tr></table></figure></p>
+<h2 id="Nesterov加速梯度（Nesterov-Accelerated-Gradient）"><a href="#Nesterov加速梯度（Nesterov-Accelerated-Gradient）" class="headerlink" title="Nesterov加速梯度（Nesterov Accelerated Gradient）"></a>Nesterov加速梯度（Nesterov Accelerated Gradient）</h2><p>&emsp; Yurii Nesterov 在 1983 年提出的动量优化的一个小变体几乎总是比普通的动量优化更快。 Nesterov 动量优化（Nesterov Momentum Optimization）或 Nesterov 加速梯度（Nesterov Accelerated Gradient，NAG）的思想是测量损失函数的梯度不是在局部位置，而是在动量方向稍微靠前（见公式 11-5）。 与普通的动量优化的唯一区别在于梯度是在θ+βm而不是在θ处测量的。</p>
+<p><strong>Nesterov Momentum Optimization权重 $\boldsymbol\theta$ 更新规则如下</strong>：</p>
+<script type="math/tex; mode=display">
+\begin{array} \
+\boldsymbol v_t = \gamma \boldsymbol v_{t-1} + \eta \nabla_ \boldsymbol \theta J(\boldsymbol \theta + \gamma \boldsymbol v_{t-1}) \\
+\boldsymbol \theta \leftarrow \boldsymbol \theta - \boldsymbol v_t
+\end{array} \</script><p>在 TensorFlow 中要使用NAG，只需在创建MomentumOptimizer时设置use_nesterov = True 即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">optimizer &#x3D; tf.train.MomentumOptimizer(learning_rate&#x3D;learning_rate, momentum&#x3D;0.9, use_nesterov&#x3D;True)</span><br></pre></td></tr></table></figure></p>
+<h2 id="AdaGrad"><a href="#AdaGrad" class="headerlink" title="AdaGrad"></a>AdaGrad</h2><p>&emsp; Adagrad 算法根据自变量在每个维度的梯度值的大小来调整各个维度上的学习率，从而避免统一的学习率难以适应所有维度的问题 [3]。<br><strong>AdaGrad权重 $\boldsymbol\theta$ 更新规则如下</strong>：</p>
+<script type="math/tex; mode=display">
+\begin{array} \
+\boldsymbol s_t = \gamma \boldsymbol s_{t-1} + \eta \nabla_ \boldsymbol \theta J(\boldsymbol \theta) \odot \nabla_ \boldsymbol \theta J(\boldsymbol \theta) \\
+\boldsymbol \theta \leftarrow \boldsymbol \theta - \dfrac{\eta}{\sqrt{\boldsymbol s_t + \epsilon}} \odot \nabla_ \boldsymbol \theta J(\boldsymbol \theta) 
+\end{array} \</script><p>其中$\odot$表示按元素相乘，$\eta$是学习率，$\epsilon$是避免被零除的平滑项，通常设置为$10^{-10}$.</p>
+<blockquote>
+<p>AdaGrad论文：“Adaptive Subgradient Methods for Online Learning and Stochastic Optimization,” J. Duchi et al. (2011).</p>
+</blockquote>
+<p>&emsp; 这种算法会降低学习速度，但对于陡峭的地方(常出现在迭代初期)，其速度要快于具有温和坡度处。这被称为自适应学习率。另一个好处是它不需要那么多的去调整学习率超参数η [2]。</p>
+<p>&emsp; 需要强调的是，小批量随机梯度按元素平方的累加变量 st 出现在学习率的分母项中。因此，如果目标函数有关自变量中某个元素的偏导数一直都较大，那么该元素的学习率将下降较快；反之，如果目标函数有关自变量中某个元素的偏导数一直都较小，那么该元素的学习率将下降较慢。然而，由于 st 一直在累加按元素平方的梯度，自变量中每个元素的学习率在迭代过程中一直在降低（或不变）。所以，当学习率在迭代早期降得较快且当前解依然不佳时，Adagrad 在迭代后期由于学习率过小，可能较难找到一个有用的解[3]。</p>
+<p>&emsp; 对于简单的二次问题，AdaGrad 经常表现良好，但不幸的是，在训练神经网络时，它经常停止得太早。 学习率被缩减得太多，以至于在达到全局最优之前，算法完全停止。 所以，即使 TensorFlow 有一个AdagradOptimizer，你也不应该用它来训练深度神经网络（虽然对线性回归这样简单的任务可能是有效的）[2]。</p>
+<h2 id="RMSProp"><a href="#RMSProp" class="headerlink" title="RMSProp"></a>RMSProp</h2><p>&emsp; 当学习率在迭代早期降得较快且当前解依然不佳时，Adagrad 在迭代后期由于学习率过小，可能较难找到一个有用的解。为了应对这一问题，RMSProp 算法对 Adagrad 做了一点小小的修改。</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>需要用到加权移动平均，文献[3]中的动量法提到了这些东西，可以先看看文献[3]中动量法的加权移动平均。</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://blog.csdn.net/tsyccnh/article/details/76270707" target="_blank" rel="noopener">深度学习优化函数详解（4）— momentum 动量法</a><br>[2] <a href="https://github.com/apachecn/hands_on_Ml_with_Sklearn_and_TF/blob/dev/docs/11.%E8%AE%AD%E7%BB%83%E6%B7%B1%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.md" target="_blank" rel="noopener">hands_on_Ml_with_Sklearn_and_TF.第10章.训练深层神经网络. 更快的优化器</a><br>[3] <a href="https://zh.gluon.ai/chapter_optimization/index.html" target="_blank" rel="noopener">动手学深度学习.优化算法</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/11/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1.1%E3%80%91LeNet-5/" rel="prev" title="【深度学习笔记2.1.1】LeNet-5">
+      <i class="fa fa-chevron-left"></i> 【深度学习笔记2.1.1】LeNet-5
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/01/09/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2.2%E3%80%91AlexNet%E8%AE%AD%E7%BB%83mnist%EF%BC%88LRN%E3%80%81BN%E7%AD%89%E5%8E%9F%E7%90%86%E5%BA%94%E5%BD%93%E6%80%BB%E7%BB%93%E5%87%BA%E6%9D%A5%EF%BC%89/" rel="next" title="【深度学习笔记2.2.2】AlexNet训练mnist（LRN、BN等原理应当总结出来）">
+      【深度学习笔记2.2.2】AlexNet训练mnist（LRN、BN等原理应当总结出来） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动量优化（Momentum-optimization）"><span class="nav-number">2.</span> <span class="nav-text">动量优化（Momentum optimization）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nesterov加速梯度（Nesterov-Accelerated-Gradient）"><span class="nav-number">3.</span> <span class="nav-text">Nesterov加速梯度（Nesterov Accelerated Gradient）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AdaGrad"><span class="nav-number">4.</span> <span class="nav-text">AdaGrad</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RMSProp"><span class="nav-number">5.</span> <span class="nav-text">RMSProp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

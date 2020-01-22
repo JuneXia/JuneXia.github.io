@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="tensorflow队列&amp;emsp; 在tensorflow中可以使用FIFOQueue、RandomShuffleQueue等方式创建一个队列[1]。 代码示例1：123456789101112131415import tensorflow as tfwith tf.Session() as sess:    q &#x3D; tf.FIFOQueue(3, &quot;float&quot;) # 创建长度为3，元素数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow笔记&#x2F;【TensorFlow笔记1.2】TensorFlow队列和CSV文件读写">
+<meta property="og:url" content="http://yoursite.com/2017/10/22/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.2%E3%80%91TensorFlow%E9%98%9F%E5%88%97%E5%92%8CCSV%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/index.html">
+<meta property="og:site_name" content="春播秋芒">
+<meta property="og:description" content="tensorflow队列&amp;emsp; 在tensorflow中可以使用FIFOQueue、RandomShuffleQueue等方式创建一个队列[1]。 代码示例1：123456789101112131415import tensorflow as tfwith tf.Session() as sess:    q &#x3D; tf.FIFOQueue(3, &quot;float&quot;) # 创建长度为3，元素数据">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-10-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-01-22T05:21:58.424Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/10/22/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.2%E3%80%91TensorFlow%E9%98%9F%E5%88%97%E5%92%8CCSV%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>TensorFlow笔记/【TensorFlow笔记1.2】TensorFlow队列和CSV文件读写 | 春播秋芒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">春播秋芒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/22/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.2%E3%80%91TensorFlow%E9%98%9F%E5%88%97%E5%92%8CCSV%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春播秋芒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TensorFlow笔记/【TensorFlow笔记1.2】TensorFlow队列和CSV文件读写
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-10-22 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-22T00:00:00+08:00">2017-10-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:21:58" itemprop="dateModified" datetime="2020-01-22T13:21:58+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+<h2 id="tensorflow队列"><a href="#tensorflow队列" class="headerlink" title="tensorflow队列"></a>tensorflow队列</h2><p>&emsp; 在tensorflow中可以使用FIFOQueue、RandomShuffleQueue等方式创建一个队列[1]。</p>
+<p>代码示例1：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    q = tf.FIFOQueue(<span class="number">3</span>, <span class="string">"float"</span>) <span class="comment"># 创建长度为3，元素数据类型是float的队列。</span></span><br><span class="line">    init = q.enqueue_many(([<span class="number">0.1</span>, <span class="number">0.2</span>, <span class="number">0.3</span>],)) <span class="comment"># 向队列中填充数据（注意这只是预备操作，真正的数据填充是要到sess.run(init)操作时才会完成）</span></span><br><span class="line">    init2 = q.dequeue() <span class="comment"># 出队</span></span><br><span class="line">    init3 = q.enqueue(<span class="number">1.</span>) <span class="comment"># 入队</span></span><br><span class="line"></span><br><span class="line">    sess.run(init)</span><br><span class="line">    sess.run(init2)</span><br><span class="line">    sess.run(init3)</span><br><span class="line"></span><br><span class="line">    quelen =  sess.run(q.size())</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(quelen):</span><br><span class="line">        print(sess.run(q.dequeue()))</span><br></pre></td></tr></table></figure></p>
+<h2 id="tensorflow中队列如何实现入队与出队同时进行"><a href="#tensorflow中队列如何实现入队与出队同时进行" class="headerlink" title="tensorflow中队列如何实现入队与出队同时进行"></a>tensorflow中队列如何实现入队与出队同时进行</h2><p>&emsp; 上述代码是现将所有数据都存入队列，然后再依次从队列中取出，这并没有发挥出队列的价值。队列是为了实现入队与出队操作可以同时进行而设计的，tensorflow中可以通过QueueRunner和Coordinator协作来实现这项工作。<br>下面先简要说下tf.train.Coordinator和tf.train.QueueRunner的用法和意义。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建线程协调器，用于协调主线程和各个子线程之间的交互操作。</span></span><br><span class="line">coord = tf.train.Coordinator()</span><br><span class="line">    </span><br><span class="line">queue_runner = tf.train.QueueRunner(q, enqueue_ops=[add_op, enqueue_op] * <span class="number">2</span>) <span class="comment"># 定义用2个线程去完成这项任务</span></span><br><span class="line"><span class="comment"># 先用QueueRunner定义队列的入队操作，然后用queue_runner创建子线程去处理该入队操作。</span></span><br><span class="line"><span class="comment"># queue_runner在创建线程的时候需要传入Coordinator协调器，用于和主线程协调操作。</span></span><br><span class="line">enqueue_threads = queue_runner.create_threads(sess, coord=coord, start=<span class="literal">True</span>)  <span class="comment"># 启动入队线程</span></span><br><span class="line"><span class="comment"># queue_runner在创建线程的时候如果不传入Coordinator协调器的话，则程序运行结束前会报错。</span></span><br><span class="line"><span class="comment"># 这是因为当主线程运行完毕后就接直接结束了，而没有发出终止其他线程的请求。</span></span><br></pre></td></tr></table></figure></p>
+<p>完整代码如下，代码示例2：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    q = tf.FIFOQueue(<span class="number">10</span>, <span class="string">"float32"</span>) <span class="comment"># 创建一个队列，该队列有10个数据，数据类型是float32</span></span><br><span class="line">    counter = tf.Variable(<span class="number">0.0</span>)</span><br><span class="line">    add_op = tf.assign_add(counter, tf.constant(<span class="number">1.0</span>))</span><br><span class="line">    enqueue_op = q.enqueue(counter)</span><br><span class="line"></span><br><span class="line">    sess.run(tf.initialize_all_variables())</span><br><span class="line">    coord = tf.train.Coordinator()</span><br><span class="line">    queue_runner = tf.train.QueueRunner(q, enqueue_ops=[add_op, enqueue_op] * <span class="number">2</span>)</span><br><span class="line">    enqueue_threads = queue_runner.create_threads(sess, coord=coord, start=<span class="literal">True</span>)  <span class="comment"># 启动入队线程</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">        print(sess.run(q.dequeue()))</span><br><span class="line">    coord.request_stop()</span><br><span class="line">    coord.join(enqueue_threads)</span><br><span class="line">    print(<span class="string">'sess end'</span>)</span><br><span class="line">print(<span class="string">'program end'</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="CSV文件读写"><a href="#CSV文件读写" class="headerlink" title="CSV文件读写"></a>CSV文件读写</h2><p>&emsp; 逗号分隔值（Comma-Separated Values，CSV，有时也称为字符分隔值，因为分隔字符也可以不是逗号），其文件以纯文本形式存储表格数据（数字和文本）[1]。<br>在介绍tensorflow读写csv文件之前，先说下python读写csv文件</p>
+<h3 id="Python读写CSV文件"><a href="#Python读写CSV文件" class="headerlink" title="Python读写CSV文件"></a>Python读写CSV文件</h3><h4 id="Python写CSV文件"><a href="#Python写CSV文件" class="headerlink" title="Python写CSV文件"></a>Python写CSV文件</h4><p>新建img文件夹，并放入若干张图片，如下图所示：<br>img<br>├── cat.0.jpg<br>├── cat.1.jpg<br>├── cat.2.jpg<br>├── cat.3.jpg<br>├── cat.4.jpg<br>├── cat.5.jpg<br>├── cat.6.jpg<br>├── cat.7.jpg<br>├── cat.8.jpg<br>└── cat.9.jpg<br>下面介绍python写csv文件。</p>
+<p>代码示例:3：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">path = <span class="string">'img'</span></span><br><span class="line">filenames=os.listdir(path)</span><br><span class="line">strText = <span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"train_list.csv"</span>, <span class="string">"w"</span>) <span class="keyword">as</span> fid:</span><br><span class="line">    <span class="keyword">for</span> a <span class="keyword">in</span> range(len(filenames)):</span><br><span class="line">        strText = path+os.sep+filenames[a]  + <span class="string">","</span> + filenames[a].split(<span class="string">'.'</span>)[<span class="number">1</span>]  + <span class="string">"\n"</span></span><br><span class="line">        fid.write(strText)</span><br><span class="line">fid.close()</span><br></pre></td></tr></table></figure><br>生成的csv文件内容如下：<br>img/cat.0.jpg,0<br>img/cat.8.jpg,8<br>img/cat.3.jpg,3<br>img/cat.2.jpg,2<br>img/cat.1.jpg,1<br>img/cat.5.jpg,5<br>img/cat.4.jpg,4<br>img/cat.7.jpg,7<br>img/cat.6.jpg,6<br>img/cat.9.jpg,9</p>
+<h4 id="Python读取CSV文件"><a href="#Python读取CSV文件" class="headerlink" title="Python读取CSV文件"></a>Python读取CSV文件</h4><p>代码示例4：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line">image_add_list = []</span><br><span class="line">image_label_list = []</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"train_list.csv"</span>) <span class="keyword">as</span> fid:</span><br><span class="line">    <span class="keyword">for</span> image <span class="keyword">in</span> fid.readlines():</span><br><span class="line">        image_add_list.append(image.strip().split(<span class="string">","</span>)[<span class="number">0</span>])</span><br><span class="line">        image_label_list.append(image.strip().split(<span class="string">","</span>)[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上面这段代码就是csv文件的读取，</span></span><br><span class="line"><span class="comment"># 下面介绍一下如何将图片文件转换成tensorflow所需要的张量形式。</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_image</span><span class="params">(image_path)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.image.convert_image_dtype(</span><br><span class="line">        tf.image.decode_jpeg(</span><br><span class="line">            tf.read_file(image_path), channels=<span class="number">1</span>),</span><br><span class="line">        dtype=tf.uint8)</span><br><span class="line"><span class="comment"># tf.read_file, 读取图片文件</span></span><br><span class="line"><span class="comment"># tf.image.decode_jpeg, 将读取进来的图片文件解码成jpg格式</span></span><br><span class="line"><span class="comment">#                       channels=1表示读取灰度图</span></span><br><span class="line"><span class="comment"># tf.image.convert_image_dtype，将图像转化成TensorFlow需要的张量形式</span></span><br><span class="line"></span><br><span class="line">img = get_image(image_add_list[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    cv2Img = sess.run(img)</span><br><span class="line">    img2 = cv2.resize(cv2Img, (<span class="number">200</span>,<span class="number">200</span>))</span><br><span class="line">    cv2.imshow(<span class="string">'image'</span>, img2)</span><br><span class="line">    cv2.waitKey()</span><br></pre></td></tr></table></figure></p>
+<h3 id="tensorflow读写CSV文件"><a href="#tensorflow读写CSV文件" class="headerlink" title="tensorflow读写CSV文件"></a>tensorflow读写CSV文件</h3><p>&emsp; 关于CSV文件的读写，文献[1]中介绍的是用Python写CSV，用Python读CSV；文献[2]中介绍的是用tensorflow读取CSV。所以，有用tensorflow写CSV吗？好吧，遇到时再说吧。</p>
+<p>&emsp; 新建文件file0.csv、file1.csv，其内容分别如下：<br>file0.csv<br>21,31,41,44,0<br>22,32,42,44,0<br>23,33,53,44,0<br>24,34,44,44,0<br>25,35,45,44,0</p>
+<p>file1.csv<br>11,31,41,50,1<br>12,42,42,55,1<br>13,23,53,55,1<br>14,34,44,45,1<br>15,35,45,55,1</p>
+<h4 id="tensorflow读取CSV文件"><a href="#tensorflow读取CSV文件" class="headerlink" title="tensorflow读取CSV文件"></a>tensorflow读取CSV文件</h4><p>使用 tf.TextLineReader与 tf.decode_csv操作，主要代码讲解如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">filename_queue = tf.train.string_input_producer([<span class="string">"file0.csv"</span>, <span class="string">"file1.csv"</span>])</span><br><span class="line"><span class="comment"># 将文件名列表传递给tf.train.string_input_producer函数。string_input_producer创建一个用于保存文件名的FIFO队列。</span></span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">record_defaults &#x3D; [[1], [1], [1], [1], [1]]</span><br><span class="line">col1, col2, col3, col4, col5 &#x3D; tf.decode_csv(value, record_defaults&#x3D;record_defaults)</span><br><span class="line"># decode_csv操作将value解析成张量列表，record_defaults参数决定了所得张量的类型。</span><br><span class="line"># 注意，如果要读取的每个记录是固定数量字节的二进制文件（这个一般是TFRecords文件而不是csv文件了吧），请使用 tf.FixedLengthRecordReader 读取该文件，并使用 tf.decode_raw 解码文件内容。decode_raw 操作进行从字符串到UINT8张量转换。</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    <span class="comment"># Start populating the filename queue.</span></span><br><span class="line">    coord = tf.train.Coordinator() <span class="comment"># 创建线程协调器</span></span><br><span class="line">    threads = tf.train.start_queue_runners(coord=coord) <span class="comment"># 启动线程，用于往队列中输入数据</span></span><br><span class="line">    <span class="comment"># 对比“代码示例2”中的tf.train.QueueRunner和queue_runner.create_threads，这里用tf.train.start_queue_runners包含了这两步操作</span></span><br><span class="line">    <span class="comment"># 疑问：为什么这里的tf.train.start_queue_runners没有传入sess参数？</span></span><br><span class="line">    <span class="comment"># 这可能是因为tf.train.start_queue_runners是被包含在“with tf.Session() as sess”里的吧</span></span><br></pre></td></tr></table></figure>
+<p>完整代码如下[2]，代码示例5：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">filename_queue = tf.train.string_input_producer([<span class="string">"file0.csv"</span>, <span class="string">"file1.csv"</span>])</span><br><span class="line"></span><br><span class="line">reader = tf.TextLineReader()</span><br><span class="line">key, value = reader.read(filename_queue) <span class="comment"># read操作每次从文件中读取一行</span></span><br><span class="line"><span class="comment"># key是文件名，value是该文件中某一行内容，这些可以在后面通过sess.run查看</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Default values, in case of empty columns. Also specifies the type of the</span></span><br><span class="line"><span class="comment"># decoded result.</span></span><br><span class="line">record_defaults = [[<span class="number">1</span>], [<span class="number">1</span>], [<span class="number">1</span>], [<span class="number">1</span>], [<span class="number">1</span>]]</span><br><span class="line">col1, col2, col3, col4, col5 = tf.decode_csv(value, record_defaults=record_defaults)</span><br><span class="line">features = tf.stack([col1, col2, col3, col4])</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    <span class="comment"># Start populating the filename queue.</span></span><br><span class="line">    coord = tf.train.Coordinator() <span class="comment"># 创建线程协调器</span></span><br><span class="line">    threads = tf.train.start_queue_runners(coord=coord) <span class="comment"># 启动线程，用于往队列中输入数据</span></span><br><span class="line">    <span class="comment"># 注意：如果不启动该线程，则不会有往队列输入数据的操作，则下面的sess.run(...)会一直被阻塞</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1200</span>):</span><br><span class="line">        <span class="comment"># Retrieve a single instance:</span></span><br><span class="line">        example, label = sess.run([features, col5])</span><br><span class="line">        print(example, label)</span><br><span class="line"></span><br><span class="line">    coord.request_stop()</span><br><span class="line">    coord.join(threads)</span><br></pre></td></tr></table></figure></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] 王晓华. TensorFlow深度学习应用实践<br>[2] <a href="http://cwiki.apachecn.org/pages/viewpage.action?pageId=10029497" target="_blank" rel="noopener">ApacheCN &gt;&gt; Tensorflow &gt;&gt; 编程指南 &gt;&gt; 阅读数据</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/10/20/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.1%E3%80%91%E5%90%84%E7%A7%8D%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="prev" title="TensorFlow笔记/【TensorFlow笔记1.1】各种函数的使用">
+      <i class="fa fa-chevron-left"></i> TensorFlow笔记/【TensorFlow笔记1.1】各种函数的使用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/10/23/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.3%E3%80%91TFRecords%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" rel="next" title="TensorFlow笔记/【TensorFlow笔记1.3】TFRecords文件读写">
+      TensorFlow笔记/【TensorFlow笔记1.3】TFRecords文件读写 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tensorflow队列"><span class="nav-number">1.</span> <span class="nav-text">tensorflow队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tensorflow中队列如何实现入队与出队同时进行"><span class="nav-number">2.</span> <span class="nav-text">tensorflow中队列如何实现入队与出队同时进行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSV文件读写"><span class="nav-number">3.</span> <span class="nav-text">CSV文件读写</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python读写CSV文件"><span class="nav-number">3.1.</span> <span class="nav-text">Python读写CSV文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python写CSV文件"><span class="nav-number">3.1.1.</span> <span class="nav-text">Python写CSV文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python读取CSV文件"><span class="nav-number">3.1.2.</span> <span class="nav-text">Python读取CSV文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tensorflow读写CSV文件"><span class="nav-number">3.2.</span> <span class="nav-text">tensorflow读写CSV文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tensorflow读取CSV文件"><span class="nav-number">3.2.1.</span> <span class="nav-text">tensorflow读取CSV文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">日常日常开发总结笔记，主要供个人学习所用，如有错谬还望不吝告知！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>
