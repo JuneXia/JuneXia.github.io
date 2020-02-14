@@ -261,6 +261,23 @@ sudo pip3 install opencv-contrib-python -i https://pypi.tuna.tsinghua.edu.cn/sim
 sudo pip3 install matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
+## 9. 安装PyTorch
+参考[官方安装指导](https://pytorch.org/get-started/locally/)，我是使用pip方式安装的。
+
+```bash
+# 方式1：下面默认安装的是cpu版本
+sudo pip3 install torch==1.1.0 torchvision==0.3.0
+sudo pip3 install torch==1.1.0 torchvision==0.3.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# 方式2：下面会安装pytorch gpu版本，torchvision也是gpu版本，但是我的cuda环境是cuda10.0，
+#       这里的pytorch-1.1.0可以支持cuda10，但是torchvision只能支持cuda9
+sudo pip3 install https://download.pytorch.org/whl/cu100/torch-1.1.0-cp35-cp35m-linux_x86_64.whl
+sudo pip3 install torchvision==0.3.0
+
+# 方式3：安装更高版本的 pytorch 和 torchvision，成功
+sudo pip3 install torch==1.2.0 torchvision==0.4.0 -f https://download.pytorch.org/whl/torch_stable.html
+```
+
 
 [1] [Ubuntu 16.04安装NVIDIA驱动](https://blog.csdn.net/CosmosHua/article/details/76644029)
 [2] [Ubuntu下Nvidia驱动安装](https://onlycaptain.github.io/2018/08/18/Ubuntu%E4%B8%8BNvidia%E9%A9%B1%E5%8A%A8%E5%AE%89%E8%A3%85/)

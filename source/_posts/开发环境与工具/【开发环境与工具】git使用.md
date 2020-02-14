@@ -21,3 +21,15 @@ git commit -m '提交说明信息'
 
 git push
 ```
+
+
+**比较本地仓库与远程仓库的区别**
+```bash
+git fetch orgin
+
+git diff master origin/master
+或者
+git diff master origin/其他分支
+```
+
+
