@@ -46,12 +46,12 @@
   };
 </script>
 
-  <meta name="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+  <meta name="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
 <meta property="og:type" content="website">
-<meta property="og:title" content="春播秋芒">
+<meta property="og:title" content="去取经">
 <meta property="og:url" content="http://yoursite.com/page/5/index.html">
-<meta property="og:site_name" content="春播秋芒">
-<meta property="og:description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+<meta property="og:site_name" content="去取经">
+<meta property="og:description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary">
 
@@ -67,7 +67,7 @@
   };
 </script>
 
-  <title>春播秋芒</title>
+  <title>去取经</title>
   
 
 
@@ -111,7 +111,7 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">春播秋芒</span>
+        <span class="site-title">去取经</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -171,16 +171,183 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="去取经">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/11/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/" class="post-title-link" itemprop="url">【深度学习笔记1.2】梯度消失与梯度爆炸</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-11-11 17:28:05" itemprop="dateCreated datePublished" datetime="2017-11-11T17:28:05+08:00">2017-11-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:00" itemprop="dateModified" datetime="2020-01-22T13:25:00+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h2><p>&emsp; 梯度下降法（Gradient descent）是一种基于函数一阶性质的优化算法，其本质是在某个位置将目标函数一阶展开，利用其一阶性质持续向函数值下降最快的方向前进，以期找到函数的全局最小解。梯度下降属于梯度优化方法大类，此外还有最速下降法，共轭梯度法等等。还有其他方法基于目标函数的二阶性质，比如牛顿法、拟牛顿法等[1]。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/11/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="去取经">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记2.1】tf.nn.conv2d，tf.nn.max_pool</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-10-26 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-26T00:00:00+08:00">2017-10-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 14:08:11" itemprop="dateModified" datetime="2020-01-22T14:08:11+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="tf-nn-conv2d函数解析"><a href="#tf-nn-conv2d函数解析" class="headerlink" title="tf.nn.conv2d函数解析"></a>tf.nn.conv2d函数解析</h2><p><strong>tf.nn.conv2d(input, filter, strides, padding, use_cudnn_on_gpu=None, name=None)</strong></p>
+<p>除去name参数用以指定该操作的name，与方法有关的一共五个参数：<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/23/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.3%E3%80%91TFRecords%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -259,11 +426,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -350,11 +517,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -441,11 +608,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -519,11 +686,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -602,11 +769,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -679,11 +846,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -761,11 +928,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -816,172 +983,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2017/10/02/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91%E4%BD%BF%E7%94%A8Dataset%E5%92%8CIterator%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/16/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%20[%E8%BD%AC]%E3%80%91tf.cond%20%E4%B8%8E%20tf.control_dependencies%20%E7%9A%84%E6%8E%A7%E5%88%B6%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/09/16/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%20%5B%E8%BD%AC%5D%E3%80%91tf.cond%20%E4%B8%8E%20tf.control_dependencies%20%E7%9A%84%E6%8E%A7%E5%88%B6%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记 [转]】tf.cond 与 tf.control_dependencies 的控制问题</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2017-09-16T00:00:00+08:00">2017-09-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:20:41" itemprop="dateModified" datetime="2020-01-22T13:20:41+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">TensorFlow笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文转自：<a href="http://yanjoy.win/2017/04/18/tfcond/" target="_blank" rel="noopener">tf.cond 与 tf.control_dependencies 的控制问题</a><br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/09/16/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%20%5B%E8%BD%AC%5D%E3%80%91tf.cond%20%E4%B8%8E%20tf.control_dependencies%20%E7%9A%84%E6%8E%A7%E5%88%B6%E9%97%AE%E9%A2%98/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/07/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.5%E3%80%91%E4%BA%8C%E6%AC%A1%E8%A7%84%E5%88%92/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/09/07/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.5%E3%80%91%E4%BA%8C%E6%AC%A1%E8%A7%84%E5%88%92/" class="post-title-link" itemprop="url">【数学基础与最优化1.5】二次规划</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-09-07 00:00:00" itemprop="dateCreated datePublished" datetime="2017-09-07T00:00:00+08:00">2017-09-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:26:52" itemprop="dateModified" datetime="2020-01-22T13:26:52+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/" itemprop="url" rel="index">
-                    <span itemprop="name">数学基础与最优化</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="二次规划"><a href="#二次规划" class="headerlink" title="二次规划"></a>二次规划</h2><p>&emsp; 二次规划(QP)是求解一类特殊的数学优化问题的过程，它是一个线性约束的二次优化问题，即多个变量的二次函数在这些变量上受线性约束的优化(最小化或最大化)问题。二次规划是一类特殊的非线性规划。\<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/09/07/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.5%E3%80%91%E4%BA%8C%E6%AC%A1%E8%A7%84%E5%88%92/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1064,14 +1065,14 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name"></p>
-  <div class="site-description" itemprop="description">日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！</div>
+  <div class="site-description" itemprop="description">日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">75</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -50,14 +50,14 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="【数学基础与最优化1.4】带约束的优化问题">
 <meta property="og:url" content="http://yoursite.com/2017/08/16/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.4%E3%80%91%E5%B8%A6%E7%BA%A6%E6%9D%9F%E7%9A%84%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98/index.html">
-<meta property="og:site_name" content="春播秋芒">
+<meta property="og:site_name" content="去取经">
 <meta property="og:description" content="条件极值  拉格朗日乘数法&amp;emsp; 现实问题中，有时会遇到对函数的自变量还有附加条件的极值问题。例如，求表面积为$a^2$而体积为最大的长方体的体积问题。设长方体的三棱长为$x,y,z$，则体积$V&#x3D;xyz$，又因表面积为$a^2$，所以自变量$x,y,z$还必须满足附加条件$2(xy+yz+xz)&#x3D;a^2$，像这种对自变量有附加条件的极值称为条件极值。对于有些实际问题，可以把条件极值化为无">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-YgG-fmRuqL4/W_ZyhgH-FxI/AAAAAAAAAIo/b8V8vcStVN4hUMWbcfSqM31iFMIXmJc9QCLcBGAs/s0/lagrange_optimizer.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-joqblsuBvY8/W_aGPPYBf5I/AAAAAAAAAI4/2kcFS1DPMnU4P2_kdiEYETa8gwep56FSACLcBGAs/s0/lagrange_optimizer2.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-4zXfd-_-pRI/W_0YQusR0iI/AAAAAAAAAJU/8clptIaFNKwQUebbHmwVNY50YUo0dxBhACLcBGAs/s0/kkt.png">
 <meta property="article:published_time" content="2017-08-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-01-22T05:26:37.430Z">
+<meta property="article:modified_time" content="2020-01-22T06:32:12.850Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://lh3.googleusercontent.com/-YgG-fmRuqL4/W_ZyhgH-FxI/AAAAAAAAAIo/b8V8vcStVN4hUMWbcfSqM31iFMIXmJc9QCLcBGAs/s0/lagrange_optimizer.jpg">
 
@@ -73,7 +73,7 @@
   };
 </script>
 
-  <title>【数学基础与最优化1.4】带约束的优化问题 | 春播秋芒</title>
+  <title>【数学基础与最优化1.4】带约束的优化问题 | 去取经</title>
   
 
 
@@ -117,7 +117,7 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">春播秋芒</span>
+        <span class="site-title">去取经</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -182,11 +182,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -207,7 +207,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:26:37" itemprop="dateModified" datetime="2020-01-22T13:26:37+08:00">2020-01-22</time>
+                <time title="Modified: 2020-01-22 14:32:12" itemprop="dateModified" datetime="2020-01-22T14:32:12+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -289,8 +289,7 @@ f_y(x, y) + \lambda \varphi_y(x, y) = 0, \\
     \dfrac{\partial L}{\partial \mu_1} = g_1 + a_1^2 = 0, \\
 \dfrac{\partial L}{\partial a_1} = 2 \mu_1 a_1 = 0, \\
 \mu_1 \geq 0.
-\end{cases} \tag{4}</script><hr>
-<p>我们可以做如下讨论：</p>
+\end{cases} \tag{4}</script><p>我们可以做如下讨论：</p>
 <ol>
 <li>当$\mu_1 = 0$时，${a_1 \not = 0}$ （${me:此时a_1等于0不可以吗？}$），在Lagrange函数$L$中，约束$g_1$不起作用；而由 $g_1 + a_1^2 = 0$可知此时$g_1 &lt; 0$.</li>
 <li>当$\mu_1 &gt; 0$时，$a_1 = 0$，由 $g_1 + a_1^2 = 0$可知此时$g_1 = 0$.<br>综上有 $\mu_1 g_1 = 0$.<br>同理也有 $\mu_2 g_2 = 0$.</li>
@@ -313,7 +312,6 @@ s.t. \ g_j(\boldsymbol x) \leq 0, (j=1,2,...,m)
 \mu_j g_j(\boldsymbol x) = 0, \quad (j=1,2,...,m), \\
 \mu_j \geq 0, \quad (j=1,2,...,m).
 \end{cases} \tag{7}</script><p>上式便称为不等式约束优化问题(6)的<strong>KKT（Karush-Kuhn-Tucker）条件</strong>. $\mu_j$称为<strong>KKT乘子</strong>，且约束起作用时$\mu_j \geq 0, g_j(\boldsymbol x) = 0$；约束不起作用时$\mu_j = 0, g_j(\boldsymbol x) &lt; 0$ [3].</p>
-<hr>
 <font color=#ff0000 size=3>注意这里的约束起作用时， “$\mu_j \geq 0, g_j(\boldsymbol x) = 0$” 和上面讨论的 “$\mu_j > 0, g_j(\boldsymbol x) = 0$” 的区别，但这里是正确的，也就是说上面的证明还不够严谨，那么具体要怎样更严谨的证明呢？</font>
 
 <p>总结：同时包含等式和不等式约束的一般优化问题[3]</p>
@@ -408,14 +406,14 @@ s.t. \ g_j(\boldsymbol x) \leq 0, (j=1,2,...,m)
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name"></p>
-  <div class="site-description" itemprop="description">日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！</div>
+  <div class="site-description" itemprop="description">日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">75</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

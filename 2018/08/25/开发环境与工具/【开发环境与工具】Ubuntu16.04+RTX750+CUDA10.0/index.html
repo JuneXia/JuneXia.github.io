@@ -50,12 +50,12 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="【开发环境与工具】Ubuntu16.04+RTX750+CUDA10.0">
 <meta property="og:url" content="http://yoursite.com/2018/08/25/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91Ubuntu16.04+RTX750+CUDA10.0/index.html">
-<meta property="og:site_name" content="春播秋芒">
+<meta property="og:site_name" content="去取经">
 <meta property="og:description" content="0. 基本环境配置 检查gcc版本1gcc --version 对于Ubuntu 16.04来说，gcc版本需要&gt;5.4.0。  如果没有gcc命令，则需要安装gcc12sudo apt update  # 一定要记得先update，不然找不到gccsudo apt install gcc  检查Kernel版本1uname -r 对于Ubuntu 16.04来说，内核版本需要&gt;4.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-o6jQ09C2HfM/XYhRwKi2jeI/AAAAAAAAAO4/GcwJPgUtw4kwfM94ML3fo4BmdzdjtGzwQCLcBGAsYHQ/s0/nvidia-driver-download.png">
 <meta property="article:published_time" content="2018-08-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-01-22T05:27:57.514Z">
+<meta property="article:modified_time" content="2020-02-11T04:11:51.308Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://lh3.googleusercontent.com/-o6jQ09C2HfM/XYhRwKi2jeI/AAAAAAAAAO4/GcwJPgUtw4kwfM94ML3fo4BmdzdjtGzwQCLcBGAsYHQ/s0/nvidia-driver-download.png">
 
@@ -71,7 +71,7 @@
   };
 </script>
 
-  <title>【开发环境与工具】Ubuntu16.04+RTX750+CUDA10.0 | 春播秋芒</title>
+  <title>【开发环境与工具】Ubuntu16.04+RTX750+CUDA10.0 | 去取经</title>
   
 
 
@@ -115,7 +115,7 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">春播秋芒</span>
+        <span class="site-title">去取经</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -180,11 +180,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -205,7 +205,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:27:57" itemprop="dateModified" datetime="2020-01-22T13:27:57+08:00">2020-01-22</time>
+                <time title="Modified: 2020-02-11 12:11:51" itemprop="dateModified" datetime="2020-02-11T12:11:51+08:00">2020-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -311,6 +311,8 @@
 <h2 id="7-安装TensorFlow"><a href="#7-安装TensorFlow" class="headerlink" title="7. 安装TensorFlow"></a>7. 安装TensorFlow</h2><p>如果没有pip，则需要先安装pip<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python3-pip python3-dev</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install tensorflow-gpu==1.14.0 -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
 <h2 id="8-其他python库的安装"><a href="#8-其他python库的安装" class="headerlink" title="8. 其他python库的安装"></a>8. 其他python库的安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install opencv-python -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">sudo pip3 install opencv-contrib-python -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">sudo pip3 install matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+<h2 id="9-安装PyTorch"><a href="#9-安装PyTorch" class="headerlink" title="9. 安装PyTorch"></a>9. 安装PyTorch</h2><p>参考<a href="https://pytorch.org/get-started/locally/" target="_blank" rel="noopener">官方安装指导</a>，我是使用pip方式安装的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方式1：下面默认安装的是cpu版本</span></span><br><span class="line">sudo pip3 install torch==1.1.0 torchvision==0.3.0</span><br><span class="line">sudo pip3 install torch==1.1.0 torchvision==0.3.0 -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式2：下面会安装pytorch gpu版本，torchvision也是gpu版本，但是我的cuda环境是cuda10.0，</span></span><br><span class="line"><span class="comment">#       这里的pytorch-1.1.0可以支持cuda10，但是torchvision只能支持cuda9</span></span><br><span class="line">sudo pip3 install https://download.pytorch.org/whl/cu100/torch-1.1.0-cp35-cp35m-linux_x86_64.whl</span><br><span class="line">sudo pip3 install torchvision==0.3.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式3：安装更高版本的 pytorch 和 torchvision，成功</span></span><br><span class="line">sudo pip3 install torch==1.2.0 torchvision==0.4.0 -f https://download.pytorch.org/whl/torch_stable.html</span><br></pre></td></tr></table></figure>
 <p>[1] <a href="https://blog.csdn.net/CosmosHua/article/details/76644029" target="_blank" rel="noopener">Ubuntu 16.04安装NVIDIA驱动</a><br>[2] <a href="https://onlycaptain.github.io/2018/08/18/Ubuntu%E4%B8%8BNvidia%E9%A9%B1%E5%8A%A8%E5%AE%89%E8%A3%85/" target="_blank" rel="noopener">Ubuntu下Nvidia驱动安装</a><br>[3] <a href="https://bluesmilery.github.io/blogs/a687003b/" target="_blank" rel="noopener">多版本CUDA和TensorFlow共存</a></p>
 
     </div>
@@ -327,8 +329,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/06/25/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20%5B%E8%BD%AC%5D%E3%80%91%E8%BF%AD%E4%BB%A3%E5%99%A8(Iterator)/" rel="prev" title="【Python笔记 [转]】迭代器(Iterator)">
-      <i class="fa fa-chevron-left"></i> 【Python笔记 [转]】迭代器(Iterator)
+    <a href="/2018/08/12/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1.2%E3%80%91%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD(Back%20Propagation)/" rel="prev" title="【深度学习笔记】反向传播(Back Propagation)">
+      <i class="fa fa-chevron-left"></i> 【深度学习笔记】反向传播(Back Propagation)
     </a></div>
       <div class="post-nav-item">
     <a href="/2018/10/21/hello-world/" rel="next" title="Hello World">
@@ -393,21 +395,21 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-基本环境配置"><span class="nav-number">1.</span> <span class="nav-text">0. 基本环境配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-卸载旧的显卡驱动"><span class="nav-number">2.</span> <span class="nav-text">1. 卸载旧的显卡驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-禁用nouveau驱动"><span class="nav-number">3.</span> <span class="nav-text">2. 禁用nouveau驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-禁用X-Window服务"><span class="nav-number">4.</span> <span class="nav-text">3. 禁用X-Window服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-命令行安装显卡驱动"><span class="nav-number">5.</span> <span class="nav-text">4. 命令行安装显卡驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-安装CUDA"><span class="nav-number">6.</span> <span class="nav-text">5. 安装CUDA</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译并测试设备-deviceQuery："><span class="nav-number"></span> <span class="nav-text">编译并测试设备 deviceQuery：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译并测试带宽-bandwidthTest："><span class="nav-number"></span> <span class="nav-text">编译并测试带宽 bandwidthTest：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#笔者这一步没有安装补丁"><span class="nav-number">0.1.</span> <span class="nav-text">笔者这一步没有安装补丁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-安装cuDNN"><span class="nav-number">1.</span> <span class="nav-text">6. 安装cuDNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-安装TensorFlow"><span class="nav-number">2.</span> <span class="nav-text">7. 安装TensorFlow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-其他python库的安装"><span class="nav-number">3.</span> <span class="nav-text">8. 其他python库的安装</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-基本环境配置"><span class="nav-number">1.</span> <span class="nav-text">0. 基本环境配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-卸载旧的显卡驱动"><span class="nav-number">2.</span> <span class="nav-text">1. 卸载旧的显卡驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-禁用nouveau驱动"><span class="nav-number">3.</span> <span class="nav-text">2. 禁用nouveau驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-禁用X-Window服务"><span class="nav-number">4.</span> <span class="nav-text">3. 禁用X-Window服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-命令行安装显卡驱动"><span class="nav-number">5.</span> <span class="nav-text">4. 命令行安装显卡驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-安装CUDA"><span class="nav-number">6.</span> <span class="nav-text">5. 安装CUDA</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译并测试设备-deviceQuery："><span class="nav-number"></span> <span class="nav-text">编译并测试设备 deviceQuery：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译并测试带宽-bandwidthTest："><span class="nav-number"></span> <span class="nav-text">编译并测试带宽 bandwidthTest：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#笔者这一步没有安装补丁"><span class="nav-number">0.1.</span> <span class="nav-text">笔者这一步没有安装补丁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-安装cuDNN"><span class="nav-number">1.</span> <span class="nav-text">6. 安装cuDNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-安装TensorFlow"><span class="nav-number">2.</span> <span class="nav-text">7. 安装TensorFlow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-其他python库的安装"><span class="nav-number">3.</span> <span class="nav-text">8. 其他python库的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-安装PyTorch"><span class="nav-number">4.</span> <span class="nav-text">9. 安装PyTorch</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name"></p>
-  <div class="site-description" itemprop="description">日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！</div>
+  <div class="site-description" itemprop="description">日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">75</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -46,12 +46,12 @@
   };
 </script>
 
-  <meta name="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+  <meta name="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
 <meta property="og:type" content="website">
-<meta property="og:title" content="春播秋芒">
+<meta property="og:title" content="去取经">
 <meta property="og:url" content="http://yoursite.com/page/4/index.html">
-<meta property="og:site_name" content="春播秋芒">
-<meta property="og:description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+<meta property="og:site_name" content="去取经">
+<meta property="og:description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary">
 
@@ -67,7 +67,7 @@
   };
 </script>
 
-  <title>春播秋芒</title>
+  <title>去取经</title>
   
 
 
@@ -111,7 +111,7 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">春播秋芒</span>
+        <span class="site-title">去取经</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -171,16 +171,173 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91%E6%9D%83%E9%87%8D%E8%A1%B0%E5%87%8F(weight%20decay)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="去取经">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/05/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91%E6%9D%83%E9%87%8D%E8%A1%B0%E5%87%8F(weight%20decay)/" class="post-title-link" itemprop="url">【深度学习笔记3.1 正则化】权重衰减(weight decay)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-05-22 17:28:05" itemprop="dateCreated datePublished" datetime="2018-05-22T17:28:05+08:00">2018-05-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 14:06:59" itemprop="dateModified" datetime="2020-01-22T14:06:59+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<p>权重衰减是什么？参考有关文献</p>
+<p>这里参考文献[1]整理成如下代码：(详见文献[5]regularization/WeightDecay.py)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">n_train = <span class="number">20</span></span><br><span class="line">n_test = <span class="number">100</span></span><br><span class="line">num_inputs = <span class="number">200</span></span><br><span class="line"></span><br><span class="line">true_w = np.ones((num_inputs, <span class="number">1</span>)) * <span class="number">0.01</span></span><br><span class="line">true_b = <span class="number">0.05</span></span><br><span class="line">features = np.random.normal(size=(n_train+n_test, num_inputs))</span><br><span class="line">np.random.shuffle(features)</span><br><span class="line">labels = np.dot(features, true_w) + true_b</span><br><span class="line">labels += np.random.normal(scale=<span class="number">0.01</span>, size=labels.shape)</span><br><span class="line"></span><br><span class="line">train_features, test_features = features[:n_train], features[n_train:]</span><br><span class="line">train_labels, test_labels = labels[:n_train], labels[n_train:]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">batch_size = <span class="number">1</span></span><br><span class="line">epochs = <span class="number">100</span></span><br><span class="line">learning_rate = <span class="number">0.003</span></span><br><span class="line">lambd = <span class="number">5</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x = tf.placeholder(tf.float32, shape=(<span class="literal">None</span>, num_inputs))</span><br><span class="line">y = tf.placeholder(tf.float32, shape=(<span class="literal">None</span>, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">w = tf.Variable(tf.random_normal((num_inputs, <span class="number">1</span>)))</span><br><span class="line">b = tf.Variable(tf.zeros(<span class="number">1</span>))</span><br><span class="line">y_hat = tf.add(tf.matmul(x, w), b)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">loss = tf.reduce_mean(tf.square(y-y_hat)) + lambd * (tf.reduce_sum(tf.pow(w, <span class="number">2</span>)) / <span class="number">2</span>)</span><br><span class="line">train = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">dataset = tf.data.Dataset.from_tensor_slices((train_features, train_labels))</span><br><span class="line">dataset = dataset.repeat().batch(batch_size)</span><br><span class="line">iterator = dataset.make_initializable_iterator()</span><br><span class="line">next_data = iterator.get_next()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">train_loss = []</span><br><span class="line">test_loss = []</span><br><span class="line">init = [tf.global_variables_initializer(), iterator.initializer]</span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    sess.run(init)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(epochs):</span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">20</span>):</span><br><span class="line">            batch_x, batch_y = sess.run(next_data)</span><br><span class="line">            sess.run(train, feed_dict=&#123;</span><br><span class="line">                x: batch_x,</span><br><span class="line">                y: batch_y</span><br><span class="line">            &#125;)</span><br><span class="line">        train_loss.append(sess.run(loss, feed_dict=&#123;</span><br><span class="line">            x: train_features,</span><br><span class="line">            y: train_labels</span><br><span class="line">        &#125;))</span><br><span class="line">        test_loss.append(sess.run(loss, feed_dict=&#123;</span><br><span class="line">            x: test_features,</span><br><span class="line">            y: test_labels</span><br><span class="line">        &#125;))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.semilogy(range(<span class="number">1</span>, epochs+<span class="number">1</span>), train_loss)</span><br><span class="line">plt.semilogy(range(<span class="number">1</span>, epochs+<span class="number">1</span>), test_loss)</span><br><span class="line">plt.xlabel(<span class="string">'epochs'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'loss'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://medium.com/@prairie5270/%E4%BD%BF%E7%94%A8-tensorflow-%E4%BA%86%E8%A7%A3%E6%AC%8A%E9%87%8D%E8%A1%B0%E6%B8%9B-70d4dfac9e15" target="_blank" rel="noopener">使用 TensorFlow 了解權重衰減</a><br>[2] <a href="https://zhuanlan.zhihu.com/p/40814046" target="_blank" rel="noopener">L2正则=Weight Decay？并不是这样</a><br>[3] <a href="https://blog.csdn.net/u011995719/article/details/73822672" target="_blank" rel="noopener">【TensorFlow-windows】(五) CNN（卷积神经网络）对cifar10的识别</a><br>[4] <a href="https://zh.gluon.ai/chapter_deep-learning-basics/weight-decay.html#%E6%9D%83%E9%87%8D%E8%A1%B0%E5%87%8F" target="_blank" rel="noopener">动手学深度学习-&gt;权重衰减</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91Inception-ResNet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="去取经">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91Inception-ResNet/" class="post-title-link" itemprop="url">【深度学习笔记2.4】Inception-ResNet</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-19 17:28:05" itemprop="dateCreated datePublished" datetime="2018-04-19T17:28:05+08:00">2018-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:39" itemprop="dateModified" datetime="2020-01-22T13:25:39+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<p>[1] <a href="https://www.jiqizhixin.com/articles/2018-05-30-7" target="_blank" rel="noopener">从Inception v1到Inception-ResNet，一文概览Inception家族的「奋斗史」</a><br>[2] <a href="https://my.oschina.net/u/876354/blog/1637819" target="_blank" rel="noopener">大话CNN经典模型：GoogLeNet（从Inception v1到v4的演进）</a><br>[3] <a href="https://www.imooc.com/article/69476" target="_blank" rel="noopener">Inception v4与Inception-Resnet v1/v2</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E3%80%91IoU/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -259,11 +416,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -336,11 +493,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -418,11 +575,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -501,11 +658,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -605,11 +762,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -688,11 +845,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -780,11 +937,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -836,173 +993,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2017/11/19/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B03.1%E3%80%91Tensorflow%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%94%A8%E6%80%BB%E7%BB%93/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/11/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/" class="post-title-link" itemprop="url">【深度学习笔记1.2】梯度消失与梯度爆炸</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-11-11 17:28:05" itemprop="dateCreated datePublished" datetime="2017-11-11T17:28:05+08:00">2017-11-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:25:00" itemprop="dateModified" datetime="2020-01-22T13:25:00+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h2><p>&emsp; 梯度下降法（Gradient descent）是一种基于函数一阶性质的优化算法，其本质是在某个位置将目标函数一阶展开，利用其一阶性质持续向函数值下降最快的方向前进，以期找到函数的全局最小解。梯度下降属于梯度优化方法大类，此外还有最速下降法，共轭梯度法等等。还有其他方法基于目标函数的二阶性质，比如牛顿法、拟牛顿法等[1]。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/11/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记2.1】tf.nn.conv2d，tf.nn.max_pool</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-10-26 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-26T00:00:00+08:00">2017-10-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 14:08:11" itemprop="dateModified" datetime="2020-01-22T14:08:11+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">TensorFlow笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="tf-nn-conv2d函数解析"><a href="#tf-nn-conv2d函数解析" class="headerlink" title="tf.nn.conv2d函数解析"></a>tf.nn.conv2d函数解析</h2><p><strong>tf.nn.conv2d(input, filter, strides, padding, use_cudnn_on_gpu=None, name=None)</strong></p>
-<p>除去name参数用以指定该操作的name，与方法有关的一共五个参数：<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1085,14 +1075,14 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name"></p>
-  <div class="site-description" itemprop="description">日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！</div>
+  <div class="site-description" itemprop="description">日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">75</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

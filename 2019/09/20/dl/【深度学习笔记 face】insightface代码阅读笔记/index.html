@@ -46,15 +46,15 @@
   };
 </script>
 
-  <meta name="description" content="看https:&#x2F;&#x2F;www.cnblogs.com&#x2F;darkknightzh&#x2F;p&#x2F;8525287.html，发现sphereface是这一系列角度损失函数优化的鼻祖于是看https:&#x2F;&#x2F;www.cnblogs.com&#x2F;darkknightzh&#x2F;p&#x2F;8524937.html，发现看不懂于是又看介绍sphereface的知乎：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;407752">
+  <meta name="description" content="看https:&#x2F;&#x2F;www.cnblogs.com&#x2F;darkknightzh&#x2F;p&#x2F;8525287.html，sphereface是这一系列角度损失函数优化的鼻祖看https:&#x2F;&#x2F;www.cnblogs.com&#x2F;darkknightzh&#x2F;p&#x2F;8524937.htmlsphereface的知乎：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;40775212关于softmax: https">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【深度学习笔记 face】insightface代码阅读笔记">
 <meta property="og:url" content="http://yoursite.com/2019/09/20/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91insightface%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
-<meta property="og:site_name" content="春播秋芒">
-<meta property="og:description" content="看https:&#x2F;&#x2F;www.cnblogs.com&#x2F;darkknightzh&#x2F;p&#x2F;8525287.html，发现sphereface是这一系列角度损失函数优化的鼻祖于是看https:&#x2F;&#x2F;www.cnblogs.com&#x2F;darkknightzh&#x2F;p&#x2F;8524937.html，发现看不懂于是又看介绍sphereface的知乎：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;407752">
+<meta property="og:site_name" content="去取经">
+<meta property="og:description" content="看https:&#x2F;&#x2F;www.cnblogs.com&#x2F;darkknightzh&#x2F;p&#x2F;8525287.html，sphereface是这一系列角度损失函数优化的鼻祖看https:&#x2F;&#x2F;www.cnblogs.com&#x2F;darkknightzh&#x2F;p&#x2F;8524937.htmlsphereface的知乎：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;40775212关于softmax: https">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-09-20T09:28:05.000Z">
-<meta property="article:modified_time" content="2020-01-22T05:23:39.467Z">
+<meta property="article:modified_time" content="2020-01-22T06:28:54.577Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2019/09/20/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91insightface%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
@@ -69,7 +69,7 @@
   };
 </script>
 
-  <title>【深度学习笔记 face】insightface代码阅读笔记 | 春播秋芒</title>
+  <title>【深度学习笔记 face】insightface代码阅读笔记 | 去取经</title>
   
 
 
@@ -113,7 +113,7 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">春播秋芒</span>
+        <span class="site-title">去取经</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -178,11 +178,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春播秋芒">
+      <meta itemprop="name" content="去取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -203,7 +203,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:23:39" itemprop="dateModified" datetime="2020-01-22T13:23:39+08:00">2020-01-22</time>
+                <time title="Modified: 2020-01-22 14:28:54" itemprop="dateModified" datetime="2020-01-22T14:28:54+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -230,11 +230,7 @@
       
         <a id="more"></a>
 <blockquote>
-<blockquote>
-<blockquote>
-<p>看<a href="https://www.cnblogs.com/darkknightzh/p/8525287.html，发现sphereface是这一系列角度损失函数优化的鼻祖" target="_blank" rel="noopener">https://www.cnblogs.com/darkknightzh/p/8525287.html，发现sphereface是这一系列角度损失函数优化的鼻祖</a><br>于是看<a href="https://www.cnblogs.com/darkknightzh/p/8524937.html，发现看不懂" target="_blank" rel="noopener">https://www.cnblogs.com/darkknightzh/p/8524937.html，发现看不懂</a><br>于是又看介绍sphereface的知乎：<a href="https://zhuanlan.zhihu.com/p/40775212，发现对softmax还有些不明白，于是又看https://zhuanlan.zhihu.com/p/25723112" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/40775212，发现对softmax还有些不明白，于是又看https://zhuanlan.zhihu.com/p/25723112</a></p>
-</blockquote>
-</blockquote>
+<p>看<a href="https://www.cnblogs.com/darkknightzh/p/8525287.html，sphereface是这一系列角度损失函数优化的鼻祖" target="_blank" rel="noopener">https://www.cnblogs.com/darkknightzh/p/8525287.html，sphereface是这一系列角度损失函数优化的鼻祖</a><br>看<a href="https://www.cnblogs.com/darkknightzh/p/8524937.html" target="_blank" rel="noopener">https://www.cnblogs.com/darkknightzh/p/8524937.html</a><br>sphereface的知乎：<a href="https://zhuanlan.zhihu.com/p/40775212" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/40775212</a><br>关于softmax: <a href="https://zhuanlan.zhihu.com/p/25723112" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25723112</a></p>
 </blockquote>
 
     </div>
@@ -323,14 +319,14 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name"></p>
-  <div class="site-description" itemprop="description">日常开发总结，主要供个人学习记录所用，如有错谬还望不吝告知！</div>
+  <div class="site-description" itemprop="description">日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">75</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
