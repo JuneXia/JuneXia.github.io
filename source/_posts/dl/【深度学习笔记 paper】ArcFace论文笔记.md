@@ -1,5 +1,5 @@
 ﻿---
-title: 【深度学习笔记 face】ArcFace论文笔记
+title: 【深度学习笔记 paper】ArcFace论文笔记
 date: 2019-10-21 17:28:05
 tags:
 categories: ["深度学习笔记"]

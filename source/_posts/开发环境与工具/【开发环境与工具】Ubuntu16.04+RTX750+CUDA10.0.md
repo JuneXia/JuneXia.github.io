@@ -278,6 +278,15 @@ sudo pip3 install torchvision==0.3.0
 sudo pip3 install torch==1.2.0 torchvision==0.4.0 -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
+## 10. 安装Paddle
+背景：2020年春节新冠肺炎期间，公司紧急使用百度开源的戴口罩识别算法。
+使用下面的安装方法会与服务器上的tensorboard、tensorlayer环境依赖有所冲突。为此，可尝试用conda环境安装paddle。
+```bash
+sudo pip3 install --upgrade paddlehub -i https://pypi.tuna.tsinghua.edu.cn/simple
+sudo pip3 install paddlepaddle
+# 安装完成后，此时得到的是paddlehub是1.5.1版本，paddle是1.6.3版本。
+```
+
 
 [1] [Ubuntu 16.04安装NVIDIA驱动](https://blog.csdn.net/CosmosHua/article/details/76644029)
 [2] [Ubuntu下Nvidia驱动安装](https://onlycaptain.github.io/2018/08/18/Ubuntu%E4%B8%8BNvidia%E9%A9%B1%E5%8A%A8%E5%AE%89%E8%A3%85/)
