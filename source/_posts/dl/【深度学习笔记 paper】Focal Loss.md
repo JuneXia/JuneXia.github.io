@@ -14,7 +14,9 @@ mathjax: true
 
 &emsp; 作者认为one-stage detector的准确率不如two-stage detector的原因是：样本的类别不均衡导致的，负样本数量太大，占总的loss的大部分，而且多是容易分类的，因此使得模型的优化方向并不是我们所希望的那样。因此针对类别不均衡问题，作者提出一种新的损失函数：focal loss，这个损失函数是在标准交叉熵损失基础上修改得到的。这个函数可以通过减少易分类样本的权重，使得模型在训练时更专注于难分类的样本。focal loss计算公式以及其和交叉熵的比较如下：
 
-[](../../images/ml/focalloss.png)
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/focalloss.jpg" width = 80% height = 80% />
+</div>
 
 其中CE是交叉熵，FL是focal loss，且当γ=0时，FL退化为CE。由上图可知，对于输出概率较大的易分类样本，focal loss计算得的数值几乎是0，这也就是说focal loss对易分类的样本不敏感，而更关注难分类的样本。
 

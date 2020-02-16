@@ -15,13 +15,17 @@ $$
 
 而softmax只能将不同的类别分隔开（如图1 Separable Features），但每个类别相互之间并不具有很好的区分度（如图1 Discriminative Features）。
 
-[图1 分类任务和人脸识别任务对Features的要求比较](../../images/ml/center-loss1.png)
-
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/center-loss1.jpg" width = 60% height = 60% />
+</div>
+<center>图1 &nbsp;  分类任务和人脸识别任务对Features的要求比较</center>
 
 鉴于此，Y. Wen等人提出了 CenterLoss 来解决这个问题，其核心思想是希望类内尽量紧，
 类间尽量开，其计算公式如下：
 
-[](../../images/ml/center-loss2.png)
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/center-loss2.jpg" width = 80% height = 80% />
+</div>
 
 由公式可以看出CenterLoss只是在softmax函数的基础上增加了一个Lc，作者认为这种联合监督训练既可以有效做分类任务，也可以使得类与类之间具有更好的辨识力（Discriminative)。
 
