@@ -7,9 +7,42 @@ mathjax: true
 ---
 <!-- more -->
 
-## 数学符号字体
-斜体加粗 A：
-$\boldsymbol{A}$
+## 显示图片
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/center-loss1.jpg" width = 60% height = 60% />
+</div>
+<center>图1 &nbsp;  分类任务和人脸识别任务对Features的要求比较</center>
+
+## 数学字体
+| 需求 | latex语法 | 显示效果 | 备注 |
+| ------ | ------ | ------ | ------ |
+| 加粗 | \bold{A} | $\bold{A}$ ||
+| 斜体加粗 | \boldsymbol{A} | $\boldsymbol{A}$ ||
+
+
+
+## 数学符号
+> 点乘：a \cdot b
+> 
+> 叉乘：a \times b
+> 
+> 点除：a \div b
+> 
+> 分数：\frac {a} {b}
+
+<br>
+
+> 绝对值号： | 或者 \vert
+> 
+> 范数符号： \| 或者 \Vert
+
+<br>
+
+| 需求 | latex语法 | 显示效果 | 备注 |
+| ------ | ------ | ------ | ------ |
+| 大于等于号 | \geq | $\geq$ | 后面记得加空格，不然识别出错 |
+| 小于等于号 | \leq | $\leq$ | |
+
 
 ## 方程组
 1

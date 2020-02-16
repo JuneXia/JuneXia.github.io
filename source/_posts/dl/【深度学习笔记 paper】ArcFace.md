@@ -1,5 +1,5 @@
 ﻿---
-title: 【深度学习笔记 paper】ArcFace论文笔记
+title: 【深度学习笔记 paper】ArcFace
 date: 2019-10-21 17:28:05
 tags:
 categories: ["深度学习笔记"]
@@ -35,6 +35,20 @@ Efficient ....
 
 # Proposed Approach
 ## 2.1 ArcFace
+
+不废话了，直接上公式吧：
+
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/arcface1.jpg" width = 80% height = 80% />
+</div>
+
+说了那么多，实际上就是将 Cosine Loss 中的余弦相似度 penalty 变成了对 $\boldsymbol{W}_{y_i}$ 与 $\boldsymbol{x}_i$ 之间的夹角 $\theta$ 的 penalty。
+
+整了个看似很厉害的计算流程图：
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/arcface2.jpg" width = 100% height = 100% />
+</div>
+
 
 ## 2.2 Comparison with SphereFace and CosFace
 **Numerical Similarity.** 在 SphereFace, ArcFace和CosFace中，分别有三个不同的margin penalty被提出，即 multiplicative angular margin $m_1$, additive angular margin $m_2$, and additive cosine margin $m_3$. 从数值分析来看，对于不同的margin penalties，无论它是被添加到angle space 还是 cosine space，通过惩罚target logit它们都加强了 intra-class 紧致和 inter-class分散。

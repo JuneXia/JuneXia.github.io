@@ -6,6 +6,8 @@ categories: ["深度学习笔记"]
 mathjax: true
 ---
 
+论文：[A Discriminative Feature Learning Approach for Deep Face Recognition](https://ydwen.github.io/papers/WenECCV16.pdf)
+<!-- more -->
 
 &emsp; 在使用CNN做分类任务时，我们通常会用softmax函数来计算网络的损失，softmax函数公式如下：
 
@@ -34,7 +36,3 @@ $$
 
 好的，那我先假设网络输出特征 $\boldsymbol{F}_{1 \times n}$，神经网路最后一个分类层权重为 $\boldsymbol{W}_{n \times m}$，实际上 $\boldsymbol{W}_{n \times m}$ 的每一列向量都是该类别的中心。
 但按作者论文中的实现思想，作者并没有使用这个 $\boldsymbol{W}$ 来作为 $\boldsymbol{c}_{y_i}$，而是重新定义了一个 $\boldsymbol{w}$ 来进行计算来作为 $\boldsymbol{c}_{y_i}$（当然这个 $\boldsymbol{w}$ 也是 $n \times m$ 的矩阵），且 $\boldsymbol{w}$ 并没有使用反向传播更新，而是单独更新的。
-
-
-## 实际应用
-在人脸识别中实测有改进，但改进仍然不大，都是千分位的提升。
