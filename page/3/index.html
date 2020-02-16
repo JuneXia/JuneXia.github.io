@@ -48,9 +48,9 @@
 
   <meta name="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
 <meta property="og:type" content="website">
-<meta property="og:title" content="去取经">
+<meta property="og:title" content="取取经">
 <meta property="og:url" content="http://yoursite.com/page/3/index.html">
-<meta property="og:site_name" content="去取经">
+<meta property="og:site_name" content="取取经">
 <meta property="og:description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary">
@@ -67,7 +67,7 @@
   };
 </script>
 
-  <title>去取经</title>
+  <title>取取经</title>
   
 
 
@@ -111,7 +111,7 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">去取经</span>
+        <span class="site-title">取取经</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -171,6 +171,91 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.2%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91Dropout/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="取取经">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/03/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.2%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91Dropout/" class="post-title-link" itemprop="url">【深度学习笔记3.2 正则化】Dropout</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-11 17:28:05" itemprop="dateCreated datePublished" datetime="2019-03-11T17:28:05+08:00">2019-03-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:54" itemprop="dateModified" datetime="2020-01-22T13:25:54+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<p>关于dropout的理解与总结：</p>
+<ul>
+<li>dropout是什么？参考文献[1]</li>
+<li>dropout会让train变差，让test变好。一般的如果在train-set上表现好，在test-set上表现差，用dropout才有效果。使用dropout是为了避免过拟合。(来自网友)</li>
+<li>下图来自文献[3]<br><img src="https://lh3.googleusercontent.com/-HPmIrBCprd8/XFOjxz5a3YI/AAAAAAAAAL0/IoAB49sKhHUdL1ea25P9KJkwRmDyL0CfACLcBGAs/s0/dropout1.png" alt="enter image description here" title="dropout1.png"><br>&emsp; 上图中的思想就是说：Dropout是一种正则化技术，是防止过拟合最有效的方法，然而在以下几种情况下使用dropout会损害性能。<br>1). 放在最后一层之前(即softmax之前)。这通常是一个不适合使用dropout的地方，因为网络没有能力在分类之前“纠正”drop引起的错误；<br>2). 当网络较小时，通常不需要正则化。如果模型capacity已经很低时，那么增加正则化会进一步降低模型capacity以至于损害模型性能；<br>3). 使用dropout的网络收敛速度比较慢，但它最终收敛时的误差会比较低，所以如果你没有那么多时间训练网络直至收敛的话，你可能不应该使用dropout.</li>
+<li>当数据量不大的时候，通常不考虑使用dropout.</li>
+<li>目前dropout已经很少使用，已经被一种称为Batch Normalization的技术有取代，当然这并不是说dropout就不是一个有效的工具[3]。</li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://blog.csdn.net/stdcoutzyx/article/details/49022443" target="_blank" rel="noopener">理解dropout</a><br>[2] <a href="https://zhuanlan.zhihu.com/p/38200980" target="_blank" rel="noopener">深度学习中Dropout原理解析</a><br>[3] <a href="https://stats.stackexchange.com/questions/299292/dropout-makes-performance-worse" target="_blank" rel="noopener">Dropout makes performance worse</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/02/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B01.4%E3%80%91Python%20C%20API%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -180,7 +265,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="去取经">
+      <meta itemprop="name" content="取取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -267,7 +352,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="去取经">
+      <meta itemprop="name" content="取取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -340,7 +425,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="去取经">
+      <meta itemprop="name" content="取取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -500,7 +585,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="去取经">
+      <meta itemprop="name" content="取取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -567,90 +652,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="去取经">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/" class="post-title-link" itemprop="url">【深度学习笔记 face】基于Inception-Resnet的FaceID</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-21 17:58:59" itemprop="dateModified" datetime="2020-01-21T17:58:59+08:00">2020-01-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Inception-Resnet-V2网络结构"><a href="#Inception-Resnet-V2网络结构" class="headerlink" title="Inception-Resnet-V2网络结构"></a>Inception-Resnet-V2网络结构</h1><blockquote>
-<p>因markdown 语法绘制表格不能实现单元格合并，故这里将部分Inception和Residual结构统一放到一个表格中，仅为个人记录学习所用。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20[%E8%BD%AC]%E3%80%91%E8%BF%AD%E4%BB%A3%E5%99%A8(Iterator)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -660,7 +661,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="去取经">
+      <meta itemprop="name" content="取取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -735,6 +736,90 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="取取经">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/" class="post-title-link" itemprop="url">【深度学习笔记 face】基于Inception-Resnet的FaceID</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-21 17:58:59" itemprop="dateModified" datetime="2020-01-21T17:58:59+08:00">2020-01-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Inception-Resnet-V2网络结构"><a href="#Inception-Resnet-V2网络结构" class="headerlink" title="Inception-Resnet-V2网络结构"></a>Inception-Resnet-V2网络结构</h1><blockquote>
+<p>因markdown 语法绘制表格不能实现单元格合并，故这里将部分Inception和Residual结构统一放到一个表格中，仅为个人记录学习所用。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -744,7 +829,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="去取经">
+      <meta itemprop="name" content="取取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -827,7 +912,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="去取经">
+      <meta itemprop="name" content="取取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -904,7 +989,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="去取经">
+      <meta itemprop="name" content="取取经">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -956,89 +1041,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/06/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%20%5B%E8%BD%AC%5D%E3%80%91Softmax%E5%87%BD%E6%95%B0%E4%B8%8E%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/10/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2.1%E3%80%91AlexNet/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="去取经">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/10/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2.1%E3%80%91AlexNet/" class="post-title-link" itemprop="url">【深度学习笔记2.2.1】AlexNet</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-06-10 17:28:05" itemprop="dateCreated datePublished" datetime="2018-06-10T17:28:05+08:00">2018-06-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:25:23" itemprop="dateModified" datetime="2020-01-22T13:25:23+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp; 2012年，Hinton的学生Alex Krizhevsky提出的深度卷积神经网络模型AlexNet获得了2012年ILSVRC比赛分类项目的冠军。AlexNet是在LeNet的基础上发展起来的，AlexNet首次引入了Dropout层来处理过拟合以及使用ReLU替代sigmoid来作为激活函数。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/06/10/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2.1%E3%80%91AlexNet/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1128,7 +1130,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-count">78</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
