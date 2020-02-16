@@ -58,7 +58,7 @@
 <meta property="og:image" content="https://lh3.googleusercontent.com/-PKheMt9KTEI/W8_I8Pc_fAI/AAAAAAAAAG8/zCnftIQWoL0oEp5IM5JANzdwvicRqrK2QCLcBGAs/s0/leakyReLU.png">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-6T6P6f9SwtM/W8_JBtYUjrI/AAAAAAAAAHE/OvG_B8zoM_s1Mitq-DpzgTQZgOaQTg7UgCLcBGAs/s0/elu.png">
 <meta property="article:published_time" content="2017-11-11T09:28:05.000Z">
-<meta property="article:modified_time" content="2020-01-22T05:25:00.495Z">
+<meta property="article:modified_time" content="2020-02-16T01:22:53.589Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://lh3.googleusercontent.com/-Ct5ypbJsA40/W87lWrvh79I/AAAAAAAAAGc/nVMkkzv-ATcJV4H2ZByWRz0bIqPM_A7WQCLcBGAs/s0/Xavier%25E5%2588%259D%25E5%25A7%258B%25E5%258C%2596.jpg">
 
@@ -208,7 +208,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:25:00" itemprop="dateModified" datetime="2020-01-22T13:25:00+08:00">2020-01-22</time>
+                <time title="Modified: 2020-02-16 09:22:53" itemprop="dateModified" datetime="2020-02-16T09:22:53+08:00">2020-02-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -239,12 +239,16 @@
 <h2 id="梯度消失-爆炸"><a href="#梯度消失-爆炸" class="headerlink" title="梯度消失/爆炸"></a>梯度消失/爆炸</h2><h3 id="什么是梯度消失-爆炸"><a href="#什么是梯度消失-爆炸" class="headerlink" title="什么是梯度消失/爆炸"></a>什么是梯度消失/爆炸</h3><p>&emsp; 反向传播算法的工作原理是从输出层向输入层传播误差的梯度。不幸的是，梯度下降更新使梯度往往越变得越来越小，以至于使得低层连接权重实际上保持不变，并且训练永远不会收敛到良好的解决方案，这被称为梯度消失问题。在某些情况下，可能会发生相反的情况：梯度可能变得越来越大，许多层得到了非常大的权重更新，算法发散。这是梯度爆炸的问题，在循环神经网络中最为常见。更一般地说，深度神经网络受梯度不稳定之苦，不同的层次可能以非常不同的速度学习。</p>
 <h3 id="产生梯度消失-爆炸的原因"><a href="#产生梯度消失-爆炸的原因" class="headerlink" title="产生梯度消失/爆炸的原因"></a>产生梯度消失/爆炸的原因</h3><p>&emsp; 梯度消失/爆炸是造成深度神经网络大部分时间都被抛弃的原因之一。直到2010年才有所缓解，Xavier Glorot 和 Yoshua Bengio 发表的题为《Understanding the Difficulty of Training Deep Feedforward Neural Networks》的论文提出了一些疑问，sigmoid 激活函数和当时最受欢迎的权重随机初始化（即随机初始化时使用平均值为 0，标准差为 1 的正态分布）这个方案组合，使得每层输出的方差远大于其输入的方差（<font color=#FF0000>为什么？</font>）。网络正向计算时，每层的方差持续增加，直到激活函数在顶层饱和[4]，即在顶层激活函数的导数接近0，因此当反向传播开始时，它几乎没有梯度通过网络传播回来。而且由于反向传播通过顶层向下传递，所以有些较小的梯度也会不断地被稀释，因此较低层确实没有任何东西可用。</p>
 <h3 id="如何解决梯度消失-爆炸"><a href="#如何解决梯度消失-爆炸" class="headerlink" title="如何解决梯度消失/爆炸"></a>如何解决梯度消失/爆炸</h3><h4 id="改变权重初始化方法"><a href="#改变权重初始化方法" class="headerlink" title="改变权重初始化方法"></a>改变权重初始化方法</h4><p>&emsp; Glorot和Xavier在他们的论文中提出了一种能显著缓解这个问题的方法。我们需要信号在两个方向上正确地流动：即在进行预测时是正向的，在反向传播梯度时是反向的。 我们不希望信号消失，也不希望它爆炸并饱和。为了使信号能够正确流动，作者认为，我们需要每层输出的方差等于其输入的方差，也需要梯度在相反方向上流过一层之前和之后有相同的方差。然而实际上不可能保证两者都是一样的，除非这个层具有相同数量的输入和输出连接，但是他们提出了一个很好的折衷办法，在实践中证明这个折中办法非常好：随机初始化连接权重必须如下图1公式所描述的那样。其中n_inputs和n_outputs是权重正在被初始化的层（也称为扇入和扇出）的输入和输出连接的数量。 这种初始化策略通常被称为Xavier初始化，或者有时是 Glorot 初始化。</p>
-<p><div align="center"><img src="https://lh3.googleusercontent.com/-Ct5ypbJsA40/W87lWrvh79I/AAAAAAAAAGc/nVMkkzv-ATcJV4H2ZByWRz0bIqPM_A7WQCLcBGAs/s0/Xavier%25E5%2588%259D%25E5%25A7%258B%25E5%258C%2596.jpg" alt="enter image description here" title="Xavier初始化.jpg"></p>
+<p><div align=center>
+  <img src="https://lh3.googleusercontent.com/-Ct5ypbJsA40/W87lWrvh79I/AAAAAAAAAGc/nVMkkzv-ATcJV4H2ZByWRz0bIqPM_A7WQCLcBGAs/s0/Xavier%25E5%2588%259D%25E5%25A7%258B%25E5%258C%2596.jpg" width = 100% height = 100% />
+</div></p>
 <center>图1 &nbsp;  Xavier 初始化</center>
 
 <p>当输入连接的数量大致等于输出连接的数量时，可以得到更简单的等式：<br>e.g. $\quad  \sigma = \dfrac{1}{\sqrt{n_{inputs}}}  \quad  or \quad  r = \dfrac{\sqrt{3}}{\sqrt{n_{inputs}}}$</p>
 <p>&emsp; 使用 Xavier 初始化策略可以大大加快训练速度，这是导致深度学习目前取得成功的技巧之一。 另外，最近的一些论文也针对不同的激活函数提供了类似的策略，如下图2所示。 ReLU 激活函数（及其变体，包括简称为 ELU 的激活）的初始化策略有时也称为 He 初始化。</p>
-<p><div align="center"><img src="https://lh3.googleusercontent.com/-e5T_6_feghs/W87q48fykuI/AAAAAAAAAGs/PSRccyXZQFsYGO6iE4tJflzsNzbkfUFBwCLcBGAs/s0/WeightInit_about_activation_function.jpg" alt="enter image description here" title="WeightInit_about_activation_function.jpg"></p>
+<p><div align=center>
+  <img src="https://lh3.googleusercontent.com/-e5T_6_feghs/W87q48fykuI/AAAAAAAAAGs/PSRccyXZQFsYGO6iE4tJflzsNzbkfUFBwCLcBGAs/s0/WeightInit_about_activation_function.jpg" width = 100% height = 100% />
+</div></p>
 <center>图2 &nbsp;  不同激活函数的参数初始化方法 </center>
 
 <p>&emsp; 默认情况下，fully_connected() 函数使用 Xavier 初始化（具有统一的分布）。 你也可以通过使用如下所示的variance_scaling_initializer() 函数来将其更改为 He 初始化[4]：</p>
@@ -378,7 +382,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

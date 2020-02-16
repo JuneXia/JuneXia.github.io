@@ -668,6 +668,100 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/14/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20paper%E3%80%91Center%20Loss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="去取经">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/14/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20paper%E3%80%91Center%20Loss/" class="post-title-link" itemprop="url">【深度学习笔记 paper】Center Loss</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-14 17:28:05" itemprop="dateCreated datePublished" datetime="2019-04-14T17:28:05+08:00">2019-04-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-16 09:23:32" itemprop="dateModified" datetime="2020-02-16T09:23:32+08:00">2020-02-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>&emsp; 在使用CNN做分类任务时，我们通常会用softmax函数来计算网络的损失，softmax函数公式如下：</p>
+<script type="math/tex; mode=display">
+L_S = -\sum^{m}_{i=1}log\frac{e^{\boldsymbol{W}_{y_i}^T x_i + b_{y_i}}}{\sum^n_{j=1} e^{\boldsymbol{W}_j^T x_i + b_j}}</script><p>而softmax只能将不同的类别分隔开（如图1 Separable Features），但每个类别相互之间并不具有很好的区分度（如图1 Discriminative Features）。</p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/center-loss1.jpg" width = 60% height = 60% />
+</div>
+<center>图1 &nbsp;  分类任务和人脸识别任务对Features的要求比较</center>
+
+鉴于此，Y. Wen等人提出了 CenterLoss 来解决这个问题，其核心思想是希望类内尽量紧，
+类间尽量开，其计算公式如下：
+
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/center-loss2.jpg" width = 80% height = 80% />
+</div>
+
+<p>由公式可以看出CenterLoss只是在softmax函数的基础上增加了一个Lc，作者认为这种联合监督训练既可以有效做分类任务，也可以使得类与类之间具有更好的辨识力（Discriminative)。</p>
+<h2 id="我的理解"><a href="#我的理解" class="headerlink" title="我的理解"></a>我的理解</h2><p>&emsp; 公式 Lc 中的 $\boldsymbol{c}_{y_i}$ 表示第 $y_i$ 个类别的中心。</p>
+<p>好的，那我先假设网络输出特征 $\boldsymbol{F}_{1 \times n}$，神经网路最后一个分类层权重为 $\boldsymbol{W}_{n \times m}$，实际上 $\boldsymbol{W}_{n \times m}$ 的每一列向量都是该类别的中心。<br>但按作者论文中的实现思想，作者并没有使用这个 $\boldsymbol{W}$ 来作为 $\boldsymbol{c}_{y_i}$，而是重新定义了一个 $\boldsymbol{w}$ 来进行计算来作为 $\boldsymbol{c}_{y_i}$（当然这个 $\boldsymbol{w}$ 也是 $n \times m$ 的矩阵），且 $\boldsymbol{w}$ 并没有使用反向传播更新，而是单独更新的。</p>
+<h2 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h2><p>在人脸识别中实测有改进，但改进仍然不大，都是千分位的提升。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91ubuntu%20python%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84flask+mysql%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -766,7 +860,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20loss%E3%80%91Focal-Loss/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20paper%E3%80%91Focal%20Loss/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -780,7 +874,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20loss%E3%80%91Focal-Loss/" class="post-title-link" itemprop="url">【深度学习笔记】Focal-Loss</a>
+            <a href="/2019/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20paper%E3%80%91Focal%20Loss/" class="post-title-link" itemprop="url">【深度学习笔记 paper】Focal Loss</a>
         </h1>
 
         <div class="post-meta">
@@ -797,7 +891,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 15:00:11" itemprop="dateModified" datetime="2020-01-22T15:00:11+08:00">2020-01-22</time>
+                <time title="Modified: 2020-02-16 09:19:00" itemprop="dateModified" datetime="2020-02-16T09:19:00+08:00">2020-02-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -822,9 +916,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <a id="more"></a>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://blog.csdn.net/u014380165/article/details/77019084" target="_blank" rel="noopener">Focal Loss</a><br>[2] <a href="https://blog.csdn.net/u011583927/article/details/90716942" target="_blank" rel="noopener">focal loss的几种实现版本(Keras/Tensorflow)</a></p>
-
+          <p>论文：<a href="https://arxiv.org/abs/1708.02002" target="_blank" rel="noopener">Focal Loss for Dense Object Detection</a></p>
+<p>&emsp; Focal Loss 最初被提出是用来解决目标检测的[1]，在目标检测领域常见的算法主要可以分为两大类：two-stage detector和one-stage detector。前者是指类似Faster RCNN，RFCN这样需要region proposal的检测算法，这类算法可以达到很高的准确率，但是速度较慢。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20paper%E3%80%91Focal%20Loss/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -924,93 +1025,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/02/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B01.4%E3%80%91Python%20C%20API%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="去取经">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/11/02/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B01.4%E3%80%91Python%20C%20API%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">【Python笔记1.4】Python C API使用记录</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-11-02 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-02T00:00:00+08:00">2018-11-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 14:07:53" itemprop="dateModified" datetime="2020-01-22T14:07:53+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">Python笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本节知识点：</p>
-<ol>
-<li>用Python/C API实现Python class的实例化，并调用Python class的成员函数;</li>
-<li>Python class的__init__函数需要传参；</li>
-<li>Python class的成员函数需要传递列表，解析Python返回的列表。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/11/02/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B01.4%E3%80%91Python%20C%20API%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1081,7 +1095,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -171,6 +171,93 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/02/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B01.4%E3%80%91Python%20C%20API%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="去取经">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/02/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B01.4%E3%80%91Python%20C%20API%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">【Python笔记1.4】Python C API使用记录</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-11-02 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-02T00:00:00+08:00">2018-11-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 14:07:53" itemprop="dateModified" datetime="2020-01-22T14:07:53+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">Python笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本节知识点：</p>
+<ol>
+<li>用Python/C API实现Python class的实例化，并调用Python class的成员函数;</li>
+<li>Python class的__init__函数需要传参；</li>
+<li>Python class的成员函数需要传递列表，解析Python返回的列表。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/11/02/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B01.4%E3%80%91Python%20C%20API%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -275,7 +362,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-11 12:11:51" itemprop="dateModified" datetime="2020-02-11T12:11:51+08:00">2020-02-11</time>
+                <time title="Modified: 2020-02-15 15:35:35" itemprop="dateModified" datetime="2020-02-15T15:35:35+08:00">2020-02-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -383,6 +470,7 @@
 <h2 id="8-其他python库的安装"><a href="#8-其他python库的安装" class="headerlink" title="8. 其他python库的安装"></a>8. 其他python库的安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install opencv-python -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">sudo pip3 install opencv-contrib-python -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">sudo pip3 install matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
 <h2 id="9-安装PyTorch"><a href="#9-安装PyTorch" class="headerlink" title="9. 安装PyTorch"></a>9. 安装PyTorch</h2><p>参考<a href="https://pytorch.org/get-started/locally/" target="_blank" rel="noopener">官方安装指导</a>，我是使用pip方式安装的。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方式1：下面默认安装的是cpu版本</span></span><br><span class="line">sudo pip3 install torch==1.1.0 torchvision==0.3.0</span><br><span class="line">sudo pip3 install torch==1.1.0 torchvision==0.3.0 -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式2：下面会安装pytorch gpu版本，torchvision也是gpu版本，但是我的cuda环境是cuda10.0，</span></span><br><span class="line"><span class="comment">#       这里的pytorch-1.1.0可以支持cuda10，但是torchvision只能支持cuda9</span></span><br><span class="line">sudo pip3 install https://download.pytorch.org/whl/cu100/torch-1.1.0-cp35-cp35m-linux_x86_64.whl</span><br><span class="line">sudo pip3 install torchvision==0.3.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式3：安装更高版本的 pytorch 和 torchvision，成功</span></span><br><span class="line">sudo pip3 install torch==1.2.0 torchvision==0.4.0 -f https://download.pytorch.org/whl/torch_stable.html</span><br></pre></td></tr></table></figure>
+<h2 id="10-安装Paddle"><a href="#10-安装Paddle" class="headerlink" title="10. 安装Paddle"></a>10. 安装Paddle</h2><p>背景：2020年春节新冠肺炎期间，公司紧急使用百度开源的戴口罩识别算法。<br>使用下面的安装方法会与服务器上的tensorboard、tensorlayer环境依赖有所冲突。为此，可尝试用conda环境安装paddle。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install --upgrade paddlehub -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">sudo pip3 install paddlepaddle</span><br><span class="line"><span class="comment"># 安装完成后，此时得到的是paddlehub是1.5.1版本，paddle是1.6.3版本。</span></span><br></pre></td></tr></table></figure></p>
 <p>[1] <a href="https://blog.csdn.net/CosmosHua/article/details/76644029" target="_blank" rel="noopener">Ubuntu 16.04安装NVIDIA驱动</a><br>[2] <a href="https://onlycaptain.github.io/2018/08/18/Ubuntu%E4%B8%8BNvidia%E9%A9%B1%E5%8A%A8%E5%AE%89%E8%A3%85/" target="_blank" rel="noopener">Ubuntu下Nvidia驱动安装</a><br>[3] <a href="https://bluesmilery.github.io/blogs/a687003b/" target="_blank" rel="noopener">多版本CUDA和TensorFlow共存</a></p>
 
       
@@ -970,83 +1058,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.3%E3%80%91Batch%20Normalization/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="去取经">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.3%E3%80%91Batch%20Normalization/" class="post-title-link" itemprop="url">【深度学习笔记3.3】Batch Normalization</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-05-25 17:28:05" itemprop="dateCreated datePublished" datetime="2018-05-25T17:28:05+08:00">2018-05-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:25:57" itemprop="dateModified" datetime="2020-01-22T13:25:57+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <a id="more"></a>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://www.cnblogs.com/guoyaohua/p/8724433.html" target="_blank" rel="noopener">【深度学习】深入理解Batch Normalization批标准化</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1117,7 +1128,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
