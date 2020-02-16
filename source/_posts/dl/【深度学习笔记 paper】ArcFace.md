@@ -6,8 +6,8 @@ categories: ["深度学习笔记"]
 mathjax: true
 ---
 
- ## ArcFace: Additive Angular Margin Loss for Deep Face Recognition
-
+ArcFace: Additive Angular Margin Loss for Deep Face Recognition
+=============
 
 # Abstract
 &emsp; 在使用DCNN做大规模人脸识别中最主要的挑战是设计恰当的损失函数以提高识别辨识力。最近，一个流行的研究方向是将margin并入损失函数以最大化人脸类别可分性。为了在人脸识别中获得具有高辨识力的特征，本文我们提出了Additive Angular Margin Loss (ArcFace)。ArcFace因为与超球面上的geodesic distance具有精确的对应关系，所以它具有清晰的几何解释。
@@ -33,7 +33,7 @@ Effective ....
 Easy ....
 Efficient ....
 
-# Proposed Approach
+# 2. Proposed Approach
 ## 2.1 ArcFace
 
 不废话了，直接上公式吧：
