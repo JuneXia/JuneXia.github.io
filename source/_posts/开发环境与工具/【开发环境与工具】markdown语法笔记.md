@@ -44,6 +44,21 @@ mathjax: true
 | 小于等于号 | \leq | $\leq$ | |
 
 
+## 数学公式中的空格
+| | | | |
+| --- | --- | --- | --- |
+| 两个quad空格 | a \qquad b | $a \qquad b$ | 两个m的宽度 |
+| quad空格 | a \quad b | $a \quad b$ | 一个m的宽度 |
+| 大空格 | a\ b | $a\ b$ | 1/3m宽度 |
+| 中等空格 | a\\;b | $a\;b$ | 2/7m宽度 |
+| 小空格 | a\\,b | $a\,b$ | 1/6m宽度 |
+| 没有空格 | ab | $ab$ | |		 
+| 紧贴 | a\\!b | $a\!b$ | 缩进1/6m宽度 |
+
+
+\quad、1em、em、m代表当前字体下接近字符‘M’的宽度。
+
+
 ## 方程组
 1
 $$
@@ -163,3 +178,10 @@ https://blog.csdn.net/thither_shore/article/details/52260742
 
 
 https://blog.csdn.net/deepinC/article/details/81103326
+
+
+
+| 需求 | status | result | 备注 |
+| ------ | ------ | ------ | ------ |
+| 检测到人脸 | 1 | 已识别 | |
+| 检测到人脸 | 2 | 已识别 | |
