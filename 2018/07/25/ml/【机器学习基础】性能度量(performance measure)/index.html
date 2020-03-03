@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="&amp;emsp; 性能度量(performance measure)是衡量模型泛化能力的评价标准。在对比不同模型的performance时，使用不同的 performance measure 往往会导致不同的评判结果，这意味着模型的“好坏”是相对的，什么样的模型是好的，不仅取决于算法和数据，还取决于任务需求 [1]。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【机器学习基础】性能度量(performance measure)">
+<meta property="og:url" content="http://yoursite.com/2018/07/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(performance%20measure)/index.html">
+<meta property="og:site_name" content="Paper搬运工">
+<meta property="og:description" content="&amp;emsp; 性能度量(performance measure)是衡量模型泛化能力的评价标准。在对比不同模型的performance时，使用不同的 performance measure 往往会导致不同的评判结果，这意味着模型的“好坏”是相对的，什么样的模型是好的，不仅取决于算法和数据，还取决于任务需求 [1]。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PR_ROC.jpg">
+<meta property="article:published_time" content="2018-07-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-02-27T06:31:49.123Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PR_ROC.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2018/07/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(performance%20measure)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>【机器学习基础】性能度量(performance measure) | Paper搬运工</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运工</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(performance%20measure)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【机器学习基础】性能度量(performance measure)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-07-25T00:00:00+08:00">2018-07-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-27 14:31:49" itemprop="dateModified" datetime="2020-02-27T14:31:49+08:00">2020-02-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>&emsp; 性能度量(performance measure)是衡量模型泛化能力的评价标准。在对比不同模型的performance时，使用不同的 performance measure 往往会导致不同的评判结果，这意味着模型的“好坏”是相对的，什么样的模型是好的，不仅取决于算法和数据，还取决于任务需求 [1]。<br><a id="more"></a></p>
+<p>回归任务最常用的 performance measure 是“均方误差”（mean squared error）</p>
+<script type="math/tex; mode=display">E(f;D) = \frac{1}{m} \sum^m_{i=1}(f(\boldsymbol{x}_i) - y_i)^2 \ .</script><p>本节主要介绍分类任务中常用的 performance measure.</p>
+<h1 id="错误率与精度"><a href="#错误率与精度" class="headerlink" title="错误率与精度"></a>错误率与精度</h1><p>&emsp; 错误率（error rate）是分类错误的样本数占样本总数的比例，精度（accuracy）则是分类正确的样本数占样本总数的比例. 对样例集D，分类错误率定义为</p>
+<script type="math/tex; mode=display">E(f;D) = \frac{1}{m} \sum^m_{i=1} \mathbb I(f(\boldsymbol{x}_i) \not ={y_i})</script><p>精度定义为</p>
+<script type="math/tex; mode=display">E(f;D) = \frac{1}{m} \sum^m_{i=1} \mathbb I(f(\boldsymbol{x}_i) = {y_i}) = 1 - E(f;D)</script><h1 id="查准率、查全率与-F-beta"><a href="#查准率、查全率与-F-beta" class="headerlink" title="查准率、查全率与$F_{\beta}$"></a>查准率、查全率与$F_{\beta}$</h1><p>&emsp; error rate 和 accuracy 虽然常用，但并不能满足所有任务需求。以挑西瓜问题为例，我们希望从一车西瓜中挑出好瓜，如果我们此时更关心“挑出的西瓜中好瓜所占的比例”（实际上就是Precision），或者“所有好瓜中有多少比例被挑了出来”（实际上就是Recall），这时候error rate 和 accuracy 显然就不能满足需求了。</p>
+<p>&emsp; 对于二分类问题，根据真实类别和学习器预测类别的组合划分，有混淆矩阵(confusion matrix)<br>| 真实情况 \ 预测结果 | 正例 | 负例 | 合计 |<br>| —- | —- | —- | —- |<br>| 正例 | True Positive(TP) | False Negtive(FN) | P(真的为正例的所有样本) |<br>| 负例 | False Positive(FP) | True Negtive(TN) | N(真的为负例的所有样本) |<br>| 合计 | P’(预测为正例的所有样本) | N’(预测为负例的所有样本) | P+N=P’+N’ |</p>
+<p>查准率（Precison）和查全率（Recall）分别定义为</p>
+<script type="math/tex; mode=display">P = \frac{TP}{TP+FP} = \frac{TP}{P'}</script><script type="math/tex; mode=display">R = \frac{TP}{TP+FN} = \frac{TP}{P}</script><p>&emsp; 查准率可以认为是”宁缺毋滥”，适合对准确率要求高的应用，例如商品推荐，网页检索等。查全率可以认为是”宁错杀一百，不放过1个”，适合类似于检查走私、逃犯信息等。</p>
+<p>&emsp; 根据学习器的预测结果对样例进行排序，排名越靠前则越有可能是正例的样本，按此顺序逐个把样本作为正例，剩下的都预测为负例，则每次可以计算出当前的查全率和查准率，以查全率为横轴可得<strong>查准率-查全率曲线</strong>，简称<strong>P-R曲线</strong>，显示该曲线的图称为<strong>P-R图</strong>.</p>
+<p>&emsp; 在进行比较时，若一个学习器A的P-R曲线被另一个学习器B的P-R曲线完全“包住”，则可断言B的性能优于A。但是如果两个学习器的P-R曲线发生交叉，则难以一般性地断言两者孰优孰劣，只能在具体的查准率和查全率条件下进行比较。然而，在很多情况下，人们往往仍希望把学习器之间比个高低，这时候一个比较合理的判据是比较P-R曲线下的面积大小，它在一定程度上表征了学习器在查准率和查全率上取得相对“双高”的比例。但这个值往往不太容易估算，因此，人们设计了一些综合考虑查准率、查全率的度量 [1]。（其实就是 Precision 和 Recall 率的权衡）</p>
+<h2 id="平衡点"><a href="#平衡点" class="headerlink" title="平衡点"></a>平衡点</h2><p>平衡点（Break-Event Point, 简称BEP）就是这样一个度量，它是“Precison = Recall”时的取值，我们认为平衡点越靠近（1,1）则性能越好。</p>
+<h2 id="F-beta-度量"><a href="#F-beta-度量" class="headerlink" title="$F_{\beta}$度量"></a>$F_{\beta}$度量</h2><p>&emsp; 但BEP还是过于简单了些，例如下面两个模型哪个综合性能更优？<br>|   | Precision | Recall |<br>| —- | —- | —- |<br>| A模型 | 80% | 90% |<br>| B模型 | 90% | 80% |</p>
+<p>为了解决这个问题，人们提出了 $F_{\beta}$ 度量。$F_{\beta}$ 能够表达出对 Precision/Recall 的不同偏好，其物理意义就是将 Precision 和 Recall 这两个得分值(score)合并为一个值，在合并的过程中，Recall 的权重是 Precision 的 $\beta$ 倍 [2]，即 $W_R = \beta \cdot W_P$， 则</p>
+<script type="math/tex; mode=display">F_{\beta} = (1+\beta^2) \cdot \frac{P \times R}{(\beta^2 \times P) + R} \qquad \beta > 0</script><p>当 $\beta = 1$ 时，$F_{\beta}$ 退化为标准的 $F_{1}$ 度量，此时Precision 和 Recall 同等重要；</p>
+<p>当 $\beta &gt; 1$ 时，则 Recall 更重要，当 $\beta &lt; 1$ 时，则 Precision 更重要。</p>
+<blockquote>
+<p>$F_{1}$ 是基于 Precision 和 Recall 的调和平均（harmonic mean）定义的：</p>
+<script type="math/tex; mode=display">F_{1} = 2 \cdot \frac{P \times R}{P + R}</script><script type="math/tex; mode=display">\frac{1}{F_{1}} = \frac{1}{2} \cdot \frac{P + R}{P \times R} = \frac{1}{2} \cdot (\frac{1}{P} + \frac{1}{R})</script><p>$F_{\beta}$ 则是加权调和平均：</p>
+<script type="math/tex; mode=display">\frac{1}{F_{\beta}} = \frac{1}{1+\beta^2} \cdot (\frac{1}{P} + \frac{\beta^2}{R})</script><p>与算术平均（$\frac{P+R}{2}$）和几何平均相比（$\sqrt{P \times R}$）相比，调和平均更重视较小值。</p>
+</blockquote>
+<h2 id="macroP、macroR、macroF-1"><a href="#macroP、macroR、macroF-1" class="headerlink" title="$macroP、macroR、macroF_1$"></a>$macroP、macroR、macroF_1$</h2><p>&emsp; 很多时候我们有多个二分类 confusion matrix，例如进行多次 Train/Test，每次得到一个 confusion matrix；或是在多个数据集上进行 Train/Test，希望估计算法“全局”的 performance；甚或是执行多分类任务，每<strong>两两类别的组合</strong>都对应一个 confusion matrix；…… 总之，我们希望在 n 个二分类 confusion matrix 上综合考察查准率和查全率. [1]</p>
+<p>&emsp; 一种直接的做法是先在各 confusion matrix 上分别计算出 Precision 和 Recall，记为 $(P_{1}, R_{1}), (P_{2}, R_{2}), … , (P_{n}, R_{n})$，再计算平均值，这样就得到“宏查准率”（macro-P）、“宏查全率”（macro-R），以及相应的“宏$F_1$”（macro-$F_1$）:</p>
+<script type="math/tex; mode=display">macroP = \frac{1}{n} \sum^n_{i=1} P_i</script><script type="math/tex; mode=display">macroR = \frac{1}{n} \sum^n_{i=1} R_i</script><script type="math/tex; mode=display">macroF_1 = \frac{2 \times {macroP} \times macroR}{macroP + macroR}</script><h2 id="microP、microR、microF-1"><a href="#microP、microR、microF-1" class="headerlink" title="$microP、microR、microF_1$"></a>$microP、microR、microF_1$</h2><p>&emsp; 还以先将各 confusion matrix 的对应元素进行平均，得到 TP、FP、TN、FN 的平均值，再基于这些平均值计算出“微查准率”（micro-P）、“微查全率”（micro-R），以及相应的“微$F_1$”（micro-$F_1$）:</p>
+<script type="math/tex; mode=display">microP = \frac{\overline{TP}}{\overline{TP} + \overline{FP}}</script><script type="math/tex; mode=display">microR = \frac{\overline{TP}}{\overline{TP} + \overline{FN}}</script><script type="math/tex; mode=display">microF_1 = \frac{2 \times {microP} \times microR}{microP + microR}</script><h1 id="ROC-与-AUC"><a href="#ROC-与-AUC" class="headerlink" title="ROC 与 AUC"></a>ROC 与 AUC</h1><p>&emsp; 机器学习中的很多模型对于分类问题的预测结果大多是概率，即属于某个类别的概率，如果计算准确率的话，就要把概率转化为类别，这就需要设定一个阈值，概率大于某个阈值的属于一类，概率小于某个阈值的属于另一类，而阈值的设定直接影响了学习器的泛化能力。</p>
+<p>&emsp; 与P-R曲线类似，我们根据学习器的预测结果(概率)对样例进行排序，最可能是正例的排在最前面，最不可能是正例的排在最后面，按此顺序逐个把样本作为正例(逐个设定阈值)进行预测，计算每个阈值下的“真正例率”（True Positive Rate，简称TPR）、“假正例率”（False Positive Rate，简称FPR）:</p>
+<script type="math/tex; mode=display">TPR = \frac{TP}{TP + FN} = \frac{TP}{P}</script><script type="math/tex; mode=display">FPR = \frac{FP}{TN + FP} = \frac{FP}{N}</script><p>TPR 实际上就是 Recall，表示所有的正样本中有多少被召回了；而 FPR 表示所有的负样本中有多少被误分为正样本了。</p>
+<p>上面说到，每个阈值会得到一组$(FPR, \ TPR)$，那么 n 组阈值就会得到 n 组 $(FPR_0, \ TPR_0), \ (FPR_1, \ TPR_1), \ … \ , \ (FPR_n, \ TPR_n)$，使用这 n 组$(FPR_i, \ TPR_i)$ 以 FPR 为横轴，以 TPR 为纵轴作图，就得到了“<strong>ROC曲线</strong>”，显示 ROC 曲线的图称为 <strong>ROC图</strong>。</p>
+<p>显然，ROC图中的对角线对应于“随机猜测”模型。</p>
+<p>与P-R图类似，若一个学习器的ROC曲线另一个学习器的曲线完全包住，则可断言后者的性能优于前者；若两个学习器的ROC曲线发生交叉，则难以一般性地断言两者孰优孰劣。此时如果一定要进行比较，则较为合理的判据是比较ROC曲线下的面积，即AUC（Area Under ROC Curve）.</p>
+<h1 id="P-R曲线与ROC曲线的选择"><a href="#P-R曲线与ROC曲线的选择" class="headerlink" title="P-R曲线与ROC曲线的选择"></a>P-R曲线与ROC曲线的选择</h1><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PR_ROC.jpg" width = 70% height = 70% />
+</div>
+
+<p>本段来自文献[2]</p>
+<p><strong>如何选择呢？</strong></p>
+<ul>
+<li><p>在很多实际问题中，正负样本数量往往很不均衡。比如，计算广告领域经常涉及转化率模型，正样本的数量往往是负样本数量的1/1000，甚至1/10000。若选择不同的测试集，P-R曲线的变化就会非常大，而ROC曲线则能够更加稳定地反映模型本身的好坏。所以，ROC曲线的适用场景更多，被广泛用于排序、推荐、广告等领域。</p>
+</li>
+<li><p>但需要注意的是，选择P-R曲线还是ROC曲线是因实际问题而异的，如果研究者希望更多地看到模型在特定数据集上的表现，P-R曲线则能够更直观地反映其性能。</p>
+</li>
+<li><p>PR曲线比ROC曲线更加关注正样本，而ROC则兼顾了两者。</p>
+</li>
+<li><p>AUC越大，反映出正样本的预测结果更加靠前。（推荐的样本更能符合用户的喜好）</p>
+</li>
+<li><p>当正负样本比例失调时，比如正样本1个，负样本100个，则ROC曲线变化不大，此时用PR曲线更加能反映出分类器性能的好坏。这个时候指的是两个分类器，因为只有一个正样本，所以在画auc的时候变化可能不太大；但是在画PR曲线的时候，因为要召回这一个正样本，看哪个分类器同时召回了更少的负样本，差的分类器就会召回更多的负样本，这样precision必然大幅下降，这样分类器性能对比就出来了。</p>
+</li>
+</ul>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] 机器学习.周志华 &gt; 2.3 性能度量 \<br>[2] <a href="https://blog.csdn.net/weixin_37641832/article/details/104434509?fps=1&amp;locationNum=2" target="_blank" rel="noopener">一文详尽混淆矩阵、准确率、精确率、召回率、F1值、P-R 曲线、ROC 曲线、AUC 值、Micro-F1 和 Macro-F1</a> \<br>[3] 代码参考 &gt; <a href="https://blog.csdn.net/hfutdog/article/details/88079934" target="_blank" rel="noopener">sklearn ROC曲线使用</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/06/25/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20%5B%E8%BD%AC%5D%E3%80%91%E8%BF%AD%E4%BB%A3%E5%99%A8(Iterator)/" rel="prev" title="【Python笔记 [转]】迭代器(Iterator)">
+      <i class="fa fa-chevron-left"></i> 【Python笔记 [转]】迭代器(Iterator)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/08/12/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1.2%E3%80%91%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD(Back%20Propagation)/" rel="next" title="【深度学习笔记】反向传播(Back Propagation)">
+      【深度学习笔记】反向传播(Back Propagation) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#错误率与精度"><span class="nav-number">1.</span> <span class="nav-text">错误率与精度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查准率、查全率与-F-beta"><span class="nav-number">2.</span> <span class="nav-text">查准率、查全率与$F_{\beta}$</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#平衡点"><span class="nav-number">2.1.</span> <span class="nav-text">平衡点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#F-beta-度量"><span class="nav-number">2.2.</span> <span class="nav-text">$F_{\beta}$度量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#macroP、macroR、macroF-1"><span class="nav-number">2.3.</span> <span class="nav-text">$macroP、macroR、macroF_1$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#microP、microR、microF-1"><span class="nav-number">2.4.</span> <span class="nav-text">$microP、microR、microF_1$</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ROC-与-AUC"><span class="nav-number">3.</span> <span class="nav-text">ROC 与 AUC</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P-R曲线与ROC曲线的选择"><span class="nav-number">4.</span> <span class="nav-text">P-R曲线与ROC曲线的选择</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

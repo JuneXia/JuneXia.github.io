@@ -50,12 +50,12 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="【深度学习笔记 paper】Focal Loss">
 <meta property="og:url" content="http://yoursite.com/2019/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20paper%E3%80%91Focal%20Loss/index.html">
-<meta property="og:site_name" content="取取经">
+<meta property="og:site_name" content="Paper搬运工">
 <meta property="og:description" content="论文：Focal Loss for Dense Object Detection &amp;emsp; Focal Loss 最初被提出是用来解决目标检测的[1]，在目标检测领域常见的算法主要可以分为两大类：two-stage detector和one-stage detector。前者是指类似Faster RCNN，RFCN这样需要region proposal的检测算法，这类算法可以达到很高的准确率，">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/focalloss.jpg">
 <meta property="article:published_time" content="2019-04-05T09:28:05.000Z">
-<meta property="article:modified_time" content="2020-02-16T01:19:00.053Z">
+<meta property="article:modified_time" content="2020-02-28T14:09:50.344Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/focalloss.jpg">
 
@@ -71,7 +71,7 @@
   };
 </script>
 
-  <title>【深度学习笔记 paper】Focal Loss | 取取经</title>
+  <title>【深度学习笔记 paper】Focal Loss | Paper搬运工</title>
   
 
 
@@ -115,7 +115,7 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">取取经</span>
+        <span class="site-title">Paper搬运工</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -180,11 +180,11 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="取取经">
+      <meta itemprop="name" content="Paper搬运工">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -205,7 +205,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-16 09:19:00" itemprop="dateModified" datetime="2020-02-16T09:19:00+08:00">2020-02-16</time>
+                <time title="Modified: 2020-02-28 22:09:50" itemprop="dateModified" datetime="2020-02-28T22:09:50+08:00">2020-02-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -241,7 +241,6 @@
 <p>&emsp; Focal Loss 对于Object Detection来说可能效果不错，但我在人脸识别中引入Focal Loss时发现并没有多大作用。</p>
 <p>&emsp; Focal Loss 算法实现，网上也有很多种[2]，但有的我实测存在数值不稳定问题，这里我做了一些改进并整理如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 交叉熵使用tf.nn.sparse_softmax_cross_entropy_with_logits实现</span></span><br><span class="line"><span class="comment"># 权重自己使用tf接口实现。感觉这个最好使！！！</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">focal_loss</span><span class="params">(y_pred, y_true, alpha=<span class="number">0.25</span>, gamma=<span class="number">2.</span>, name=<span class="string">'focal_loss'</span>)</span>:</span></span><br><span class="line">    cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y_true, logits=y_pred)</span><br><span class="line">    <span class="comment"># cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_true, logits=y_pred)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 从logits计算softmax</span></span><br><span class="line">    reduce_max = tf.reduce_max(y_pred, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line">    prob = tf.nn.softmax(y_pred - reduce_max)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算交叉熵</span></span><br><span class="line">    <span class="comment"># clip_prob = tf.clip_by_value(prob, 1e-10, 1.0)</span></span><br><span class="line">    <span class="comment"># cross_entropy = -tf.reduce_sum(y_true * tf.log(clip_prob), 1)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算focal_loss</span></span><br><span class="line">    prob = tf.reduce_max(prob, axis=<span class="number">1</span>)</span><br><span class="line">    weight = tf.pow(tf.subtract(<span class="number">1.</span>, prob), gamma)</span><br><span class="line">    fl = tf.multiply(tf.multiply(weight, cross_entropy), alpha)</span><br><span class="line">    loss = tf.reduce_mean(fl, name=name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 损失波动较大</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">focal_loss</span><span class="params">(y_pred, y_true, alpha=<span class="number">0.25</span>, gamma=<span class="number">2.</span>, name=<span class="string">'focal_loss'</span>)</span>:</span></span><br><span class="line">    y_true = tf.one_hot(y_true, depth=y_pred.get_shape().as_list()[<span class="number">-1</span>], dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">    reduce_max = tf.reduce_max(y_pred, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line">    y_pred = tf.nn.softmax(tf.subtract(y_pred, reduce_max))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_true, logits=y_pred)</span></span><br><span class="line"></span><br><span class="line">    y_pred = tf.clip_by_value(y_pred, <span class="number">1e-6</span>, <span class="number">1.0</span>)</span><br><span class="line">    <span class="comment"># cross_entropy = -tf.reduce_sum(y_true * tf.log(y_pred), 1)</span></span><br><span class="line">    cross_entropy = -tf.reduce_sum(tf.multiply(y_true, tf.log(y_pred)), axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算focal_loss</span></span><br><span class="line">    prob = tf.reduce_max(y_pred, axis=<span class="number">1</span>)</span><br><span class="line">    weight = tf.pow(tf.subtract(<span class="number">1.</span>, prob), gamma)</span><br><span class="line">    <span class="comment"># weight = tf.multiply(tf.multiply(weight, y_true), alpha)</span></span><br><span class="line">    <span class="comment"># weight = tf.reduce_max(weight, axis=1)</span></span><br><span class="line"></span><br><span class="line">    fl = tf.multiply(tf.multiply(weight, cross_entropy), alpha)</span><br><span class="line">    loss = tf.reduce_sum(fl, name=name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自己使用tf基础函数实现交叉熵</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">focal_loss3</span><span class="params">(prediction_tensor, target_tensor, gamma=<span class="number">2.</span>, alpha=<span class="number">.25</span>, name=<span class="string">'focal_loss'</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    focal loss for multi category of multi label problem</span></span><br><span class="line"><span class="string">    适用于多分类或多标签问题的focal loss</span></span><br><span class="line"><span class="string">    alpha控制真值y_true为1/0时的权重</span></span><br><span class="line"><span class="string">        1的权重为alpha, 0的权重为1-alpha</span></span><br><span class="line"><span class="string">    当你的模型欠拟合，学习存在困难时，可以尝试适用本函数作为loss</span></span><br><span class="line"><span class="string">    当模型过于激进(无论何时总是倾向于预测出1),尝试将alpha调小</span></span><br><span class="line"><span class="string">    当模型过于惰性(无论何时总是倾向于预测出0,或是某一个固定的常数,说明没有学到有效特征)</span></span><br><span class="line"><span class="string">        尝试将alpha调大,鼓励模型进行预测出1。</span></span><br><span class="line"><span class="string">    Usage:</span></span><br><span class="line"><span class="string">     model.compile(loss=[multi_category_focal_loss2(alpha=0.25, gamma=2)], metrics=["accuracy"], optimizer=adam)</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    epsilon = <span class="number">1.e-7</span></span><br><span class="line">    gamma = float(gamma)</span><br><span class="line">    alpha = tf.constant(alpha, dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># y_true = tf.cast(target_tensor, tf.float32)</span></span><br><span class="line">    y_true = tf.one_hot(target_tensor, depth=prediction_tensor.get_shape().as_list()[<span class="number">-1</span>])</span><br><span class="line">    y_pred = tf.clip_by_value(prediction_tensor, epsilon, <span class="number">1.</span> - epsilon)</span><br><span class="line"></span><br><span class="line">    alpha_t = y_true * alpha + (tf.ones_like(y_true) - y_true) * (<span class="number">1</span> - alpha)</span><br><span class="line">    y_t = tf.multiply(y_true, y_pred) + tf.multiply(<span class="number">1</span> - y_true, <span class="number">1</span> - y_pred)</span><br><span class="line">    ce = -tf.log(y_t)</span><br><span class="line">    weight = tf.pow(tf.subtract(<span class="number">1.</span>, y_t), gamma)</span><br><span class="line">    fl = tf.multiply(tf.multiply(weight, ce), alpha_t)</span><br><span class="line">    loss = tf.reduce_mean(fl, name=name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> loss</span><br></pre></td></tr></table></figure>
-<!-- more -->
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://blog.csdn.net/u014380165/article/details/77019084" target="_blank" rel="noopener">Focal Loss</a><br>[2] <a href="https://blog.csdn.net/u011583927/article/details/90716942" target="_blank" rel="noopener">focal loss的几种实现版本(Keras/Tensorflow)</a></p>
 
     </div>
@@ -331,14 +330,14 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name"></p>
-  <div class="site-description" itemprop="description">日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！</div>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">90</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

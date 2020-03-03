@@ -46,12 +46,12 @@
   };
 </script>
 
-  <meta name="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
+  <meta name="description" content="其实，我是一个搬运工！">
 <meta property="og:type" content="website">
-<meta property="og:title" content="取取经">
+<meta property="og:title" content="Paper搬运工">
 <meta property="og:url" content="http://yoursite.com/page/3/index.html">
-<meta property="og:site_name" content="取取经">
-<meta property="og:description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
+<meta property="og:site_name" content="Paper搬运工">
+<meta property="og:description" content="其实，我是一个搬运工！">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary">
 
@@ -67,7 +67,7 @@
   };
 </script>
 
-  <title>取取经</title>
+  <title>Paper搬运工</title>
   
 
 
@@ -111,7 +111,7 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">取取经</span>
+        <span class="site-title">Paper搬运工</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -171,16 +171,528 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/13/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91ubuntu%20python%E5%AF%BC%E5%85%A5%E8%87%AA%E5%B7%B1%E7%9A%84package/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/13/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91ubuntu%20python%E5%AF%BC%E5%85%A5%E8%87%AA%E5%B7%B1%E7%9A%84package/" class="post-title-link" itemprop="url">【开发环境与工具】ubuntu python导入自己的package</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-13 00:00:00" itemprop="dateCreated datePublished" datetime="2019-05-13T00:00:00+08:00">2019-05-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-26 15:59:42" itemprop="dateModified" datetime="2020-02-26T15:59:42+08:00">2020-02-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">开发环境与工具</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>问题背景</strong>：随着代码的积累，发现很多自己写的代码是可以通用的，可以将自己的代码库加入系统路径，方便其他python代码在任何地方都能够使用。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/05/13/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91ubuntu%20python%E5%AF%BC%E5%85%A5%E8%87%AA%E5%B7%B1%E7%9A%84package/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/02/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90PyTorch%E7%AC%94%E8%AE%B0%E3%80%91Tensor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/02/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90PyTorch%E7%AC%94%E8%AE%B0%E3%80%91Tensor/" class="post-title-link" itemprop="url">【PyTorch笔记】Tenosr</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-02 00:00:00" itemprop="dateCreated datePublished" datetime="2019-05-02T00:00:00+08:00">2019-05-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-23 09:14:04" itemprop="dateModified" datetime="2020-02-23T09:14:04+08:00">2020-02-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="直接创建"><a href="#直接创建" class="headerlink" title="直接创建"></a>直接创建</h1><h2 id="torch-tensor"><a href="#torch-tensor" class="headerlink" title="torch.tensor"></a>torch.tensor</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">torch.tensor(data,</span><br><span class="line">             dtype=<span class="literal">None</span>,</span><br><span class="line">             device=<span class="literal">None</span>,</span><br><span class="line">             requires_grad=<span class="literal">False</span>,</span><br><span class="line">             pin_memory=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/05/02/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90PyTorch%E7%AC%94%E8%AE%B0%E3%80%91Tensor/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/20/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91paper,dataset%20and%20code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/20/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91paper,dataset%20and%20code/" class="post-title-link" itemprop="url">【深度学习笔记 face】paper,dataset and code</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-20 17:28:05" itemprop="dateCreated datePublished" datetime="2019-04-20T17:28:05+08:00">2019-04-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-27 15:11:13" itemprop="dateModified" datetime="2020-02-27T15:11:13+08:00">2020-02-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<blockquote>
+<p>看<a href="https://www.cnblogs.com/darkknightzh/p/8525287.html，sphereface是这一系列角度损失函数优化的鼻祖" target="_blank" rel="noopener">https://www.cnblogs.com/darkknightzh/p/8525287.html，sphereface是这一系列角度损失函数优化的鼻祖</a><br>看<a href="https://www.cnblogs.com/darkknightzh/p/8524937.html" target="_blank" rel="noopener">https://www.cnblogs.com/darkknightzh/p/8524937.html</a><br>sphereface的知乎：<a href="https://zhuanlan.zhihu.com/p/40775212" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/40775212</a><br>关于softmax: <a href="https://zhuanlan.zhihu.com/p/25723112" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25723112</a></p>
+</blockquote>
+<h1 id="遮挡人脸"><a href="#遮挡人脸" class="headerlink" title="遮挡人脸"></a>遮挡人脸</h1><p><a href="http://www.escience.cn/people/geshiming/mafa.html" target="_blank" rel="noopener">Detecting Masked Faces in the Wild with LLE-CNNs</a><br>提供了遮挡人脸数据集 MAFA</p>
+<h1 id="关于数据集"><a href="#关于数据集" class="headerlink" title="关于数据集"></a>关于数据集</h1><p><a href="http://shuoyang1213.me/WIDERFACE/" target="_blank" rel="noopener">WIDER FACE: A Face Detection Benchmark</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/14/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20paper%E3%80%91Center%20Loss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/14/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20paper%E3%80%91Center%20Loss/" class="post-title-link" itemprop="url">【深度学习笔记 paper】Center Loss</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-14 17:28:05" itemprop="dateCreated datePublished" datetime="2019-04-14T17:28:05+08:00">2019-04-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-16 14:53:59" itemprop="dateModified" datetime="2020-02-16T14:53:59+08:00">2020-02-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>论文：<a href="https://ydwen.github.io/papers/WenECCV16.pdf" target="_blank" rel="noopener">A Discriminative Feature Learning Approach for Deep Face Recognition</a><br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/14/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20paper%E3%80%91Center%20Loss/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91ubuntu%20python%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84flask+mysql%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91ubuntu%20python%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84flask+mysql%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">【开发环境与工具】ubuntu python环境下的flask+mysql安装部署</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-04-12T00:00:00+08:00">2019-04-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:27:49" itemprop="dateModified" datetime="2020-01-22T13:27:49+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">开发环境与工具</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h2 id="flask-安装"><a href="#flask-安装" class="headerlink" title="flask 安装"></a>flask 安装</h2><p>sudo pip3 install flask</p>
+<h2 id="mysql-安装"><a href="#mysql-安装" class="headerlink" title="mysql 安装"></a>mysql 安装</h2><p>sudo apt-get install mysql-server<br>sudo apt-get install mysql-client<br>sudo apt install libmysqlclient-dev</p>
+<p>安装成功后可以通过下面的命令测试是否安装成功：<br>sudo netstat -tap | grep mysql</p>
+<p>检查mysql服务状态：<br>systemctl status mysql.service</p>
+<p>安装mysql  python调用接口<br>sudo pip3 install pymysql</p>
+<p>进入mysql的方式（quit退出）<br>mysql -uroot -p</p>
+<p>进入mysql后的可以通过mysql命令行操作<br>mysql&gt; show user</p>
+<h2 id="创建数据库和表"><a href="#创建数据库和表" class="headerlink" title="创建数据库和表"></a>创建数据库和表</h2><p>下面开始创建数据库有表，例如可以新建一个名为face_recognization.sql的文件，然后输入一下内容：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建数据库</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> db_face_recognization;</span><br><span class="line"><span class="keyword">use</span> db_face_recognization;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 特征表</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> tb_face_feature;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> tb_face_feature (</span><br><span class="line">    person_id <span class="built_in">smallint</span> <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"person_id"</span>,</span><br><span class="line">    img <span class="built_in">varchar</span>(<span class="number">256</span>) <span class="keyword">default</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"图片路径"</span>,</span><br><span class="line">    feature <span class="built_in">blob</span> <span class="keyword">default</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"特征值"</span>,</span><br><span class="line">    create_time <span class="built_in">timestamp</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="keyword">current_timestamp</span> <span class="keyword">comment</span> <span class="string">"创建时间"</span>,</span><br><span class="line">    primary <span class="keyword">key</span> (person_id)</span><br><span class="line">) <span class="keyword">engine</span>=<span class="keyword">InnoDB</span> <span class="keyword">default</span> <span class="keyword">charset</span>=utf8mb4 <span class="keyword">comment</span>=<span class="string">"人脸特征表"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>通过下面的命令进入mysql环境：<br>mysql -uroot -p</p>
+<p>在mysql环境下执行下面的命令即可创建数据库和表：<br>source  /<strong>/pathto/</strong>/face_recognization.sql<br>注意：该sql文件一定要给全路径</p>
+<h2 id="mysql常用命令"><a href="#mysql常用命令" class="headerlink" title="mysql常用命令"></a>mysql常用命令</h2><p><strong>进入数据库基本操作</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 显示当前用户下的所有数据库</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">databases</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用某个数据库</span></span><br><span class="line"><span class="keyword">use</span> db_face_recognization;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 显示当前数据库下所有表</span></span><br><span class="line">mysql&gt; show tables;</span><br><span class="line">+<span class="comment">---------------------------------+</span></span><br><span class="line">| Tables_in_db_face_recognization |</span><br><span class="line">+<span class="comment">---------------------------------+</span></span><br><span class="line">| tb_admin_user                   |</span><br><span class="line">| tb_face_feature                 |</span><br><span class="line">+<span class="comment">---------------------------------+</span></span><br><span class="line">2 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看表的字段信息</span></span><br><span class="line"><span class="keyword">desc</span> tb_face_feature</span><br></pre></td></tr></table></figure></p>
+<p><strong>显示表中的所有字段</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">columns</span> <span class="keyword">from</span> tb_face_feature;</span><br></pre></td></tr></table></figure></p>
+<p><strong>添加新字段</strong>[3]<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_face_feature <span class="keyword">add</span> <span class="keyword">column</span> person_name <span class="built_in">varchar</span>(<span class="number">128</span>) <span class="keyword">default</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"person_name"</span> <span class="keyword">after</span> person_id;</span><br><span class="line"><span class="comment">-- 往tb_face_feature表中增加字段 person_name，长度128，默认为null，备注：person_name，添加在person_id后面</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>删除字段</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_face_feature <span class="keyword">drop</span> person_name;</span><br></pre></td></tr></table></figure></p>
+<p><strong>创建表时设置主键自增，且指定自增初始值</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> tb_test2;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> tb_test2 (</span><br><span class="line">    person_id <span class="built_in">smallint</span> <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> auto_increment <span class="keyword">comment</span> <span class="string">"person_id"</span>,</span><br><span class="line">    person_name <span class="built_in">varchar</span>(<span class="number">128</span>) <span class="keyword">default</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"person_name"</span>,</span><br><span class="line">    img <span class="built_in">varchar</span>(<span class="number">256</span>) <span class="keyword">default</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"图片路径"</span>,</span><br><span class="line">    feature <span class="built_in">blob</span> <span class="keyword">default</span> <span class="literal">null</span> <span class="keyword">comment</span> <span class="string">"特征值"</span>,</span><br><span class="line">    create_time <span class="built_in">timestamp</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="keyword">current_timestamp</span> <span class="keyword">comment</span> <span class="string">"创建时间"</span>,</span><br><span class="line">    primary <span class="keyword">key</span> (person_id)</span><br><span class="line">) <span class="keyword">engine</span>=<span class="keyword">InnoDB</span> auto_increment=<span class="number">1</span> <span class="keyword">default</span> <span class="keyword">charset</span>=utf8mb4 <span class="keyword">comment</span>=<span class="string">"人脸特征表"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 注意上述语句中的auto_increment</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>已有主键，仅设置主键自增</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_face_feature <span class="keyword">change</span> person_id person_id <span class="built_in">smallint</span> <span class="keyword">unsigned</span> AUTO_INCREMENT;  <span class="comment">-- 设置主键自增</span></span><br><span class="line"><span class="comment">-- 改变tb_face_feature表的person_id字段名为person_id, 数据类型为smallint unsigned，自增</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_face_feature AUTO_INCREMENT=<span class="number">1</span>;  <span class="comment">-- 设置主键从1开始自增</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>修改主键字段名称</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_face_feature <span class="keyword">change</span> person_id feature_id <span class="built_in">smallint</span> <span class="keyword">unsigned</span> auto_increment;</span><br><span class="line"><span class="comment">-- 将tb_face_feature表的person_id字段名改为feature_id，并指定其数据类型为smallint unsigned,且数值自增</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>从一个表导入数据到另一个表</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_person(person_id, person_name, create_time) <span class="keyword">select</span> feature_id, person_name, create_time <span class="keyword">from</span> tb_face_feature;</span><br><span class="line"><span class="comment">-- 上述语句要求目标表tb_person和源表tb_face_feature相应的数据类型要相同。</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>将同一个表中的某个字段复制到另一个字段</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> tb_face_feature <span class="keyword">set</span> person_id=feature_id</span><br></pre></td></tr></table></figure></p>
+<p><strong>批量插入</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_face_feature(person_name, feature_mark, feature) <span class="keyword">values</span>(<span class="string">'lucy'</span>,<span class="string">'A'</span>,<span class="number">10010</span>),(<span class="string">'andy'</span>,<span class="string">'B'</span>,<span class="number">10012</span>);</span><br></pre></td></tr></table></figure></p>
+<p><strong>同时修改多个表</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> tb_person tbp, tb_face_feature tbf <span class="keyword">set</span> tbp.person_name=<span class="string">'吴三桂'</span>, tbf.img=<span class="string">'./xxoo/xx00.jpg'</span>, tbf.feature=<span class="number">10011</span> <span class="keyword">where</span> tbp.person_id=tbf.person_id <span class="keyword">and</span> tbp.person_id=<span class="number">56</span> <span class="keyword">and</span> tbf.feature_mark=<span class="string">'A'</span>;</span><br></pre></td></tr></table></figure></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://blog.csdn.net/xiangwanpeng/article/details/54562362" target="_blank" rel="noopener">在Ubuntu16.04下安装mysql</a><br>[2] <a href="https://blog.csdn.net/weixx3/article/details/80782479" target="_blank" rel="noopener">Ubuntu18.04 安装MySQL</a><br>[3] <a href="https://www.runoob.com/mysql/mysql-alter.html" target="_blank" rel="noopener">MySQL ALTER命令</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20paper%E3%80%91Focal%20Loss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20paper%E3%80%91Focal%20Loss/" class="post-title-link" itemprop="url">【深度学习笔记 paper】Focal Loss</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-05 17:28:05" itemprop="dateCreated datePublished" datetime="2019-04-05T17:28:05+08:00">2019-04-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-28 22:09:50" itemprop="dateModified" datetime="2020-02-28T22:09:50+08:00">2020-02-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>论文：<a href="https://arxiv.org/abs/1708.02002" target="_blank" rel="noopener">Focal Loss for Dense Object Detection</a></p>
+<p>&emsp; Focal Loss 最初被提出是用来解决目标检测的[1]，在目标检测领域常见的算法主要可以分为两大类：two-stage detector和one-stage detector。前者是指类似Faster RCNN，RFCN这样需要region proposal的检测算法，这类算法可以达到很高的准确率，但是速度较慢。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20paper%E3%80%91Focal%20Loss/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.2%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91Dropout/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="取取经">
+      <meta itemprop="name" content="Paper搬运工">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -256,16 +768,175 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/02/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0%E9%87%8F%E4%B8%8EFLOPs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/03/02/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0%E9%87%8F%E4%B8%8EFLOPs/" class="post-title-link" itemprop="url">【深度学习笔记】神经网络参数量与FLOPs</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-02 17:28:05" itemprop="dateCreated datePublished" datetime="2019-03-02T17:28:05+08:00">2019-03-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-20 15:51:08" itemprop="dateModified" datetime="2020-02-20T15:51:08+08:00">2020-02-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="一些基本概念"><a href="#一些基本概念" class="headerlink" title="一些基本概念"></a>一些基本概念</h1><p>FLOPS：注意S大写，是 floating point operations per second 的缩写，意指每秒浮点运算次数，理解为计算速度。是一个衡量硬件性能的指标。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/02/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0%E9%87%8F%E4%B8%8EFLOPs/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/22/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E5%81%8F%E5%B7%AE%E4%B8%8E%E6%96%B9%E5%B7%AE(bias%20&%20variance)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/01/22/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E5%81%8F%E5%B7%AE%E4%B8%8E%E6%96%B9%E5%B7%AE(bias%20&%20variance)/" class="post-title-link" itemprop="url">【机器学习基础】偏差与方差(bias & variance)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-01-22 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-22T00:00:00+08:00">2019-01-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-27 14:31:21" itemprop="dateModified" datetime="2020-02-27T14:31:21+08:00">2020-02-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://www.cnblogs.com/hutao722/p/9921788.html" target="_blank" rel="noopener">深度学习基础系列（八）| 偏差和方差</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/02/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B01.4%E3%80%91Python%20C%20API%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="取取经">
+      <meta itemprop="name" content="Paper搬运工">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -339,732 +1010,11 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="取取经">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/10/21/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-10-21 00:00:00" itemprop="dateCreated datePublished" datetime="2018-10-21T00:00:00+08:00">2018-10-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 12:33:18" itemprop="dateModified" datetime="2020-01-22T12:33:18+08:00">2020-01-22</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/25/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91Ubuntu16.04+RTX750+CUDA10.0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="取取经">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/08/25/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91Ubuntu16.04+RTX750+CUDA10.0/" class="post-title-link" itemprop="url">【开发环境与工具】Ubuntu16.04+RTX750+CUDA10.0</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-08-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-08-25T00:00:00+08:00">2018-08-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-15 15:35:35" itemprop="dateModified" datetime="2020-02-15T15:35:35+08:00">2020-02-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
-                    <span itemprop="name">开发环境与工具</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <a id="more"></a>
-<h2 id="0-基本环境配置"><a href="#0-基本环境配置" class="headerlink" title="0. 基本环境配置"></a>0. 基本环境配置</h2><ol>
-<li>检查gcc版本<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc --version</span><br></pre></td></tr></table></figure>
-对于Ubuntu 16.04来说，gcc版本需要&gt;5.4.0。</li>
-</ol>
-<p>如果没有gcc命令，则需要安装gcc<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update  <span class="comment"># 一定要记得先update，不然找不到gcc</span></span><br><span class="line">sudo apt install gcc</span><br></pre></td></tr></table></figure></p>
-<ol>
-<li>检查Kernel版本<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -r</span><br></pre></td></tr></table></figure>
-对于Ubuntu 16.04来说，内核版本需要&gt;4.4.0</li>
-</ol>
-<p>然后需要安装对应版本的Kernel Header：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install linux-headers-$(uname -r)</span><br></pre></td></tr></table></figure></p>
-<ol>
-<li>安装对应的库<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev \</span><br><span class="line">libboost-all-dev libhdf5-serial-dev libgflags-dev libgoogle-glog-dev liblmdb-dev \</span><br><span class="line">protobuf-compiler g++ freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev \</span><br><span class="line">libgl1-mesa-glx libglu1-mesa libglu1-mesa-dev</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="1-卸载旧的显卡驱动"><a href="#1-卸载旧的显卡驱动" class="headerlink" title="1. 卸载旧的显卡驱动"></a>1. 卸载旧的显卡驱动</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># for case1: original driver installed by apt-get:</span></span><br><span class="line">sudo apt-get remove --purge nvidia*</span><br><span class="line"><span class="comment"># 亲测上述命令执行不成功，改如下面这条命令便ok了：</span></span><br><span class="line">sudo apt-get remove nvidia*</span><br><span class="line"></span><br><span class="line"><span class="comment"># for case2: original driver installed by runfile:</span></span><br><span class="line">sudo chmod +x *.run</span><br><span class="line">sudo ./NVIDIA-Linux-x86_64-384.59.run --uninstall</span><br></pre></td></tr></table></figure>
-<p> NVIDIA Software Installer for Unix/Linux</p>
-<p>  If you plan to no longer use the NVIDIA driver, you should make sure that no X screens are<br>  configured to use the NVIDIA X driver in your X configuration file. If you used nvidia-xconfig to<br>  configure X, it may have created a backup of your original configuration. Would you like to run<br>  <code>nvidia-xconfig --restore-original-backup</code> to attempt restoration of the original X configuration<br>  file?</p>
-<pre><code>                             Yes                              No   
-</code></pre><p>  WARNING: Your driver installation has been altered since it was initially installed; this may<br>           happen, for example, if you have since installed the NVIDIA driver through a mechanism<br>           other than nvidia-installer (such as your distribution’s native package management<br>           system).  nvidia-installer will attempt to uninstall as best it can.  Please see the<br>           file ‘/var/log/nvidia-uninstall.log’ for details.                                        </p>
-<pre><code>                                             OK  
-</code></pre><p>  WARNING: Failed to delete some directories. See /var/log/nvidia-uninstall.log for details.        </p>
-<pre><code>                                             OK       
-</code></pre><p>如果原驱动是用apt-get安装的，就用第1种方法卸载。如果原驱动是用runfile安装的，就用–uninstall命令卸载。其实，用runfile安装的时候也会卸载掉之前的驱动，所以不手动卸载亦可。</p>
-<blockquote>
-<p>卸载完成后，注意此时千万不能重启，重启电脑可能会导致无法进入系统。(亲测：其实重启也没事，笔者后面在禁用X-Window服务后遇到疑似“死机”现象，于是便强制关机重启后再继续其他步骤的。)</p>
-</blockquote>
-<h2 id="2-禁用nouveau驱动"><a href="#2-禁用nouveau驱动" class="headerlink" title="2. 禁用nouveau驱动"></a>2. 禁用nouveau驱动</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打开blacklist.conf文件：</span></span><br><span class="line">sudo vim /etc/modprobe.d/blacklist.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在文本最后添加：</span></span><br><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后执行：</span></span><br><span class="line">sudo update-initramfs -u</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启后，执行以下命令，如果没有屏幕输出，说明禁用nouveau成功：</span></span><br><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
-<h2 id="3-禁用X-Window服务"><a href="#3-禁用X-Window服务" class="headerlink" title="3. 禁用X-Window服务"></a>3. 禁用X-Window服务</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop <span class="comment">#这会关闭图形界面，但不用紧张</span></span><br></pre></td></tr></table></figure>
-<p>按Ctrl-Alt+F1进入命令行界面，输入用户名和密码登录即可。</p>
-<blockquote>
-<p>小提示：在命令行输入：sudo service lightdm start ，然后按Ctrl-Alt+F7即可恢复到图形界面。</p>
-</blockquote>
-<h2 id="4-命令行安装显卡驱动"><a href="#4-命令行安装显卡驱动" class="headerlink" title="4. 命令行安装显卡驱动"></a>4. 命令行安装显卡驱动</h2><p><a href="https://www.nvidia.cn/Download/index.aspx" target="_blank" rel="noopener">点此下载显卡驱动</a><br><img src="https://lh3.googleusercontent.com/-o6jQ09C2HfM/XYhRwKi2jeI/AAAAAAAAAO4/GcwJPgUtw4kwfM94ML3fo4BmdzdjtGzwQCLcBGAsYHQ/s0/nvidia-driver-download.png" alt="enter image description here" title="nvidia-driver-download.png"><br>笔者亲测：对于我的ubuntu16.04 server系统，Language如若选Chinese(Simplified)则安装不成功。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#给驱动run文件赋予执行权限：</span></span><br><span class="line">sudo chmod +x NVIDIA-Linux-x86_64-384.59.run</span><br><span class="line"><span class="comment">#后面的参数非常重要，不可省略：</span></span><br><span class="line">sudo ./NVIDIA-Linux-x86_64-384.59.run -–no-x-check -no-nouveau-check -no-opengl-files</span><br></pre></td></tr></table></figure>
-<ul>
-<li>no-opengl-files：表示只安装驱动文件，不安装OpenGL文件。这个参数不可省略，否则会导致登陆界面死循环，英语一般称为”login loop”或者”stuck in login”。</li>
-<li>no-x-check：表示安装驱动时不检查X服务，非必需。</li>
-<li>no-nouveau-check：表示安装驱动时不检查nouveau，非必需。</li>
-<li>Z, —disable-nouveau：禁用nouveau。此参数非必需，因为之前已经手动禁用了nouveau。</li>
-<li>A：查看更多高级选项。</li>
-</ul>
-<blockquote>
-<p>必选参数解释：因为NVIDIA的驱动默认会安装OpenGL，而Ubuntu的内核本身也有OpenGL、且与GUI显示息息相关，一旦NVIDIA的驱动覆写了OpenGL，在GUI需要动态链接OpenGL库的时候就引起问题。</p>
-</blockquote>
-<p><strong>安装选项：</strong></p>
-<blockquote>
-<ol>
-<li>There appears to already be a driver installed on your system (version:<br>390.42).  As part of installing this driver (version: 390.42), the existing<br>driver will be uninstalled.  Are you sure you want to continue?<br>Continue installation      Abort installation<br>（选择 Coninue，如果是重装的话）  </li>
-<li>The distribution-provided pre-install script failed!  Are you sure you want<br>to continue?<br>Continue installation      Abort installation<br>（选择 Cotinue)  </li>
-<li>Would you like to register the kernel module sources with DKMS? This will<br>allow DKMS to automatically build a new module, if you install a different<br>kernel later.<br>Yes                       No<br>（这里选 No）  </li>
-<li>Install NVIDIA’s 32-bit compatibility libraries?<br>Yes                       No<br>（这里选 No）  </li>
-<li>Installation of the kernel module for the NVIDIA Accelerated Graphics Driver<br>for Linux-x86_64 (version 390.42) is now complete.<br>  OK</li>
-</ol>
-</blockquote>
-<p>之后，按照提示安装，成功后重启即可。<br>如果提示安装失败，不要急着重启电脑，重复以上步骤，多安装几次即可。</p>
-<p><strong>Driver测试：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi #若列出GPU的信息列表，表示驱动安装成功</span><br><span class="line">nvidia-settings #若弹出设置对话框，亦表示驱动安装成功</span><br></pre></td></tr></table></figure></p>
-<h2 id="5-安装CUDA"><a href="#5-安装CUDA" class="headerlink" title="5. 安装CUDA"></a>5. 安装CUDA</h2><p><strong>卸载旧的CUDA</strong><br>（也可以不卸载试试，据说显卡驱动可以向下兼容多个CUDA版本共存）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/<span class="built_in">local</span>/cuda-8.0/bin/uninstall_cuda_8.0.pl</span><br><span class="line"></span><br><span class="line">卸载之后，还有一些残留的文件夹，之前安装的是CUDA 8.0。可以一并删除：</span><br><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/cuda-8.0/</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="noopener">点此下载CUDA</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./cuda_8.0.61_375.26_linux.run --no-opengl-libs</span><br></pre></td></tr></table></figure>
-<ul>
-<li>no-opengl-libs：表示只安装驱动文件，不安装OpenGL文件。必需参数，原因同上。注意：不是-no-opengl-files。</li>
-<li>uninstall (deprecated)：用于卸载CUDA Driver（已废弃）。</li>
-<li>toolkit：表示只安装CUDA Toolkit，不安装Driver和Samples。</li>
-<li>help：查看更多高级选项。<br>之后，按照提示安装即可。我依次选择了：</li>
-</ul>
-<blockquote>
-<p>accept #同意安装<br>n #不安装Driver，因为已安装最新驱动<br>y #安装CUDA Toolkit</p>
-<p><Enter> #安装到默认目录<br>y #创建安装目录的软链接<br>n #不复制Samples，因为在安装目录下有/samples</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">导出CUDA的bin和lib路径： </span><br><span class="line">方法1：终端直接执行以下命令</span><br><span class="line"><span class="built_in">export</span> CUDA_HOME=/usr/<span class="built_in">local</span>/cuda</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$CUDA_HOME</span>/bin</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="variable">$LD_LIBRARY_PATH</span>:<span class="variable">$CUDA_HOME</span>/lib64:<span class="variable">$CUDA_HOME</span>/extras/CUPTI/lib64</span><br><span class="line"></span><br><span class="line">方法2：如果这台电脑只有自己一个用户，则可以在主目录下的.bashrc文件最后加入上述命令并保存，然后回到终端执行下面的命令即可</span><br><span class="line">```bash</span><br><span class="line"><span class="built_in">source</span> .bashrc</span><br><span class="line"></span><br><span class="line">方法3：如果电脑有多个用户使用，则方法2对其他用户无效，此时要将方法1中的命令加到 /etc/profile 文件的最后，然后执行下面的命令</span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
-<p>安装及路径测试：输入nvcc -V 查看CUDA版本。</p>
-<p>CUDA Sample测试：</p>
-<h1 id="编译并测试设备-deviceQuery："><a href="#编译并测试设备-deviceQuery：" class="headerlink" title="编译并测试设备 deviceQuery："></a>编译并测试设备 deviceQuery：</h1><p>cd /usr/local/cuda-8.0/samples/1_Utilities/deviceQuery<br>sudo make<br>./deviceQuery</p>
-<h1 id="编译并测试带宽-bandwidthTest："><a href="#编译并测试带宽-bandwidthTest：" class="headerlink" title="编译并测试带宽 bandwidthTest："></a>编译并测试带宽 bandwidthTest：</h1><p>cd ../bandwidthTest<br>sudo make<br>./bandwidthTest</p>
-<p>如果这两个测试的最后结果都是Result = PASS，说明CUDA安装成功啦。</p>
-<h3 id="笔者这一步没有安装补丁"><a href="#笔者这一步没有安装补丁" class="headerlink" title="笔者这一步没有安装补丁"></a>笔者这一步没有安装补丁</h3><p>sudo ./cuda_8.0.61.2_linux.run #最后安装补丁CUDA官方补丁</p>
-<h2 id="6-安装cuDNN"><a href="#6-安装cuDNN" class="headerlink" title="6. 安装cuDNN"></a>6. 安装cuDNN</h2><p><a href="https://developer.nvidia.com/cudnn" target="_blank" rel="noopener">下载</a>与CUDA版本匹配的cuDNN库，解压后执行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo cp cuda/include/cudnn.h /usr/<span class="built_in">local</span>/cuda/include</span><br><span class="line">sudo cp cuda/lib64/libcudnn* /usr/<span class="built_in">local</span>/cuda/lib64</span><br></pre></td></tr></table></figure></p>
-<h2 id="7-安装TensorFlow"><a href="#7-安装TensorFlow" class="headerlink" title="7. 安装TensorFlow"></a>7. 安装TensorFlow</h2><p>如果没有pip，则需要先安装pip<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python3-pip python3-dev</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install tensorflow-gpu==1.14.0 -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
-<h2 id="8-其他python库的安装"><a href="#8-其他python库的安装" class="headerlink" title="8. 其他python库的安装"></a>8. 其他python库的安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install opencv-python -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">sudo pip3 install opencv-contrib-python -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">sudo pip3 install matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
-<h2 id="9-安装PyTorch"><a href="#9-安装PyTorch" class="headerlink" title="9. 安装PyTorch"></a>9. 安装PyTorch</h2><p>参考<a href="https://pytorch.org/get-started/locally/" target="_blank" rel="noopener">官方安装指导</a>，我是使用pip方式安装的。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方式1：下面默认安装的是cpu版本</span></span><br><span class="line">sudo pip3 install torch==1.1.0 torchvision==0.3.0</span><br><span class="line">sudo pip3 install torch==1.1.0 torchvision==0.3.0 -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式2：下面会安装pytorch gpu版本，torchvision也是gpu版本，但是我的cuda环境是cuda10.0，</span></span><br><span class="line"><span class="comment">#       这里的pytorch-1.1.0可以支持cuda10，但是torchvision只能支持cuda9</span></span><br><span class="line">sudo pip3 install https://download.pytorch.org/whl/cu100/torch-1.1.0-cp35-cp35m-linux_x86_64.whl</span><br><span class="line">sudo pip3 install torchvision==0.3.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式3：安装更高版本的 pytorch 和 torchvision，成功</span></span><br><span class="line">sudo pip3 install torch==1.2.0 torchvision==0.4.0 -f https://download.pytorch.org/whl/torch_stable.html</span><br></pre></td></tr></table></figure>
-<h2 id="10-安装Paddle"><a href="#10-安装Paddle" class="headerlink" title="10. 安装Paddle"></a>10. 安装Paddle</h2><p>背景：2020年春节新冠肺炎期间，公司紧急使用百度开源的戴口罩识别算法。<br>使用下面的安装方法会与服务器上的tensorboard、tensorlayer环境依赖有所冲突。为此，可尝试用conda环境安装paddle。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install --upgrade paddlehub -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">sudo pip3 install paddlepaddle</span><br><span class="line"><span class="comment"># 安装完成后，此时得到的是paddlehub是1.5.1版本，paddle是1.6.3版本。</span></span><br></pre></td></tr></table></figure></p>
-<p>[1] <a href="https://blog.csdn.net/CosmosHua/article/details/76644029" target="_blank" rel="noopener">Ubuntu 16.04安装NVIDIA驱动</a><br>[2] <a href="https://onlycaptain.github.io/2018/08/18/Ubuntu%E4%B8%8BNvidia%E9%A9%B1%E5%8A%A8%E5%AE%89%E8%A3%85/" target="_blank" rel="noopener">Ubuntu下Nvidia驱动安装</a><br>[3] <a href="https://bluesmilery.github.io/blogs/a687003b/" target="_blank" rel="noopener">多版本CUDA和TensorFlow共存</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/12/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1.2%E3%80%91%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD(Back%20Propagation)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="取取经">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/08/12/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1.2%E3%80%91%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD(Back%20Propagation)/" class="post-title-link" itemprop="url">【深度学习笔记】反向传播(Back Propagation)</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-08-12 17:28:05" itemprop="dateCreated datePublished" datetime="2018-08-12T17:28:05+08:00">2018-08-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-11 11:52:15" itemprop="dateModified" datetime="2020-02-11T11:52:15+08:00">2020-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>&emsp; 实际使用的神经网络的结构多种多样,不可能一一分析其梯度表达式。我们将以全连接层网<br>络、激活函数采用 Sigmoid 函数、误差函数为 Softmax+MSE 损失函数的神经网络为例,推<br>导其梯度传播规律。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20[%E8%BD%AC]%E3%80%91%E8%BF%AD%E4%BB%A3%E5%99%A8(Iterator)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="取取经">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/25/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20%5B%E8%BD%AC%5D%E3%80%91%E8%BF%AD%E4%BB%A3%E5%99%A8(Iterator)/" class="post-title-link" itemprop="url">【Python笔记 [转]】迭代器(Iterator)</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:19:52" itemprop="dateModified" datetime="2020-01-22T13:19:52+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">Python笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文转自文献[1]</p>
-<h1 id="迭代和可迭代"><a href="#迭代和可迭代" class="headerlink" title="迭代和可迭代"></a>迭代和可迭代</h1><p>迭代器这个概念在很多语言中（比如 C++，Java）都是存在的，但是不同语言实现迭代器的方式各不相同。<strong>在 Python 中，迭代器是指遵循迭代器协议（iterator protocol）的对象</strong>。至于什么是迭代器协议，稍后自然会说明。为了更好地理解迭代器，我先介绍和迭代器相关的两个概念：<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/06/25/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20%5B%E8%BD%AC%5D%E3%80%91%E8%BF%AD%E4%BB%A3%E5%99%A8(Iterator)/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="取取经">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/" class="post-title-link" itemprop="url">【深度学习笔记 face】基于Inception-Resnet的FaceID</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-21 17:58:59" itemprop="dateModified" datetime="2020-01-21T17:58:59+08:00">2020-01-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Inception-Resnet-V2网络结构"><a href="#Inception-Resnet-V2网络结构" class="headerlink" title="Inception-Resnet-V2网络结构"></a>Inception-Resnet-V2网络结构</h1><blockquote>
-<p>因markdown 语法绘制表格不能实现单元格合并，故这里将部分Inception和Residual结构统一放到一个表格中，仅为个人记录学习所用。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="取取经">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/" class="post-title-link" itemprop="url">【机器学习基础】范数与正则化</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 14:05:35" itemprop="dateModified" datetime="2020-01-22T14:05:35+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本篇主要介绍范数以及使用范数的正则化策略。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91weight%20decay/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="取取经">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91weight%20decay/" class="post-title-link" itemprop="url">【深度学习笔记3.1 正则化】weight decay</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-06-19 17:28:05" itemprop="dateCreated datePublished" datetime="2018-06-19T17:28:05+08:00">2018-06-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:25:49" itemprop="dateModified" datetime="2020-01-22T13:25:49+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <a id="more"></a>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://zh.gluon.ai/chapter_deep-learning-basics/weight-decay.html" target="_blank" rel="noopener">动手学深度学习-&gt;3.12 权重衰减</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%20[%E8%BD%AC]%E3%80%91Softmax%E5%87%BD%E6%95%B0%E4%B8%8E%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="取取经">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%20%5B%E8%BD%AC%5D%E3%80%91Softmax%E5%87%BD%E6%95%B0%E4%B8%8E%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7/" class="post-title-link" itemprop="url">【机器学习基础 [转]】Softmax函数与数值稳定性</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-06-19 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-19T00:00:00+08:00">2018-06-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:18:43" itemprop="dateModified" datetime="2020-01-22T13:18:43+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Softmax函数"><a href="#Softmax函数" class="headerlink" title="Softmax函数"></a>Softmax函数</h2><p>本文参考文献[1].</p>
-<p>&emsp; 在Logistic regression二分类问题中，我们可以使用sigmoid函数将输入$\boldsymbol Wx + \boldsymbol b$映射到(0, 1)区间中，从而得到属于某个类别的概率。将这个问题进行泛化，推广到多分类问题中，我们可以使用softmax函数，对输出的值归一化为概率值。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/06/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%20%5B%E8%BD%AC%5D%E3%80%91Softmax%E5%87%BD%E6%95%B0%E4%B8%8E%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1123,14 +1073,14 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name"></p>
-  <div class="site-description" itemprop="description">日常开发总结，主要供个人学习记录所用，如有错谬还望多多包含！</div>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">90</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
