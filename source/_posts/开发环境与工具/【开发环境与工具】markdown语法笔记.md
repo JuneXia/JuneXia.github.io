@@ -19,29 +19,25 @@ mathjax: true
 | 加粗 | \bold{A} | $\bold{A}$ ||
 | 斜体加粗 | \boldsymbol{A} | $\boldsymbol{A}$ ||
 
+# markdown特殊符号
 
+
+<br>
 
 ## 数学符号
-> 点乘：a \cdot b
-> 
-> 叉乘：a \times b
-> 
-> 点除：a \div b
-> 
-> 分数：\frac {a} {b}
-
-<br>
-
-> 绝对值号： | 或者 \vert
-> 
-> 范数符号： \| 或者 \Vert
-
-<br>
-
 | 需求 | latex语法 | 显示效果 | 备注 |
 | ------ | ------ | ------ | ------ |
+| 点乘 | a \cdot b | $a \cdot b$ ||
+| 叉乘 | a \times b | $a \times b$ ||
+| 点除 | a \div b | $a \div b$ ||
+| 分数 | \frac {a} {b} | $\frac{a}{b}$ ||
+| 绝对值号 | | 或者 \vert | $\vert$ ||
+| 范数符号 | \| 或者 \Vert | $\Vert$ ||
 | 大于等于号 | \geq | $\geq$ | 后面记得加空格，不然识别出错 |
 | 小于等于号 | \leq | $\leq$ | |
+| 等于号 | \not = | $\not =$ | |
+|  | \land | $\land$ | |
+| 指示函数符号 | \mathbb I | $\mathbb I$ | 周志华机器学习书本中出现过 |
 
 
 ## 数学公式中的空格
@@ -174,14 +170,10 @@ $$
 ```
 
 
+# 参考文献
 https://blog.csdn.net/thither_shore/article/details/52260742
 
 
 https://blog.csdn.net/deepinC/article/details/81103326
 
-
-
-| 需求 | status | result | 备注 |
-| ------ | ------ | ------ | ------ |
-| 检测到人脸 | 1 | 已识别 | |
-| 检测到人脸 | 2 | 已识别 | |
+[常用数学符号的 LaTeX 表示方法](http://www.mohu.org/info/symbols/symbols.htm)

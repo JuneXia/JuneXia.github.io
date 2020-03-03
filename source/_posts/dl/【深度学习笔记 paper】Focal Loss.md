@@ -107,9 +107,6 @@ def focal_loss3(prediction_tensor, target_tensor, gamma=2., alpha=.25, name='foc
 ```
 
 
-
-<!-- more -->
-
 # 参考文献
 [1] [Focal Loss](https://blog.csdn.net/u014380165/article/details/77019084)
 [2] [focal loss的几种实现版本(Keras/Tensorflow)](https://blog.csdn.net/u011583927/article/details/90716942)
