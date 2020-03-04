@@ -244,6 +244,86 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/16/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Detection%E3%80%91FPN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/09/16/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Detection%E3%80%91FPN/" class="post-title-link" itemprop="url">dl/【Paper笔记 Detection】FPN</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2018-09-16T00:00:00+08:00">2018-09-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-04 09:13:46" itemprop="dateModified" datetime="2020-03-04T09:13:46+08:00">2020-03-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>论文：<a href="https://arxiv.org/abs/1612.03144" target="_blank" rel="noopener">Feature Pyramid Networks for Object Detection</a><br>Tsung-Yi Lin, Piotr Dollár, Ross Girshick, Kaiming He, Bharath Hariharan, Serge Belongie<br>Facebook AI Research (FAIR) &amp; Cornell University and Cornell Tech<br>(Submitted on 9 Dec 2016 (v1), last revised 19 Apr 2017 (this version, v2))</p>
+<p><strong>Abstract</strong><br>&emsp; Feature pyramids are a basic component in recognition systems for detecting objects at different scales. But recent deep learning object detectors have avoided pyramid representations, in part because they are compute and memory intensive(密集,集中的,加强的). In this paper, we exploit the inherent(固有的;内在的;与生俱来的) multi-scale, pyramidal hierarchy of deep convolutional networks to construct feature pyramids with marginal(微不足道的;边缘的,临界的) extra cost. A topdown architecture with lateral(侧面的,横向的) connections is developed for building high-level semantic feature maps at all scales. This architecture, called a Feature Pyramid Network (FPN), <code>shows significant improvement as a generic feature extractor in several applications. (作为一种通用的特征提取器，它在一些应用中得到了显著的改进).</code> Using FPN in a basic Faster R-CNN system, our method achieves state-of-the-art singlemodel results on the COCO detection benchmark <code>without bells(bell:n.铃铛;v.系铃于…,鸣钟) and whistles(whistle:汽笛,哨子声)(没有任何附加条件)</code>, surpassing(surpass:优于,超出,卓越) all existing single-model entries(entry:进入,条目,记录) including those from the COCO 2016 challenge winners. In addition, our method can run at 6 FPS on a GPU and thus is a practical(实际的,实际用性的) and accurate solution to multi-scale object detection. Code will be made publicly available.</p>
+<p>&emsp; Recognizing objects at vastly different scales is a fundamental challenge in computer vision. Feature pyramids <code>built upon(构建在…之上)</code> image pyramids (<code>for short(简称)</code> we call these featurized image pyramids) form the basis of a standard solution [1] (Fig. 1(a)). <code>These pyramids are scale-invariant in the sense that an object&#39;s scale change is offset(抵消,补偿,偏移量) by shifting(不断移动的,不断变化的. shift:v.转移,挪动;快速移动;变换) its level(水平,级别,电平,标准) in the pyramid. (这些金字塔是尺度不变的，因为一个物体的尺度变化被它在金字塔中的水平移动所抵消).</code> Intuitively(直观地,直觉地), this property enables a model to detect objects across a large range of scales by scanning the model over both positions and pyramid levels.</p>
+<p>&emsp; Featurized image pyramids were heavily used in the era(时代,年代) of hand-engineered(手工设计的) features [5, 25]. <code>They were so critical(临界的,批评的,关键的) that object detectors like DPM [7] required dense scale sampling to achieve(实现,获得) good results (e.g., 10 scales per octave(八个一组的事物;八度)). (它们是如此的重要，以至于像DPM这样的目标探测器需要密集尺度的采样来获得良好的结果(例如，每八组10个尺度)).</code> For recognition tasks, engineered features have largely <code>been replaced with(被…取代/替换)</code> features computed by deep convolutional networks (ConvNets) [19, 20]. <code>Aside from(除…之外)</code> being capable of representing higher-level semantics, ConvNets are also more robust to variance in scale and thus facilitate(促进,帮助,使容易) recognition from features computed on a single input scale [15, 11, 29] (Fig. 1(b)). But even with this robustness, pyramids are still needed to get the most accurate results. All recent top entries in the ImageNet [33] and COCO [21] detection challenges <code>use multi-scale testing on featurized image pyramids (e.g., [16, 35]). (都在featurized image pyramids上使用多尺度测试).</code> <code>The principle(原理,原则;本质) advantage of featurizing each level of an image pyramid(对image pyramid的每一层都featurizing的本质优势)</code> is that it produces a multi-scale feature representation in which all levels are semantically strong, including the high-resolution levels.</p>
+<p>&emsp; Nevertheless, featurizing each level of an image pyramid has obvious limitations. Inference time increases considerably (e.g., by four times [11]), making this approach impractical for real applications. Moreover, training deep networks end-to-end on an image pyramid is infeasible(不可行的) in terms of memory, <code>and so(因此,所以)</code>, if exploited, image pyramids are used only at test time [15, 11, 16, 35], <code>which creates an inconsistency between train/test-time inference. (这造成了训练/测试之间推断的不一致性).</code> For these reasons, Fast and Faster R-CNN [11, 29] opt to not use featurized image pyramids under default settings.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/14/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Detection%E3%80%91Faster%20R-CNN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -275,7 +355,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-02 15:09:43" itemprop="dateModified" datetime="2020-03-02T15:09:43+08:00">2020-03-02</time>
+                <time title="Modified: 2020-03-04 09:13:46" itemprop="dateModified" datetime="2020-03-04T09:13:46+08:00">2020-03-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -995,88 +1075,11 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91weight%20decay/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运工">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91weight%20decay/" class="post-title-link" itemprop="url">【深度学习笔记3.1 正则化】weight decay</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-06-19 17:28:05" itemprop="dateCreated datePublished" datetime="2018-06-19T17:28:05+08:00">2018-06-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:25:49" itemprop="dateModified" datetime="2020-01-22T13:25:49+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <a id="more"></a>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://zh.gluon.ai/chapter_deep-learning-basics/weight-decay.html" target="_blank" rel="noopener">动手学深度学习-&gt;3.12 权重衰减</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1142,7 +1145,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-count">91</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
