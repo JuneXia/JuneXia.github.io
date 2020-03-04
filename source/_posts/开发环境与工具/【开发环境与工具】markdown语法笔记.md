@@ -21,6 +21,14 @@ mathjax: true
 
 # markdown特殊符号
 
+# markdown功能相关
+## 注释
+我们在写作过程中，经常需要给一句话做一些注释，入出处或者解释之类的[^1]，这时候就需要用到markdown的注释功能了。(实测好像不行)
+
+[^1]: 具体注释内容在这里
+
+
+
 
 <br>
 
@@ -177,3 +185,4 @@ https://blog.csdn.net/thither_shore/article/details/52260742
 https://blog.csdn.net/deepinC/article/details/81103326
 
 [常用数学符号的 LaTeX 表示方法](http://www.mohu.org/info/symbols/symbols.htm)
+
