@@ -1,38 +1,20 @@
-﻿---
-title: 【开发环境与工具】markdown语法笔记
-date: 2017-03-09
+---
+title: 
+date: 2018-05-12
 tags:
 categories: ["开发环境与工具"]
 mathjax: true
 ---
 <!-- more -->
 
-## 显示图片
-<div align=center>
-  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/center-loss1.jpg" width = 60% height = 60% />
-</div>
-<center>图1 &nbsp;  分类任务和人脸识别任务对Features的要求比较</center>
-
-## 数学字体
+# 数学字体
 | 需求 | latex语法 | 显示效果 | 备注 |
 | ------ | ------ | ------ | ------ |
 | 加粗 | \bold{A} | $\bold{A}$ ||
 | 斜体加粗 | \boldsymbol{A} | $\boldsymbol{A}$ ||
 
-# markdown特殊符号
 
-# markdown功能相关
-## 注释
-我们在写作过程中，经常需要给一句话做一些注释，入出处或者解释之类的[^1]，这时候就需要用到markdown的注释功能了。(实测好像不行)
-
-[^1]: 具体注释内容在这里
-
-
-
-
-<br>
-
-## 数学符号
+# 数学符号
 | 需求 | latex语法 | 显示效果 | 备注 |
 | ------ | ------ | ------ | ------ |
 | 点乘 | a \cdot b | $a \cdot b$ ||
@@ -46,6 +28,13 @@ mathjax: true
 | 等于号 | \not = | $\not =$ | |
 |  | \land | $\land$ | |
 | 指示函数符号 | \mathbb I | $\mathbb I$ | 周志华机器学习书本中出现过 |
+| 一阶偏导 | \frac{\partial f}{\partial x} | $\frac{\partial f}{\partial x}$ | |
+| n阶偏导 | \frac{\partial^{n} f}{\partial x^{n}} | $\frac{\partial^{n} f}{\partial x^{n}}$ | |
+| 一阶导数 | \frac{\mathrm{d} y }{\mathrm{d} x} | $\frac{\mathrm{d} y }{\mathrm{d} x}$ | |
+| n阶导数 | \frac{\mathrm{d}^{n} y }{\mathrm{d} x^{n}} | $\frac{\mathrm{d}^{n} y }{\mathrm{d} x^{n}}$ | |
+| 点形式的求导符号 | \frac{ \dot y }{ \dot x } | $\frac{ \dot y }{ \dot x }$ | 一个点 |
+| 点形式的求导符号 | \frac{ \ddot y }{ \ddot x } | $\frac{ \ddot y }{ \ddot x }$ | 两个点 |
+
 
 
 ## 数学公式中的空格
@@ -63,7 +52,7 @@ mathjax: true
 \quad、1em、em、m代表当前字体下接近字符‘M’的宽度。
 
 
-## 方程组
+# 方程组
 1
 $$
 \begin{pmatrix}
@@ -162,8 +151,8 @@ f(x) &= (m+n)^2 \\
 \end{aligned}
 $
 
-## 异常问题处理
-### 异常1： hexo无法发布双大括号的问题
+# 异常问题处理
+## 异常1： hexo无法发布双大括号的问题
 ```latex
 $$
 \dfrac{\partial f}{\partial x} + \mu_1 \dfrac{{\rm d}g_1}{{\rm d}x} + \mu_2 \dfrac{{\rm d}g_2}{{\rm d}x}= 0,
@@ -179,10 +168,9 @@ $$
 
 
 # 参考文献
-https://blog.csdn.net/thither_shore/article/details/52260742
+[CSDN-markdown 之 LaTeX 特殊公式格式笔记](https://blog.csdn.net/thither_shore/article/details/52260742)
 
-
-https://blog.csdn.net/deepinC/article/details/81103326
+[markdown数学公式符号记录](https://blog.csdn.net/deepinC/article/details/81103326)
 
 [常用数学符号的 LaTeX 表示方法](http://www.mohu.org/info/symbols/symbols.htm)
 
