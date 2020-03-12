@@ -6,7 +6,7 @@ categories: ["PyTorch笔记"]
 mathjax: true
 ---
 本节主要讲述逻辑回归模型以及逻辑回归和线性回归之间的关系，并利用上一节中所讲的autograd来做一个逻辑回归算法的示例。
-<!-- mored -->
+<!-- more -->
 
 
 逻辑回归是**线性**的**二分类**模型模型表达式:
@@ -174,3 +174,26 @@ for iteration in range(1000):
             break
 ```
 
+<html>
+    <table style="margin-left: auto; margin-right: auto;">
+        <tr>
+            <td>
+                <!--左侧内容-->
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/autograd_logistic_regression2.jpg" width = 50% height = 50% />
+                </div>
+            </td>
+            <td>
+                <!--右侧内容-->
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/autograd_logistic_regression3.jpg" width = 50% height = 50% />
+                </div>
+            </td>
+        </tr>
+    </table>
+    <center>图3 &nbsp;迭代训练结果</center>
+</html>
+
+
+# 参考文献
+[1] DeepShare.net > PyTorch框架

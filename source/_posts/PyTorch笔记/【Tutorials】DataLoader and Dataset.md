@@ -120,6 +120,8 @@ class DataLoader(object):
 </div>
 <center>图2 &nbsp; 数据读取一般要考虑解决的问题</center>
 
+<br>
+
 <div align=center>
   <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/DataLoader_and_Dataset3.jpg" width = 60% height = 60% />
 </div>
@@ -397,62 +399,6 @@ for i, data in enumerate(valid_loader):
     rmb = 1 if predicted.numpy()[0] == 0 else 100
     print("模型获得{}元".format(rmb))
 ```
-
-
-
-```python
-train_transform = transforms.Compose([
-    transforms.Resize((32, 32)),
-    transforms.RandomCrop(32, padding=4),
-    transforms.ToTensor(),  # 将图片转为张量，并做归一化操作(归一化到0~1区间)
-    transforms.Normalize(norm_mean, norm_std),
-])
-```
-
-
-## transforms.Normalize
-```python
-class Normalize(object):
-    """Normalize a tensor image with mean and standard deviation.
-    Given mean: ``(M1,...,Mn)`` and std: ``(S1,..,Sn)`` for ``n`` channels, this transform
-    will normalize each channel of the input ``torch.*Tensor`` i.e.
-    ``input[channel] = (input[channel] - mean[channel]) / std[channel]``
-
-    .. note::
-        This transform acts out of place, i.e., it does not mutates the input tensor.
-
-    Args:
-        mean (sequence): Sequence of means for each channel.
-        std (sequence): Sequence of standard deviations for each channel.
-        inplace(bool,optional): Bool to make this operation in-place.
-
-    """
-
-    def __init__(self, mean, std, inplace=False):
-        self.mean = mean
-        self.std = std
-        self.inplace = inplace
-
-    def __call__(self, tensor):
-        """
-        Args:
-            tensor (Tensor): Tensor image of size (C, H, W) to be normalized.
-
-        Returns:
-            Tensor: Normalized Tensor image.
-        """
-        return F.normalize(tensor, self.mean, self.std, self.inplace)
-
-    def __repr__(self):
-        return self.__class__.__name__ + '(mean={0}, std={1})'.format(self.mean, self.std)
-```
-
-**功能**：逐channel的对图像进行标准化，计算公式如下：$output = (input - mean) / std$
-
-- **mean**: 各通道的均值
-- **std**: 各通道的标准差
-- **inplace**: 是否原地操作
-
 
 
 # 参考文献

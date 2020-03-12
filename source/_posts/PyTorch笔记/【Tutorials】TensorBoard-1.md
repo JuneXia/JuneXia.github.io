@@ -195,7 +195,7 @@ class SummaryWriter(object):
 **功能**：记录标量
 
 - **tag**: 图像标签名，图的唯一标识
-- **scalar_value***: 要记录的标量
+- **scalar_value**: 要记录的标量
 - **global_step**: x轴
 
 
