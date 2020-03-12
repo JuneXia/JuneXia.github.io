@@ -451,7 +451,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-12 12:41:05" itemprop="dateModified" datetime="2020-03-12T12:41:05+08:00">2020-03-12</time>
+                <time title="Modified: 2020-03-12 14:08:19" itemprop="dateModified" datetime="2020-03-12T14:08:19+08:00">2020-03-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -501,8 +501,111 @@
 <p>为了避免与《信号与系统》中的反卷积混淆，一般还是叫转置卷积(Transpose Convolution)</p>
 </blockquote>
 <p>为什么称为转置卷积?</p>
-<p>正常卷积: \<br>假设图像尺寸为$4 \times 4$, 卷积核为 $3 \times 3$ , padding=0, stride=1 \<br>则在代码中会将图片和卷积核都转换为矩阵，转换后的矩阵形式如下：\<br>图像: $I_{16 \times 1}$ , 即图像会被展平\<br>卷积核: $K_{4 \times 16}$ , 下标4表示输出有4行（这需要根据input、kernel、padding、stride、dilation这些值来计算），下标16是先将卷积核展平($3 \times 3 = 9$)再填充0至16个数的长度。\<br>输出: $O_{4 \times 1} = K_{4 \times 16} \cdot I_{16 \times 1}$</p>
-<p>转置卷积: \<br>假设图像尺寸为 $2 \times 2$ , 卷积核为 $3 \times 3$ , padding=0, stride=1 \<br>则在代码中会将图片和卷积核都转换为矩阵，转换后的矩阵形式如下：\<br>图像: $I_{4 \times 1}$ , 即图像会被展平 \<br>卷积核: $K_{16 \times 4}$ \<br>输出: $O_{16 \times 1} = K_{16 \times 4} \cdot I_{4 \times 1}$</p>
+<p>正常卷积: \<br>假设图像尺寸为$4 \times 4$, 卷积核为 $3 \times 3$ , padding=0, stride=1 \<br>则在代码中会将图片和卷积核都转换为矩阵，转换后的矩阵形式如下：\<br>图像: $I_{16 \times 1}$ , 即图像会被展平\<br>卷积核: $K_{4 \times 16}$ , 下标4表示输出有4行（这需要根据input、kernel、padding、stride、dilation这些值来计算），下标16是先将卷积核展平($3 \times 3 = 9$)再填充0至16个数的长度，下面表格给出了这一操作的示意图。\<br>输出: $O_{4 \times 1} = K_{4 \times 16} \cdot I_{16 \times 1}$</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>$I_{1}$</th>
+<th>$I_{2}$</th>
+<th>$I_{3}$</th>
+<th>$I_{4}$</th>
+<th>$I_{5}$</th>
+<th>$I_{6}$</th>
+<th>$I_{7}$</th>
+<th>$I_{8}$</th>
+<th>$I_{9}$</th>
+<th>$I_{10}$</th>
+<th>$I_{11}$</th>
+<th>$I_{12}$</th>
+<th>$I_{13}$</th>
+<th>$I_{14}$</th>
+<th>$I_{15}$</th>
+<th>$I_{16}$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$Kernel$</td>
+<td>$K_{1}$</td>
+<td>$K_{2}$</td>
+<td>$K_{3}$</td>
+<td>$0$</td>
+<td>$K_{4}$</td>
+<td>$K_{5}$</td>
+<td>$K_{6}$</td>
+<td>$0$</td>
+<td>$K_{7}$</td>
+<td>$K_{8}$</td>
+<td>$K_{9}$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+</tr>
+<tr>
+<td>$Kernel$</td>
+<td>$0$</td>
+<td>$K_{1}$</td>
+<td>$K_{2}$</td>
+<td>$K_{3}$</td>
+<td>$0$</td>
+<td>$K_{4}$</td>
+<td>$K_{5}$</td>
+<td>$K_{6}$</td>
+<td>$0$</td>
+<td>$K_{7}$</td>
+<td>$K_{8}$</td>
+<td>$K_{9}$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+</tr>
+<tr>
+<td>$Kernel$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$K_{1}$</td>
+<td>$K_{2}$</td>
+<td>$K_{3}$</td>
+<td>$0$</td>
+<td>$K_{4}$</td>
+<td>$K_{5}$</td>
+<td>$K_{6}$</td>
+<td>$0$</td>
+<td>$K_{7}$</td>
+<td>$K_{8}$</td>
+<td>$K_{9}$</td>
+<td>$0$</td>
+</tr>
+<tr>
+<td>$Kernel$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$K_{1}$</td>
+<td>$K_{2}$</td>
+<td>$K_{3}$</td>
+<td>$0$</td>
+<td>$K_{4}$</td>
+<td>$K_{5}$</td>
+<td>$K_{6}$</td>
+<td>$0$</td>
+<td>$K_{7}$</td>
+<td>$K_{8}$</td>
+<td>$K_{9}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>转置卷积: \<br>假设图像尺寸为 $2 \times 2$ , 卷积核为 $3 \times 3$ , padding=0, stride=1 \<br>则在代码中会将图片和卷积核都转换为矩阵，转换后的矩阵形式如下：\<br>图像: $I_{4 \times 1}$ , 即图像会被展平 \<br>卷积核: $K_{16 \times 4}$，下标16表示输出有16行（这也需要根据各种size计算得来），下标4表示的是从$3 \times 3$的卷积核中取出来的4个数（），\<br>输出: $O_{16 \times 1} = K_{16 \times 4} \cdot I_{4 \times 1}$</p>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
 
       
@@ -606,89 +709,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-1%20Normalize/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-1%20Normalize/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】torchvision.transforms-1 Normalize</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-09-20 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-20T00:00:00+08:00">2019-09-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-09 20:19:59" itemprop="dateModified" datetime="2020-03-09T20:19:59+08:00">2020-03-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">PyTorch笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本节主要介绍PyTorch中的数据标准化(Normalize)方法。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-1%20Normalize/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-2%20Data%20Augmentation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -749,6 +769,89 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-2%20Data%20Augmentation/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-1%20Normalize/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-1%20Normalize/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】torchvision.transforms-1 Normalize</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-20 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-20T00:00:00+08:00">2019-09-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-09 20:19:59" itemprop="dateModified" datetime="2020-03-09T20:19:59+08:00">2020-03-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本节主要介绍PyTorch中的数据标准化(Normalize)方法。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-1%20Normalize/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -884,6 +987,94 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91TensorBoard-2%20%E7%9B%91%E6%8E%A7loss,acc,grad/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91TensorBoard-2%20%E7%9B%91%E6%8E%A7loss,acc,grad/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】TensorBoard-2 监控loss,acc,grad</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-15T00:00:00+08:00">2019-09-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-07 14:21:03" itemprop="dateModified" datetime="2020-03-07T14:21:03+08:00">2020-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>思路总结：</strong> \</p>
+<ul>
+<li>一般的，网络param的梯度在前面的epoch分布可能都会比较大，而越往后训练，这些梯度值一般会慢慢减小，而且分布范围也会逐渐减小；</li>
+<li>梯度到训练后期比较小甚至接近与0时，这并不一定是梯度消失，可以通过观察loss曲线，发现后期的loss值是也比较小的，因为梯度是loss对param的倒数，所以此时梯度自然也就比较小了。(<strong>感觉这段话讲得好像不对吧，我的理解是：训练后期梯度比较小不仅仅是因为loss值比较小，更重要的是此时loss波动较前期小，即此时的loss相对平滑，这才是造成后期的梯度较小的原因吧。</strong>)</li>
+<li>通过观察网络各层参数的梯度，如果发现前面layer的梯度比较小，那么就需要看最后一层的梯度分布情况，如果最后一层的梯度也是比较小的，则这并不是梯度消失现象，因为此时可能是因为loss本身的值就比较低；而如果发现前面layer的梯度较小，而最后一层的梯度较大，则这时候就是梯度消失现象了，因为梯度是从后往前传递的。</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91TensorBoard-2%20%E7%9B%91%E6%8E%A7loss,acc,grad/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91TensorBoard-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -992,94 +1183,6 @@
 
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91TensorBoard-2%20%E7%9B%91%E6%8E%A7loss,acc,grad/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91TensorBoard-2%20%E7%9B%91%E6%8E%A7loss,acc,grad/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】TensorBoard-2 监控loss,acc,grad</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-09-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-15T00:00:00+08:00">2019-09-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-07 14:21:03" itemprop="dateModified" datetime="2020-03-07T14:21:03+08:00">2020-03-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">PyTorch笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>思路总结：</strong> \</p>
-<ul>
-<li>一般的，网络param的梯度在前面的epoch分布可能都会比较大，而越往后训练，这些梯度值一般会慢慢减小，而且分布范围也会逐渐减小；</li>
-<li>梯度到训练后期比较小甚至接近与0时，这并不一定是梯度消失，可以通过观察loss曲线，发现后期的loss值是也比较小的，因为梯度是loss对param的倒数，所以此时梯度自然也就比较小了。(<strong>感觉这段话讲得好像不对吧，我的理解是：训练后期梯度比较小不仅仅是因为loss值比较小，更重要的是此时loss波动较前期小，即此时的loss相对平滑，这才是造成后期的梯度较小的原因吧。</strong>)</li>
-<li>通过观察网络各层参数的梯度，如果发现前面layer的梯度比较小，那么就需要看最后一层的梯度分布情况，如果最后一层的梯度也是比较小的，则这并不是梯度消失现象，因为此时可能是因为loss本身的值就比较低；而如果发现前面layer的梯度较小，而最后一层的梯度较大，则这时候就是梯度消失现象了，因为梯度是从后往前传递的。</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91TensorBoard-2%20%E7%9B%91%E6%8E%A7loss,acc,grad/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
       
     </div>
 

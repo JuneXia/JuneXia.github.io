@@ -55,7 +55,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_conv1.jpg">
 <meta property="article:published_time" content="2019-09-21T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-12T04:41:05.209Z">
+<meta property="article:modified_time" content="2020-03-12T06:08:19.946Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_conv1.jpg">
 
@@ -205,7 +205,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-12 12:41:05" itemprop="dateModified" datetime="2020-03-12T12:41:05+08:00">2020-03-12</time>
+                <time title="Modified: 2020-03-12 14:08:19" itemprop="dateModified" datetime="2020-03-12T14:08:19+08:00">2020-03-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,8 +255,111 @@
 <p>为了避免与《信号与系统》中的反卷积混淆，一般还是叫转置卷积(Transpose Convolution)</p>
 </blockquote>
 <p>为什么称为转置卷积?</p>
-<p>正常卷积: \<br>假设图像尺寸为$4 \times 4$, 卷积核为 $3 \times 3$ , padding=0, stride=1 \<br>则在代码中会将图片和卷积核都转换为矩阵，转换后的矩阵形式如下：\<br>图像: $I_{16 \times 1}$ , 即图像会被展平\<br>卷积核: $K_{4 \times 16}$ , 下标4表示输出有4行（这需要根据input、kernel、padding、stride、dilation这些值来计算），下标16是先将卷积核展平($3 \times 3 = 9$)再填充0至16个数的长度。\<br>输出: $O_{4 \times 1} = K_{4 \times 16} \cdot I_{16 \times 1}$</p>
-<p>转置卷积: \<br>假设图像尺寸为 $2 \times 2$ , 卷积核为 $3 \times 3$ , padding=0, stride=1 \<br>则在代码中会将图片和卷积核都转换为矩阵，转换后的矩阵形式如下：\<br>图像: $I_{4 \times 1}$ , 即图像会被展平 \<br>卷积核: $K_{16 \times 4}$ \<br>输出: $O_{16 \times 1} = K_{16 \times 4} \cdot I_{4 \times 1}$</p>
+<p>正常卷积: \<br>假设图像尺寸为$4 \times 4$, 卷积核为 $3 \times 3$ , padding=0, stride=1 \<br>则在代码中会将图片和卷积核都转换为矩阵，转换后的矩阵形式如下：\<br>图像: $I_{16 \times 1}$ , 即图像会被展平\<br>卷积核: $K_{4 \times 16}$ , 下标4表示输出有4行（这需要根据input、kernel、padding、stride、dilation这些值来计算），下标16是先将卷积核展平($3 \times 3 = 9$)再填充0至16个数的长度，下面表格给出了这一操作的示意图。\<br>输出: $O_{4 \times 1} = K_{4 \times 16} \cdot I_{16 \times 1}$</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>$I_{1}$</th>
+<th>$I_{2}$</th>
+<th>$I_{3}$</th>
+<th>$I_{4}$</th>
+<th>$I_{5}$</th>
+<th>$I_{6}$</th>
+<th>$I_{7}$</th>
+<th>$I_{8}$</th>
+<th>$I_{9}$</th>
+<th>$I_{10}$</th>
+<th>$I_{11}$</th>
+<th>$I_{12}$</th>
+<th>$I_{13}$</th>
+<th>$I_{14}$</th>
+<th>$I_{15}$</th>
+<th>$I_{16}$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$Kernel$</td>
+<td>$K_{1}$</td>
+<td>$K_{2}$</td>
+<td>$K_{3}$</td>
+<td>$0$</td>
+<td>$K_{4}$</td>
+<td>$K_{5}$</td>
+<td>$K_{6}$</td>
+<td>$0$</td>
+<td>$K_{7}$</td>
+<td>$K_{8}$</td>
+<td>$K_{9}$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+</tr>
+<tr>
+<td>$Kernel$</td>
+<td>$0$</td>
+<td>$K_{1}$</td>
+<td>$K_{2}$</td>
+<td>$K_{3}$</td>
+<td>$0$</td>
+<td>$K_{4}$</td>
+<td>$K_{5}$</td>
+<td>$K_{6}$</td>
+<td>$0$</td>
+<td>$K_{7}$</td>
+<td>$K_{8}$</td>
+<td>$K_{9}$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+</tr>
+<tr>
+<td>$Kernel$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$K_{1}$</td>
+<td>$K_{2}$</td>
+<td>$K_{3}$</td>
+<td>$0$</td>
+<td>$K_{4}$</td>
+<td>$K_{5}$</td>
+<td>$K_{6}$</td>
+<td>$0$</td>
+<td>$K_{7}$</td>
+<td>$K_{8}$</td>
+<td>$K_{9}$</td>
+<td>$0$</td>
+</tr>
+<tr>
+<td>$Kernel$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$0$</td>
+<td>$K_{1}$</td>
+<td>$K_{2}$</td>
+<td>$K_{3}$</td>
+<td>$0$</td>
+<td>$K_{4}$</td>
+<td>$K_{5}$</td>
+<td>$K_{6}$</td>
+<td>$0$</td>
+<td>$K_{7}$</td>
+<td>$K_{8}$</td>
+<td>$K_{9}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>转置卷积: \<br>假设图像尺寸为 $2 \times 2$ , 卷积核为 $3 \times 3$ , padding=0, stride=1 \<br>则在代码中会将图片和卷积核都转换为矩阵，转换后的矩阵形式如下：\<br>图像: $I_{4 \times 1}$ , 即图像会被展平 \<br>卷积核: $K_{16 \times 4}$，下标16表示输出有16行（这也需要根据各种size计算得来），下标4表示的是从$3 \times 3$的卷积核中取出来的4个数（），\<br>输出: $O_{16 \times 1} = K_{16 \times 4} \cdot I_{4 \times 1}$</p>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
 
     </div>
