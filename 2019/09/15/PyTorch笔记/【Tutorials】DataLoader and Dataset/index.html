@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本节主要讲述PyTorch中的DataLoader与Dataset的使用，并举代码示例用LeNet做人民币的二分类。      图1 &amp;nbsp; 获取及处理数据的一般流程  DataLoader123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch笔记&#x2F;【Tutorials】DataLoader and Dataset">
+<meta property="og:url" content="http://yoursite.com/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91DataLoader%20and%20Dataset/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="本节主要讲述PyTorch中的DataLoader与Dataset的使用，并举代码示例用LeNet做人民币的二分类。      图1 &amp;nbsp; 获取及处理数据的一般流程  DataLoader123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/DataLoader_and_Dataset1.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/DataLoader_and_Dataset2.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/DataLoader_and_Dataset3.jpg">
+<meta property="article:published_time" content="2019-09-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-09T00:59:41.817Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/DataLoader_and_Dataset1.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91DataLoader%20and%20Dataset/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>PyTorch笔记/【Tutorials】DataLoader and Dataset | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91DataLoader%20and%20Dataset/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch笔记/【Tutorials】DataLoader and Dataset
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-15T00:00:00+08:00">2019-09-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-09 08:59:41" itemprop="dateModified" datetime="2020-03-09T08:59:41+08:00">2020-03-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本节主要讲述PyTorch中的DataLoader与Dataset的使用，并举代码示例用LeNet做人民币的二分类。<br><!-- mored --></p>
+<p><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/DataLoader_and_Dataset1.jpg" width = 60% height = 60% />
+</div></p>
+<center>图1 &nbsp; 获取及处理数据的一般流程</center>
+
+<h1 id="DataLoader"><a href="#DataLoader" class="headerlink" title="DataLoader"></a>DataLoader</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DataLoader</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">r"""</span></span><br><span class="line"><span class="string">    Data loader. Combines a dataset and a sampler, and provides an iterable over</span></span><br><span class="line"><span class="string">    the given dataset.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The :class:`~torch.utils.data.DataLoader` supports both map-style and</span></span><br><span class="line"><span class="string">    iterable-style datasets with single- or multi-process loading, customizing</span></span><br><span class="line"><span class="string">    loading order and optional automatic batching (collation) and memory pinning.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    See :py:mod:`torch.utils.data` documentation page for more details.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Arguments:</span></span><br><span class="line"><span class="string">        dataset (Dataset): dataset from which to load the data.</span></span><br><span class="line"><span class="string">        batch_size (int, optional): how many samples per batch to load</span></span><br><span class="line"><span class="string">            (default: ``1``).</span></span><br><span class="line"><span class="string">        shuffle (bool, optional): set to ``True`` to have the data reshuffled</span></span><br><span class="line"><span class="string">            at every epoch (default: ``False``).</span></span><br><span class="line"><span class="string">        sampler (Sampler, optional): defines the strategy to draw samples from</span></span><br><span class="line"><span class="string">            the dataset. If specified, :attr:`shuffle` must be ``False``.</span></span><br><span class="line"><span class="string">        batch_sampler (Sampler, optional): like :attr:`sampler`, but returns a batch of</span></span><br><span class="line"><span class="string">            indices at a time. Mutually exclusive with :attr:`batch_size`,</span></span><br><span class="line"><span class="string">            :attr:`shuffle`, :attr:`sampler`, and :attr:`drop_last`.</span></span><br><span class="line"><span class="string">        num_workers (int, optional): how many subprocesses to use for data</span></span><br><span class="line"><span class="string">            loading. ``0`` means that the data will be loaded in the main process.</span></span><br><span class="line"><span class="string">            (default: ``0``)</span></span><br><span class="line"><span class="string">        collate_fn (callable, optional): merges a list of samples to form a</span></span><br><span class="line"><span class="string">            mini-batch of Tensor(s).  Used when using batched loading from a</span></span><br><span class="line"><span class="string">            map-style dataset.</span></span><br><span class="line"><span class="string">        pin_memory (bool, optional): If ``True``, the data loader will copy Tensors</span></span><br><span class="line"><span class="string">            into CUDA pinned memory before returning them.  If your data elements</span></span><br><span class="line"><span class="string">            are a custom type, or your :attr:`collate_fn` returns a batch that is a custom type,</span></span><br><span class="line"><span class="string">            see the example below.</span></span><br><span class="line"><span class="string">        drop_last (bool, optional): set to ``True`` to drop the last incomplete batch,</span></span><br><span class="line"><span class="string">            if the dataset size is not divisible by the batch size. If ``False`` and</span></span><br><span class="line"><span class="string">            the size of dataset is not divisible by the batch size, then the last batch</span></span><br><span class="line"><span class="string">            will be smaller. (default: ``False``)</span></span><br><span class="line"><span class="string">        timeout (numeric, optional): if positive, the timeout value for collecting a batch</span></span><br><span class="line"><span class="string">            from workers. Should always be non-negative. (default: ``0``)</span></span><br><span class="line"><span class="string">        worker_init_fn (callable, optional): If not ``None``, this will be called on each</span></span><br><span class="line"><span class="string">            worker subprocess with the worker id (an int in ``[0, num_workers - 1]``) as</span></span><br><span class="line"><span class="string">            input, after seeding and before data loading. (default: ``None``)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. warning:: If the ``spawn`` start method is used, :attr:`worker_init_fn`</span></span><br><span class="line"><span class="string">                 cannot be an unpicklable object, e.g., a lambda function. See</span></span><br><span class="line"><span class="string">                 :ref:`multiprocessing-best-practices` on more details related</span></span><br><span class="line"><span class="string">                 to multiprocessing in PyTorch.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. note:: ``len(dataloader)`` heuristic is based on the length of the sampler used.</span></span><br><span class="line"><span class="string">              When :attr:`dataset` is an :class:`~torch.utils.data.IterableDataset`,</span></span><br><span class="line"><span class="string">              an infinite sampler is used, whose :meth:`__len__` is not</span></span><br><span class="line"><span class="string">              implemented, because the actual length depends on both the</span></span><br><span class="line"><span class="string">              iterable as well as multi-process loading configurations. So one</span></span><br><span class="line"><span class="string">              should not query this method unless they work with a map-style</span></span><br><span class="line"><span class="string">              dataset. See `Dataset Types`_ for more details on these two types</span></span><br><span class="line"><span class="string">              of datasets.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    __initialized = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, dataset, batch_size=<span class="number">1</span>, shuffle=False, sampler=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                 batch_sampler=None, num_workers=<span class="number">0</span>, collate_fn=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                 pin_memory=False, drop_last=False, timeout=<span class="number">0</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 worker_init_fn=None, multiprocessing_context=None)</span>:</span></span><br><span class="line">        torch._C._log_api_usage_once(<span class="string">"python.data_loader"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> num_workers &lt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'num_workers option should be non-negative; '</span></span><br><span class="line">                             <span class="string">'use num_workers=0 to disable multiprocessing.'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> timeout &lt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'timeout option should be non-negative'</span>)</span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>: 构建可迭代的数据装载器</p>
+<ul>
+<li><strong>dataset</strong>: Dataset类，决定数据从哪读取以及如何读取</li>
+<li><strong>batchsize</strong>:</li>
+<li><strong>num_works</strong>: 是否采用多进程读取数据，一般会设置为4、6、8</li>
+<li><strong>shuffle</strong>: 每个epoch是否乱序</li>
+<li><strong>drop_last</strong>: 当样本数不能被batchsize整除时，是否舍弃最后一批数据</li>
+</ul>
+<blockquote>
+<p><strong>理解一下 Epoch、Iteration、Batchsize 的概念</strong>：\<br>Epoch: 所有训练样本都已输入到模型中,称为一个Epoch \<br>Iteration: 一批样本输入到模型中,称之为一个Iteration \<br>Batchsize: 批大小,决定一个Epoch有多少个Iteration</p>
+<p>举个例子：\<br>样本总数:80, Batchsize:8 \<br>1 Epoch = 10 Iteration</p>
+<p>样本总数:87, Batchsize:8 \<br>1 Epoch = 10 Iteration ? drop_last = True \<br>1 Epoch = 11 Iteration ? drop_last = False</p>
+</blockquote>
+<p><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/DataLoader_and_Dataset2.jpg" width = 60% height = 60% />
+</div></p>
+<center>图2 &nbsp; 数据读取一般要考虑解决的问题</center>
+
+<p><br></p>
+<p><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/DataLoader_and_Dataset3.jpg" width = 60% height = 60% />
+</div></p>
+<center>图3 &nbsp; PyTorch中的数据加载流程图</center>
+
+<h1 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dataset</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">r"""An abstract class representing a :class:`Dataset`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    All datasets that represent a map from keys to data samples should subclass</span></span><br><span class="line"><span class="string">    it. All subclasses should overrite :meth:`__getitem__`, supporting fetching a</span></span><br><span class="line"><span class="string">    data sample for a given key. Subclasses could also optionally overwrite</span></span><br><span class="line"><span class="string">    :meth:`__len__`, which is expected to return the size of the dataset by many</span></span><br><span class="line"><span class="string">    :class:`~torch.utils.data.Sampler` implementations and the default options</span></span><br><span class="line"><span class="string">    of :class:`~torch.utils.data.DataLoader`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. note::</span></span><br><span class="line"><span class="string">      :class:`~torch.utils.data.DataLoader` by default constructs a index</span></span><br><span class="line"><span class="string">      sampler that yields integral indices.  To make it work with a map-style</span></span><br><span class="line"><span class="string">      dataset with non-integral indices/keys, a custom sampler must be provided.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, index)</span>:</span></span><br><span class="line">        <span class="keyword">raise</span> NotImplementedError</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> ConcatDataset([self, other])</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>: Dataset 抽象类 , 所有自定义的 Dataset 都需要继承它, 并且复写<strong>getitem</strong>()</p>
+<p>__getitem__ : 接收一个索引，返回一个样本</p>
+<h1 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h1><p><strong>tools/my_dataset.py</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># @file name  : dataset.py</span></span><br><span class="line"><span class="string"># @author     : yts3221@126.com</span></span><br><span class="line"><span class="string"># @date       : 2019-08-21 10:08:00</span></span><br><span class="line"><span class="string"># @brief      : 各数据集的Dataset定义</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> Dataset</span><br><span class="line"></span><br><span class="line">random.seed(<span class="number">1</span>)</span><br><span class="line">rmb_label = &#123;<span class="string">"1"</span>: <span class="number">0</span>, <span class="string">"100"</span>: <span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RMBDataset</span><span class="params">(Dataset)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data_dir, transform=None)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        rmb面额分类任务的Dataset</span></span><br><span class="line"><span class="string">        :param data_dir: str, 数据集所在路径</span></span><br><span class="line"><span class="string">        :param transform: torch.transform，数据预处理</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.label_name = &#123;<span class="string">"1"</span>: <span class="number">0</span>, <span class="string">"100"</span>: <span class="number">1</span>&#125;</span><br><span class="line">        self.data_info = self.get_img_info(data_dir)  <span class="comment"># data_info存储所有图片路径和标签，在DataLoader中通过index读取样本</span></span><br><span class="line">        self.transform = transform</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, index)</span>:</span></span><br><span class="line">        path_img, label = self.data_info[index]</span><br><span class="line">        img = Image.open(path_img).convert(<span class="string">'RGB'</span>)     <span class="comment"># 0~255</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.transform <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            img = self.transform(img)   <span class="comment"># 在这里做transform，转为tensor等等</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> img, label</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.data_info)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_img_info</span><span class="params">(data_dir)</span>:</span></span><br><span class="line">        data_info = list()</span><br><span class="line">        <span class="keyword">for</span> root, dirs, _ <span class="keyword">in</span> os.walk(data_dir):</span><br><span class="line">            <span class="comment"># 遍历类别</span></span><br><span class="line">            <span class="keyword">for</span> sub_dir <span class="keyword">in</span> dirs:</span><br><span class="line">                img_names = os.listdir(os.path.join(root, sub_dir))</span><br><span class="line">                img_names = list(filter(<span class="keyword">lambda</span> x: x.endswith(<span class="string">'.jpg'</span>), img_names))</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 遍历图片</span></span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> range(len(img_names)):</span><br><span class="line">                    img_name = img_names[i]</span><br><span class="line">                    path_img = os.path.join(root, sub_dir, img_name)</span><br><span class="line">                    label = rmb_label[sub_dir]</span><br><span class="line">                    data_info.append((path_img, int(label)))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> data_info</span><br></pre></td></tr></table></figure></p>
+<p><strong>dataloader_dataset_train.py</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># @file name  : train_lenet.py</span></span><br><span class="line"><span class="string"># @author     : tingsongyu</span></span><br><span class="line"><span class="string"># @date       : 2019-09-07 10:08:00</span></span><br><span class="line"><span class="string"># @brief      : 人民币分类模型训练</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> model.lenet <span class="keyword">import</span> LeNet</span><br><span class="line"><span class="keyword">from</span> tools.my_dataset <span class="keyword">import</span> RMBDataset</span><br><span class="line"><span class="keyword">from</span> libml.utils.config <span class="keyword">import</span> SysConfig</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_seed</span><span class="params">(seed=<span class="number">1</span>)</span>:</span></span><br><span class="line">    random.seed(seed)</span><br><span class="line">    np.random.seed(seed)</span><br><span class="line">    torch.manual_seed(seed)</span><br><span class="line">    torch.cuda.manual_seed(seed)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set_seed()  <span class="comment"># 设置随机种子</span></span><br><span class="line">rmb_label = &#123;<span class="string">"1"</span>: <span class="number">0</span>, <span class="string">"100"</span>: <span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 参数设置</span></span><br><span class="line">MAX_EPOCH = <span class="number">10</span></span><br><span class="line">BATCH_SIZE = <span class="number">16</span></span><br><span class="line">LR = <span class="number">0.01</span></span><br><span class="line">log_interval = <span class="number">10</span></span><br><span class="line">val_interval = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 1/5 数据 ============================</span></span><br><span class="line"></span><br><span class="line">split_dir = os.path.join(SysConfig[<span class="string">'home_path'</span>], <span class="string">'res'</span>, <span class="string">'RMB_data/rmb_split'</span>)</span><br><span class="line">train_dir = os.path.join(split_dir, <span class="string">"train"</span>)</span><br><span class="line">valid_dir = os.path.join(split_dir, <span class="string">"valid"</span>)</span><br><span class="line"></span><br><span class="line">norm_mean = [<span class="number">0.485</span>, <span class="number">0.456</span>, <span class="number">0.406</span>]</span><br><span class="line">norm_std = [<span class="number">0.229</span>, <span class="number">0.224</span>, <span class="number">0.225</span>]</span><br><span class="line"></span><br><span class="line">train_transform = transforms.Compose([</span><br><span class="line">    transforms.Resize((<span class="number">32</span>, <span class="number">32</span>)),</span><br><span class="line">    transforms.RandomCrop(<span class="number">32</span>, padding=<span class="number">4</span>),</span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">    transforms.Normalize(norm_mean, norm_std),</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">valid_transform = transforms.Compose([</span><br><span class="line">    transforms.Resize((<span class="number">32</span>, <span class="number">32</span>)),</span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">    transforms.Normalize(norm_mean, norm_std),</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建MyDataset实例</span></span><br><span class="line">train_data = RMBDataset(data_dir=train_dir, transform=train_transform)</span><br><span class="line">valid_data = RMBDataset(data_dir=valid_dir, transform=valid_transform)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建DataLoder</span></span><br><span class="line">train_loader = DataLoader(dataset=train_data, batch_size=BATCH_SIZE, shuffle=<span class="literal">True</span>)</span><br><span class="line">valid_loader = DataLoader(dataset=valid_data, batch_size=BATCH_SIZE)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 2/5 模型 ============================</span></span><br><span class="line"></span><br><span class="line">net = LeNet(classes=<span class="number">2</span>)</span><br><span class="line">net.initialize_weights()</span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 3/5 损失函数 ============================</span></span><br><span class="line">criterion = nn.CrossEntropyLoss()                                                   <span class="comment"># 选择损失函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 4/5 优化器 ============================</span></span><br><span class="line">optimizer = optim.SGD(net.parameters(), lr=LR, momentum=<span class="number">0.9</span>)                        <span class="comment"># 选择优化器</span></span><br><span class="line">scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=<span class="number">10</span>, gamma=<span class="number">0.1</span>)     <span class="comment"># 设置学习率下降策略</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 5/5 训练 ============================</span></span><br><span class="line">train_curve = list()</span><br><span class="line">valid_curve = list()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(MAX_EPOCH):</span><br><span class="line"></span><br><span class="line">    loss_mean = <span class="number">0.</span></span><br><span class="line">    correct = <span class="number">0.</span></span><br><span class="line">    total = <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">    net.train()</span><br><span class="line">    <span class="keyword">for</span> i, data <span class="keyword">in</span> enumerate(train_loader):</span><br><span class="line"></span><br><span class="line">        <span class="comment"># forward</span></span><br><span class="line">        inputs, labels = data</span><br><span class="line">        outputs = net(inputs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># backward</span></span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        loss = criterion(outputs, labels)</span><br><span class="line">        loss.backward()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># update weights</span></span><br><span class="line">        optimizer.step()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 统计分类情况</span></span><br><span class="line">        _, predicted = torch.max(outputs.data, <span class="number">1</span>)</span><br><span class="line">        total += labels.size(<span class="number">0</span>)</span><br><span class="line">        correct += (predicted == labels).squeeze().sum().numpy()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 打印训练信息</span></span><br><span class="line">        loss_mean += loss.item()</span><br><span class="line">        train_curve.append(loss.item())</span><br><span class="line">        <span class="keyword">if</span> (i+<span class="number">1</span>) % log_interval == <span class="number">0</span>:</span><br><span class="line">            loss_mean = loss_mean / log_interval</span><br><span class="line">            print(<span class="string">"Training:Epoch[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Iteration[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Loss: &#123;:.4f&#125; Acc:&#123;:.2%&#125;"</span>.format(</span><br><span class="line">                epoch, MAX_EPOCH, i+<span class="number">1</span>, len(train_loader), loss_mean, correct / total))</span><br><span class="line">            loss_mean = <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">    scheduler.step()  <span class="comment"># 更新学习率</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># validate the model</span></span><br><span class="line">    <span class="keyword">if</span> (epoch+<span class="number">1</span>) % val_interval == <span class="number">0</span>:</span><br><span class="line"></span><br><span class="line">        correct_val = <span class="number">0.</span></span><br><span class="line">        total_val = <span class="number">0.</span></span><br><span class="line">        loss_val = <span class="number">0.</span></span><br><span class="line">        net.eval()</span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            <span class="keyword">for</span> j, data <span class="keyword">in</span> enumerate(valid_loader):</span><br><span class="line">                inputs, labels = data</span><br><span class="line">                outputs = net(inputs)</span><br><span class="line">                loss = criterion(outputs, labels)</span><br><span class="line"></span><br><span class="line">                _, predicted = torch.max(outputs.data, <span class="number">1</span>)</span><br><span class="line">                total_val += labels.size(<span class="number">0</span>)</span><br><span class="line">                correct_val += (predicted == labels).squeeze().sum().numpy()</span><br><span class="line"></span><br><span class="line">                loss_val += loss.item()</span><br><span class="line"></span><br><span class="line">            valid_curve.append(loss_val/valid_loader.__len__())</span><br><span class="line">            print(<span class="string">"Valid:\t Epoch[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Iteration[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Loss: &#123;:.4f&#125; Acc:&#123;:.2%&#125;"</span>.format(</span><br><span class="line">                epoch, MAX_EPOCH, j+<span class="number">1</span>, len(valid_loader), loss_val, correct_val / total_val))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">train_x = range(len(train_curve))</span><br><span class="line">train_y = train_curve</span><br><span class="line"></span><br><span class="line">train_iters = len(train_loader)</span><br><span class="line">valid_x = np.arange(<span class="number">1</span>, len(valid_curve)+<span class="number">1</span>) * train_iters*val_interval <span class="comment"># 由于valid中记录的是epochloss，需要对记录点进行转换到iterations</span></span><br><span class="line">valid_y = valid_curve</span><br><span class="line"></span><br><span class="line">plt.plot(train_x, train_y, label=<span class="string">'Train'</span>)</span><br><span class="line">plt.plot(valid_x, valid_y, label=<span class="string">'Valid'</span>)</span><br><span class="line"></span><br><span class="line">plt.legend(loc=<span class="string">'upper right'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'loss value'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Iteration'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ inference ============================</span></span><br><span class="line"></span><br><span class="line">BASE_DIR = os.path.dirname(os.path.abspath(__file__))</span><br><span class="line">test_dir = os.path.join(BASE_DIR, <span class="string">"test_data"</span>)</span><br><span class="line"></span><br><span class="line">test_data = RMBDataset(data_dir=test_dir, transform=valid_transform)</span><br><span class="line">valid_loader = DataLoader(dataset=test_data, batch_size=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, data <span class="keyword">in</span> enumerate(valid_loader):</span><br><span class="line">    <span class="comment"># forward</span></span><br><span class="line">    inputs, labels = data</span><br><span class="line">    outputs = net(inputs)</span><br><span class="line">    _, predicted = torch.max(outputs.data, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    rmb = <span class="number">1</span> <span class="keyword">if</span> predicted.numpy()[<span class="number">0</span>] == <span class="number">0</span> <span class="keyword">else</span> <span class="number">100</span></span><br><span class="line">    print(<span class="string">"模型获得&#123;&#125;元"</span>.format(rmb))</span><br></pre></td></tr></table></figure></p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91TensorBoard-1/" rel="prev" title="PyTorch笔记/【Tutorials】TensorBoard-1">
+      <i class="fa fa-chevron-left"></i> PyTorch笔记/【Tutorials】TensorBoard-1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-2%20Data%20Augmentation/" rel="next" title="PyTorch笔记/【Tutorials】torchvision.transforms-2 Data Augmentation">
+      PyTorch笔记/【Tutorials】torchvision.transforms-2 Data Augmentation <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DataLoader"><span class="nav-number">1.</span> <span class="nav-text">DataLoader</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dataset"><span class="nav-number">2.</span> <span class="nav-text">Dataset</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码示例"><span class="nav-number">3.</span> <span class="nav-text">代码示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

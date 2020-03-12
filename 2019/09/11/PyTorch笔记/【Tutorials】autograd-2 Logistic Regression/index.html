@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本节主要讲述逻辑回归模型以及逻辑回归和线性回归之间的关系，并利用上一节中所讲的autograd来做一个逻辑回归算法的示例。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch笔记&#x2F;【Tutorials】autograd-2 Logistic Regression">
+<meta property="og:url" content="http://yoursite.com/2019/09/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91autograd-2%20Logistic%20Regression/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="本节主要讲述逻辑回归模型以及逻辑回归和线性回归之间的关系，并利用上一节中所讲的autograd来做一个逻辑回归算法的示例。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/autograd_sigmoid.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/autograd_logistic_regression.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/autograd_ml_train_step.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/autograd_logistic_regression2.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/autograd_logistic_regression3.jpg">
+<meta property="article:published_time" content="2019-09-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-09T02:37:13.587Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/autograd_sigmoid.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2019/09/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91autograd-2%20Logistic%20Regression/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>PyTorch笔记/【Tutorials】autograd-2 Logistic Regression | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91autograd-2%20Logistic%20Regression/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch笔记/【Tutorials】autograd-2 Logistic Regression
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-11 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-11T00:00:00+08:00">2019-09-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-09 10:37:13" itemprop="dateModified" datetime="2020-03-09T10:37:13+08:00">2020-03-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本节主要讲述逻辑回归模型以及逻辑回归和线性回归之间的关系，并利用上一节中所讲的autograd来做一个逻辑回归算法的示例。<br><a id="more"></a></p>
+<p>逻辑回归是<strong>线性</strong>的<strong>二分类</strong>模型模型表达式:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    y &= f(WX + b)  \\
+    f(x) &= \frac{1}{1 + e^{-x}}  \tag{1}
+\end{aligned}</script><script type="math/tex; mode=display">
+class = 
+\begin{dcases}
+    0, \qquad y < 0.5  \\
+    1, \qquad y \ge 0.5
+\end{dcases}</script><p><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/autograd_sigmoid.jpg" width = 60% height = 60% />
+</div></p>
+<center>图1 &nbsp; Sigmoid曲线</center>
+
+<p>因变量 $y$ 是自变量 $x$ 的线性组合 $WX +b$ 再输入到 $f(x)$ 函数中，$f(x)$ 称为Sigmoid函数，也称为Logistic函数。</p>
+<p><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/autograd_logistic_regression.jpg" width = 60% height = 60% />
+</div></p>
+<center>图2 &nbsp;逻辑回归与线性回归的关系</center>
+
+<p>&emsp; 逻辑回归可以理解为在线性回归的基础上加了一个激活函数（Sigmoid函数），如果将Sigmoid函数舍弃，单纯留下 $WX + b$，则逻辑回归模型还是能够做二分类的，这时候当 $WX + b &gt; 0时$（等价于逻辑回归中的 $y&gt;0.5$）就判别为类别1，当 $WX + b &lt; 0$ 时（等价于逻辑回归中的 $y&lt;0.5$），就判别为类别0. 但是为了更好的利用分类置信度，所以要将线性回归模型再输入到 Sigmoid 函数中。</p>
+<p><strong>逻辑回归也称对数几率回归</strong>，对数几率回归如公式(2)所示，</p>
+<script type="math/tex; mode=display">ln\frac{y}{1 - y} = WX + b  \tag{2}</script><p>几率就是概率，式(2)中的 $\frac{y}{1 - y}$ 可以理解成判别为正样本的概率，再对 $\frac{y}{1 - y}$ 取对数就得到了<strong>对数几率</strong>.</p>
+<p>公式(2) 和公式(1) 是等价的，推导过程如下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    ln \frac{y}{1 - y} &= WX + b  \\
+    \frac{y}{1 - y} &= e^{WX + b}  \\
+    y &= e^{WX + b} - y * e^{WX + b}  \\
+    y(1 + e^{WX + b}) &= e^{WX + b}  \\
+    y &= \frac{e^{WX + b}}{1 + e^{WX + b}} = \frac{1}{1 + e^{-(WX + b)}}
+\end{aligned}</script><p>比较公式(2)和线性回归模型 $y = WX + b$ 会发现，线性回归是用 $WX + b$ 去拟合 $y$，而对数几率回归是用 $WX + b$ 去拟合对数几率 $ln \frac{y}{1 - y}$，所以这也是对数几率回归名字的由来。</p>
+<h1 id="逻辑回归代码示例"><a href="#逻辑回归代码示例" class="headerlink" title="逻辑回归代码示例"></a>逻辑回归代码示例</h1><p>&emsp; 机器学习模型训练的一般步骤：</p>
+<p><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/autograd_ml_train_step.jpg" width = 60% height = 60% />
+</div></p>
+<center>图3 &nbsp;机器学习模型训练步骤</center>
+
+<p>step1: 获取数据，可能会涉及数据采集、划分、清洗、预处理；\<br>step2: 选择模型; \<br>step3: 根据不同的任务选择不同的损失函数，例如在线性回归任务中可以选择均方差(MSE)损失函数，在分类任务中可以选择交叉熵损失函数；\<br>step4: 有了loss后，就可以求取梯度，得到梯度后就可以采取某一种优化器来优化即将要训练的模型；\<br>step5: 有了上述配置之后，就可以开始迭代训练了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># @file name  : lesson-05-Logsitic-Regression.py</span></span><br><span class="line"><span class="string"># @author     : tingsongyu</span></span><br><span class="line"><span class="string"># @date       : 2019-09-03 10:08:00</span></span><br><span class="line"><span class="string"># @brief      : 逻辑回归模型训练</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">torch.manual_seed(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 1/5 生成数据 ============================</span></span><br><span class="line">sample_nums = <span class="number">100</span></span><br><span class="line">mean_value = <span class="number">1.7</span></span><br><span class="line">bias = <span class="number">1</span></span><br><span class="line">n_data = torch.ones(sample_nums, <span class="number">2</span>)</span><br><span class="line">x0 = torch.normal(mean_value * n_data, <span class="number">1</span>) + bias      <span class="comment"># 类别0 数据 shape=(100, 2)</span></span><br><span class="line">y0 = torch.zeros(sample_nums)                         <span class="comment"># 类别0 标签 shape=(100, 1)</span></span><br><span class="line">x1 = torch.normal(-mean_value * n_data, <span class="number">1</span>) + bias     <span class="comment"># 类别1 数据 shape=(100, 2)</span></span><br><span class="line">y1 = torch.ones(sample_nums)                          <span class="comment"># 类别1 标签 shape=(100, 1)</span></span><br><span class="line">train_x = torch.cat((x0, x1), <span class="number">0</span>)</span><br><span class="line">train_y = torch.cat((y0, y1), <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 2/5 选择模型 ============================</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LR</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(LR, self).__init__()</span><br><span class="line">        self.features = nn.Linear(<span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">        self.sigmoid = nn.Sigmoid()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        x = self.features(x)</span><br><span class="line">        x = self.sigmoid(x)</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">lr_net = LR()   <span class="comment"># 实例化逻辑回归模型</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 3/5 选择损失函数 ============================</span></span><br><span class="line">loss_fn = nn.BCELoss()</span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 4/5 选择优化器   ============================</span></span><br><span class="line">lr = <span class="number">0.01</span>  <span class="comment"># 学习率</span></span><br><span class="line">optimizer = torch.optim.SGD(lr_net.parameters(), lr=lr, momentum=<span class="number">0.9</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 5/5 模型训练 ============================</span></span><br><span class="line"><span class="keyword">for</span> iteration <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 前向传播</span></span><br><span class="line">    y_pred = lr_net(train_x)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算 loss</span></span><br><span class="line">    loss = loss_fn(y_pred.squeeze(), train_y)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 反向传播</span></span><br><span class="line">    loss.backward()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 更新参数</span></span><br><span class="line">    optimizer.step()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 清空梯度</span></span><br><span class="line">    optimizer.zero_grad()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 绘图</span></span><br><span class="line">    <span class="keyword">if</span> iteration % <span class="number">20</span> == <span class="number">0</span>:</span><br><span class="line"></span><br><span class="line">        mask = y_pred.ge(<span class="number">0.5</span>).float().squeeze()  <span class="comment"># 以0.5为阈值进行分类</span></span><br><span class="line">        correct = (mask == train_y).sum()  <span class="comment"># 计算正确预测的样本个数</span></span><br><span class="line">        acc = correct.item() / train_y.size(<span class="number">0</span>)  <span class="comment"># 计算分类准确率</span></span><br><span class="line"></span><br><span class="line">        plt.scatter(x0.data.numpy()[:, <span class="number">0</span>], x0.data.numpy()[:, <span class="number">1</span>], c=<span class="string">'r'</span>, label=<span class="string">'class 0'</span>)</span><br><span class="line">        plt.scatter(x1.data.numpy()[:, <span class="number">0</span>], x1.data.numpy()[:, <span class="number">1</span>], c=<span class="string">'b'</span>, label=<span class="string">'class 1'</span>)</span><br><span class="line"></span><br><span class="line">        w0, w1 = lr_net.features.weight[<span class="number">0</span>]</span><br><span class="line">        w0, w1 = float(w0.item()), float(w1.item())</span><br><span class="line">        plot_b = float(lr_net.features.bias[<span class="number">0</span>].item())</span><br><span class="line">        plot_x = np.arange(<span class="number">-6</span>, <span class="number">6</span>, <span class="number">0.1</span>)</span><br><span class="line">        plot_y = (-w0 * plot_x - plot_b) / w1</span><br><span class="line"></span><br><span class="line">        plt.xlim(<span class="number">-5</span>, <span class="number">7</span>)</span><br><span class="line">        plt.ylim(<span class="number">-7</span>, <span class="number">7</span>)</span><br><span class="line">        plt.plot(plot_x, plot_y)</span><br><span class="line"></span><br><span class="line">        plt.text(<span class="number">-5</span>, <span class="number">5</span>, <span class="string">'Loss=%.4f'</span> % loss.data.numpy(), fontdict=&#123;<span class="string">'size'</span>: <span class="number">20</span>, <span class="string">'color'</span>: <span class="string">'red'</span>&#125;)</span><br><span class="line">        plt.title(<span class="string">"Iteration: &#123;&#125;\nw0:&#123;:.2f&#125; w1:&#123;:.2f&#125; b: &#123;:.2f&#125; accuracy:&#123;:.2%&#125;"</span>.format(iteration, w0, w1, plot_b, acc))</span><br><span class="line">        plt.legend()</span><br><span class="line"></span><br><span class="line">        plt.show()</span><br><span class="line">        plt.pause(<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> acc &gt; <span class="number">0.99</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<html>
+    <table style="margin-left: auto; margin-right: auto;">
+        <tr>
+            <td>
+                <!--左侧内容-->
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/autograd_logistic_regression2.jpg" width = 50% height = 50% />
+                </div>
+            </td>
+            <td>
+                <!--右侧内容-->
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/autograd_logistic_regression3.jpg" width = 50% height = 50% />
+                </div>
+            </td>
+        </tr>
+    </table>
+    <center>图3 &nbsp;迭代训练结果</center>
+</html>
+
+
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/09/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91Tensor-3%20Linear%20Regression/" rel="prev" title="PyTorch笔记/【Tutorials】Tensor-3 Linear Regression">
+      <i class="fa fa-chevron-left"></i> PyTorch笔记/【Tutorials】Tensor-3 Linear Regression
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/09/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91Tensor%20Operation/" rel="next" title="PyTorch笔记/【Entries】Tensor Operation">
+      PyTorch笔记/【Entries】Tensor Operation <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#逻辑回归代码示例"><span class="nav-number">1.</span> <span class="nav-text">逻辑回归代码示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">2.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

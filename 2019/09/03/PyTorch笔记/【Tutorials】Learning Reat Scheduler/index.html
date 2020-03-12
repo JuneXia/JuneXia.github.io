@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="学习率策略的基类pytorch中有6种学习率调整策略，都继承自一个基类 _LRScheduler.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch笔记&#x2F;【Tutorials】Learning Reat Scheduler">
+<meta property="og:url" content="http://yoursite.com/2019/09/03/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91Learning%20Reat%20Scheduler/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="学习率策略的基类pytorch中有6种学习率调整策略，都继承自一个基类 _LRScheduler.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-StepLR.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-MultiStepLR.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-ExponentialLR.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-CosineAnnealingLR.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-ReduceLROnPlateau.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-LambdaLR.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-CyclicalLR.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-CyclicalLR2.jpg">
+<meta property="article:published_time" content="2019-09-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-07T05:27:19.761Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-StepLR.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2019/09/03/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91Learning%20Reat%20Scheduler/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>PyTorch笔记/【Tutorials】Learning Reat Scheduler | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/03/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91Learning%20Reat%20Scheduler/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch笔记/【Tutorials】Learning Reat Scheduler
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-03 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-03T00:00:00+08:00">2019-09-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-07 13:27:19" itemprop="dateModified" datetime="2020-03-07T13:27:19+08:00">2020-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="学习率策略的基类"><a href="#学习率策略的基类" class="headerlink" title="学习率策略的基类"></a>学习率策略的基类</h1><p>pytorch中有6种学习率调整策略，都继承自一个基类 _LRScheduler.<br><a id="more"></a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_LRScheduler</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, optimizer, last_epoch=<span class="number">-1</span>)</span>:</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        self.base_lrs = list(map(<span class="keyword">lambda</span> group: group[<span class="string">'initial_lr'</span>], optimizer.param_groups))</span><br><span class="line">        self.last_epoch = last_epoch</span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        self.optimizer.step = with_counter(self.optimizer.step, self.optimizer)</span><br><span class="line">        self.optimizer._step_count = <span class="number">0</span></span><br><span class="line">        self._step_count = <span class="number">0</span></span><br><span class="line">        self.step(last_epoch)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_lr</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">raise</span> NotImplementedError</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">step</span><span class="params">(self, epoch=None)</span>:</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> epoch <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            epoch = self.last_epoch + <span class="number">1</span></span><br><span class="line">        self.last_epoch = epoch</span><br><span class="line">        <span class="keyword">for</span> param_group, lr <span class="keyword">in</span> zip(self.optimizer.param_groups, self.get_lr()):</span><br><span class="line">            param_group[<span class="string">'lr'</span>] = lr</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>optimizer</strong>: 关联的优化器</li>
+<li><strong>last_epoch*</strong>: 记录epoch数</li>
+<li><strong>base_lrs</strong>: 记录初始的学习率</li>
+</ul>
+<p><strong>主要方法</strong>: </p>
+<ul>
+<li><strong>step()</strong>: 更新下一个epoch的学习率</li>
+<li><strong>get_lr()</strong>: <em>虚函数</em>，计算下一个epoch的学习率</li>
+</ul>
+<p>下面开始讲PyTorch中的学习率调整策略。</p>
+<h1 id="有序调整策略"><a href="#有序调整策略" class="headerlink" title="有序调整策略"></a>有序调整策略</h1><h2 id="等间隔调整-StepLR"><a href="#等间隔调整-StepLR" class="headerlink" title="等间隔调整 - StepLR"></a>等间隔调整 - StepLR</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StepLR</span><span class="params">(_LRScheduler)</span>:</span></span><br><span class="line">    <span class="string">"""Sets the learning rate of each parameter group to the initial lr</span></span><br><span class="line"><span class="string">    decayed by gamma every step_size epochs. When last_epoch=-1, sets</span></span><br><span class="line"><span class="string">    initial lr as lr.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        optimizer (Optimizer): Wrapped optimizer.</span></span><br><span class="line"><span class="string">        step_size (int): Period of learning rate decay.</span></span><br><span class="line"><span class="string">        gamma (float): Multiplicative factor of learning rate decay.</span></span><br><span class="line"><span class="string">            Default: 0.1.</span></span><br><span class="line"><span class="string">        last_epoch (int): The index of last epoch. Default: -1.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Example:</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # Assuming optimizer uses lr = 0.05 for all groups</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # lr = 0.05     if epoch &lt; 30</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # lr = 0.005    if 30 &lt;= epoch &lt; 60</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # lr = 0.0005   if 60 &lt;= epoch &lt; 90</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # ...</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; scheduler = StepLR(optimizer, step_size=30, gamma=0.1)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; for epoch in range(100):</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;     train(...)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;     validate(...)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;     scheduler.step()</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, optimizer, step_size, gamma=<span class="number">0.1</span>, last_epoch=<span class="number">-1</span>)</span>:</span></span><br><span class="line">        self.step_size = step_size</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        super(StepLR, self).__init__(optimizer, last_epoch)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_lr</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> [base_lr * self.gamma ** (self.last_epoch // self.step_size)</span><br><span class="line">                <span class="keyword">for</span> base_lr <span class="keyword">in</span> self.base_lrs]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>optimizer</strong>: 关联的优化器</li>
+<li><strong>step_size*</strong>: 调整间隔数，即每隔step_size调整一次</li>
+<li><strong>gamma</strong>: 调整系数</li>
+<li><strong>last_epoch</strong>: 记录epoch数</li>
+</ul>
+<p><strong>调整方式</strong>: lr = lr * gamma \<br>gamma 常用值：0.1，0.5</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">torch.manual_seed(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">LR = <span class="number">0.1</span></span><br><span class="line">iteration = <span class="number">10</span></span><br><span class="line">max_epoch = <span class="number">200</span></span><br><span class="line"><span class="comment"># ------------------------------ fake data and optimizer  ------------------------------</span></span><br><span class="line"></span><br><span class="line">weights = torch.randn((<span class="number">1</span>,), requires_grad=<span class="literal">True</span>)</span><br><span class="line">target = torch.zeros((<span class="number">1</span>,))</span><br><span class="line"></span><br><span class="line">optimizer = optim.SGD([weights], lr=LR, momentum=<span class="number">0.9</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ------------------------------ 1 Step LR ------------------------------</span></span><br><span class="line">scheduler_lr = optim.lr_scheduler.StepLR(optimizer, step_size=<span class="number">50</span>, gamma=<span class="number">0.1</span>)  <span class="comment"># 设置学习率下降策略</span></span><br><span class="line"></span><br><span class="line">lr_list, epoch_list = list(), list()</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(max_epoch):</span><br><span class="line"></span><br><span class="line">    lr_list.append(scheduler_lr.get_lr())</span><br><span class="line">    epoch_list.append(epoch)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(iteration):</span><br><span class="line"></span><br><span class="line">        loss = torch.pow((weights - target), <span class="number">2</span>)</span><br><span class="line">        loss.backward()</span><br><span class="line"></span><br><span class="line">        optimizer.step()</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line"></span><br><span class="line">    scheduler_lr.step()</span><br><span class="line"></span><br><span class="line">plt.plot(epoch_list, lr_list, label=<span class="string">"Step LR Scheduler"</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Epoch"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Learning rate"</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-StepLR.jpg" width = 70% height = 70% />
+</div>
+
+
+<h2 id="按给定间隔调整学习率-MultiStepLR"><a href="#按给定间隔调整学习率-MultiStepLR" class="headerlink" title="按给定间隔调整学习率 - MultiStepLR"></a>按给定间隔调整学习率 - MultiStepLR</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MultiStepLR</span><span class="params">(_LRScheduler)</span>:</span></span><br><span class="line">    <span class="string">"""Set the learning rate of each parameter group to the initial lr decayed</span></span><br><span class="line"><span class="string">    by gamma once the number of epoch reaches one of the milestones. When</span></span><br><span class="line"><span class="string">    last_epoch=-1, sets initial lr as lr.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        optimizer (Optimizer): Wrapped optimizer.</span></span><br><span class="line"><span class="string">        milestones (list): List of epoch indices. Must be increasing.</span></span><br><span class="line"><span class="string">        gamma (float): Multiplicative factor of learning rate decay.</span></span><br><span class="line"><span class="string">            Default: 0.1.</span></span><br><span class="line"><span class="string">        last_epoch (int): The index of last epoch. Default: -1.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Example:</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # Assuming optimizer uses lr = 0.05 for all groups</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # lr = 0.05     if epoch &lt; 30</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # lr = 0.005    if 30 &lt;= epoch &lt; 80</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # lr = 0.0005   if epoch &gt;= 80</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; scheduler = MultiStepLR(optimizer, milestones=[30,80], gamma=0.1)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; for epoch in range(100):</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;     train(...)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;     validate(...)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;     scheduler.step()</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, optimizer, milestones, gamma=<span class="number">0.1</span>, last_epoch=<span class="number">-1</span>)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> list(milestones) == sorted(milestones):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'Milestones should be a list of'</span></span><br><span class="line">                             <span class="string">' increasing integers. Got &#123;&#125;'</span>, milestones)</span><br><span class="line">        self.milestones = milestones</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        super(MultiStepLR, self).__init__(optimizer, last_epoch)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_lr</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> [base_lr * self.gamma ** bisect_right(self.milestones, self.last_epoch)</span><br><span class="line">                <span class="keyword">for</span> base_lr <span class="keyword">in</span> self.base_lrs]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>optimizer</strong>: 关联的优化器</li>
+<li><strong>milestones*</strong>: 指定的调整时刻数</li>
+<li><strong>gamma</strong>: 调整系数</li>
+<li><strong>last_epoch</strong>: 记录epoch数</li>
+</ul>
+<p><strong>调整方式</strong>: lr = lr * gamma</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">milestones = [<span class="number">50</span>, <span class="number">125</span>, <span class="number">160</span>]</span><br><span class="line">scheduler_lr = optim.lr_scheduler.MultiStepLR(optimizer,milestones=milestones, gamma=<span class="number">0.1</span>)</span><br><span class="line">lr_list, epoch_list = list(), list()</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(max_epoch):</span><br><span class="line">    lr_list.append(scheduler_lr.get_lr())</span><br><span class="line">    epoch_list.append(epoch)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(iteration):</span><br><span class="line">        loss = torch.pow((weights - target), <span class="number">2</span>)</span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">    scheduler_lr.step()</span><br><span class="line">plt.plot(epoch_list, lr_list, label=<span class="string">"Multi Step LRScheduler\nmilestones:&#123;&#125;"</span>.format(milestones))</span><br><span class="line">plt.xlabel(<span class="string">"Epoch"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Learning rate"</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-MultiStepLR.jpg" width = 70% height = 70% />
+</div>
+
+
+<h2 id="按指数衰减调整学习率-ExponentialLR"><a href="#按指数衰减调整学习率-ExponentialLR" class="headerlink" title="按指数衰减调整学习率 - ExponentialLR"></a>按指数衰减调整学习率 - ExponentialLR</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExponentialLR</span><span class="params">(_LRScheduler)</span>:</span></span><br><span class="line">    <span class="string">"""Set the learning rate of each parameter group to the initial lr decayed</span></span><br><span class="line"><span class="string">    by gamma every epoch. When last_epoch=-1, sets initial lr as lr.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        optimizer (Optimizer): Wrapped optimizer.</span></span><br><span class="line"><span class="string">        gamma (float): Multiplicative factor of learning rate decay.</span></span><br><span class="line"><span class="string">        last_epoch (int): The index of last epoch. Default: -1.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, optimizer, gamma, last_epoch=<span class="number">-1</span>)</span>:</span></span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        super(ExponentialLR, self).__init__(optimizer, last_epoch)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_lr</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> [base_lr * self.gamma ** self.last_epoch</span><br><span class="line">                <span class="keyword">for</span> base_lr <span class="keyword">in</span> self.base_lrs]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>optimizer</strong>: 关联的优化器</li>
+<li><strong>gamma</strong>: 指数的底</li>
+<li><strong>last_epoch</strong>: 记录epoch数</li>
+</ul>
+<p><strong>调整方式</strong>: $lr = lr * gamma^{epoch}$  \<br>gamma通常设置成一个接近于1的数，如：0.95</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">gamma = <span class="number">0.95</span></span><br><span class="line">scheduler_lr = optim.lr_scheduler.ExponentialLR(optimizer, gamma=gamma)</span><br><span class="line"></span><br><span class="line">lr_list, epoch_list = list(), list()</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(max_epoch):</span><br><span class="line"></span><br><span class="line">    lr_list.append(scheduler_lr.get_lr())</span><br><span class="line">    epoch_list.append(epoch)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(iteration):</span><br><span class="line"></span><br><span class="line">        loss = torch.pow((weights - target), <span class="number">2</span>)</span><br><span class="line">        loss.backward()</span><br><span class="line"></span><br><span class="line">        optimizer.step()</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line"></span><br><span class="line">    scheduler_lr.step()</span><br><span class="line"></span><br><span class="line">plt.plot(epoch_list, lr_list, label=<span class="string">"Exponential LR Scheduler\ngamma:&#123;&#125;"</span>.format(gamma))</span><br><span class="line">plt.xlabel(<span class="string">"Epoch"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Learning rate"</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-ExponentialLR.jpg" width = 70% height = 70% />
+</div>
+
+
+<h2 id="按余弦周期调整学习率-CosineAnnealingLR"><a href="#按余弦周期调整学习率-CosineAnnealingLR" class="headerlink" title="按余弦周期调整学习率 - CosineAnnealingLR"></a>按余弦周期调整学习率 - CosineAnnealingLR</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CosineAnnealingLR</span><span class="params">(_LRScheduler)</span>:</span></span><br><span class="line">    <span class="string">r"""Set the learning rate of each parameter group using a cosine annealing</span></span><br><span class="line"><span class="string">    schedule, where :math:`\eta_&#123;max&#125;` is set to the initial lr and</span></span><br><span class="line"><span class="string">    :math:`T_&#123;cur&#125;` is the number of epochs since the last restart in SGDR:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. math::</span></span><br><span class="line"><span class="string">        \eta_t = \eta_&#123;min&#125; + \frac&#123;1&#125;&#123;2&#125;(\eta_&#123;max&#125; - \eta_&#123;min&#125;)(1 +</span></span><br><span class="line"><span class="string">        \cos(\frac&#123;T_&#123;cur&#125;&#125;&#123;T_&#123;max&#125;&#125;\pi))</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    When last_epoch=-1, sets initial lr as lr.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    It has been proposed in</span></span><br><span class="line"><span class="string">    `SGDR: Stochastic Gradient Descent with Warm Restarts`_. Note that this only</span></span><br><span class="line"><span class="string">    implements the cosine annealing part of SGDR, and not the restarts.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        optimizer (Optimizer): Wrapped optimizer.</span></span><br><span class="line"><span class="string">        T_max (int): Maximum number of iterations.</span></span><br><span class="line"><span class="string">        eta_min (float): Minimum learning rate. Default: 0.</span></span><br><span class="line"><span class="string">        last_epoch (int): The index of last epoch. Default: -1.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. _SGDR\: Stochastic Gradient Descent with Warm Restarts:</span></span><br><span class="line"><span class="string">        https://arxiv.org/abs/1608.03983</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, optimizer, T_max, eta_min=<span class="number">0</span>, last_epoch=<span class="number">-1</span>)</span>:</span></span><br><span class="line">        self.T_max = T_max</span><br><span class="line">        self.eta_min = eta_min</span><br><span class="line">        super(CosineAnnealingLR, self).__init__(optimizer, last_epoch)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_lr</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> [self.eta_min + (base_lr - self.eta_min) *</span><br><span class="line">                (<span class="number">1</span> + math.cos(math.pi * self.last_epoch / self.T_max)) / <span class="number">2</span></span><br><span class="line">                <span class="keyword">for</span> base_lr <span class="keyword">in</span> self.base_lrs]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>optimizer</strong>: 关联的优化器</li>
+<li><strong>T_max</strong>: 下降的周期，也就是余弦的 $\frac{T}{2}$</li>
+<li><strong>eta_min</strong>: 学习率下限，通常设置为0</li>
+<li><strong>last_epoch</strong>: 记录epoch数</li>
+</ul>
+<p><strong>调整方式</strong>:$\eta_t = \eta_{min} + \frac{1}{2}(\eta_{max} - \eta_{min})(1 + \cos(\frac{T_{cur}}{T_{max}} \pi))$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">t_max = <span class="number">50</span></span><br><span class="line">scheduler_lr = optim.lr_scheduler.CosineAnnealingLR(optimizer,T_max=t_max, eta_min=<span class="number">0.</span>)</span><br><span class="line">lr_list, epoch_list = list(), list()</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(max_epoch):</span><br><span class="line">    lr_list.append(scheduler_lr.get_lr())</span><br><span class="line">    epoch_list.append(epoch)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(iteration):</span><br><span class="line">        loss = torch.pow((weights - target), <span class="number">2</span>)</span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">    scheduler_lr.step()</span><br><span class="line">plt.plot(epoch_list, lr_list, label=<span class="string">"CosineAnnealingLRScheduler\nT_max:&#123;&#125;"</span>.format(t_max))</span><br><span class="line">plt.xlabel(<span class="string">"Epoch"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Learning rate"</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-CosineAnnealingLR.jpg" width = 70% height = 70% />
+</div>
+
+
+<h1 id="自适应调整策略"><a href="#自适应调整策略" class="headerlink" title="自适应调整策略"></a>自适应调整策略</h1><h2 id="监控指标，当指标不再变化时调整学习率-ReduceLROnPlateau"><a href="#监控指标，当指标不再变化时调整学习率-ReduceLROnPlateau" class="headerlink" title="监控指标，当指标不再变化时调整学习率 - ReduceLROnPlateau"></a>监控指标，当指标不再变化时调整学习率 - ReduceLROnPlateau</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReduceLROnPlateau</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""Reduce learning rate when a metric has stopped improving.</span></span><br><span class="line"><span class="string">    Models often benefit from reducing the learning rate by a factor</span></span><br><span class="line"><span class="string">    of 2-10 once learning stagnates. This scheduler reads a metrics</span></span><br><span class="line"><span class="string">    quantity and if no improvement is seen for a 'patience' number</span></span><br><span class="line"><span class="string">    of epochs, the learning rate is reduced.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        optimizer (Optimizer): Wrapped optimizer.</span></span><br><span class="line"><span class="string">        mode (str): One of `min`, `max`. In `min` mode, lr will</span></span><br><span class="line"><span class="string">            be reduced when the quantity monitored has stopped</span></span><br><span class="line"><span class="string">            decreasing; in `max` mode it will be reduced when the</span></span><br><span class="line"><span class="string">            quantity monitored has stopped increasing. Default: 'min'.</span></span><br><span class="line"><span class="string">        factor (float): Factor by which the learning rate will be</span></span><br><span class="line"><span class="string">            reduced. new_lr = lr * factor. Default: 0.1.</span></span><br><span class="line"><span class="string">        patience (int): Number of epochs with no improvement after</span></span><br><span class="line"><span class="string">            which learning rate will be reduced. For example, if</span></span><br><span class="line"><span class="string">            `patience = 2`, then we will ignore the first 2 epochs</span></span><br><span class="line"><span class="string">            with no improvement, and will only decrease the LR after the</span></span><br><span class="line"><span class="string">            3rd epoch if the loss still hasn't improved then.</span></span><br><span class="line"><span class="string">            Default: 10.</span></span><br><span class="line"><span class="string">        verbose (bool): If ``True``, prints a message to stdout for</span></span><br><span class="line"><span class="string">            each update. Default: ``False``.</span></span><br><span class="line"><span class="string">        threshold (float): Threshold for measuring the new optimum,</span></span><br><span class="line"><span class="string">            to only focus on significant changes. Default: 1e-4.</span></span><br><span class="line"><span class="string">        threshold_mode (str): One of `rel`, `abs`. In `rel` mode,</span></span><br><span class="line"><span class="string">            dynamic_threshold = best * ( 1 + threshold ) in 'max'</span></span><br><span class="line"><span class="string">            mode or best * ( 1 - threshold ) in `min` mode.</span></span><br><span class="line"><span class="string">            In `abs` mode, dynamic_threshold = best + threshold in</span></span><br><span class="line"><span class="string">            `max` mode or best - threshold in `min` mode. Default: 'rel'.</span></span><br><span class="line"><span class="string">        cooldown (int): Number of epochs to wait before resuming</span></span><br><span class="line"><span class="string">            normal operation after lr has been reduced. Default: 0.</span></span><br><span class="line"><span class="string">        min_lr (float or list): A scalar or a list of scalars. A</span></span><br><span class="line"><span class="string">            lower bound on the learning rate of all param groups</span></span><br><span class="line"><span class="string">            or each group respectively. Default: 0.</span></span><br><span class="line"><span class="string">        eps (float): Minimal decay applied to lr. If the difference</span></span><br><span class="line"><span class="string">            between new and old lr is smaller than eps, the update is</span></span><br><span class="line"><span class="string">            ignored. Default: 1e-8.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Example:</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; scheduler = ReduceLROnPlateau(optimizer, 'min')</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; for epoch in range(10):</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;     train(...)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;     val_loss = validate(...)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;     # Note that step should be called after validate()</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;     scheduler.step(val_loss)</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, optimizer, mode=<span class="string">'min'</span>, factor=<span class="number">0.1</span>, patience=<span class="number">10</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 verbose=False, threshold=<span class="number">1e-4</span>, threshold_mode=<span class="string">'rel'</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 cooldown=<span class="number">0</span>, min_lr=<span class="number">0</span>, eps=<span class="number">1e-8</span>)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> factor &gt;= <span class="number">1.0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'Factor should be &lt; 1.0.'</span>)</span><br><span class="line">        self.factor = factor</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(optimizer, Optimizer):</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">'&#123;&#125; is not an Optimizer'</span>.format(</span><br><span class="line">                type(optimizer).__name__))</span><br><span class="line">        self.optimizer = optimizer</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> isinstance(min_lr, list) <span class="keyword">or</span> isinstance(min_lr, tuple):</span><br><span class="line">            <span class="keyword">if</span> len(min_lr) != len(optimizer.param_groups):</span><br><span class="line">                <span class="keyword">raise</span> ValueError(<span class="string">"expected &#123;&#125; min_lrs, got &#123;&#125;"</span>.format(</span><br><span class="line">                    len(optimizer.param_groups), len(min_lr)))</span><br><span class="line">            self.min_lrs = list(min_lr)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.min_lrs = [min_lr] * len(optimizer.param_groups)</span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">step</span><span class="params">(self, metrics, epoch=None)</span>:</span></span><br><span class="line">        <span class="comment"># convert `metrics` to float, in case it's a zero-dim Tensor</span></span><br><span class="line">        current = float(metrics)</span><br><span class="line">        <span class="keyword">if</span> epoch <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            epoch = self.last_epoch = self.last_epoch + <span class="number">1</span></span><br><span class="line">        self.last_epoch = epoch</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.is_better(current, self.best):</span><br><span class="line">            self.best = current</span><br><span class="line">            self.num_bad_epochs = <span class="number">0</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.num_bad_epochs += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.in_cooldown:</span><br><span class="line">            self.cooldown_counter -= <span class="number">1</span></span><br><span class="line">            self.num_bad_epochs = <span class="number">0</span>  <span class="comment"># ignore any bad epochs in cooldown</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.num_bad_epochs &gt; self.patience:</span><br><span class="line">            self._reduce_lr(epoch)</span><br><span class="line">            self.cooldown_counter = self.cooldown</span><br><span class="line">            self.num_bad_epochs = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>功能：监控指标，当指标不再变化时调整学习率。<br>比如监控loss，当loss不再下降时调整学习率；<br>比如监控acc，当acc不再上升时调整学习率</p>
+<ul>
+<li><strong>optimizer</strong>: 关联的优化器</li>
+<li><strong>mode</strong>: min/max 两种模式，min表示如果指标不下降就调整，max表示如果指标不上升就调整</li>
+<li><strong>factor</strong>: 调整系数，相当于前面学习率的gamma</li>
+<li><strong>patience</strong>: “耐心”，接受几次不变化，即当指标<strong>连续</strong> patience 个 epoch 不发生变化则调整学习率</li>
+<li><strong>cooldown</strong>: “冷却时间”，停止监控一段时间，即在学习率调整完之后，给它一定的时间不去监控指标，等到该冷却时间过了之后才开始监控patience</li>
+<li><strong>verbose</strong>: 是否打印日志，如果为True，则当学习率更新的时候会打印更新日志</li>
+<li><strong>min_lr</strong>: 学习率下限</li>
+<li><strong>eps</strong>: 学习率衰减最小值</li>
+</ul>
+<p><strong>注意</strong>：这个 ReduceLROnPlateau 的成员方法 step() 比前面的LR-Scheduler多了一个参数metrics，用于传入需要监控的指标。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">loss_value = <span class="number">0.5</span></span><br><span class="line">accuray = <span class="number">0.9</span></span><br><span class="line"></span><br><span class="line">factor = <span class="number">0.1</span></span><br><span class="line">mode = <span class="string">"min"</span></span><br><span class="line">patience = <span class="number">10</span></span><br><span class="line">cooldown = <span class="number">10</span></span><br><span class="line">min_lr = <span class="number">1e-4</span></span><br><span class="line">verbose = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">scheduler_lr = optim.lr_scheduler.ReduceLROnPlateau(optimizerfactor=factor, mode=mode, patience=patience,</span><br><span class="line">                                                    cooldown=cooldown, min_lr=min_lr, verbose=verbose)</span><br><span class="line"></span><br><span class="line">lr_list, epoch_list = list(), list()</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(max_epoch):</span><br><span class="line">    lr_list.append(scheduler_lr.optimizer.param_groups[<span class="number">0</span>][<span class="string">'lr'</span>])</span><br><span class="line">    epoch_list.append(epoch)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(iteration):</span><br><span class="line"></span><br><span class="line">        <span class="comment"># train(...)</span></span><br><span class="line"></span><br><span class="line">        optimizer.step()</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> epoch == <span class="number">5</span>:</span><br><span class="line">        loss_value = <span class="number">0.4</span></span><br><span class="line"></span><br><span class="line">    scheduler_lr.step(loss_value)</span><br><span class="line"></span><br><span class="line">plt.plot(epoch_list, lr_list, label=<span class="string">"ReduceLROnPlateau Scheduler\n"</span></span><br><span class="line">                                    <span class="string">"factor: &#123;&#125;\n"</span></span><br><span class="line">                                    <span class="string">"mode: &#123;&#125;\n"</span></span><br><span class="line">                                    <span class="string">"patience: &#123;&#125;\n"</span></span><br><span class="line">                                    <span class="string">"cooldown: &#123;&#125;\n"</span></span><br><span class="line">                                    <span class="string">"min_lr: &#123;&#125;"</span>.format(factor, mode, patience, cooldown, min_lr))</span><br><span class="line">plt.xlabel(<span class="string">"Epoch"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Learning rate"</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>程序运行打印结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Epoch    16: reducing learning rate of group 0 to 1.0000e-02.</span><br><span class="line">Epoch    37: reducing learning rate of group 0 to 1.0000e-03.</span><br><span class="line">Epoch    58: reducing learning rate of group 0 to 1.0000e-04.</span><br></pre></td></tr></table></figure></p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-ReduceLROnPlateau.jpg" width = 70% height = 70% />
+</div>
+
+
+<h1 id="自定义调整策略"><a href="#自定义调整策略" class="headerlink" title="自定义调整策略"></a>自定义调整策略</h1><h2 id="自定义调整学习率-LambdaLR"><a href="#自定义调整学习率-LambdaLR" class="headerlink" title="自定义调整学习率 - LambdaLR"></a>自定义调整学习率 - LambdaLR</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LambdaLR</span><span class="params">(_LRScheduler)</span>:</span></span><br><span class="line">    <span class="string">"""Sets the learning rate of each parameter group to the initial lr</span></span><br><span class="line"><span class="string">    times a given function. When last_epoch=-1, sets initial lr as lr.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        optimizer (Optimizer): Wrapped optimizer.</span></span><br><span class="line"><span class="string">        lr_lambda (function or list): A function which computes a multiplicative</span></span><br><span class="line"><span class="string">            factor given an integer parameter epoch, or a list of such</span></span><br><span class="line"><span class="string">            functions, one for each group in optimizer.param_groups.</span></span><br><span class="line"><span class="string">        last_epoch (int): The index of last epoch. Default: -1.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Example:</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # Assuming optimizer has two groups.</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; lambda1 = lambda epoch: epoch // 30</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; lambda2 = lambda epoch: 0.95 ** epoch</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; scheduler = LambdaLR(optimizer, lr_lambda=[lambda1, lambda2])</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; for epoch in range(100):</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;     train(...)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;     validate(...)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;     scheduler.step()</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, optimizer, lr_lambda, last_epoch=<span class="number">-1</span>)</span>:</span></span><br><span class="line">        self.optimizer = optimizer</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(lr_lambda, list) <span class="keyword">and</span> <span class="keyword">not</span> isinstance(lr_lambda, tuple):</span><br><span class="line">            self.lr_lambdas = [lr_lambda] * len(optimizer.param_groups)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> len(lr_lambda) != len(optimizer.param_groups):</span><br><span class="line">                <span class="keyword">raise</span> ValueError(<span class="string">"Expected &#123;&#125; lr_lambdas, but got &#123;&#125;"</span>.format(</span><br><span class="line">                    len(optimizer.param_groups), len(lr_lambda)))</span><br><span class="line">            self.lr_lambdas = list(lr_lambda)</span><br><span class="line">        self.last_epoch = last_epoch</span><br><span class="line">        super(LambdaLR, self).__init__(optimizer, last_epoch)</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_lr</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> [base_lr * lmbda(self.last_epoch)</span><br><span class="line">                <span class="keyword">for</span> lmbda, base_lr <span class="keyword">in</span> zip(self.lr_lambdas, self.base_lrs)]</span><br></pre></td></tr></table></figure>
+<p>功能：可以对不同的参数组设置不同的学习率调整方法。</p>
+<ul>
+<li><strong>optimizer</strong>: 关联的优化器</li>
+<li><strong>lr_lambda</strong>: function or list, 如果是list，则list中的每个元素也要是function</li>
+<li><strong>last_epoch</strong>: 记录epoch数</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">lr_init = <span class="number">0.1</span></span><br><span class="line">weights_1 = torch.randn((<span class="number">6</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">5</span>))</span><br><span class="line">weights_2 = torch.ones((<span class="number">5</span>, <span class="number">5</span>))</span><br><span class="line">optimizer = optim.SGD([</span><br><span class="line">    &#123;<span class="string">'params'</span>: [weights_1]&#125;,</span><br><span class="line">    &#123;<span class="string">'params'</span>: [weights_2]&#125;], lr=lr_init)</span><br><span class="line">lambda1 = <span class="keyword">lambda</span> epoch: <span class="number">0.1</span> ** (epoch // <span class="number">20</span>)  <span class="comment"># 这个式子相当于是每隔2个epoch就调整一次学习率，每次调整0.1的(epoch//20)次方</span></span><br><span class="line">lambda2 = <span class="keyword">lambda</span> epoch: <span class="number">0.95</span> ** epoch</span><br><span class="line">scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda[lambda1, lambda2])</span><br><span class="line">lr_list, epoch_list = list(), list()</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(max_epoch):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(iteration):</span><br><span class="line">        <span class="comment"># train(...)</span></span><br><span class="line">        optimizer.step()</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">    scheduler.step()</span><br><span class="line">    lr_list.append(scheduler.get_lr())</span><br><span class="line">    epoch_list.append(epoch)</span><br><span class="line">    print(<span class="string">'epoch:&#123;:5d&#125;, lr:&#123;&#125;'</span>.format(epoch, scheduler.get_lr()))</span><br><span class="line">plt.plot(epoch_list, [i[<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> lr_list], label=<span class="string">"lambda 1"</span>)</span><br><span class="line">plt.plot(epoch_list, [i[<span class="number">1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> lr_list], label=<span class="string">"lambda 2"</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Epoch"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Learning Rate"</span>)</span><br><span class="line">plt.title(<span class="string">"LambdaLR"</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-LambdaLR.jpg" width = 70% height = 70% />
+</div>
+
+
+<h1 id="学习率初始化方法"><a href="#学习率初始化方法" class="headerlink" title="学习率初始化方法"></a>学习率初始化方法</h1><ol>
+<li>设置较小数：0.01, 0.001, 0.0001</li>
+<li>搜索最大学习率：《Cyclical Learning Rates for Training Neural Networks》，该论文中提到的学习率初始化思想是：对于训练某个深度网络，让学习率从0开始增加，当ACC不再上升时的学习率即为该网络结构的最大初始学习率。</li>
+</ol>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-CyclicalLR.jpg" width = 60% height = 60% />
+</div>
+
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/LR-Scheduler-CyclicalLR2.jpg" width = 60% height = 60% />
+</div>
+
+
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/08/20/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Blog%E3%80%91%E5%85%B3%E4%BA%8E%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/" rel="prev" title="开发环境与工具/【Blog】关于图片显示问题">
+      <i class="fa fa-chevron-left"></i> 开发环境与工具/【Blog】关于图片显示问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/09/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91Tensor-2%20Operation/" rel="next" title="PyTorch笔记/【Tutorials】Tensor-2 Operation">
+      PyTorch笔记/【Tutorials】Tensor-2 Operation <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#学习率策略的基类"><span class="nav-number">1.</span> <span class="nav-text">学习率策略的基类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#有序调整策略"><span class="nav-number">2.</span> <span class="nav-text">有序调整策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#等间隔调整-StepLR"><span class="nav-number">2.1.</span> <span class="nav-text">等间隔调整 - StepLR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#按给定间隔调整学习率-MultiStepLR"><span class="nav-number">2.2.</span> <span class="nav-text">按给定间隔调整学习率 - MultiStepLR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#按指数衰减调整学习率-ExponentialLR"><span class="nav-number">2.3.</span> <span class="nav-text">按指数衰减调整学习率 - ExponentialLR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#按余弦周期调整学习率-CosineAnnealingLR"><span class="nav-number">2.4.</span> <span class="nav-text">按余弦周期调整学习率 - CosineAnnealingLR</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自适应调整策略"><span class="nav-number">3.</span> <span class="nav-text">自适应调整策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#监控指标，当指标不再变化时调整学习率-ReduceLROnPlateau"><span class="nav-number">3.1.</span> <span class="nav-text">监控指标，当指标不再变化时调整学习率 - ReduceLROnPlateau</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义调整策略"><span class="nav-number">4.</span> <span class="nav-text">自定义调整策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义调整学习率-LambdaLR"><span class="nav-number">4.1.</span> <span class="nav-text">自定义调整学习率 - LambdaLR</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#学习率初始化方法"><span class="nav-number">5.</span> <span class="nav-text">学习率初始化方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

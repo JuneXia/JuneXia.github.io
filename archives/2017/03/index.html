@@ -173,7 +173,7 @@
     <div class="posts-collapse">
       <div class="collection-title">
         
-        <span class="collection-header">Good! 91 posts in total. Keep on posting.</span>
+        <span class="collection-header">Good! 107 posts in total. Keep on posting.</span>
       </div>
 
       
@@ -213,8 +213,8 @@
       </div>
 
       <h2 class="post-title">
-          <a class="post-title-link" href="/2017/03/09/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91markdown%E8%AF%AD%E6%B3%95%E7%AC%94%E8%AE%B0/" itemprop="url">
-            <span itemprop="name">【开发环境与工具】markdown语法笔记</span>
+          <a class="post-title-link" href="/2017/03/09/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Markdown%E3%80%91%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/" itemprop="url">
+            <span itemprop="name">开发环境与工具/【Markdown】基本语法</span>
           </a>
       </h2>
 
@@ -293,7 +293,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-count">107</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -382,6 +382,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

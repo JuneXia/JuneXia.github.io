@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="数学字体    需求 latex语法 显示效果 备注     加粗 \bold{A} $\bold{A}$    斜体加粗 \boldsymbol{A} $\boldsymbol{A}$     数学符号    需求 latex语法 显示效果 备注     点乘 a \cdot b $a \cdot b$    叉乘 a \times b $a \times b$    点除 a \div b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开发环境与工具&#x2F;【Markdown】letax">
+<meta property="og:url" content="http://yoursite.com/2018/05/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Markdown%E3%80%91letax/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="数学字体    需求 latex语法 显示效果 备注     加粗 \bold{A} $\bold{A}$    斜体加粗 \boldsymbol{A} $\boldsymbol{A}$     数学符号    需求 latex语法 显示效果 备注     点乘 a \cdot b $a \cdot b$    叉乘 a \times b $a \times b$    点除 a \div b">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-05-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-07T07:28:17.740Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2018/05/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Markdown%E3%80%91letax/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>开发环境与工具/【Markdown】letax | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Markdown%E3%80%91letax/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          开发环境与工具/【Markdown】letax
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-05-12 00:00:00" itemprop="dateCreated datePublished" datetime="2018-05-12T00:00:00+08:00">2018-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-07 15:28:17" itemprop="dateModified" datetime="2020-03-07T15:28:17+08:00">2020-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">开发环境与工具</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+<h1 id="数学字体"><a href="#数学字体" class="headerlink" title="数学字体"></a>数学字体</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>需求</th>
+<th>latex语法</th>
+<th>显示效果</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>加粗</td>
+<td>\bold{A}</td>
+<td>$\bold{A}$</td>
+<td></td>
+</tr>
+<tr>
+<td>斜体加粗</td>
+<td>\boldsymbol{A}</td>
+<td>$\boldsymbol{A}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="数学符号"><a href="#数学符号" class="headerlink" title="数学符号"></a>数学符号</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>需求</th>
+<th>latex语法</th>
+<th>显示效果</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>点乘</td>
+<td>a \cdot b</td>
+<td>$a \cdot b$</td>
+<td></td>
+</tr>
+<tr>
+<td>叉乘</td>
+<td>a \times b</td>
+<td>$a \times b$</td>
+<td></td>
+</tr>
+<tr>
+<td>点除</td>
+<td>a \div b</td>
+<td>$a \div b$</td>
+<td></td>
+</tr>
+<tr>
+<td>分数</td>
+<td>\frac {a} {b}</td>
+<td>$\frac{a}{b}$</td>
+<td></td>
+</tr>
+<tr>
+<td>绝对值号</td>
+<td></td>
+<td>或者 \vert</td>
+<td>$\vert$</td>
+<td></td>
+</tr>
+<tr>
+<td>范数符号</td>
+<td>\</td>
+<td>或者 \Vert</td>
+<td>$\Vert$</td>
+<td></td>
+</tr>
+<tr>
+<td>大于等于号</td>
+<td>\geq</td>
+<td>$\geq$</td>
+<td>后面记得加空格，不然识别出错</td>
+</tr>
+<tr>
+<td>小于等于号</td>
+<td>\leq</td>
+<td>$\leq$</td>
+<td></td>
+</tr>
+<tr>
+<td>等于号</td>
+<td>\not =</td>
+<td>$\not =$</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>\land</td>
+<td>$\land$</td>
+<td></td>
+</tr>
+<tr>
+<td>指示函数符号</td>
+<td>\mathbb I</td>
+<td>$\mathbb I$</td>
+<td>周志华机器学习书本中出现过</td>
+</tr>
+<tr>
+<td>一阶偏导</td>
+<td>\frac{\partial f}{\partial x}</td>
+<td>$\frac{\partial f}{\partial x}$</td>
+<td></td>
+</tr>
+<tr>
+<td>n阶偏导</td>
+<td>\frac{\partial^{n} f}{\partial x^{n}}</td>
+<td>$\frac{\partial^{n} f}{\partial x^{n}}$</td>
+<td></td>
+</tr>
+<tr>
+<td>一阶导数</td>
+<td>\frac{\mathrm{d} y }{\mathrm{d} x}</td>
+<td>$\frac{\mathrm{d} y }{\mathrm{d} x}$</td>
+<td></td>
+</tr>
+<tr>
+<td>n阶导数</td>
+<td>\frac{\mathrm{d}^{n} y }{\mathrm{d} x^{n}}</td>
+<td>$\frac{\mathrm{d}^{n} y }{\mathrm{d} x^{n}}$</td>
+<td></td>
+</tr>
+<tr>
+<td>点形式的求导符号</td>
+<td>\frac{ \dot y }{ \dot x }</td>
+<td>$\frac{ \dot y }{ \dot x }$</td>
+<td>一个点</td>
+</tr>
+<tr>
+<td>点形式的求导符号</td>
+<td>\frac{ \ddot y }{ \ddot x }</td>
+<td>$\frac{ \ddot y }{ \ddot x }$</td>
+<td>两个点</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="数学公式中的空格"><a href="#数学公式中的空格" class="headerlink" title="数学公式中的空格"></a>数学公式中的空格</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>两个quad空格</td>
+<td>a \qquad b</td>
+<td>$a \qquad b$</td>
+<td>两个m的宽度</td>
+</tr>
+<tr>
+<td>quad空格</td>
+<td>a \quad b</td>
+<td>$a \quad b$</td>
+<td>一个m的宽度</td>
+</tr>
+<tr>
+<td>大空格</td>
+<td>a\ b</td>
+<td>$a\ b$</td>
+<td>1/3m宽度</td>
+</tr>
+<tr>
+<td>中等空格</td>
+<td>a\\;b</td>
+<td>$a\;b$</td>
+<td>2/7m宽度</td>
+</tr>
+<tr>
+<td>小空格</td>
+<td>a\\,b</td>
+<td>$a\,b$</td>
+<td>1/6m宽度</td>
+</tr>
+<tr>
+<td>没有空格</td>
+<td>ab</td>
+<td>$ab$</td>
+<td></td>
+</tr>
+<tr>
+<td>紧贴</td>
+<td>a\!b</td>
+<td>$a!b$</td>
+<td>缩进1/6m宽度</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>\quad、1em、em、m代表当前字体下接近字符‘M’的宽度。</p>
+<h1 id="方程组"><a href="#方程组" class="headerlink" title="方程组"></a>方程组</h1><p>1</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{pmatrix}</script><p>2</p>
+<script type="math/tex; mode=display">
+\begin{gathered}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{gathered}</script><p>3</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{aligned}</script><p>4</p>
+<script type="math/tex; mode=display">
+\begin{alignedat}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{alignedat}</script><p>5</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{bmatrix}</script><p>6</p>
+<script type="math/tex; mode=display">
+\begin{Bmatrix}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{Bmatrix}</script><p>7</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{cases}</script><p>8</p>
+<script type="math/tex; mode=display">
+\begin{dcases}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{dcases}</script><p>9</p>
+<script type="math/tex; mode=display">
+\begin{Vmatrix}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{Vmatrix}</script><p>10</p>
+<blockquote>
+<p>&amp;表示以等号为对齐标记</p>
+<script type="math/tex; mode=display">
+\begin{aligned}  
+f(x) &= (m+n)^2 \\  
+&= m^2+2mn+n^2 \\  
+\end{aligned}</script></blockquote>
+<p>11</p>
+<blockquote>
+<p>这里没有等号，要想实现左对齐，可以在左侧直接加一个 &amp;</p>
+<script type="math/tex; mode=display">
+\begin{aligned}  
+& min \ f(x_1, x_2, ..., x_n) \\
+& s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{aligned}</script></blockquote>
+<p>12<br>$<br>\begin{aligned}<br>f(x) &amp;= (m+n)^2 \\<br>&amp;= m^2+2mn+n^2 \\<br>\end{aligned}<br>$</p>
+<h1 id="异常问题处理"><a href="#异常问题处理" class="headerlink" title="异常问题处理"></a>异常问题处理</h1><h2 id="异常1：-hexo无法发布双大括号的问题"><a href="#异常1：-hexo无法发布双大括号的问题" class="headerlink" title="异常1： hexo无法发布双大括号的问题"></a>异常1： hexo无法发布双大括号的问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">\dfrac&#123;\partial f&#125;&#123;\partial x&#125; + \mu_1 \dfrac&#123;&#123;\rm d&#125;g_1&#125;&#123;&#123;\rm d&#125;x&#125; + \mu_2 \dfrac&#123;&#123;\rm d&#125;g_2&#125;&#123;&#123;\rm d&#125;x&#125;&#x3D; 0,</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>上述latex在vscode下是正常显示的，但是hexo无法发布</p>
+<p>解决办法：双大括号间加入空格即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在&#123;&#123;之间加入空格，&#125;&#123;这种双大括号无碍</span><br></pre></td></tr></table></figure></p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="https://blog.csdn.net/thither_shore/article/details/52260742" target="_blank" rel="noopener">CSDN-markdown 之 LaTeX 特殊公式格式笔记</a></p>
+<p><a href="https://blog.csdn.net/deepinC/article/details/81103326" target="_blank" rel="noopener">markdown数学公式符号记录</a></p>
+<p><a href="http://www.mohu.org/info/symbols/symbols.htm" target="_blank" rel="noopener">常用数学符号的 LaTeX 表示方法</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91Inception-ResNet/" rel="prev" title="【深度学习笔记2.4】Inception-ResNet">
+      <i class="fa fa-chevron-left"></i> 【深度学习笔记2.4】Inception-ResNet
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/05/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91%E6%9D%83%E9%87%8D%E8%A1%B0%E5%87%8F(weight%20decay)/" rel="next" title="【深度学习笔记3.1 正则化】权重衰减(weight decay)">
+      【深度学习笔记3.1 正则化】权重衰减(weight decay) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数学字体"><span class="nav-number">1.</span> <span class="nav-text">数学字体</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数学符号"><span class="nav-number">2.</span> <span class="nav-text">数学符号</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数学公式中的空格"><span class="nav-number">2.1.</span> <span class="nav-text">数学公式中的空格</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方程组"><span class="nav-number">3.</span> <span class="nav-text">方程组</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常问题处理"><span class="nav-number">4.</span> <span class="nav-text">异常问题处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#异常1：-hexo无法发布双大括号的问题"><span class="nav-number">4.1.</span> <span class="nav-text">异常1： hexo无法发布双大括号的问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

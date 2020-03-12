@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="论文：Focal Loss for Dense Object Detection &amp;emsp; Focal Loss 最初被提出是用来解决目标检测的[1]，在目标检测领域常见的算法主要可以分为两大类：two-stage detector和one-stage detector。前者是指类似Faster RCNN，RFCN这样需要region proposal的检测算法，这类算法可以达到很高的准确率，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dl&#x2F;【Paper笔记 Detection】Focal Loss">
+<meta property="og:url" content="http://yoursite.com/2019/04/05/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Detection%E3%80%91Focal%20Loss/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="论文：Focal Loss for Dense Object Detection &amp;emsp; Focal Loss 最初被提出是用来解决目标检测的[1]，在目标检测领域常见的算法主要可以分为两大类：two-stage detector和one-stage detector。前者是指类似Faster RCNN，RFCN这样需要region proposal的检测算法，这类算法可以达到很高的准确率，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/focalloss.jpg">
+<meta property="article:published_time" content="2019-04-05T09:28:05.000Z">
+<meta property="article:modified_time" content="2020-03-05T12:42:36.478Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/focalloss.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2019/04/05/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Detection%E3%80%91Focal%20Loss/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>dl/【Paper笔记 Detection】Focal Loss | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/05/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Detection%E3%80%91Focal%20Loss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          dl/【Paper笔记 Detection】Focal Loss
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-05 17:28:05" itemprop="dateCreated datePublished" datetime="2019-04-05T17:28:05+08:00">2019-04-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-05 20:42:36" itemprop="dateModified" datetime="2020-03-05T20:42:36+08:00">2020-03-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>论文：<a href="https://arxiv.org/abs/1708.02002" target="_blank" rel="noopener">Focal Loss for Dense Object Detection</a></p>
+<p>&emsp; Focal Loss 最初被提出是用来解决目标检测的[1]，在目标检测领域常见的算法主要可以分为两大类：two-stage detector和one-stage detector。前者是指类似Faster RCNN，RFCN这样需要region proposal的检测算法，这类算法可以达到很高的准确率，但是速度较慢。<a id="more"></a><br>后者是指类似YOLO，SSD这样不需要region proposal，直接回归的检测算法，这类算法速度很快，但是准确率不如前者。作者提出focal loss的出发点也是希望one-stage detector可以达到two-stage detector的准确率，同时不影响原有的速度。</p>
+<p>&emsp; 作者认为one-stage detector的准确率不如two-stage detector的原因是：样本的类别不均衡导致的，负样本数量太大，占总的loss的大部分，而且多是容易分类的，因此使得模型的优化方向并不是我们所希望的那样。因此针对类别不均衡问题，作者提出一种新的损失函数：focal loss，这个损失函数是在标准交叉熵损失基础上修改得到的。这个函数可以通过减少易分类样本的权重，使得模型在训练时更专注于难分类的样本。focal loss计算公式以及其和交叉熵的比较如下：</p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/focalloss.jpg" width = 80% height = 80% />
+</div>
+
+<p>其中CE是交叉熵，FL是focal loss，且当γ=0时，FL退化为CE。由上图可知，对于输出概率较大的易分类样本，focal loss计算得的数值几乎是0，这也就是说focal loss对易分类的样本不敏感，而更关注难分类的样本。</p>
+<p>&emsp; Focal Loss 对于Object Detection来说可能效果不错，但我在人脸识别中引入Focal Loss时发现并没有多大作用。</p>
+<p>&emsp; Focal Loss 算法实现，网上也有很多种[2]，但有的我实测存在数值不稳定问题，这里我做了一些改进并整理如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 交叉熵使用tf.nn.sparse_softmax_cross_entropy_with_logits实现</span></span><br><span class="line"><span class="comment"># 权重自己使用tf接口实现。感觉这个最好使！！！</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">focal_loss</span><span class="params">(y_pred, y_true, alpha=<span class="number">0.25</span>, gamma=<span class="number">2.</span>, name=<span class="string">'focal_loss'</span>)</span>:</span></span><br><span class="line">    cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y_true, logits=y_pred)</span><br><span class="line">    <span class="comment"># cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_true, logits=y_pred)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 从logits计算softmax</span></span><br><span class="line">    reduce_max = tf.reduce_max(y_pred, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line">    prob = tf.nn.softmax(y_pred - reduce_max)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算交叉熵</span></span><br><span class="line">    <span class="comment"># clip_prob = tf.clip_by_value(prob, 1e-10, 1.0)</span></span><br><span class="line">    <span class="comment"># cross_entropy = -tf.reduce_sum(y_true * tf.log(clip_prob), 1)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算focal_loss</span></span><br><span class="line">    prob = tf.reduce_max(prob, axis=<span class="number">1</span>)</span><br><span class="line">    weight = tf.pow(tf.subtract(<span class="number">1.</span>, prob), gamma)</span><br><span class="line">    fl = tf.multiply(tf.multiply(weight, cross_entropy), alpha)</span><br><span class="line">    loss = tf.reduce_mean(fl, name=name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 损失波动较大</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">focal_loss</span><span class="params">(y_pred, y_true, alpha=<span class="number">0.25</span>, gamma=<span class="number">2.</span>, name=<span class="string">'focal_loss'</span>)</span>:</span></span><br><span class="line">    y_true = tf.one_hot(y_true, depth=y_pred.get_shape().as_list()[<span class="number">-1</span>], dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">    reduce_max = tf.reduce_max(y_pred, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line">    y_pred = tf.nn.softmax(tf.subtract(y_pred, reduce_max))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_true, logits=y_pred)</span></span><br><span class="line"></span><br><span class="line">    y_pred = tf.clip_by_value(y_pred, <span class="number">1e-6</span>, <span class="number">1.0</span>)</span><br><span class="line">    <span class="comment"># cross_entropy = -tf.reduce_sum(y_true * tf.log(y_pred), 1)</span></span><br><span class="line">    cross_entropy = -tf.reduce_sum(tf.multiply(y_true, tf.log(y_pred)), axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算focal_loss</span></span><br><span class="line">    prob = tf.reduce_max(y_pred, axis=<span class="number">1</span>)</span><br><span class="line">    weight = tf.pow(tf.subtract(<span class="number">1.</span>, prob), gamma)</span><br><span class="line">    <span class="comment"># weight = tf.multiply(tf.multiply(weight, y_true), alpha)</span></span><br><span class="line">    <span class="comment"># weight = tf.reduce_max(weight, axis=1)</span></span><br><span class="line"></span><br><span class="line">    fl = tf.multiply(tf.multiply(weight, cross_entropy), alpha)</span><br><span class="line">    loss = tf.reduce_sum(fl, name=name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自己使用tf基础函数实现交叉熵</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">focal_loss3</span><span class="params">(prediction_tensor, target_tensor, gamma=<span class="number">2.</span>, alpha=<span class="number">.25</span>, name=<span class="string">'focal_loss'</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    focal loss for multi category of multi label problem</span></span><br><span class="line"><span class="string">    适用于多分类或多标签问题的focal loss</span></span><br><span class="line"><span class="string">    alpha控制真值y_true为1/0时的权重</span></span><br><span class="line"><span class="string">        1的权重为alpha, 0的权重为1-alpha</span></span><br><span class="line"><span class="string">    当你的模型欠拟合，学习存在困难时，可以尝试适用本函数作为loss</span></span><br><span class="line"><span class="string">    当模型过于激进(无论何时总是倾向于预测出1),尝试将alpha调小</span></span><br><span class="line"><span class="string">    当模型过于惰性(无论何时总是倾向于预测出0,或是某一个固定的常数,说明没有学到有效特征)</span></span><br><span class="line"><span class="string">        尝试将alpha调大,鼓励模型进行预测出1。</span></span><br><span class="line"><span class="string">    Usage:</span></span><br><span class="line"><span class="string">     model.compile(loss=[multi_category_focal_loss2(alpha=0.25, gamma=2)], metrics=["accuracy"], optimizer=adam)</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    epsilon = <span class="number">1.e-7</span></span><br><span class="line">    gamma = float(gamma)</span><br><span class="line">    alpha = tf.constant(alpha, dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># y_true = tf.cast(target_tensor, tf.float32)</span></span><br><span class="line">    y_true = tf.one_hot(target_tensor, depth=prediction_tensor.get_shape().as_list()[<span class="number">-1</span>])</span><br><span class="line">    y_pred = tf.clip_by_value(prediction_tensor, epsilon, <span class="number">1.</span> - epsilon)</span><br><span class="line"></span><br><span class="line">    alpha_t = y_true * alpha + (tf.ones_like(y_true) - y_true) * (<span class="number">1</span> - alpha)</span><br><span class="line">    y_t = tf.multiply(y_true, y_pred) + tf.multiply(<span class="number">1</span> - y_true, <span class="number">1</span> - y_pred)</span><br><span class="line">    ce = -tf.log(y_t)</span><br><span class="line">    weight = tf.pow(tf.subtract(<span class="number">1.</span>, y_t), gamma)</span><br><span class="line">    fl = tf.multiply(tf.multiply(weight, ce), alpha_t)</span><br><span class="line">    loss = tf.reduce_mean(fl, name=name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> loss</span><br></pre></td></tr></table></figure>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://blog.csdn.net/u014380165/article/details/77019084" target="_blank" rel="noopener">Focal Loss</a><br>[2] <a href="https://blog.csdn.net/u011583927/article/details/90716942" target="_blank" rel="noopener">focal loss的几种实现版本(Keras/Tensorflow)</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/03/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.2%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91Dropout/" rel="prev" title="【深度学习笔记3.2 正则化】Dropout">
+      <i class="fa fa-chevron-left"></i> 【深度学习笔记3.2 正则化】Dropout
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/04/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91ubuntu%20python%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84flask+mysql%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" rel="next" title="【开发环境与工具】ubuntu python环境下的flask+mysql安装部署">
+      【开发环境与工具】ubuntu python环境下的flask+mysql安装部署 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">1.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

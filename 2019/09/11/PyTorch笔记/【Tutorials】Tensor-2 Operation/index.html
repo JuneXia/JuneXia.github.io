@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本篇主要介绍tensor的拼接、切分、索引、变换、数学运算。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch笔记&#x2F;【Tutorials】Tensor-2 Operation">
+<meta property="og:url" content="http://yoursite.com/2019/09/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91Tensor-2%20Operation/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="本篇主要介绍tensor的拼接、切分、索引、变换、数学运算。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-09-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-07T06:20:26.434Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2019/09/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91Tensor-2%20Operation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>PyTorch笔记/【Tutorials】Tensor-2 Operation | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91Tensor-2%20Operation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch笔记/【Tutorials】Tensor-2 Operation
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-11 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-11T00:00:00+08:00">2019-09-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-07 14:20:26" itemprop="dateModified" datetime="2020-03-07T14:20:26+08:00">2020-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本篇主要介绍tensor的拼接、切分、索引、变换、数学运算。<br><a id="more"></a></p>
+<h1 id="Tensor拼接"><a href="#Tensor拼接" class="headerlink" title="Tensor拼接"></a>Tensor拼接</h1><h2 id="torch-cat"><a href="#torch-cat" class="headerlink" title="torch.cat"></a>torch.cat</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">torch.cat(tensors,</span><br><span class="line">          dim=<span class="number">0</span>,</span><br><span class="line">          out=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：将tensor按维度进行拼接，不会扩张tensor的维度</p>
+<ul>
+<li><strong>tensors</strong>: tensor序列</li>
+<li><strong>dim</strong>: 要拼接的维度</li>
+</ul>
+<p><strong>代码示例</strong>:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">torch.manual_seed(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">flag = <span class="literal">True</span></span><br><span class="line"><span class="comment"># flag = False</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    t = torch.ones((<span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">    t_0 = torch.cat([t, t], dim=<span class="number">0</span>)</span><br><span class="line">    t_1 = torch.cat([t, t, t], dim=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"t_0:&#123;&#125;\nshape:&#123;&#125;\n\nt_1:&#123;&#125;\nshape:&#123;&#125;"</span>.format(t_0, t_0.shape, t_1, t_1.shape))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出结果如下：</span></span><br><span class="line">t_0:tensor([[<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">            [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">            [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">            [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>]])</span><br><span class="line">shape:torch.Size([<span class="number">4</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line">t_1:tensor([[<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">            [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>]])</span><br><span class="line">shape:torch.Size([<span class="number">2</span>, <span class="number">9</span>])</span><br></pre></td></tr></table></figure></p>
+<h2 id="torch-stack"><a href="#torch-stack" class="headerlink" title="torch.stack"></a>torch.stack</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">torch.stack(tensors,</span><br><span class="line">            dim=<span class="number">0</span>,</span><br><span class="line">            out=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：在新创建的维度上拼接，与torch.cat不同的是 torch.stack 会扩张tensor的维度</p>
+<ul>
+<li><strong>tensors</strong>: tensor序列</li>
+<li><strong>dim</strong>: 要拼接的维度</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="literal">True</span></span><br><span class="line"><span class="comment"># flag = False</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    <span class="comment"># t = torch.ones((2, 3))</span></span><br><span class="line">    t = torch.arange(<span class="number">0</span>, <span class="number">6</span>).reshape((<span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">    t0_stack = torch.stack([t, t], dim=<span class="number">0</span>)  <span class="comment"># 已经有第0个维度还要在dim=0的维度上拼接，那就需要把原有的维度都整体向后挪一位</span></span><br><span class="line">    t1_stack = torch.stack([t, t], dim=<span class="number">1</span>)</span><br><span class="line">    t2_stack = torch.stack([t, t], dim=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"\nt0_stack:&#123;&#125;\nshape:&#123;&#125;\n"</span>.format(t0_stack, t0_stack.shape))</span><br><span class="line">    print(<span class="string">"\nt1_stack:&#123;&#125;\nshape:&#123;&#125;\n"</span>.format(t1_stack, t1_stack.shape))</span><br><span class="line">    print(<span class="string">"\nt2_stack:&#123;&#125;\nshape:&#123;&#125;\n"</span>.format(t2_stack, t2_stack.shape))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">t0_stack:tensor([[[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">                  [<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]],</span><br><span class="line"></span><br><span class="line">                 [[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">                  [<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]]])</span><br><span class="line">shape:torch.Size([<span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line">t1_stack:tensor([[[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">                  [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]],</span><br><span class="line"></span><br><span class="line">                 [[<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>],</span><br><span class="line">                  [<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]]])</span><br><span class="line">shape:torch.Size([<span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line">t2_stack:tensor([[[<span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">                  [<span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                  [<span class="number">2</span>, <span class="number">2</span>]],</span><br><span class="line"></span><br><span class="line">                 [[<span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                  [<span class="number">4</span>, <span class="number">4</span>],</span><br><span class="line">                  [<span class="number">5</span>, <span class="number">5</span>]]])</span><br><span class="line">shape:torch.Size([<span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<h1 id="Tensor切分"><a href="#Tensor切分" class="headerlink" title="Tensor切分"></a>Tensor切分</h1><h2 id="torch-split"><a href="#torch-split" class="headerlink" title="torch.split"></a>torch.split</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">torch.chunk(input,</span><br><span class="line">            chunks,</span><br><span class="line">            dim=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：将张量按维度dim进行平均切分</p>
+<ul>
+<li><strong>input</strong>: 要切分的tensor</li>
+<li><strong>chunks</strong>: 要切分的份数，<strong>注意: 如果不能整除，最后一份tensor长度要小于其他tensor的</strong></li>
+<li><strong>dim</strong>: 要切分的维度</li>
+</ul>
+<p><strong>返回值</strong>：tensor-list，len(tensor-list) == input.shape[dim] / chunks 向上取整，例如7/3=2.3，那么此时的len(tensor-list)就等于3.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="literal">True</span></span><br><span class="line"><span class="comment"># flag = False</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    a = torch.ones((<span class="number">2</span>, <span class="number">7</span>))  <span class="comment"># 7</span></span><br><span class="line">    list_of_tensors = torch.chunk(a, dim=<span class="number">1</span>, chunks=<span class="number">3</span>)   <span class="comment"># 3</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> idx, t <span class="keyword">in</span> enumerate(list_of_tensors):</span><br><span class="line">        print(<span class="string">"第&#123;&#125;个张量：&#123;&#125;, shape is &#123;&#125;"</span>.format(idx+<span class="number">1</span>, t, t.shape))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">第<span class="number">1</span>个张量：tensor([[<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">                 [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>]]), shape <span class="keyword">is</span> torch.Size([<span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">                 </span><br><span class="line">第<span class="number">2</span>个张量：tensor([[<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">                 [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>]]), shape <span class="keyword">is</span> torch.Size([<span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line">第<span class="number">3</span>个张量：tensor([[<span class="number">1.</span>],</span><br><span class="line">                 [<span class="number">1.</span>]]), shape <span class="keyword">is</span> torch.Size([<span class="number">2</span>, <span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<h2 id="torch-split-1"><a href="#torch-split-1" class="headerlink" title="torch.split"></a>torch.split</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">torch.split(input,</span><br><span class="line">            split_size_or_sections,</span><br><span class="line">            dim=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：将张量按维度dim切分，与torch.chunks不同的是，torch.split可以指定切分后每一份的长度。</p>
+<ul>
+<li><strong>input</strong>: 要切分的tensor</li>
+<li><strong>split_size_or_sections</strong>: 为 int 时，表示每一份的长度；为list时，表示按list元素切分，此时list中的元素之和应该等于input.shape[dim]，否则会报错。</li>
+<li><strong>dim</strong>: 要切分的维度</li>
+</ul>
+<p><strong>返回值</strong>：tensor-list</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="literal">True</span></span><br><span class="line"><span class="comment"># flag = False</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    t = torch.ones((<span class="number">2</span>, <span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">    list_of_tensors = torch.split(t, [<span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], dim=<span class="number">1</span>)  <span class="comment"># [2 , 1, 2]</span></span><br><span class="line">    <span class="keyword">for</span> idx, t <span class="keyword">in</span> enumerate(list_of_tensors):</span><br><span class="line">        print(<span class="string">"第&#123;&#125;个张量：&#123;&#125;, shape is &#123;&#125;"</span>.format(idx+<span class="number">1</span>, t, t.shape))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># list_of_tensors = torch.split(t, [2, 1, 2], dim=1)</span></span><br><span class="line">    <span class="comment"># for idx, t in enumerate(list_of_tensors):</span></span><br><span class="line">    <span class="comment">#     print("第&#123;&#125;个张量：&#123;&#125;, shape is &#123;&#125;".format(idx, t, t.shape))</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># outpu:</span></span><br><span class="line">第<span class="number">1</span>个张量：tensor([[<span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">                 [<span class="number">1.</span>, <span class="number">1.</span>]]), shape <span class="keyword">is</span> torch.Size([<span class="number">2</span>, <span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">第<span class="number">2</span>个张量：tensor([[<span class="number">1.</span>],</span><br><span class="line">                 [<span class="number">1.</span>]]), shape <span class="keyword">is</span> torch.Size([<span class="number">2</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">第<span class="number">3</span>个张量：tensor([[<span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">                 [<span class="number">1.</span>, <span class="number">1.</span>]]), shape <span class="keyword">is</span> torch.Size([<span class="number">2</span>, <span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<h1 id="tensor-索引"><a href="#tensor-索引" class="headerlink" title="tensor 索引"></a>tensor 索引</h1><h2 id="torch-index-select"><a href="#torch-index-select" class="headerlink" title="torch.index_select"></a>torch.index_select</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">torch.index_select(input,</span><br><span class="line">                   dim=<span class="number">0</span>,</span><br><span class="line">                   index,</span><br><span class="line">                   out=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：在维度dim上，按index索引数据</p>
+<ul>
+<li><strong>input</strong>: 要索引的tensor</li>
+<li><strong>dim</strong>: 要索引的维度</li>
+<li><strong>index</strong>: 要索引数据的序号，注意index的数据类型必须是long型</li>
+</ul>
+<p><strong>返回值</strong>：依index索引数据拼接的张量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="literal">True</span></span><br><span class="line"><span class="comment"># flag = False</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    t = torch.randint(<span class="number">0</span>, <span class="number">9</span>, size=(<span class="number">3</span>, <span class="number">3</span>))</span><br><span class="line">    idx = torch.tensor([<span class="number">0</span>, <span class="number">2</span>], dtype=torch.long)    <span class="comment"># index的数据类型必须是long, 如果是float则会报错</span></span><br><span class="line">    t_select = torch.index_select(t, dim=<span class="number">0</span>, index=idx)</span><br><span class="line">    print(<span class="string">"t:\n&#123;&#125;\nt_select:\n&#123;&#125;"</span>.format(t, t_select))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">t:</span><br><span class="line">tensor([[<span class="number">4</span>, <span class="number">5</span>, <span class="number">0</span>],</span><br><span class="line">        [<span class="number">5</span>, <span class="number">7</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">5</span>, <span class="number">8</span>]])</span><br><span class="line">t_select:</span><br><span class="line">tensor([[<span class="number">4</span>, <span class="number">5</span>, <span class="number">0</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">5</span>, <span class="number">8</span>]])</span><br></pre></td></tr></table></figure>
+<h2 id="torch-masked-select"><a href="#torch-masked-select" class="headerlink" title="torch.masked_select"></a>torch.masked_select</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">torch.masked_select(input,</span><br><span class="line">                    mask,</span><br><span class="line">                    out=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：按mask中的True进行索引，通常该方法用来筛选数据。</p>
+<ul>
+<li><strong>input</strong>: 要索引的tensor</li>
+<li><strong>mask</strong>: 与input同shape的布尔型张量</li>
+</ul>
+<p><strong>返回值</strong>：一维张量</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>tensor function</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tensor.ge</td>
+<td>greater than or equal</td>
+<td>≥</td>
+</tr>
+<tr>
+<td>tensor.gt</td>
+<td>greater than</td>
+<td>＞</td>
+</tr>
+<tr>
+<td>tensor.le</td>
+<td>less than or equal</td>
+<td>≤</td>
+</tr>
+<tr>
+<td>tensor.lt</td>
+<td>less than</td>
+<td>＜</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="literal">True</span></span><br><span class="line"><span class="comment"># flag = False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line"></span><br><span class="line">    t = torch.randint(<span class="number">0</span>, <span class="number">9</span>, size=(<span class="number">3</span>, <span class="number">3</span>))</span><br><span class="line">    mask = t.le(<span class="number">5</span>)  <span class="comment"># ge is mean greater than or equal/   gt: greater than  le  lt</span></span><br><span class="line">    t_select = torch.masked_select(t, mask)</span><br><span class="line">    print(<span class="string">"t:\n&#123;&#125;\nmask:\n&#123;&#125;\nt_select:\n&#123;&#125; "</span>.format(t, mask, t_select))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">t:</span><br><span class="line">tensor([[<span class="number">4</span>, <span class="number">5</span>, <span class="number">0</span>],</span><br><span class="line">        [<span class="number">5</span>, <span class="number">7</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">5</span>, <span class="number">8</span>]])</span><br><span class="line"></span><br><span class="line">mask:</span><br><span class="line">tensor([[ <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>],</span><br><span class="line">        [ <span class="literal">True</span>, <span class="literal">False</span>,  <span class="literal">True</span>],</span><br><span class="line">        [ <span class="literal">True</span>,  <span class="literal">True</span>, <span class="literal">False</span>]])</span><br><span class="line"></span><br><span class="line">t_select:</span><br><span class="line">tensor([<span class="number">4</span>, <span class="number">5</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>])</span><br></pre></td></tr></table></figure>
+<h1 id="Tensor-变换"><a href="#Tensor-变换" class="headerlink" title="Tensor 变换"></a>Tensor 变换</h1><h2 id="torch-reshape"><a href="#torch-reshape" class="headerlink" title="torch.reshape"></a>torch.reshape</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">torch.reshape(input,</span><br><span class="line">              shape)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：变换tensor shape.</p>
+<p><strong>注意：当张量在内存中是连续时，新张量与input共享数据内存</strong></p>
+<ul>
+<li><strong>input</strong>: 要变换的tensor</li>
+<li><strong>shape</strong>: 新张量的shape</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="literal">True</span></span><br><span class="line"><span class="comment"># flag = False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    t = torch.randperm(<span class="number">8</span>)</span><br><span class="line">    t_reshape = torch.reshape(t, (<span class="number">-1</span>, <span class="number">2</span>, <span class="number">2</span>))    <span class="comment"># -1</span></span><br><span class="line">    print(<span class="string">"t:&#123;&#125;\nt_reshape:\n&#123;&#125;"</span>.format(t, t_reshape))</span><br><span class="line"></span><br><span class="line">    t[<span class="number">0</span>] = <span class="number">1024</span></span><br><span class="line">    print(<span class="string">"t:&#123;&#125;\nt_reshape:\n&#123;&#125;"</span>.format(t, t_reshape))</span><br><span class="line">    print(<span class="string">"t.data 内存地址:&#123;&#125;"</span>.format(id(t.data)))</span><br><span class="line">    print(<span class="string">"t_reshape.data 内存地址:&#123;&#125;"</span>.format(id(t_reshape.data)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">t:tensor([<span class="number">5</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">t_reshape:</span><br><span class="line">tensor([[[<span class="number">5</span>, <span class="number">4</span>],</span><br><span class="line">         [<span class="number">2</span>, <span class="number">6</span>]],</span><br><span class="line"></span><br><span class="line">        [[<span class="number">7</span>, <span class="number">3</span>],</span><br><span class="line">         [<span class="number">1</span>, <span class="number">0</span>]]])</span><br><span class="line"></span><br><span class="line">t:tensor([<span class="number">1024</span>,    <span class="number">4</span>,    <span class="number">2</span>,    <span class="number">6</span>,    <span class="number">7</span>,    <span class="number">3</span>,    <span class="number">1</span>,    <span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">t_reshape:</span><br><span class="line">tensor([[[<span class="number">1024</span>,    <span class="number">4</span>],</span><br><span class="line">         [   <span class="number">2</span>,    <span class="number">6</span>]],</span><br><span class="line"></span><br><span class="line">        [[   <span class="number">7</span>,    <span class="number">3</span>],</span><br><span class="line">         [   <span class="number">1</span>,    <span class="number">0</span>]]])</span><br><span class="line"></span><br><span class="line">t.data 内存地址:<span class="number">140155517373824</span></span><br><span class="line">t_reshape.data 内存地址:<span class="number">140155517373536</span></span><br></pre></td></tr></table></figure>
+<h2 id="torch-transpose"><a href="#torch-transpose" class="headerlink" title="torch.transpose"></a>torch.transpose</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">torch.transpose(input,</span><br><span class="line">                dim0,</span><br><span class="line">                dim1)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：变换tensor的两个维度，在图像的预处理中经常会使用到，例如将输入shape为(c,h,w)的图像变换为shape为(h,w,c)的图像的做法就是：先交换 c、h 的位置得到 (h,c,w) 再交换 c、w 的位置得到 (h,w,c)</p>
+<ul>
+<li><strong>input</strong>: 要变换的tensor</li>
+<li><strong>dim0</strong>: 要变换的维度</li>
+<li><strong>dim1</strong>: 要变换的维度</li>
+</ul>
+<h2 id="torch-t"><a href="#torch-t" class="headerlink" title="torch.t"></a>torch.t</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.t(input)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：2维张量转.对矩阵而言，等价于 torch.transpose(input, 0, 1)</p>
+<ul>
+<li><strong>input</strong>: 要变换的tensor</li>
+</ul>
+<h2 id="torch-squeeze"><a href="#torch-squeeze" class="headerlink" title="torch.squeeze"></a>torch.squeeze</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">torch.squeeze(input,</span><br><span class="line">              dim=<span class="literal">None</span>,</span><br><span class="line">              out=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：压缩长度为1的维度(轴)</p>
+<ul>
+<li><strong>input</strong>: 要变换的tensor</li>
+<li><strong>dim</strong>: 若为None，移除所有长度为1的轴；若指定维度，当且仅当该轴长度为1时，可以被移除</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="literal">True</span></span><br><span class="line"><span class="comment"># flag = False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    t = torch.rand((<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>))</span><br><span class="line">    t_sq_dimNone = torch.squeeze(t)</span><br><span class="line">    t_sq_dim0 = torch.squeeze(t, dim=<span class="number">0</span>)</span><br><span class="line">    t_sq_dim1 = torch.squeeze(t, dim=<span class="number">1</span>)</span><br><span class="line">    print(<span class="string">'t:\n&#123;&#125;'</span>.format(t))</span><br><span class="line">    print(<span class="string">'t.shape:\n&#123;&#125;'</span>.format(t.shape))</span><br><span class="line">    print(<span class="string">'t_sq_dimNone.shape:\n&#123;&#125;'</span>.format(t_sq_dimNone.shape))</span><br><span class="line">    print(<span class="string">'t_sq_dim0.shape:\n&#123;&#125;'</span>.format(t_sq_dim0.shape))</span><br><span class="line">    print(<span class="string">'t_sq_dim1.shape:\n&#123;&#125;'</span>.format(t_sq_dim1.shape))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">t:tensor([[[[<span class="number">0.7576</span>],</span><br><span class="line">            [<span class="number">0.2793</span>],</span><br><span class="line">            [<span class="number">0.4031</span>]],</span><br><span class="line"></span><br><span class="line">           [[<span class="number">0.7347</span>],</span><br><span class="line">            [<span class="number">0.0293</span>],</span><br><span class="line">            [<span class="number">0.7999</span>]]]])</span><br><span class="line"></span><br><span class="line">t.shape:</span><br><span class="line">torch.Size([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">t_sq_dimNone.shape:</span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line">t_sq_dim0.shape:</span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">t_sq_dim1.shape:</span><br><span class="line">torch.Size([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<h2 id="torch-unsqueeze"><a href="#torch-unsqueeze" class="headerlink" title="torch.unsqueeze"></a>torch.unsqueeze</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">torch.unsqueeze(input,</span><br><span class="line">                dim,</span><br><span class="line">                out=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：依据dim扩展维度</p>
+<ul>
+<li><strong>input</strong>: 要变换的tensor</li>
+<li><strong>dim</strong>: 要扩展的维度</li>
+</ul>
+<h1 id="tensor数学运算"><a href="#tensor数学运算" class="headerlink" title="tensor数学运算"></a>tensor数学运算</h1><h2 id="加减乘除"><a href="#加减乘除" class="headerlink" title="加减乘除"></a>加减乘除</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">torch.add()</span><br><span class="line">torch.addcdiv()</span><br><span class="line">torch.addcmul()</span><br><span class="line">torch.sub()</span><br><span class="line">torch.div()</span><br><span class="line">torch.mul()</span><br></pre></td></tr></table></figure>
+<p>下面举几个例子吧：</p>
+<h3 id="torch-add"><a href="#torch-add" class="headerlink" title="torch.add"></a>torch.add</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">torch.add(input,</span><br><span class="line">          alpha=<span class="number">1</span>,</span><br><span class="line">          other,</span><br><span class="line">          out=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：逐元素计算 input + alpha × other</p>
+<ul>
+<li><strong>input</strong>: 第一个张量</li>
+<li><strong>input</strong>: 乘项因子</li>
+<li><strong>other</strong>: 第二个张量</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="literal">True</span></span><br><span class="line"><span class="comment"># flag = False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    t_0 = torch.randn((<span class="number">3</span>, <span class="number">3</span>))</span><br><span class="line">    t_1 = torch.ones_like(t_0)</span><br><span class="line">    t_add = torch.add(t_0, <span class="number">10</span>, t_1)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"t_0:\n&#123;&#125;\nt_1:\n&#123;&#125;\nt_add_10:\n&#123;&#125;"</span>.format(t_0, t_1, t_add))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">t_0:</span><br><span class="line">tensor([[ <span class="number">0.6614</span>,  <span class="number">0.2669</span>,  <span class="number">0.0617</span>],</span><br><span class="line">        [ <span class="number">0.6213</span>, <span class="number">-0.4519</span>, <span class="number">-0.1661</span>],</span><br><span class="line">        [<span class="number">-1.5228</span>,  <span class="number">0.3817</span>, <span class="number">-1.0276</span>]])</span><br><span class="line"></span><br><span class="line">t_1:</span><br><span class="line">tensor([[<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">        [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">        [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>]])</span><br><span class="line"></span><br><span class="line">t_add_10:</span><br><span class="line">tensor([[<span class="number">10.6614</span>, <span class="number">10.2669</span>, <span class="number">10.0617</span>],</span><br><span class="line">        [<span class="number">10.6213</span>,  <span class="number">9.5481</span>,  <span class="number">9.8339</span>],</span><br><span class="line">        [ <span class="number">8.4772</span>, <span class="number">10.3817</span>,  <span class="number">8.9724</span>]])</span><br></pre></td></tr></table></figure>
+<h3 id="torch-addcmul"><a href="#torch-addcmul" class="headerlink" title="torch.addcmul"></a>torch.addcmul</h3><p>add combine mul，即加法结合乘法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">torch.addcmul(input,</span><br><span class="line">              value=<span class="number">1</span>,</span><br><span class="line">              tensor1,</span><br><span class="line">              tensor2,</span><br><span class="line">              out=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：$out_i = input_i + value \times tensor1_i \times tensor2_i$</p>
+<h3 id="torch-addcdiv"><a href="#torch-addcdiv" class="headerlink" title="torch.addcdiv"></a>torch.addcdiv</h3><p>add combine div，即加法结合除法<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">torch.addcdiv(input,</span><br><span class="line">              value=<span class="number">1</span>,</span><br><span class="line">              tensor1,</span><br><span class="line">              tensor2,</span><br><span class="line">              out=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure><br><strong>功能</strong>：$out_i = input_i + value \times \frac{tensor1_i}{tensor2_i}$</p>
+<h2 id="对数-指数-幂函数"><a href="#对数-指数-幂函数" class="headerlink" title="对数,指数,幂函数"></a>对数,指数,幂函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">torch.log(input, out=<span class="literal">None</span>)</span><br><span class="line">torch.log10(input, out=<span class="literal">None</span>)</span><br><span class="line">torch.log2(input, out=<span class="literal">None</span>)</span><br><span class="line">torch.exp(input, out=<span class="literal">None</span>)</span><br><span class="line">torch.pow()</span><br></pre></td></tr></table></figure>
+<h2 id="三角函数"><a href="#三角函数" class="headerlink" title="三角函数"></a>三角函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">torch.abs(input, out=<span class="literal">None</span>)</span><br><span class="line">torch.acos(input, out=<span class="literal">None</span>)</span><br><span class="line">torch.cosh(input, out=<span class="literal">None</span>)</span><br><span class="line">torch.cos(input, out=<span class="literal">None</span>)</span><br><span class="line">torch.asin(input, out=<span class="literal">None</span>)</span><br><span class="line">torch.atan(input, out=<span class="literal">None</span>)</span><br><span class="line">torch.atan2(input, other, out=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/09/03/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91Learning%20Reat%20Scheduler/" rel="prev" title="PyTorch笔记/【Tutorials】Learning Reat Scheduler">
+      <i class="fa fa-chevron-left"></i> PyTorch笔记/【Tutorials】Learning Reat Scheduler
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/09/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91autograd-1/" rel="next" title="PyTorch笔记/【Tutorials】autograd-1">
+      PyTorch笔记/【Tutorials】autograd-1 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Tensor拼接"><span class="nav-number">1.</span> <span class="nav-text">Tensor拼接</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#torch-cat"><span class="nav-number">1.1.</span> <span class="nav-text">torch.cat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#torch-stack"><span class="nav-number">1.2.</span> <span class="nav-text">torch.stack</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tensor切分"><span class="nav-number">2.</span> <span class="nav-text">Tensor切分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#torch-split"><span class="nav-number">2.1.</span> <span class="nav-text">torch.split</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#torch-split-1"><span class="nav-number">2.2.</span> <span class="nav-text">torch.split</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tensor-索引"><span class="nav-number">3.</span> <span class="nav-text">tensor 索引</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#torch-index-select"><span class="nav-number">3.1.</span> <span class="nav-text">torch.index_select</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#torch-masked-select"><span class="nav-number">3.2.</span> <span class="nav-text">torch.masked_select</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tensor-变换"><span class="nav-number">4.</span> <span class="nav-text">Tensor 变换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#torch-reshape"><span class="nav-number">4.1.</span> <span class="nav-text">torch.reshape</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#torch-transpose"><span class="nav-number">4.2.</span> <span class="nav-text">torch.transpose</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#torch-t"><span class="nav-number">4.3.</span> <span class="nav-text">torch.t</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#torch-squeeze"><span class="nav-number">4.4.</span> <span class="nav-text">torch.squeeze</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#torch-unsqueeze"><span class="nav-number">4.5.</span> <span class="nav-text">torch.unsqueeze</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tensor数学运算"><span class="nav-number">5.</span> <span class="nav-text">tensor数学运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#加减乘除"><span class="nav-number">5.1.</span> <span class="nav-text">加减乘除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#torch-add"><span class="nav-number">5.1.1.</span> <span class="nav-text">torch.add</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#torch-addcmul"><span class="nav-number">5.1.2.</span> <span class="nav-text">torch.addcmul</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#torch-addcdiv"><span class="nav-number">5.1.3.</span> <span class="nav-text">torch.addcdiv</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对数-指数-幂函数"><span class="nav-number">5.2.</span> <span class="nav-text">对数,指数,幂函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三角函数"><span class="nav-number">5.3.</span> <span class="nav-text">三角函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>
