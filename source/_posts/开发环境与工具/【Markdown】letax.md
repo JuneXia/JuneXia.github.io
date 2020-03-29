@@ -10,8 +10,10 @@ mathjax: true
 # 数学字体
 | 需求 | latex语法 | 显示效果 | 备注 |
 | ------ | ------ | ------ | ------ |
-| 加粗 | \bold{A} | $\bold{A}$ ||
-| 斜体加粗 | \boldsymbol{A} | $\boldsymbol{A}$ ||
+| 正体加粗 | \bold{A} | $\bold{A}$ | 该方法在vscode中可显示，但发布到hexo后不能正确显示 |
+| 正体加粗 | \textbf{x} | $\textbf{x}$ | 支持对数字英文字母加粗，但不支持对希腊字母加粗 |
+| 正体加粗 | \mathbf{x} | $\mathbf{x}$ | 支持对数字英文字母加粗，但不支持对希腊字母加粗 |
+| 斜体加粗 | \boldsymbol{A} | $\boldsymbol{A}$ | 将正体变为斜体加粗，支持对希腊字母加粗 |
 
 
 # 数学符号
@@ -34,6 +36,10 @@ mathjax: true
 | n阶导数 | \frac{\mathrm{d}^{n} y }{\mathrm{d} x^{n}} | $\frac{\mathrm{d}^{n} y }{\mathrm{d} x^{n}}$ | |
 | 点形式的求导符号 | \frac{ \dot y }{ \dot x } | $\frac{ \dot y }{ \dot x }$ | 一个点 |
 | 点形式的求导符号 | \frac{ \ddot y }{ \ddot x } | $\frac{ \ddot y }{ \ddot x }$ | 两个点 |
+| 波浪号 | \sim | $\sim$ |  |
+| 斜体 | log (x) | $log (x)$ |  |
+| 正体 | \text{log } (x) | $\text{log} (x)$ |  |
+| 正体 | \text{log } x | $\text{log } x$ | text中可以写空格 |
 
 
 
@@ -46,13 +52,20 @@ mathjax: true
 | 中等空格 | a\\;b | $a\;b$ | 2/7m宽度 |
 | 小空格 | a\\,b | $a\,b$ | 1/6m宽度 |
 | 没有空格 | ab | $ab$ | |		 
-| 紧贴 | a\\!b | $a\!b$ | 缩进1/6m宽度 |
+| 紧贴 | a\\!b | $a\!b$ | 缩进1/6m宽度 (**注意**: 这种写法在vscode中没问题，但发布到hexo后显示不正确。再hexo中正确的做法是: 1. 对于换行公式可以使用 \\! 紧贴; 2. 而对于行内公式要使用 \\\! 紧贴) |
 
 
 \quad、1em、em、m代表当前字体下接近字符‘M’的宽度。
 
 
 # 方程组
+
+**注意事项**：
+1. 以\begin和\end包裹的公式，如果要加 tag 标签，则应该加在 \end{...}之后
+2. 在公式中显示星号(\*)在vscode中直接输入就可以了，但是在发布到hexo则不行。\
+   如果要发布到hexo，则行内公式如果要显示星号(\*)，则需要加反斜杠(\\)对其进行转义；而换行公式则不必如此
+
+
 1
 $$
 \begin{pmatrix}

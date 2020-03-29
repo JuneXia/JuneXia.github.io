@@ -10,6 +10,7 @@ mathjax: true
 Tsung-Yi Lin, Piotr Dollár, Ross Girshick, Kaiming He, Bharath Hariharan, Serge Belongie
 Facebook AI Research (FAIR) & Cornell University and Cornell Tech
 (Submitted on 9 Dec 2016 (v1), last revised 19 Apr 2017 (this version, v2))
+<!-- more -->
 
 **Abstract**
 &emsp; Feature pyramids are a basic component in recognition systems for detecting objects at different scales. But recent deep learning object detectors have avoided pyramid representations, in part because they are compute and memory intensive(密集,集中的,加强的). In this paper, we exploit the inherent(固有的;内在的;与生俱来的) multi-scale, pyramidal hierarchy of deep convolutional networks to construct feature pyramids with marginal(微不足道的;边缘的,临界的) extra cost. A topdown architecture with lateral(侧面的,横向的) connections is developed for building high-level semantic feature maps at all scales. This architecture, called a Feature Pyramid Network (FPN), `shows significant improvement as a generic feature extractor in several applications. (作为一种通用的特征提取器，它在一些应用中得到了显著的改进).` Using FPN in a basic Faster R-CNN system, our method achieves state-of-the-art singlemodel results on the COCO detection benchmark `without bells(bell:n.铃铛;v.系铃于…,鸣钟) and whistles(whistle:汽笛,哨子声)(没有任何附加条件)`, surpassing(surpass:优于,超出,卓越) all existing single-model entries(entry:进入,条目,记录) including those from the COCO 2016 challenge winners. In addition, our method can run at 6 FPS on a GPU and thus is a practical(实际的,实际用性的) and accurate solution to multi-scale object detection. Code will be made publicly available.

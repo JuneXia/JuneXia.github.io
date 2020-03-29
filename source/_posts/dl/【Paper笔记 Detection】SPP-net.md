@@ -9,6 +9,9 @@ mathjax: true
 论文：[Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition](https://arxiv.org/pdf/1406.4729.pdf)
 Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun
 *(Submitted on 18 Jun 2014 ([v1](https://arxiv.org/abs/1406.4729v1)), last revised 23 Apr 2015 (this version, v4))*，2015年发表于IEEE.
+<!-- more -->
+
+TODO：已经有几张截图位于路径下，但还未贴出。
 
 **问题背景**：因为RCNN要求FC的长度是固定的，所以要求卷积层的输出也是固定的，近而就要求Input Image 尺寸是固定的，这就需要对proposal 区域进行crop或者warp操作（warp实际就是resize）。但crop会造成信息丢失，warp会造成图片变形。
 
