@@ -12,7 +12,7 @@ In a convolutional fashion, we evaluate a small set (e.g. 4) **of** default boxe
 
 
 > TIPS: 
-> v. &ensp;n1 of n2 of n3  → v. &ensp;n1 n3 的 n2
+> v. &ensp;n1 of n2 of n3  → v. &ensp;n1 n3 的 n2 \
 > `in several feature maps with different scales. ` 在几个不同尺度的feature map中
 > 
 > Translate:

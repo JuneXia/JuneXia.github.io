@@ -5,7 +5,10 @@ tags:
 categories: ["深度学习笔记"]
 mathjax: true
 ---
-
+SSD: Single Shot MultiBox Detector \
+Wei Liu, Dragomir Anguelov, Dumitru Erhan, Christian Szegedy,
+Scott Reed, Cheng-Yang Fu, Alexander C. Berg \
+UNC Chapel Hill, Zoox Inc. Google Inc. University of Michigan, Ann-Arbor
 <!-- more -->
 
 **Abstract**. We present a method for detecting objects in images using a single deep neural network. Our approach, named SSD, `discretizes(discretize: vt.使离散;离散化) the output space of bounding boxes into a set of default boxes` **over** `different aspect ratios and scales per feature map location.(将bounding boxes的输出离散化为一组default boxes，`**根据**`每个feature map location的aspect ratios和scales来离散化).` 
@@ -169,6 +172,8 @@ We set the center of each default box to $(\frac{i + 0.5} {\vert f_k \vert}, \fr
 &emsp; By combining predictions for all default boxes with different scales and aspect ratios from all locations of many feature maps, we have a diverse set of predictions, covering various input object sizes and shapes. 
 通过联合预测多个feature maps中 ~~所有位置的~~ 不同尺度和长宽比的default boxes，我们可以得到多种预测组合，能够覆盖多种尺寸和形状的输入目标。
 For example, in Fig. 1, the dog is matched to a default box in the 4 × 4 feature map, but not to any default boxes in the 8 × 8 feature map. This is because those boxes have different scales and do not match the dog box, and therefore are considered as negatives during training.
+
+基本思想就到这里，其他的待续。。。
 
 **Hard negative mining** ……
 
