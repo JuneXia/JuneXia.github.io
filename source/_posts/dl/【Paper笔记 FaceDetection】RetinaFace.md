@@ -5,8 +5,8 @@ tags:
 categories: ["深度学习笔记"]
 mathjax: true
 ---
-
-
+未完待续
+<!-- more -->
 
 **Image pyramid v.s. feature pyramid:** 在 sliding window paradigm 中，一个分类器被应用在一个dense image grid上，这可以追溯到过去的几十年。里程碑式的工作是 Viola-Jones [Robust real-time face detection. IJCV2004] 的探索了用cascade chain实时有效地从图像金字塔中剔除 false face 区域，这导致了尺度不变的人脸检测框架被广泛采用 [如MTCNN、Joint cascade face detection and alignment ECCV2014]. 尽管图像金字塔上的滑动窗口是主要的检测范式[19,32]，但随着特征金字塔[Feature pyramid networks for object detection.CVPR2017]的出现，多尺度特征图[S3fd,Pyramidbox]上的 sliding-anchor [Faster r-cnn] 迅速主导了人脸检测。
 

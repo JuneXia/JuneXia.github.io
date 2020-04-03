@@ -53,7 +53,9 @@ We summarize our contributions as follows:
 # The Single Shot Detector (SSD)
 &emsp; This section describes our proposed SSD framework for detection (Sec. 2.1) and the associated training methodology (Sec. 2.2). Afterwards, Sec. 3 presents dataset-specific model details and experimental results.
 
-![](SSD1.jpg)
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/SSD1.jpg" width = 60% height = 60% />
+</div>
 > Fig. 1: SSD framework. (a) SSD only needs an input image and ground truth boxes for each object during training. In a convolutional fashion, we evaluate a small set (e.g. 4) of default boxes of different aspect ratios at each location in several feature maps with different scales (e.g. 8 × 8 and 4 × 4 in (b) and \(c\)). 
 For each default box, we predict both the shape offsets and the confidences for all object categories ((c1, c2, · · · , cp)). At training time, we first match these default boxes to the ground truth boxes. 
 For example, we have matched two default boxes with the cat and one with the dog, which are treated as positives and the rest as negatives. 
@@ -80,7 +82,9 @@ For a feature layer of size m × n with p channels, the basic element for predic
 
 At each of the m × n locations where the kernel is applied, it produces an output value. `The bounding box offset output values are measured relative to a default box position relative to each feature map location (bounding box偏移量输出值相对于每个feature map位置的default box位置进行测量)` (*cf* the architecture of YOLO[5] that uses an intermediate(n. adj. 中间(的),过渡(的)) fully connected layer instead of a convolutional filter for this step). 
 
-![](SSD2.jpg)
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/SSD2.jpg" width = 60% height = 60% />
+</div>
 > Fig. 2: A comparison between two single shot detection models: SSD and YOLO [5]. Our SSD model adds several feature layers to the end of a base network, which predict the offsets to default boxes of different scales and aspect ratios and their associated confidences. SSD with a 300 × 300 input size significantly outperforms(vt. 胜过;做得比……好) its 448 × 448 YOLO counterpart in accuracy on VOC2007 test while also improving the speed.
 
 **Default boxes and aspect ratios** We associate a set of default bounding boxes with each feature map cell, for multiple feature maps at the top of the network. 
@@ -115,14 +119,19 @@ Let $x^p_{ij} = \{1, 0\}$ be an indicator for matching the $i$-th default box to
 > 简单来说，就是如果 default box 和 ground truth box 匹配，则 $x^p_{ij} = 1$，否则 $x^p_{ij} = 0$。可以理解为《信号与系统》中的冲激函数或抽样函数。
 
 The overall objective loss function is a weighted sum of the localization loss (loc) and the confidence loss (conf):
-![](SSD3.jpg)
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/SSD3.jpg" width = 60% height = 60% />
+</div>
 
 where $N$ is the number of matched default boxes. If $N = 0$, wet set the loss to 0. The localization loss is a Smooth L1 loss [6] between the predicted box (l) and the ground truth box (g) `parameters`.
 > 这里的`parameters`不知为何意，TODO.
 
 Similar to Faster R-CNN [2], we regress to offsets for the center ($cx, cy$) of the default bounding box ($d$) and for its width ($w$) and height ($h$).
 与Faster R-CNN类似，我们回归与default bounding box的中心($cx, cy$)以及宽($w$)和高($h$)的偏移量。
-![](SSD4.jpg)
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/SSD4.jpg" width = 60% height = 60% />
+</div>
+
 > 我的一些理解：
 > $\hat{g}^m_j$ 可以理解为ground truth相对于default box的偏移量，$l^m_i$是predicted box相对于default box的偏移量，而 $L1(l^m_i - \hat{g}^m_j)$ 就是希望 $l^m_i$与$\hat{g}^m_j$ 之间越小越好。
 > 
@@ -132,7 +141,9 @@ Similar to Faster R-CNN [2], we regress to offsets for the center ($cx, cy$) of 
 > 为什么这样做，可参考文献 [m1]
 
 The confidence loss is the softmax loss over multiple classes confidences ($c$)
-![](SSD5.jpg)
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/SSD5.jpg" width = 60% height = 60% />
+</div>
 and the weight term $\alpha$ is set to 1 by cross validation.
 
 

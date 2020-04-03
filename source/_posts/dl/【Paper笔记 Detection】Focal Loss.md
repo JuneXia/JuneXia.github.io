@@ -7,7 +7,7 @@ mathjax: true
 ---
 
 论文：[Focal Loss for Dense Object Detection](https://arxiv.org/abs/1708.02002)
-
+<!-- more -->
 
 &emsp; Focal Loss 最初被提出是用来解决目标检测的[1]，在目标检测领域常见的算法主要可以分为两大类：two-stage detector和one-stage detector。前者是指类似Faster RCNN，RFCN这样需要region proposal的检测算法，这类算法可以达到很高的准确率，但是速度较慢。<!-- more -->
 后者是指类似YOLO，SSD这样不需要region proposal，直接回归的检测算法，这类算法速度很快，但是准确率不如前者。作者提出focal loss的出发点也是希望one-stage detector可以达到two-stage detector的准确率，同时不影响原有的速度。

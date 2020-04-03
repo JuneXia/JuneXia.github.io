@@ -5,8 +5,24 @@ tags:
 categories: ["深度学习笔记"]
 mathjax: true
 ---
+论文思想已弄明白，待整理。代码已贴注释。
+<!-- more -->
+
+**Abstract**
+&emsp; In this paper we describe a new mobile architecture, MobileNetV2, that improves the state of the art performance of mobile models on multiple tasks and benchmarks as well as across a spectrum of different model sizes. We also describe efficient ways of applying these mobile models to object detection in a novel framework we call SSDLite. Additionally, we demonstrate how to build mobile semantic segmentation models through a reduced form of DeepLabv3 which we call Mobile DeepLabv3. 
+&emsp; is based on an **inverted residual structure** where the shortcut connections are between the thin bottleneck layers. The intermediate expansion layer uses lightweight depthwise convolutions to filter features as a source of non-linearity. Additionally, we find that it is important to remove non-linearities in the narrow layers in order to maintain representational power. We demonstrate that this improves performance and provide an intuition that led to this design. 
+&emsp; Finally, our approach allows decoupling(decouple去耦合;使分离) of the input/output domains from the expressiveness(n. 善于表现;表情丰富;表现) of the transformation, which provides a convenient framework for further analysis. We measure our performance on ImageNet [1] classification, COCO object detection [2], VOC image segmentation [3]. We evaluate the trade-offs between accuracy, and number of operations measured by multiply-adds (MAdd), as well as actual latency, and the number of parameters.
 
 
+
+
+
+
+
+
+PyTorch 官方实现代码解析
+
+torchvison.models.mobilenet.py
 ```python
 from torch import nn
 from .utils import load_state_dict_from_url
