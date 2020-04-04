@@ -171,7 +171,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B1%82%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -185,7 +185,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B1%82%E8%A7%A3/" class="post-title-link" itemprop="url">【机器学习笔记1.2】线性回归之梯度下降求解</a>
+            <a href="/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3/" class="post-title-link" itemprop="url">【机器学习笔记1.1】线性回归之正规方程求解</a>
         </h1>
 
         <div class="post-meta">
@@ -202,7 +202,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-03 17:01:19" itemprop="dateModified" datetime="2020-04-03T17:01:19+08:00">2020-04-03</time>
+                <time title="Modified: 2020-01-22 08:40:13" itemprop="dateModified" datetime="2020-01-22T08:40:13+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -227,13 +227,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote>
-<p>原文参考文献[1]</p>
-</blockquote>
-<h2 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h2><p>&emsp; 首先，我们把生物神经元(Neuron)的模型抽象为如图 2.2(a)所示的数学结构：神经元输入向量$\mathbf{x} = [x_1, x_2, x_3, …, x_n ]^T$ ,经过函数映射:$f_θ:x→y$后得到输出y，其中θ为函数f自身的参数。考虑一种简化的情况，即线性变换:$f(\mathbf{x}) = \mathbf{w}^T \mathbf{x} + b$，展开为标量形式:$f(\mathbf{x}) = w_1 x_1 + w_2 x_2 + w_3 x_3 + ⋯ + w_n x_n + b$.<br>
+          <h2 id="线性回归概述"><a href="#线性回归概述" class="headerlink" title="线性回归概述"></a>线性回归概述</h2><p>在这里：<br>我们先考虑最简单的一种情况，即输入属性的数目只有一个，线性回归试图学得[1]</p>
+<script type="math/tex; mode=display">f(x_i) = w x_i + b，使得f(x_i) \approx y_i \tag{1}</script><p>那么如何确定$\vec{w}$和b呢？关键在于如何衡量$f(\vec{x})$与y之间的差别。<br>均方误差是回归任务中最常用的性能度量，因此我们可以试图让均方误差最小化，即<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B1%82%E8%A7%A3/#more" rel="contents">
+              <a class="btn" href="/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -497,100 +495,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/05/19/Math/[HigherMathematics]Functions%20and%20Limits/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2015/05/19/Math/%5BHigherMathematics%5DFunctions%20and%20Limits/" class="post-title-link" itemprop="url">Math/[HigherMathematics]Functions and Limits</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2015-05-19 00:00:00" itemprop="dateCreated datePublished" datetime="2015-05-19T00:00:00+08:00">2015-05-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-31 08:33:15" itemprop="dateModified" datetime="2020-03-31T08:33:15+08:00">2020-03-31</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Math/" itemprop="url" rel="index">
-                    <span itemprop="name">Math</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="映射"><a href="#映射" class="headerlink" title="映射"></a>映射</h2><h3 id="映射的概念"><a href="#映射的概念" class="headerlink" title="映射的概念"></a>映射的概念</h3><p>定义见课本</p>
-<p>简说：对于给定的 $x \in D_f$，按照法则 $f$，有唯一确定的 $y \in R_f$</p>
-<p><strong>TIPS</strong>: \<br>设有映射 $f: X \rightarrow Y$， \<br>则我们约定(无需证明)：映射 $f$ 的定义域$D_f = X$，映射 $f$ 的值域$R_f \subset Y$，不一定有 $R_f = Y$；\<br>如果 $R_f = Y$（<strong>即</strong> $Y$ 中任一元素 $y$ 都是 $X$ 中某元素的像），则称 $f$ 为 $X$ 到 $Y$ 的<strong>满射</strong>；\<br>若对 $X$ 中任意两个不同元素 $x_1 \not ={x_2}$，它们的像 $f(x_1) \not ={f(x_2)}$（单调），$\leftrightarrows$ 则称 $f$ 为 $X$ 到 $Y$ 的<strong>单射</strong>；（这句话其实就是说：单调 $\rightarrow$ 单射）\<br>若映射 $f$ 既是单射又是满射，则称 $f$ 为<strong>一一映射</strong>(或<strong>双射</strong>)</p>
-<h3 id="逆映射"><a href="#逆映射" class="headerlink" title="逆映射"></a>逆映射</h3><p>定义见课本</p>
-<p>简说：设 $f$ 为单射，对于给定的 $y \in R_f$，按照法则 $f$，有唯一确定的 $x \in D_f$. 于是我们可以定义一个从 $R_f$ 到 $D_f$ 的新映射 $f^{-1}$</p>
-<p><strong>TIPS</strong>:\<br>只有单射才存在逆映射.</p>
-<h3 id="复合映射"><a href="#复合映射" class="headerlink" title="复合映射"></a>复合映射</h3><p>设有两个映射</p>
-<script type="math/tex; mode=display">
-g: X \rightarrow Y_1, \qquad f: Y_2 \rightarrow Z</script><p>映射 $g$ 和 $f$ 构成复合映射的条件是：$R_g \subset D_f$</p>
-<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h3 id="函数的概念"><a href="#函数的概念" class="headerlink" title="函数的概念"></a>函数的概念</h3><p>略</p>
-<h3 id="函数的几种特性"><a href="#函数的几种特性" class="headerlink" title="函数的几种特性"></a>函数的几种特性</h3><h4 id="有界性"><a href="#有界性" class="headerlink" title="有界性"></a>有界性</h4><p>设$X \subset D$，对于任一 $x \in X$，如果存在数 $K_1$ 使得</p>
-<script type="math/tex; mode=display">
-f(x) \leq K_1</script><p>成立，则称函数$f(x)$在$X$上有<strong>上界</strong>.</p>
-<p>另有<strong>下界、有界</strong>的定义类似。</p>
-<h4 id="单调性"><a href="#单调性" class="headerlink" title="单调性"></a>单调性</h4><h4 id="奇偶性"><a href="#奇偶性" class="headerlink" title="奇偶性"></a>奇偶性</h4><h4 id="周期性"><a href="#周期性" class="headerlink" title="周期性"></a>周期性</h4><h3 id="反函数与复合函数"><a href="#反函数与复合函数" class="headerlink" title="反函数与复合函数"></a>反函数与复合函数</h3><p>反函数为逆映射的特例，复合函数为复合映射的特例。其实都与逆映射和复合映射类似，这里就不再赘述了。</p>
-<p>需要注意的是：相对于反函数 $y = f^{-1}(x)$ 来说，原来的函数 $y = f(x)$ 称为<strong>直接函数</strong>，如果把直接函数和反函数的图行画在同一个坐标平面上，则这两个图形是关于 $y=x$ 对称的。</p>
-<h3 id="函数的运算"><a href="#函数的运算" class="headerlink" title="函数的运算"></a>函数的运算</h3><h3 id="初等函数"><a href="#初等函数" class="headerlink" title="初等函数"></a>初等函数</h3><p>关于三角函数以及反三角函数的曲线图可参见文献[1]</p>
-<p>TODO: 双曲函数及反双曲函数</p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="http://math001.com/inverse_trigonometric_functions/" target="_blank" rel="noopener">三角函数与反三角函数(图像)</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -661,14 +565,14 @@ f(x) \leq K_1</script><p>成立，则称函数$f(x)$在$X$上有<strong>上界</
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>

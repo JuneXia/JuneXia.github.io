@@ -171,7 +171,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E4%BA%A4%E5%8F%89%E7%86%B5/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.1%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E3%80%81%E5%AF%BC%E6%95%B0%E3%80%81%E6%A2%AF%E5%BA%A6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -185,7 +185,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E4%BA%A4%E5%8F%89%E7%86%B5/" class="post-title-link" itemprop="url">【机器学习基础】交叉熵</a>
+            <a href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.1%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E3%80%81%E5%AF%BC%E6%95%B0%E3%80%81%E6%A2%AF%E5%BA%A6/" class="post-title-link" itemprop="url">【数学基础与最优化1.1】基本概念、导数、梯度</a>
         </h1>
 
         <div class="post-meta">
@@ -202,7 +202,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:19:33" itemprop="dateModified" datetime="2020-01-22T13:19:33+08:00">2020-01-22</time>
+                <time title="Modified: 2020-01-22 13:26:06" itemprop="dateModified" datetime="2020-01-22T13:26:06+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,8 +210,8 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
+                  <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/" itemprop="url" rel="index">
+                    <span itemprop="name">数学基础与最优化</span>
                   </a>
                 </span>
             </span>
@@ -227,176 +227,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="概述-me"><a href="#概述-me" class="headerlink" title="概述 (me)"></a>概述 (me)</h2><p>交叉熵是用来衡量两个分布之间相似程度的一种度量方法，假设$p(x)$为真实分布，$q(x)$为预测的分布，我们通过下面的交叉熵定义来衡量它们之间的相似度：<br>$H = -\sum \limits_{x \in X} p(x) \log q(x)$<br>
+          <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>假设A是条件，B是结论<br>（1）由A可以推出B，由B可以推出A，则A是B的充分必要条件( $A=B$ )，或者说A的充分必要条件是B。<br>（2）由A可以推出B，由B不可以推出A，则A是B的充分不必要条件( $A \subseteq B$ )<br>（3）由A不可以推出B，由B可以推出A，则A是B的必要不充分条件( $B \subseteq A$ )<br>（4）由A不可以推出B，由B不可以推出A，则A是B的既不充分也不必要条件( $A \not \subseteq B, B \not \subseteq A$ )<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E4%BA%A4%E5%8F%89%E7%86%B5/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88TensorFlow%E5%AE%9E%E7%8E%B0%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88TensorFlow%E5%AE%9E%E7%8E%B0%EF%BC%89/" class="post-title-link" itemprop="url">【机器学习笔记2.4】用逻辑回归做二分类（TensorFlow实现）</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-10 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-10T00:00:00+08:00">2017-06-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 08:40:56" itemprop="dateModified" datetime="2020-01-22T08:40:56+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>相关理论介绍可参阅【机器学习笔记2.1】线性模型之逻辑回归</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88TensorFlow%E5%AE%9E%E7%8E%B0%EF%BC%89/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.6%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9Amnist%E6%89%8B%E5%86%99%E4%BD%93%E8%AF%86%E5%88%AB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.6%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9Amnist%E6%89%8B%E5%86%99%E4%BD%93%E8%AF%86%E5%88%AB/" class="post-title-link" itemprop="url">【机器学习笔记2.6】用Softmax回归做mnist手写体识别</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-10 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-10T00:00:00+08:00">2017-06-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 08:41:06" itemprop="dateModified" datetime="2020-01-22T08:41:06+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="MNIST是什么"><a href="#MNIST是什么" class="headerlink" title="MNIST是什么"></a>MNIST是什么</h3><p>MNIST是一个手写数字数据集，它有60000个训练样本集和10000个测试样本集。可以将MNIST手写体识别看做是深度学习的HelloWorld。<br>MNIST数据集官方网址：<a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">http://yann.lecun.com/exdb/mnist/</a><br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.6%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9Amnist%E6%89%8B%E5%86%99%E4%BD%93%E8%AF%86%E5%88%AB/#more" rel="contents">
+              <a class="btn" href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.1%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E3%80%81%E5%AF%BC%E6%95%B0%E3%80%81%E6%A2%AF%E5%BA%A6/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -503,6 +337,89 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88TensorFlow%E5%AE%9E%E7%8E%B0%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88TensorFlow%E5%AE%9E%E7%8E%B0%EF%BC%89/" class="post-title-link" itemprop="url">【机器学习笔记2.4】用逻辑回归做二分类（TensorFlow实现）</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-10 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-10T00:00:00+08:00">2017-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 08:40:56" itemprop="dateModified" datetime="2020-01-22T08:40:56+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>相关理论介绍可参阅【机器学习笔记2.1】线性模型之逻辑回归</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88TensorFlow%E5%AE%9E%E7%8E%B0%EF%BC%89/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E6%AD%A3%E5%88%99%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -586,7 +503,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E4%B9%8B%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.6%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9Amnist%E6%89%8B%E5%86%99%E4%BD%93%E8%AF%86%E5%88%AB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -600,7 +517,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E4%B9%8B%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/" class="post-title-link" itemprop="url">【机器学习笔记2.1】线性模型之逻辑回归</a>
+            <a href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.6%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9Amnist%E6%89%8B%E5%86%99%E4%BD%93%E8%AF%86%E5%88%AB/" class="post-title-link" itemprop="url">【机器学习笔记2.6】用Softmax回归做mnist手写体识别</a>
         </h1>
 
         <div class="post-meta">
@@ -610,14 +527,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2017-05-28 00:00:00" itemprop="dateCreated datePublished" datetime="2017-05-28T00:00:00+08:00">2017-05-28</time>
+              <time title="Created: 2017-06-10 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-10T00:00:00+08:00">2017-06-10</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 08:40:42" itemprop="dateModified" datetime="2020-01-22T08:40:42+08:00">2020-01-22</time>
+                <time title="Modified: 2020-01-22 08:41:06" itemprop="dateModified" datetime="2020-01-22T08:41:06+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -642,9 +559,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <a id="more"></a>
-<p>参见 <a href="https://blog.csdn.net/yahstudio/article/details/80615752" target="_blank" rel="noopener">【机器学习笔记2.1】线性模型之逻辑回归</a></p>
-
+          <h3 id="MNIST是什么"><a href="#MNIST是什么" class="headerlink" title="MNIST是什么"></a>MNIST是什么</h3><p>MNIST是一个手写数字数据集，它有60000个训练样本集和10000个测试样本集。可以将MNIST手写体识别看做是深度学习的HelloWorld。<br>MNIST数据集官方网址：<a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">http://yann.lecun.com/exdb/mnist/</a><br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.6%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9Amnist%E6%89%8B%E5%86%99%E4%BD%93%E8%AF%86%E5%88%AB/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -817,6 +740,83 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E4%B9%8B%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E4%B9%8B%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/" class="post-title-link" itemprop="url">【机器学习笔记2.1】线性模型之逻辑回归</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-05-28 00:00:00" itemprop="dateCreated datePublished" datetime="2017-05-28T00:00:00+08:00">2017-05-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 08:40:42" itemprop="dateModified" datetime="2020-01-22T08:40:42+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<p>参见 <a href="https://blog.csdn.net/yahstudio/article/details/80615752" target="_blank" rel="noopener">【机器学习笔记2.1】线性模型之逻辑回归</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/21/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.3%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92TensorFlow%E5%AE%9E%E8%B7%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -900,7 +900,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B1%82%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -914,7 +914,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3/" class="post-title-link" itemprop="url">【机器学习笔记1.1】线性回归之正规方程求解</a>
+            <a href="/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B1%82%E8%A7%A3/" class="post-title-link" itemprop="url">【机器学习笔记1.2】线性回归之梯度下降求解</a>
         </h1>
 
         <div class="post-meta">
@@ -931,7 +931,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 08:40:13" itemprop="dateModified" datetime="2020-01-22T08:40:13+08:00">2020-01-22</time>
+                <time title="Modified: 2020-04-03 17:01:19" itemprop="dateModified" datetime="2020-04-03T17:01:19+08:00">2020-04-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -956,11 +956,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="线性回归概述"><a href="#线性回归概述" class="headerlink" title="线性回归概述"></a>线性回归概述</h2><p>在这里：<br>我们先考虑最简单的一种情况，即输入属性的数目只有一个，线性回归试图学得[1]</p>
-<script type="math/tex; mode=display">f(x_i) = w x_i + b，使得f(x_i) \approx y_i \tag{1}</script><p>那么如何确定$\vec{w}$和b呢？关键在于如何衡量$f(\vec{x})$与y之间的差别。<br>均方误差是回归任务中最常用的性能度量，因此我们可以试图让均方误差最小化，即<br>
+          <blockquote>
+<p>原文参考文献[1]</p>
+</blockquote>
+<h2 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h2><p>&emsp; 首先，我们把生物神经元(Neuron)的模型抽象为如图 2.2(a)所示的数学结构：神经元输入向量$\mathbf{x} = [x_1, x_2, x_3, …, x_n ]^T$ ,经过函数映射:$f_θ:x→y$后得到输出y，其中θ为函数f自身的参数。考虑一种简化的情况，即线性变换:$f(\mathbf{x}) = \mathbf{w}^T \mathbf{x} + b$，展开为标量形式:$f(\mathbf{x}) = w_1 x_1 + w_2 x_2 + w_3 x_3 + ⋯ + w_n x_n + b$.<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3/#more" rel="contents">
+              <a class="btn" href="/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B1%82%E8%A7%A3/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1050,14 +1052,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>
