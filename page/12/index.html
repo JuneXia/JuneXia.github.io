@@ -171,7 +171,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.1%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E3%80%81%E5%AF%BC%E6%95%B0%E3%80%81%E6%A2%AF%E5%BA%A6/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.2%E3%80%91%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E9%9D%9E%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -185,7 +185,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.1%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E3%80%81%E5%AF%BC%E6%95%B0%E3%80%81%E6%A2%AF%E5%BA%A6/" class="post-title-link" itemprop="url">【数学基础与最优化1.1】基本概念、导数、梯度</a>
+            <a href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.2%E3%80%91%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E9%9D%9E%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92/" class="post-title-link" itemprop="url">【数学基础与最优化1.2】线性规划与非线性规划</a>
         </h1>
 
         <div class="post-meta">
@@ -202,7 +202,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:26:06" itemprop="dateModified" datetime="2020-01-22T13:26:06+08:00">2020-01-22</time>
+                <time title="Modified: 2020-01-22 13:26:11" itemprop="dateModified" datetime="2020-01-22T13:26:11+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -227,93 +227,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>假设A是条件，B是结论<br>（1）由A可以推出B，由B可以推出A，则A是B的充分必要条件( $A=B$ )，或者说A的充分必要条件是B。<br>（2）由A可以推出B，由B不可以推出A，则A是B的充分不必要条件( $A \subseteq B$ )<br>（3）由A不可以推出B，由B可以推出A，则A是B的必要不充分条件( $B \subseteq A$ )<br>（4）由A不可以推出B，由B不可以推出A，则A是B的既不充分也不必要条件( $A \not \subseteq B, B \not \subseteq A$ )<br>
+          <h2 id="线性规划"><a href="#线性规划" class="headerlink" title="线性规划"></a>线性规划</h2><p>&emsp; 在数学中，线性规划（Linear Programming，简称LP）特指目标函数和约束条件皆为线性的最优化问题[1]。<br>&emsp; 线性规划是最优化问题中的一个重要领域。很多最优化问题算法都可以分解为线性规划子问题，然后逐一求解。在线性规划的历史发展过程中所衍伸出的诸多概念，建立了最优化理论的核心思维，例如“对偶”、“分解”、“凸集”的重要性及其一般化等。在微观经济学和商业管理领域中，线性规划亦被大量应用于例如降低生产过程的成本等手段，最终提升产值与营收。乔治·丹齐格被认为是线性规划之父[1]。<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.1%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E3%80%81%E5%AF%BC%E6%95%B0%E3%80%81%E6%A2%AF%E5%BA%A6/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.5%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88Tensorflow%E5%AE%9E%E7%8E%B0%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.5%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88Tensorflow%E5%AE%9E%E7%8E%B0%EF%BC%89/" class="post-title-link" itemprop="url">【机器学习笔记2.5】用Softmax回归做二分类（Tensorflow实现）</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-10 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-10T00:00:00+08:00">2017-06-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 14:07:05" itemprop="dateModified" datetime="2020-01-22T14:07:05+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Softmax回归和逻辑回归的区别"><a href="#Softmax回归和逻辑回归的区别" class="headerlink" title="Softmax回归和逻辑回归的区别"></a>Softmax回归和逻辑回归的区别</h2><p>&emsp; 在本节中，我们介绍Softmax回归模型，该模型是logistic回归模型在多分类问题上的推广，在多分类问题中，类标签$y$可以取两个以上的值[1]。当类别数$k=2$时，softmax 回归退化为 logistic 回归。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.5%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88Tensorflow%E5%AE%9E%E7%8E%B0%EF%BC%89/#more" rel="contents">
+              <a class="btn" href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.2%E3%80%91%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E9%9D%9E%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -420,7 +337,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E6%AD%A3%E5%88%99%E5%8C%96/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.5%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88Tensorflow%E5%AE%9E%E7%8E%B0%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -434,7 +351,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E6%AD%A3%E5%88%99%E5%8C%96/" class="post-title-link" itemprop="url">【机器学习笔记3.1】线性模型正则化</a>
+            <a href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.5%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88Tensorflow%E5%AE%9E%E7%8E%B0%EF%BC%89/" class="post-title-link" itemprop="url">【机器学习笔记2.5】用Softmax回归做二分类（Tensorflow实现）</a>
         </h1>
 
         <div class="post-meta">
@@ -451,7 +368,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 08:41:10" itemprop="dateModified" datetime="2020-01-22T08:41:10+08:00">2020-01-22</time>
+                <time title="Modified: 2020-01-22 14:07:05" itemprop="dateModified" datetime="2020-01-22T14:07:05+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -476,10 +393,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="过拟合问题描述"><a href="#过拟合问题描述" class="headerlink" title="过拟合问题描述"></a>过拟合问题描述</h2><p>在机器学习应用时，会遇到过拟合(over-fitting)问题，本文将介绍一种被称为正则化(regularization)的技术，它可以有效改善或者减少过拟合问题[1]。<br>如果我们有非常多的特征，我们通过学习得到的假设可能能够非常好地适应训练集（代价函数可能几乎为0），但是可能会无法推广到新的数据，也就是泛化能力比较差。<br>
+          <h2 id="Softmax回归和逻辑回归的区别"><a href="#Softmax回归和逻辑回归的区别" class="headerlink" title="Softmax回归和逻辑回归的区别"></a>Softmax回归和逻辑回归的区别</h2><p>&emsp; 在本节中，我们介绍Softmax回归模型，该模型是logistic回归模型在多分类问题上的推广，在多分类问题中，类标签$y$可以取两个以上的值[1]。当类别数$k=2$时，softmax 回归退化为 logistic 回归。<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E6%AD%A3%E5%88%99%E5%8C%96/#more" rel="contents">
+              <a class="btn" href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.5%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88Tensorflow%E5%AE%9E%E7%8E%B0%EF%BC%89/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -586,7 +503,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.3%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E5%A4%9A%E7%B1%BB%E5%88%AB%E5%88%86%E7%B1%BB/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E6%AD%A3%E5%88%99%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -600,7 +517,90 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.3%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E5%A4%9A%E7%B1%BB%E5%88%AB%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">【机器学习笔记2.3】用逻辑回归做多类别分类</a>
+            <a href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E6%AD%A3%E5%88%99%E5%8C%96/" class="post-title-link" itemprop="url">【机器学习笔记3.1】线性模型正则化</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-10 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-10T00:00:00+08:00">2017-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 08:41:10" itemprop="dateModified" datetime="2020-01-22T08:41:10+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="过拟合问题描述"><a href="#过拟合问题描述" class="headerlink" title="过拟合问题描述"></a>过拟合问题描述</h2><p>在机器学习应用时，会遇到过拟合(over-fitting)问题，本文将介绍一种被称为正则化(regularization)的技术，它可以有效改善或者减少过拟合问题[1]。<br>如果我们有非常多的特征，我们通过学习得到的假设可能能够非常好地适应训练集（代价函数可能几乎为0），但是可能会无法推广到新的数据，也就是泛化能力比较差。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E6%AD%A3%E5%88%99%E5%8C%96/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E4%B9%8B%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E4%B9%8B%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/" class="post-title-link" itemprop="url">【机器学习笔记2.1】线性模型之逻辑回归</a>
         </h1>
 
         <div class="post-meta">
@@ -617,7 +617,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 08:40:52" itemprop="dateModified" datetime="2020-01-22T08:40:52+08:00">2020-01-22</time>
+                <time title="Modified: 2020-01-22 08:40:42" itemprop="dateModified" datetime="2020-01-22T08:40:42+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -643,7 +643,7 @@
 
       
           <a id="more"></a>
-<p>参见 <a href="https://blog.csdn.net/yahstudio/article/details/80729283" target="_blank" rel="noopener">【机器学习笔记2.3】用逻辑回归做多类别分类</a></p>
+<p>参见 <a href="https://blog.csdn.net/yahstudio/article/details/80615752" target="_blank" rel="noopener">【机器学习笔记2.1】线性模型之逻辑回归</a></p>
 
       
     </div>
@@ -740,7 +740,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E4%B9%8B%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.3%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E5%A4%9A%E7%B1%BB%E5%88%AB%E5%88%86%E7%B1%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -754,7 +754,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E4%B9%8B%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/" class="post-title-link" itemprop="url">【机器学习笔记2.1】线性模型之逻辑回归</a>
+            <a href="/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.3%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E5%A4%9A%E7%B1%BB%E5%88%AB%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">【机器学习笔记2.3】用逻辑回归做多类别分类</a>
         </h1>
 
         <div class="post-meta">
@@ -771,7 +771,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 08:40:42" itemprop="dateModified" datetime="2020-01-22T08:40:42+08:00">2020-01-22</time>
+                <time title="Modified: 2020-01-22 08:40:52" itemprop="dateModified" datetime="2020-01-22T08:40:52+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -797,7 +797,7 @@
 
       
           <a id="more"></a>
-<p>参见 <a href="https://blog.csdn.net/yahstudio/article/details/80615752" target="_blank" rel="noopener">【机器学习笔记2.1】线性模型之逻辑回归</a></p>
+<p>参见 <a href="https://blog.csdn.net/yahstudio/article/details/80729283" target="_blank" rel="noopener">【机器学习笔记2.3】用逻辑回归做多类别分类</a></p>
 
       
     </div>
@@ -900,7 +900,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B1%82%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -914,7 +914,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B1%82%E8%A7%A3/" class="post-title-link" itemprop="url">【机器学习笔记1.2】线性回归之梯度下降求解</a>
+            <a href="/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3/" class="post-title-link" itemprop="url">【机器学习笔记1.1】线性回归之正规方程求解</a>
         </h1>
 
         <div class="post-meta">
@@ -931,7 +931,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-03 17:01:19" itemprop="dateModified" datetime="2020-04-03T17:01:19+08:00">2020-04-03</time>
+                <time title="Modified: 2020-01-22 08:40:13" itemprop="dateModified" datetime="2020-01-22T08:40:13+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -956,13 +956,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote>
-<p>原文参考文献[1]</p>
-</blockquote>
-<h2 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h2><p>&emsp; 首先，我们把生物神经元(Neuron)的模型抽象为如图 2.2(a)所示的数学结构：神经元输入向量$\mathbf{x} = [x_1, x_2, x_3, …, x_n ]^T$ ,经过函数映射:$f_θ:x→y$后得到输出y，其中θ为函数f自身的参数。考虑一种简化的情况，即线性变换:$f(\mathbf{x}) = \mathbf{w}^T \mathbf{x} + b$，展开为标量形式:$f(\mathbf{x}) = w_1 x_1 + w_2 x_2 + w_3 x_3 + ⋯ + w_n x_n + b$.<br>
+          <h2 id="线性回归概述"><a href="#线性回归概述" class="headerlink" title="线性回归概述"></a>线性回归概述</h2><p>在这里：<br>我们先考虑最简单的一种情况，即输入属性的数目只有一个，线性回归试图学得[1]</p>
+<script type="math/tex; mode=display">f(x_i) = w x_i + b，使得f(x_i) \approx y_i \tag{1}</script><p>那么如何确定$\vec{w}$和b呢？关键在于如何衡量$f(\vec{x})$与y之间的差别。<br>均方误差是回归任务中最常用的性能度量，因此我们可以试图让均方误差最小化，即<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B1%82%E8%A7%A3/#more" rel="contents">
+              <a class="btn" href="/2017/05/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1%E3%80%91%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B9%8B%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>

@@ -997,7 +997,7 @@ s.t. \ g_j(\boldsymbol x) \leq 0, (j=1,2,...,m)
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.2%E3%80%91%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E9%9D%9E%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.1%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E3%80%81%E5%AF%BC%E6%95%B0%E3%80%81%E6%A2%AF%E5%BA%A6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1011,7 +1011,7 @@ s.t. \ g_j(\boldsymbol x) \leq 0, (j=1,2,...,m)
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.2%E3%80%91%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E9%9D%9E%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92/" class="post-title-link" itemprop="url">【数学基础与最优化1.2】线性规划与非线性规划</a>
+            <a href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.1%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E3%80%81%E5%AF%BC%E6%95%B0%E3%80%81%E6%A2%AF%E5%BA%A6/" class="post-title-link" itemprop="url">【数学基础与最优化1.1】基本概念、导数、梯度</a>
         </h1>
 
         <div class="post-meta">
@@ -1028,7 +1028,7 @@ s.t. \ g_j(\boldsymbol x) \leq 0, (j=1,2,...,m)
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:26:11" itemprop="dateModified" datetime="2020-01-22T13:26:11+08:00">2020-01-22</time>
+                <time title="Modified: 2020-01-22 13:26:06" itemprop="dateModified" datetime="2020-01-22T13:26:06+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1053,10 +1053,10 @@ s.t. \ g_j(\boldsymbol x) \leq 0, (j=1,2,...,m)
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="线性规划"><a href="#线性规划" class="headerlink" title="线性规划"></a>线性规划</h2><p>&emsp; 在数学中，线性规划（Linear Programming，简称LP）特指目标函数和约束条件皆为线性的最优化问题[1]。<br>&emsp; 线性规划是最优化问题中的一个重要领域。很多最优化问题算法都可以分解为线性规划子问题，然后逐一求解。在线性规划的历史发展过程中所衍伸出的诸多概念，建立了最优化理论的核心思维，例如“对偶”、“分解”、“凸集”的重要性及其一般化等。在微观经济学和商业管理领域中，线性规划亦被大量应用于例如降低生产过程的成本等手段，最终提升产值与营收。乔治·丹齐格被认为是线性规划之父[1]。<br>
+          <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>假设A是条件，B是结论<br>（1）由A可以推出B，由B可以推出A，则A是B的充分必要条件( $A=B$ )，或者说A的充分必要条件是B。<br>（2）由A可以推出B，由B不可以推出A，则A是B的充分不必要条件( $A \subseteq B$ )<br>（3）由A不可以推出B，由B可以推出A，则A是B的必要不充分条件( $B \subseteq A$ )<br>（4）由A不可以推出B，由B不可以推出A，则A是B的既不充分也不必要条件( $A \not \subseteq B, B \not \subseteq A$ )<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.2%E3%80%91%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E9%9D%9E%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92/#more" rel="contents">
+              <a class="btn" href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.1%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E3%80%81%E5%AF%BC%E6%95%B0%E3%80%81%E6%A2%AF%E5%BA%A6/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
