@@ -149,8 +149,50 @@ $$
 $$
 也就是说我们这里事先知道了 y 的表达式，然后求取 y 的极小值点所对应的参数 $x^\*$，然后将 $x^\*$ 带入梯度下降公式，自然就能求出最直接的学习率。当然现实应用中一般都是不知道表达式的。
 
+不同学习率对梯度下降更新速度的影响：
+```python
+# ------------------------------ multi learning rate ------------------------------
+
+# flag = 0
+flag = 1
+if flag:
+    iteration = 100
+    num_lr = 10
+    lr_min, lr_max = 0.01, 0.2  # .5 .3 .2
+
+    lr_list = np.linspace(lr_min, lr_max, num=num_lr).tolist()
+    loss_rec = [[] for l in range(len(lr_list))]
+    iter_rec = list()
+
+    for i, lr in enumerate(lr_list):
+        x = torch.tensor([2.], requires_grad=True)
+        for iter in range(iteration):
+
+            y = func(x)
+            y.backward()
+            x.data.sub_(lr * x.grad)  # x.data -= x.grad
+            x.grad.zero_()
+
+            loss_rec[i].append(y.item())
+
+    for i, loss_r in enumerate(loss_rec):
+        plt.plot(range(len(loss_r)), loss_r, label="LR: {}".format(lr_list[i]))
+    plt.legend()
+    plt.xlabel('Iterations')
+    plt.ylabel('Loss value')
+    plt.show()
+```
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_lr5.jpg" width = 60% height = 60% />
+</div>
+
+
 # momentum 动量
 **Momentum(动量，冲量)**：结合当前梯度与上一次更新信息，用于当前更新。
+
+## 指数加权平均
+
+在讲momentum之前，先来讲一下指数加权平均的概念。
 
 **指数加权平均**：(在时间序列分析中常用)
 $$
@@ -165,6 +207,8 @@ $$
 \begin{aligned}
     v_{100} &= \beta \cdot v_{99} + (1 - \beta) \cdot \theta_{100} \\
             &= (1 - \beta) \cdot \theta_{100} + \beta \cdot (\beta \cdot v_{98} + (1 - \beta) \cdot \theta_{99}) \\
+            &= ... \\
+            &= (1 - \beta) \cdot \theta_{100} + (1 - \beta) \cdot \beta \cdot \theta_{99} + (1 - \beta) \cdot \beta^2 \cdot \theta_{98} + \beta^3 \cdot v_{97} \\
             &= \sum^N_i (1 - \beta) \cdot \beta^i \cdot \theta_{N - i}
 \end{aligned}
 $$
@@ -173,14 +217,207 @@ $$
 
 
 探索超参数 $\beta$ 设置为不同值时对加权平均的影响：
+```python
+# -*- coding:utf-8 -*-
+"""
+@file name  : momentum.py
+# @author     : TingsongYu https://github.com/TingsongYu
+@date       : 2019-10-17
+@brief      : 梯度下降的动量 momentum
+"""
+import torch
+import numpy as np
+import torch.optim as optim
+import matplotlib.pyplot as plt
+torch.manual_seed(1)
 
 
+def exp_w_func(beta, time_list):
+    return [(1 - beta) * np.power(beta, exp) for exp in time_list]
 
-# torch.optim.SGD
+
+beta = 0.9
+num_point = 100
+time_list = np.arange(num_point).tolist()
+
+# ------------------------------ exponential weight ------------------------------
+# flag = 0
+flag = 1
+if flag:
+    weights = exp_w_func(beta, time_list)
+
+    plt.plot(time_list, weights, '-ro', label="Beta: {}\ny = B^t * (1-B)".format(beta))
+    plt.xlabel("time")
+    plt.ylabel("weight")
+    plt.legend()
+    plt.title("exponentially weighted average")
+    plt.show()
+
+    print(np.sum(weights))
 
 
-# Pytorch 的十种优化器
+# ------------------------------ multi weights ------------------------------
+# flag = 0
+flag = 1
+if flag:
+    beta_list = [0.98, 0.95, 0.9, 0.8]
+    w_list = [exp_w_func(beta, time_list) for beta in beta_list]
+    for i, w in enumerate(w_list):
+        plt.plot(time_list, w, label="Beta: {}".format(beta_list[i]))
+        plt.xlabel("time")
+        plt.ylabel("weight")
+    plt.legend()
+    plt.show()
+```
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_momentum1.jpg" width = 60% height = 60% />
+</div>
 
+观察上图可知，超参数 $\beta$ 的作用当于是**记忆周期**，当 $\beta$ 值越小，它的记忆周期越短（即只能记住较近时刻的作用），如上图中红色曲线所示。
+
+$\beta$ 通常取 0.9，这表示相对过往所有历史时刻的参数，模型更关注最近的10次参数。
+
+## PyTorch中的momentum
+
+一般的梯度下降：
+$$
+w_{i + 1} = w_i - lr \cdot g(w_i)
+$$
+
+PyTorch中的梯度下降更新公式：(m对应指数加权平均中的$\beta$)
+$$
+\begin{aligned}
+    v_i &= m \cdot v_{i-1} + g(w_i) \\
+w_{i+1} &= w_i - lr \cdot v_i
+\end{aligned}
+$$
+注意pytorch中的实现没有完全按照前面所说的指数加权平均来计算的，$g(w_i)$ 前面没有乘 $1 - m$
+
+举个具体的例子吧：
+$$
+\begin{aligned}
+    v_{100} &= m \cdot v_{99} + g(w_{100}) \\
+            &= g(w_{100}) + m \cdot (m \cdot v_{98} + g(w_{99})) \\
+            &= g(w_{100}) + m \cdot g(w_{99}) + m^2 \cdot v_{98} \\
+            &= g(w_{100}) + m \cdot g(w_{99}) + m^2 \cdot g(w_{98}) + m^3 \cdot v_{97}
+\end{aligned}
+$$
+
+
+代码示例：
+```python
+# ------------------------------ SGD momentum ------------------------------
+# flag = 0
+flag = 1
+if flag:
+    def func(x):
+        return torch.pow(2*x, 2)    # y = (2x)^2 = 4*x^2        dy/dx = 8x
+
+    iteration = 100
+    m = 0.     # .9 .63
+
+    lr_list = [0.01, 0.03]
+
+    momentum_list = list()
+    loss_rec = [[] for l in range(len(lr_list))]
+    iter_rec = list()
+
+    for i, lr in enumerate(lr_list):
+        x = torch.tensor([2.], requires_grad=True)
+
+        momentum = 0. if lr == 0.03 else m
+        momentum_list.append(momentum)
+
+        optimizer = optim.SGD([x], lr=lr, momentum=momentum)
+
+        for iter in range(iteration):
+
+            y = func(x)
+            y.backward()
+
+            optimizer.step()
+            optimizer.zero_grad()
+
+            loss_rec[i].append(y.item())
+
+    for i, loss_r in enumerate(loss_rec):
+        plt.plot(range(len(loss_r)), loss_r, label="LR: {} M:{}".format(lr_list[i], momentum_list[i]))
+    plt.legend()
+    plt.xlabel('Iterations')
+    plt.ylabel('Loss value')
+    plt.show()
+```
+
+<html>
+    <table style="margin-left: auto; margin-right: auto;">
+        <tr>
+            <td>
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_momentum2.jpg" width = 50% height = 50% />
+                </div>
+            </td>
+            <td>
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_momentum3.jpg" width = 50% height = 50% />
+                </div>
+            </td>
+            <td>
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_momentum4.jpg" width = 50% height = 50% />
+                </div>
+            </td>
+        </tr>
+    </table>
+</html>
+
+1. 上面左图，当不设置momentum时，较大的学习率相对小学习率会更快收敛；
+2. 上面中图，为小学习率设置一个momentum（大学习率的momentum仍然为0），小学习率会更快抵达极值点，但随后有反弹并来回震荡，最后慢慢收敛；\
+> 震荡是由于momentum太大所导致的，因为momentum太大，所以当loss抵达极小值时又受到之前梯度（惯性）的影响，从而还是以较大的步伐越过极小值点，这样就出现了来回震荡的现象。\
+3. 上面右图，将momentum调小，此时小学习率也会很快的收敛。
+
+> 而通过这个例子我们也可以知道选择合适的momentum是有助于loss更快达到极值点，但是开发中一般只有上帝视角才知道什么样的momentum值合适，所以实际开发中momentum一般还是设置为 0.9
+
+# PyTorch中的优化器
+## torch.optim.SGD
+```python
+class SGD(Optimizer):
+    def __init__(self, params, lr=required, momentum=0, dampening=0,
+                 weight_decay=0, nesterov=False):
+
+    def __setstate__(self, state):
+        super(SGD, self).__setstate__(state)
+        for group in self.param_groups:
+            group.setdefault('nesterov', False)
+
+    def step(self, closure=None):
+        return loss
+```
+主要参数：
+- **params**: 管理的参数组
+- **lr**: 初始学习率
+- **momentum**: 动量系数，$\beta$
+- **weight_decay**: L2正则化系数
+- **nesterov**: 是否采用NAG
+
+NAG 参考文献：《On the importance of initialization and momentum in deep learning》
+
+
+## Pytorch 的十种优化器
+
+1. optim.SGD: 随机梯度下降法
+2. optim.Adagrad: 自适应学习率梯度下降法
+3. optim.RMSprop: Adagrad 的改进
+4. optim.Adadelta: Adagrad 的改进
+5. optim.Adam: RMSprop 结合 Momentum
+6. optim.Adamax: Adam增加学习率上限
+7. optim.SparseAdam: 稀疏版的梯度下降
+8. optim.ASGD: 随机平均梯度下降
+9. optim.Rprop: 弹性反向传播，通常在将全部数据加入一个batch去训练时会用到
+10. optim.LBFGS: 对BFGS在内存消耗上的改进
+
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_momentum5.jpg" width = 60% height = 60% />
+</div>
 
 
 # 参考文献
