@@ -20,5 +20,5 @@ File > Preference > Settings > 选中Workspace > 搜索fontFamily > 填入以下
 ```
 
 <div align=center>
-  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/vscode_font1.jpg" width = 60% height = 60% />
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/envtool/vscode_font1.jpg" width = 60% height = 60% />
 </div>
