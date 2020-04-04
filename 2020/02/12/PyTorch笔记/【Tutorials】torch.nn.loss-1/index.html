@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本节首先讲述什么是损失函数以及损失函数与代价函数、目标函数之间的关系，然后讲述了PyTorch中的常用损失函数。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch笔记&#x2F;【Tutorials】torch.nn.loss-1">
+<meta property="og:url" content="http://yoursite.com/2020/02/12/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.loss-1/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="本节首先讲述什么是损失函数以及损失函数与代价函数、目标函数之间的关系，然后讲述了PyTorch中的常用损失函数。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_loss1.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_loss2.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_loss3.jpg">
+<meta property="article:published_time" content="2020-02-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-18T13:06:46.964Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_loss1.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/02/12/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.loss-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>PyTorch笔记/【Tutorials】torch.nn.loss-1 | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/12/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.loss-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch笔记/【Tutorials】torch.nn.loss-1
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-12 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-12T00:00:00+08:00">2020-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-18 21:06:46" itemprop="dateModified" datetime="2020-03-18T21:06:46+08:00">2020-03-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本节首先讲述什么是损失函数以及损失函数与代价函数、目标函数之间的关系，然后讲述了PyTorch中的常用损失函数。<br><a id="more"></a></p>
+<h1 id="什么是损失函数"><a href="#什么是损失函数" class="headerlink" title="什么是损失函数"></a>什么是损失函数</h1><p><strong>损失函数</strong>：衡量模型输出与真实标签的差异</p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_loss1.jpg" width = 80% height = 80% />
+</div>
+
+<p><strong>损失函数（Loss Function）</strong>:</p>
+<script type="math/tex; mode=display">
+Loss = f(\hat{y}, y)</script><p>损失函数是计算一个样本的预测值与真实值之间的差异的。</p>
+<p><strong>代价函数（Cost Function）</strong>:</p>
+<script type="math/tex; mode=display">
+Cost = \frac{1}{N} \sum^N_{i} f(\hat{y_i}, y_i)</script><p>代价函数是计算整个样本集（整个训练集）Loss的平均值，也就是在损失函数的基础上求均值。</p>
+<p><strong>目标函数（Objective Function）</strong>:</p>
+<script type="math/tex; mode=display">
+Obj = Cost + Regularization</script><p>目标函数是一个更广泛的概念，在机器学习中，目标函数通常就是训练的最终目标，通常整个目标会包括 Cost Function 和Regularization. 因为通常情况下，这个Cost并不是越小越好，太小了容易导致过拟合，所以要对机器学习做一些约束，通常称这些约束为<strong>正则化(Regularization)</strong></p>
+<p>为了不失一般性，后面通常都会用Loss Function去代替Cost Function.</p>
+<p>PyTorch中的loss继承自Module，<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_Loss</span><span class="params">(Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, size_average=None, reduce=None, reduction=<span class="string">'mean'</span>)</span>:</span></span><br><span class="line">        super(_Loss, self).__init__()</span><br><span class="line">        <span class="keyword">if</span> size_average <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">or</span> reduce <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            self.reduction = _Reduction.legacy_get_string(size_average, reduce)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.reduction = reduction</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><strong>size_average</strong>: 即将弃用</li>
+<li><strong>reduce</strong>: 即将弃用</li>
+<li><strong>reduction</strong>: </li>
+</ul>
+<h1 id="PyTorch中的损失函数"><a href="#PyTorch中的损失函数" class="headerlink" title="PyTorch中的损失函数"></a>PyTorch中的损失函数</h1><h2 id="nn-CrossEntropyLoss"><a href="#nn-CrossEntropyLoss" class="headerlink" title="nn.CrossEntropyLoss"></a>nn.CrossEntropyLoss</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CrossEntropyLoss</span><span class="params">(_WeightedLoss)</span>:</span></span><br><span class="line">    <span class="string">r"""This criterion combines :func:`nn.LogSoftmax` and :func:`nn.NLLLoss` in one single class.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    It is useful when training a classification problem with `C` classes.</span></span><br><span class="line"><span class="string">    If provided, the optional argument :attr:`weight` should be a 1D `Tensor`</span></span><br><span class="line"><span class="string">    assigning weight to each of the classes.</span></span><br><span class="line"><span class="string">    This is particularly useful when you have an unbalanced training set.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The `input` is expected to contain raw, unnormalized scores for each class.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `input` has to be a Tensor of size either :math:`(minibatch, C)` or</span></span><br><span class="line"><span class="string">    :math:`(minibatch, C, d_1, d_2, ..., d_K)`</span></span><br><span class="line"><span class="string">    with :math:`K \geq 1` for the `K`-dimensional case (described later).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    This criterion expects a class index in the range :math:`[0, C-1]` as the</span></span><br><span class="line"><span class="string">    `target` for each value of a 1D tensor of size `minibatch`; if `ignore_index`</span></span><br><span class="line"><span class="string">    is specified, this criterion also accepts this class index (this index may not</span></span><br><span class="line"><span class="string">    necessarily be in the class range).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The loss can be described as:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. math::</span></span><br><span class="line"><span class="string">        \text&#123;loss&#125;(x, class) = -\log\left(\frac&#123;\exp(x[class])&#125;&#123;\sum_j \exp(x[j])&#125;\right)</span></span><br><span class="line"><span class="string">                       = -x[class] + \log\left(\sum_j \exp(x[j])\right)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    or in the case of the :attr:`weight` argument being specified:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. math::</span></span><br><span class="line"><span class="string">        \text&#123;loss&#125;(x, class) = weight[class] \left(-x[class] + \log\left(\sum_j \exp(x[j])\right)\right)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The losses are averaged across observations for each minibatch.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Can also be used for higher dimension inputs, such as 2D images, by providing</span></span><br><span class="line"><span class="string">    an input of size :math:`(minibatch, C, d_1, d_2, ..., d_K)` with :math:`K \geq 1`,</span></span><br><span class="line"><span class="string">    where :math:`K` is the number of dimensions, and a target of appropriate shape</span></span><br><span class="line"><span class="string">    (see below).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        weight (Tensor, optional): a manual rescaling weight given to each class.</span></span><br><span class="line"><span class="string">            If given, has to be a Tensor of size `C`</span></span><br><span class="line"><span class="string">        size_average (bool, optional): Deprecated (see :attr:`reduction`). By default,</span></span><br><span class="line"><span class="string">            the losses are averaged over each loss element in the batch. Note that for</span></span><br><span class="line"><span class="string">            some losses, there are multiple elements per sample. If the field :attr:`size_average`</span></span><br><span class="line"><span class="string">            is set to ``False``, the losses are instead summed for each minibatch. Ignored</span></span><br><span class="line"><span class="string">            when reduce is ``False``. Default: ``True``</span></span><br><span class="line"><span class="string">        ignore_index (int, optional): Specifies a target value that is ignored</span></span><br><span class="line"><span class="string">            and does not contribute to the input gradient. When :attr:`size_average` is</span></span><br><span class="line"><span class="string">            ``True``, the loss is averaged over non-ignored targets.</span></span><br><span class="line"><span class="string">        reduce (bool, optional): Deprecated (see :attr:`reduction`). By default, the</span></span><br><span class="line"><span class="string">            losses are averaged or summed over observations for each minibatch depending</span></span><br><span class="line"><span class="string">            on :attr:`size_average`. When :attr:`reduce` is ``False``, returns a loss per</span></span><br><span class="line"><span class="string">            batch element instead and ignores :attr:`size_average`. Default: ``True``</span></span><br><span class="line"><span class="string">        reduction (string, optional): Specifies the reduction to apply to the output:</span></span><br><span class="line"><span class="string">            ``'none'`` | ``'mean'`` | ``'sum'``. ``'none'``: no reduction will be applied,</span></span><br><span class="line"><span class="string">            ``'mean'``: the sum of the output will be divided by the number of</span></span><br><span class="line"><span class="string">            elements in the output, ``'sum'``: the output will be summed. Note: :attr:`size_average`</span></span><br><span class="line"><span class="string">            and :attr:`reduce` are in the process of being deprecated, and in the meantime,</span></span><br><span class="line"><span class="string">            specifying either of those two args will override :attr:`reduction`. Default: ``'mean'``</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Shape:</span></span><br><span class="line"><span class="string">        - Input: :math:`(N, C)` where `C = number of classes`, or</span></span><br><span class="line"><span class="string">          :math:`(N, C, d_1, d_2, ..., d_K)` with :math:`K \geq 1`</span></span><br><span class="line"><span class="string">          in the case of `K`-dimensional loss.</span></span><br><span class="line"><span class="string">        - Target: :math:`(N)` where each value is :math:`0 \leq \text&#123;targets&#125;[i] \leq C-1`, or</span></span><br><span class="line"><span class="string">          :math:`(N, d_1, d_2, ..., d_K)` with :math:`K \geq 1` in the case of</span></span><br><span class="line"><span class="string">          K-dimensional loss.</span></span><br><span class="line"><span class="string">        - Output: scalar.</span></span><br><span class="line"><span class="string">          If :attr:`reduction` is ``'none'``, then the same size as the target:</span></span><br><span class="line"><span class="string">          :math:`(N)`, or</span></span><br><span class="line"><span class="string">          :math:`(N, d_1, d_2, ..., d_K)` with :math:`K \geq 1` in the case</span></span><br><span class="line"><span class="string">          of K-dimensional loss.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Examples::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; loss = nn.CrossEntropyLoss()</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; input = torch.randn(3, 5, requires_grad=True)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; target = torch.empty(3, dtype=torch.long).random_(5)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; output = loss(input, target)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; output.backward()</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    __constants__ = [<span class="string">'weight'</span>, <span class="string">'ignore_index'</span>, <span class="string">'reduction'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, weight=None, size_average=None, ignore_index=<span class="number">-100</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 reduce=None, reduction=<span class="string">'mean'</span>)</span>:</span></span><br><span class="line">        super(CrossEntropyLoss, self).__init__(weight, size_average, reduce, reduction)</span><br><span class="line">        self.ignore_index = ignore_index</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input, target)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> F.cross_entropy(input, target, weight=self.weight,</span><br><span class="line">                               ignore_index=self.ignore_index, reduction=self.reduction)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>: nn.LogSoftmax() 与 nn.NLLLoss() 结合，进行交叉熵计算</p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_loss2.jpg" width = 80% height = 80% />
+</div>
+
+<p>交叉熵是用来衡量两个分布还见的差异，关于交叉熵的更多原理性的东西其他文章以及网络资源都已经讲过了，这里就不具体展开讲了。</p>
+<p>主要参数：</p>
+<ul>
+<li><strong>weight</strong>: 各类别的loss设置权值</li>
+<li><strong>ignore_index</strong>: 忽略某个类别</li>
+<li><strong>reduction</strong>: 计算模式，可为 none/sum/mean \<br>&emsp; &emsp; &emsp; &emsp; none: 逐个元素(样本)计算 \<br>&emsp; &emsp; &emsp; &emsp; sum: 所有元素求和，返回标量 \<br>&emsp; &emsp; &emsp; &emsp; mean: 加权平均，返回标量</li>
+<li><strong>size_average</strong>: 即将弃用</li>
+<li><strong>reduce</strong>: 即将弃用</li>
+</ul>
+<p>交叉熵的计算公式为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    H(P, Q) = - \sum^N_{i=1} P(x_i) log Q(x_i)
+\end{aligned}</script><p>其中 $P(x_i)$ 表示真实概率，通常为0或者1，$Q(x_i)$ 表示预测概率。</p>
+<p>CrossEntropyLoss在程序中的计算公式：</p>
+<script type="math/tex; mode=display">
+loss(x, class) = -log \Big(\frac{exp(x[class])}{\sum_j exp(x[j])} \Big) = 
+-x[class] + log \Big(\sum_j exp(x[j]) \Big)</script><p>考虑到权值的CrossEntropyLoss在程序中的计算公式：</p>
+<script type="math/tex; mode=display">
+loss(x, class) = weight[class] \Bigg (-x[class] + log \Big(\sum_j exp(x[j]) \Big) \Bigg)</script><p>考虑到权值的CrossEntropyLoss均值在程序中的计算公式：(加权平均)</p>
+<script type="math/tex; mode=display">
+Mean \Big(loss(x, class)) \Big) = \frac{weight[class] \Bigg (-x[class] + log \Big(\sum_j exp(x[j]) \Big) \Bigg)}{\sum_j weight_j}</script><p>注意在weight模式下，求交叉熵Mean Loss的时候除的不是样本的个数，而是除以样本权重的总和，这也可以通过后面的代码看到。</p>
+<h3 id="不带有权值的loss的代码示例"><a href="#不带有权值的loss的代码示例" class="headerlink" title="不带有权值的loss的代码示例"></a>不带有权值的loss的代码示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># @file name  : loss_function_1.py</span></span><br><span class="line"><span class="string"># @author     : TingsongYu https://github.com/TingsongYu</span></span><br><span class="line"><span class="string"># @date       : 2019-10-07 10:08:00</span></span><br><span class="line"><span class="string"># @brief      : 1. nn.CrossEntropyLoss</span></span><br><span class="line"><span class="string">                2. nn.NLLLoss</span></span><br><span class="line"><span class="string">                3. BCELoss</span></span><br><span class="line"><span class="string">                4. BCEWithLogitsLoss</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># fake data</span></span><br><span class="line">inputs = torch.tensor([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">3</span>]], dtype=torch.float)</span><br><span class="line">target = torch.tensor([<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>], dtype=torch.long)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ----------------------------------- CrossEntropy loss: reduction -----------------------------------</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    <span class="comment"># def loss function</span></span><br><span class="line">    loss_f_none = nn.CrossEntropyLoss(weight=<span class="literal">None</span>, reduction=<span class="string">'none'</span>)</span><br><span class="line">    loss_f_sum = nn.CrossEntropyLoss(weight=<span class="literal">None</span>, reduction=<span class="string">'sum'</span>)</span><br><span class="line">    loss_f_mean = nn.CrossEntropyLoss(weight=<span class="literal">None</span>, reduction=<span class="string">'mean'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># forward</span></span><br><span class="line">    loss_none = loss_f_none(inputs, target)</span><br><span class="line">    loss_sum = loss_f_sum(inputs, target)</span><br><span class="line">    loss_mean = loss_f_mean(inputs, target)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># view</span></span><br><span class="line">    print(<span class="string">"Cross Entropy Loss:\n "</span>, loss_none, loss_sum, loss_mean)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --------------------------------- compute by hand</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line"></span><br><span class="line">    idx = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    input_1 = inputs.detach().numpy()[idx]      <span class="comment"># [1, 2]</span></span><br><span class="line">    target_1 = target.numpy()[idx]              <span class="comment"># [0]</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 第一项</span></span><br><span class="line">    x_class = input_1[target_1]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 第二项</span></span><br><span class="line">    sigma_exp_x = np.sum(list(map(np.exp, input_1)))</span><br><span class="line">    log_sigma_exp_x = np.log(sigma_exp_x)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 输出loss</span></span><br><span class="line">    loss_1 = -x_class + log_sigma_exp_x</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"第一个样本loss为: "</span>, loss_1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">Cross Entropy Loss:</span><br><span class="line">loss_none:</span><br><span class="line">  tensor([<span class="number">1.3133</span>, <span class="number">0.1269</span>, <span class="number">0.1269</span>]) </span><br><span class="line"></span><br><span class="line">loss_sum:  </span><br><span class="line">tensor(<span class="number">1.5671</span>)</span><br><span class="line"></span><br><span class="line">loss_mean:</span><br><span class="line">tensor(<span class="number">0.5224</span>)</span><br><span class="line"></span><br><span class="line">手动计算：</span><br><span class="line">第一个样本loss为:  <span class="number">1.3132617</span></span><br></pre></td></tr></table></figure>
+<h3 id="带有权值的loss的代码示例"><a href="#带有权值的loss的代码示例" class="headerlink" title="带有权值的loss的代码示例"></a>带有权值的loss的代码示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    <span class="comment"># def loss function</span></span><br><span class="line">    weights = torch.tensor([<span class="number">1</span>, <span class="number">2</span>], dtype=torch.float)</span><br><span class="line">    <span class="comment"># weights = torch.tensor([0.7, 0.3], dtype=torch.float)</span></span><br><span class="line"></span><br><span class="line">    loss_f_none_w = nn.CrossEntropyLoss(weight=weights, reduction=<span class="string">'none'</span>)</span><br><span class="line">    loss_f_sum = nn.CrossEntropyLoss(weight=weights, reduction=<span class="string">'sum'</span>)</span><br><span class="line">    loss_f_mean = nn.CrossEntropyLoss(weight=weights, reduction=<span class="string">'mean'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># forward</span></span><br><span class="line">    loss_none_w = loss_f_none_w(inputs, target)</span><br><span class="line">    loss_sum = loss_f_sum(inputs, target)</span><br><span class="line">    loss_mean = loss_f_mean(inputs, target)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># view</span></span><br><span class="line">    print(<span class="string">"\nweights: "</span>, weights)</span><br><span class="line">    print(<span class="string">"loss_none: \n "</span>, loss_none_w)</span><br><span class="line">    print(<span class="string">"loss_sum:\n "</span>, loss_sum)</span><br><span class="line">    print(<span class="string">"loss_mean:\n "</span>, loss_mean)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --------------------------------- compute by hand</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    weights = torch.tensor([<span class="number">1</span>, <span class="number">2</span>], dtype=torch.float)</span><br><span class="line">    weights_all = np.sum(list(map(<span class="keyword">lambda</span> x: weights.numpy()[x], target.numpy())))  <span class="comment"># [0, 1, 1]  # [1 2 2]</span></span><br><span class="line"></span><br><span class="line">    mean = <span class="number">0</span></span><br><span class="line">    loss_sep = loss_none.detach().numpy()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(target.shape[<span class="number">0</span>]):</span><br><span class="line"></span><br><span class="line">        x_class = target.numpy()[i]</span><br><span class="line">        tmp = loss_sep[i] * (weights.numpy()[x_class] / weights_all)</span><br><span class="line">        mean += tmp</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"手动计算的的 loss_mean:\n "</span>, mean)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line"><span class="comment"># Pytorch 计算的带有 weight 的损失。</span></span><br><span class="line">weights:  tensor([<span class="number">1.</span>, <span class="number">2.</span>])</span><br><span class="line"></span><br><span class="line">loss_none: </span><br><span class="line">  tensor([<span class="number">1.3133</span>, <span class="number">0.2539</span>, <span class="number">0.2539</span>])</span><br><span class="line"></span><br><span class="line">loss_sum:</span><br><span class="line">  tensor(<span class="number">1.8210</span>)</span><br><span class="line"></span><br><span class="line">loss_mean:</span><br><span class="line">  tensor(<span class="number">0.3642</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 手动计算的带有 weight 的mean损失</span></span><br><span class="line">手动计算的的 loss_mean:</span><br><span class="line">  <span class="number">0.3641947731375694</span></span><br></pre></td></tr></table></figure>
+<h2 id="nn-NLLLoss"><a href="#nn-NLLLoss" class="headerlink" title="nn.NLLLoss"></a>nn.NLLLoss</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NLLLoss</span><span class="params">(_WeightedLoss)</span>:</span></span><br><span class="line">    <span class="string">r"""The negative log likelihood loss. It is useful to train a classification</span></span><br><span class="line"><span class="string">    problem with `C` classes.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If provided, the optional argument :attr:`weight` should be a 1D Tensor assigning</span></span><br><span class="line"><span class="string">    weight to each of the classes. This is particularly useful when you have an</span></span><br><span class="line"><span class="string">    unbalanced training set.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The `input` given through a forward call is expected to contain</span></span><br><span class="line"><span class="string">    log-probabilities of each class. `input` has to be a Tensor of size either</span></span><br><span class="line"><span class="string">    :math:`(minibatch, C)` or :math:`(minibatch, C, d_1, d_2, ..., d_K)`</span></span><br><span class="line"><span class="string">    with :math:`K \geq 1` for the `K`-dimensional case (described later).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Obtaining log-probabilities in a neural network is easily achieved by</span></span><br><span class="line"><span class="string">    adding a  `LogSoftmax`  layer in the last layer of your network.</span></span><br><span class="line"><span class="string">    You may use `CrossEntropyLoss` instead, if you prefer not to add an extra</span></span><br><span class="line"><span class="string">    layer.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The `target` that this loss expects should be a class index in the range :math:`[0, C-1]`</span></span><br><span class="line"><span class="string">    where `C = number of classes`; if `ignore_index` is specified, this loss also accepts</span></span><br><span class="line"><span class="string">    this class index (this index may not necessarily be in the class range).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The unreduced (i.e. with :attr:`reduction` set to ``'none'``) loss can be described as:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. math::</span></span><br><span class="line"><span class="string">        \ell(x, y) = L = \&#123;l_1,\dots,l_N\&#125;^\top, \quad</span></span><br><span class="line"><span class="string">        l_n = - w_&#123;y_n&#125; x_&#123;n,y_n&#125;, \quad</span></span><br><span class="line"><span class="string">        w_&#123;c&#125; = \text&#123;weight&#125;[c] \cdot \mathbb&#123;1&#125;\&#123;c \not= \text&#123;ignore\_index&#125;\&#125;,</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    where :math:`N` is the batch size. If :attr:`reduction` is not ``'none'``</span></span><br><span class="line"><span class="string">    (default ``'mean'``), then</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. math::</span></span><br><span class="line"><span class="string">        \ell(x, y) = \begin&#123;cases&#125;</span></span><br><span class="line"><span class="string">            \sum_&#123;n=1&#125;^N \frac&#123;1&#125;&#123;\sum_&#123;n=1&#125;^N w_&#123;y_n&#125;&#125; l_n, &amp;</span></span><br><span class="line"><span class="string">            \text&#123;if reduction&#125; = \text&#123;'mean';&#125;\\</span></span><br><span class="line"><span class="string">            \sum_&#123;n=1&#125;^N l_n,  &amp;</span></span><br><span class="line"><span class="string">            \text&#123;if reduction&#125; = \text&#123;'sum'.&#125;</span></span><br><span class="line"><span class="string">        \end&#123;cases&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Can also be used for higher dimension inputs, such as 2D images, by providing</span></span><br><span class="line"><span class="string">    an input of size :math:`(minibatch, C, d_1, d_2, ..., d_K)` with :math:`K \geq 1`,</span></span><br><span class="line"><span class="string">    where :math:`K` is the number of dimensions, and a target of appropriate shape</span></span><br><span class="line"><span class="string">    (see below). In the case of images, it computes NLL loss per-pixel.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        weight (Tensor, optional): a manual rescaling weight given to each</span></span><br><span class="line"><span class="string">            class. If given, it has to be a Tensor of size `C`. Otherwise, it is</span></span><br><span class="line"><span class="string">            treated as if having all ones.</span></span><br><span class="line"><span class="string">        size_average (bool, optional): Deprecated (see :attr:`reduction`). By default,</span></span><br><span class="line"><span class="string">            the losses are averaged over each loss element in the batch. Note that for</span></span><br><span class="line"><span class="string">            some losses, there are multiple elements per sample. If the field :attr:`size_average`</span></span><br><span class="line"><span class="string">            is set to ``False``, the losses are instead summed for each minibatch. Ignored</span></span><br><span class="line"><span class="string">            when reduce is ``False``. Default: ``True``</span></span><br><span class="line"><span class="string">        ignore_index (int, optional): Specifies a target value that is ignored</span></span><br><span class="line"><span class="string">            and does not contribute to the input gradient. When</span></span><br><span class="line"><span class="string">            :attr:`size_average` is ``True``, the loss is averaged over</span></span><br><span class="line"><span class="string">            non-ignored targets.</span></span><br><span class="line"><span class="string">        reduce (bool, optional): Deprecated (see :attr:`reduction`). By default, the</span></span><br><span class="line"><span class="string">            losses are averaged or summed over observations for each minibatch depending</span></span><br><span class="line"><span class="string">            on :attr:`size_average`. When :attr:`reduce` is ``False``, returns a loss per</span></span><br><span class="line"><span class="string">            batch element instead and ignores :attr:`size_average`. Default: ``True``</span></span><br><span class="line"><span class="string">        reduction (string, optional): Specifies the reduction to apply to the output:</span></span><br><span class="line"><span class="string">            ``'none'`` | ``'mean'`` | ``'sum'``. ``'none'``: no reduction will be applied,</span></span><br><span class="line"><span class="string">            ``'mean'``: the sum of the output will be divided by the number of</span></span><br><span class="line"><span class="string">            elements in the output, ``'sum'``: the output will be summed. Note: :attr:`size_average`</span></span><br><span class="line"><span class="string">            and :attr:`reduce` are in the process of being deprecated, and in the meantime,</span></span><br><span class="line"><span class="string">            specifying either of those two args will override :attr:`reduction`. Default: ``'mean'``</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Shape:</span></span><br><span class="line"><span class="string">        - Input: :math:`(N, C)` where `C = number of classes`, or</span></span><br><span class="line"><span class="string">          :math:`(N, C, d_1, d_2, ..., d_K)` with :math:`K \geq 1`</span></span><br><span class="line"><span class="string">          in the case of `K`-dimensional loss.</span></span><br><span class="line"><span class="string">        - Target: :math:`(N)` where each value is :math:`0 \leq \text&#123;targets&#125;[i] \leq C-1`, or</span></span><br><span class="line"><span class="string">          :math:`(N, d_1, d_2, ..., d_K)` with :math:`K \geq 1` in the case of</span></span><br><span class="line"><span class="string">          K-dimensional loss.</span></span><br><span class="line"><span class="string">        - Output: scalar.</span></span><br><span class="line"><span class="string">          If :attr:`reduction` is ``'none'``, then the same size as the target: :math:`(N)`, or</span></span><br><span class="line"><span class="string">          :math:`(N, d_1, d_2, ..., d_K)` with :math:`K \geq 1` in the case</span></span><br><span class="line"><span class="string">          of K-dimensional loss.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Examples::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; m = nn.LogSoftmax(dim=1)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; loss = nn.NLLLoss()</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # input is of size N x C = 3 x 5</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; input = torch.randn(3, 5, requires_grad=True)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # each element in target has to have 0 &lt;= value &lt; C</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; target = torch.tensor([1, 0, 4])</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; output = loss(m(input), target)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; output.backward()</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt;</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # 2D loss example (used, for example, with image inputs)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; N, C = 5, 4</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; loss = nn.NLLLoss()</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # input is of size N x C x height x width</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; data = torch.randn(N, 16, 10, 10)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; conv = nn.Conv2d(16, C, (3, 3))</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; m = nn.LogSoftmax(dim=1)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; # each element in target has to have 0 &lt;= value &lt; C</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; target = torch.empty(N, 8, 8, dtype=torch.long).random_(0, C)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; output = loss(m(conv(data)), target)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; output.backward()</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    __constants__ = [<span class="string">'ignore_index'</span>, <span class="string">'weight'</span>, <span class="string">'reduction'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, weight=None, size_average=None, ignore_index=<span class="number">-100</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 reduce=None, reduction=<span class="string">'mean'</span>)</span>:</span></span><br><span class="line">        super(NLLLoss, self).__init__(weight, size_average, reduce, reduction)</span><br><span class="line">        self.ignore_index = ignore_index</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input, target)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> F.nll_loss(input, target, weight=self.weight, ignore_index=self.ignore_index, reduction=self.reduction)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：实现负对数似然函数中的<strong>负号功能</strong></p>
+<p>在代码中的计算公式如下：</p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_loss3.jpg" width = 80% height = 80% />
+</div>
+
+<p>其中 $w_{y_n}$ 表示对应类别的权重，$x_{n, y_n}$ 表示对应类别的预测值，如果 $w_{y_n} = 1$ 的话，相当于只是对预测结果取负号。</p>
+<p>主要参数：</p>
+<ul>
+<li><strong>weight</strong>: 各类别的loss设置权值</li>
+<li><strong>ignore_index</strong>: 忽略某个类别</li>
+<li><strong>reduction</strong>: 计算模式，可为 none/sum/mean \<br>&emsp; &emsp; &emsp; &emsp; none: 逐个元素(样本)计算 \<br>&emsp; &emsp; &emsp; &emsp; sum: 所有元素求和，返回标量 \<br>&emsp; &emsp; &emsp; &emsp; mean: 加权平均，返回标量</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ----------------------------------- 2 NLLLoss -----------------------------------</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 为不失一般性，这里还是将类别权重设置为1，这也就上相当于不考虑类别权重</span></span><br><span class="line">    weights = torch.tensor([<span class="number">1</span>, <span class="number">1</span>], dtype=torch.float)</span><br><span class="line"></span><br><span class="line">    loss_f_none_w = nn.NLLLoss(weight=weights, reduction=<span class="string">'none'</span>)</span><br><span class="line">    loss_f_sum = nn.NLLLoss(weight=weights, reduction=<span class="string">'sum'</span>)</span><br><span class="line">    loss_f_mean = nn.NLLLoss(weight=weights, reduction=<span class="string">'mean'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># forward</span></span><br><span class="line">    loss_none_w = loss_f_none_w(inputs, target)</span><br><span class="line">    loss_sum = loss_f_sum(inputs, target)</span><br><span class="line">    loss_mean = loss_f_mean(inputs, target)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># view</span></span><br><span class="line">    print(<span class="string">"\nweights: "</span>, weights)</span><br><span class="line">    print(<span class="string">"loss_none:\n "</span>, loss_none_w)</span><br><span class="line">    print(<span class="string">"loss_sum:\n "</span>, loss_sum)</span><br><span class="line">    print(<span class="string">"loss_mean:\n "</span>, loss_mean)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">weights:  tensor([<span class="number">1.</span>, <span class="number">1.</span>])</span><br><span class="line">loss_none: </span><br><span class="line">  tensor([<span class="number">-1.</span>, <span class="number">-3.</span>, <span class="number">-3.</span>])</span><br><span class="line">loss_sum:</span><br><span class="line">  tensor(<span class="number">-7.</span>)</span><br><span class="line">loss_mean:</span><br><span class="line">  tensor(<span class="number">-2.3333</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="nn-BCELoss"><a href="#nn-BCELoss" class="headerlink" title="nn.BCELoss"></a>nn.BCELoss</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BCELoss</span><span class="params">(_WeightedLoss)</span>:</span></span><br><span class="line">    <span class="string">r"""Creates a criterion that measures the Binary Cross Entropy</span></span><br><span class="line"><span class="string">    between the target and the output:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The unreduced (i.e. with :attr:`reduction` set to ``'none'``) loss can be described as:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. math::</span></span><br><span class="line"><span class="string">        \ell(x, y) = L = \&#123;l_1,\dots,l_N\&#125;^\top, \quad</span></span><br><span class="line"><span class="string">        l_n = - w_n \left[ y_n \cdot \log x_n + (1 - y_n) \cdot \log (1 - x_n) \right],</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    where :math:`N` is the batch size. If :attr:`reduction` is not ``'none'``</span></span><br><span class="line"><span class="string">    (default ``'mean'``), then</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. math::</span></span><br><span class="line"><span class="string">        \ell(x, y) = \begin&#123;cases&#125;</span></span><br><span class="line"><span class="string">            \operatorname&#123;mean&#125;(L), &amp; \text&#123;if reduction&#125; = \text&#123;'mean';&#125;\\</span></span><br><span class="line"><span class="string">            \operatorname&#123;sum&#125;(L),  &amp; \text&#123;if reduction&#125; = \text&#123;'sum'.&#125;</span></span><br><span class="line"><span class="string">        \end&#123;cases&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    This is used for measuring the error of a reconstruction in for example</span></span><br><span class="line"><span class="string">    an auto-encoder. Note that the targets :math:`y` should be numbers</span></span><br><span class="line"><span class="string">    between 0 and 1.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        weight (Tensor, optional): a manual rescaling weight given to the loss</span></span><br><span class="line"><span class="string">            of each batch element. If given, has to be a Tensor of size `nbatch`.</span></span><br><span class="line"><span class="string">        size_average (bool, optional): Deprecated (see :attr:`reduction`). By default,</span></span><br><span class="line"><span class="string">            the losses are averaged over each loss element in the batch. Note that for</span></span><br><span class="line"><span class="string">            some losses, there are multiple elements per sample. If the field :attr:`size_average`</span></span><br><span class="line"><span class="string">            is set to ``False``, the losses are instead summed for each minibatch. Ignored</span></span><br><span class="line"><span class="string">            when reduce is ``False``. Default: ``True``</span></span><br><span class="line"><span class="string">        reduce (bool, optional): Deprecated (see :attr:`reduction`). By default, the</span></span><br><span class="line"><span class="string">            losses are averaged or summed over observations for each minibatch depending</span></span><br><span class="line"><span class="string">            on :attr:`size_average`. When :attr:`reduce` is ``False``, returns a loss per</span></span><br><span class="line"><span class="string">            batch element instead and ignores :attr:`size_average`. Default: ``True``</span></span><br><span class="line"><span class="string">        reduction (string, optional): Specifies the reduction to apply to the output:</span></span><br><span class="line"><span class="string">            ``'none'`` | ``'mean'`` | ``'sum'``. ``'none'``: no reduction will be applied,</span></span><br><span class="line"><span class="string">            ``'mean'``: the sum of the output will be divided by the number of</span></span><br><span class="line"><span class="string">            elements in the output, ``'sum'``: the output will be summed. Note: :attr:`size_average`</span></span><br><span class="line"><span class="string">            and :attr:`reduce` are in the process of being deprecated, and in the meantime,</span></span><br><span class="line"><span class="string">            specifying either of those two args will override :attr:`reduction`. Default: ``'mean'``</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Shape:</span></span><br><span class="line"><span class="string">        - Input: :math:`(N, *)` where :math:`*` means, any number of additional</span></span><br><span class="line"><span class="string">          dimensions</span></span><br><span class="line"><span class="string">        - Target: :math:`(N, *)`, same shape as the input</span></span><br><span class="line"><span class="string">        - Output: scalar. If :attr:`reduction` is ``'none'``, then :math:`(N, *)`, same</span></span><br><span class="line"><span class="string">          shape as input.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Examples::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; m = nn.Sigmoid()</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; loss = nn.BCELoss()</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; input = torch.randn(3, requires_grad=True)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; target = torch.empty(3).random_(2)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; output = loss(m(input), target)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; output.backward()</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    __constants__ = [<span class="string">'reduction'</span>, <span class="string">'weight'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, weight=None, size_average=None, reduce=None, reduction=<span class="string">'mean'</span>)</span>:</span></span><br><span class="line">        super(BCELoss, self).__init__(weight, size_average, reduce, reduction)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input, target)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> F.binary_cross_entropy(input, target, weight=self.weight, reduction=self.reduction)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：二分类交叉熵，是交叉熵损失函数的特例。<br><strong>注意事项</strong>: 输入值取值在[0, 1]</p>
+<p>计算公式：</p>
+<script type="math/tex; mode=display">
+l_n = -w_n[ y_n \cdot log x_n + (1 - y_n) \cdot log(1 - x_n) ]</script><p>其中，$x_n$ 是模型输出概率值，$y_n$ 是标签。</p>
+<p>主要参数：</p>
+<ul>
+<li><strong>weight</strong>: 各类别的loss设置权值</li>
+<li><strong>ignore_index</strong>: 忽略某个类别</li>
+<li><strong>reduction</strong>: 计算模式，可为 none/sum/mean \<br>&emsp; &emsp; &emsp; &emsp; none: 逐个元素(样本)计算 \<br>&emsp; &emsp; &emsp; &emsp; sum: 所有元素求和，返回标量 \<br>&emsp; &emsp; &emsp; &emsp; mean: 加权平均，返回标量</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ----------------------------------- 3 BCE Loss -----------------------------------</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    inputs = torch.tensor([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">4</span>, <span class="number">5</span>]], dtype=torch.float)</span><br><span class="line">    target = torch.tensor([[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>]], dtype=torch.float)</span><br><span class="line"></span><br><span class="line">    target_bce = target</span><br><span class="line"></span><br><span class="line">    <span class="comment"># itarget</span></span><br><span class="line">    <span class="comment"># 将预测结果转化为概率取值</span></span><br><span class="line">    inputs = torch.sigmoid(inputs)</span><br><span class="line"></span><br><span class="line">    weights = torch.tensor([<span class="number">1</span>, <span class="number">1</span>], dtype=torch.float)</span><br><span class="line"></span><br><span class="line">    loss_f_none_w = nn.BCELoss(weight=weights, reduction=<span class="string">'none'</span>)</span><br><span class="line">    loss_f_sum = nn.BCELoss(weight=weights, reduction=<span class="string">'sum'</span>)</span><br><span class="line">    loss_f_mean = nn.BCELoss(weight=weights, reduction=<span class="string">'mean'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># forward</span></span><br><span class="line">    loss_none_w = loss_f_none_w(inputs, target_bce)</span><br><span class="line">    loss_sum = loss_f_sum(inputs, target_bce)</span><br><span class="line">    loss_mean = loss_f_mean(inputs, target_bce)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># view</span></span><br><span class="line">    print(<span class="string">"\nweights: "</span>, weights)</span><br><span class="line">    print(<span class="string">"BCE Loss"</span>, loss_none_w, loss_sum, loss_mean)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --------------------------------- compute by hand</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line"></span><br><span class="line">    idx = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    x_i = inputs.detach().numpy()[idx, idx]</span><br><span class="line">    y_i = target.numpy()[idx, idx]              <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># loss</span></span><br><span class="line">    <span class="comment"># l_i = -[ y_i * np.log(x_i) + (1-y_i) * np.log(1-y_i) ]      # np.log(0) = nan</span></span><br><span class="line">    l_i = -y_i * np.log(x_i) <span class="keyword">if</span> y_i <span class="keyword">else</span> -(<span class="number">1</span>-y_i) * np.log(<span class="number">1</span>-x_i)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 输出loss</span></span><br><span class="line">    print(<span class="string">"BCE inputs: "</span>, inputs)</span><br><span class="line">    print(<span class="string">"第一个loss为: "</span>, l_i)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line"><span class="comment"># 这里将类别权重都设置为1.</span></span><br><span class="line">weights:  tensor([<span class="number">1.</span>, <span class="number">1.</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># target label: </span></span><br><span class="line">tensor([[<span class="number">1.</span>, <span class="number">0.</span>],</span><br><span class="line">        [<span class="number">1.</span>, <span class="number">0.</span>],</span><br><span class="line">        [<span class="number">0.</span>, <span class="number">1.</span>],</span><br><span class="line">        [<span class="number">0.</span>, <span class="number">1.</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Pytorch 计算的 BCE Loss:</span></span><br><span class="line">BCE Loss </span><br><span class="line">tensor([[<span class="number">0.3133</span>, <span class="number">2.1269</span>],</span><br><span class="line">        [<span class="number">0.1269</span>, <span class="number">2.1269</span>],</span><br><span class="line">        [<span class="number">3.0486</span>, <span class="number">0.0181</span>],</span><br><span class="line">        [<span class="number">4.0181</span>, <span class="number">0.0067</span>]]) tensor(<span class="number">11.7856</span>) tensor(<span class="number">1.4732</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># BCE inputs:  (sigmoid的输出)</span></span><br><span class="line">tensor([[<span class="number">0.7311</span>, <span class="number">0.8808</span>],</span><br><span class="line">        [<span class="number">0.8808</span>, <span class="number">0.8808</span>],</span><br><span class="line">        [<span class="number">0.9526</span>, <span class="number">0.9820</span>],</span><br><span class="line">        [<span class="number">0.9820</span>, <span class="number">0.9933</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自己手动计算的 BCE Loss</span></span><br><span class="line">第一个loss为:  <span class="number">0.31326166</span></span><br></pre></td></tr></table></figure>
+<p>关于BCELoss的计算过程，我这里通过实例的形式再理一遍：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设有预测结果inputs：</span></span><br><span class="line">tensor([[<span class="number">1.</span>, <span class="number">2.</span>],</span><br><span class="line">        [<span class="number">2.</span>, <span class="number">2.</span>],</span><br><span class="line">        [<span class="number">3.</span>, <span class="number">4.</span>],</span><br><span class="line">        [<span class="number">4.</span>, <span class="number">5.</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 经过sigmoid处理后的inputs:</span></span><br><span class="line">tensor([[<span class="number">0.7311</span>, <span class="number">0.8808</span>],</span><br><span class="line">        [<span class="number">0.8808</span>, <span class="number">0.8808</span>],</span><br><span class="line">        [<span class="number">0.9526</span>, <span class="number">0.9820</span>],</span><br><span class="line">        [<span class="number">0.9820</span>, <span class="number">0.9933</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># BCELoss需要计算inputs中每个元素的loss值，</span></span><br><span class="line"><span class="comment"># 例如对于 inputs[0, 0]，BCELoss的计算结果为：</span></span><br><span class="line">loss[<span class="number">0</span>, <span class="number">0</span>] = -( label[<span class="number">0</span>, <span class="number">0</span>] * log(inputs[<span class="number">0</span>, <span class="number">0</span>]) + (<span class="number">1</span> - label[<span class="number">0</span>, <span class="number">0</span>]) * log(<span class="number">1</span> - inputs[<span class="number">0</span>, <span class="number">0</span>]) )</span><br><span class="line">           = -( <span class="number">1</span> * log(<span class="number">0.7311</span>) + (<span class="number">1</span> - <span class="number">1</span>) * log(<span class="number">1</span> - <span class="number">0.7311</span>) )</span><br><span class="line">           = <span class="number">0.31320502968286684</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 例如对于 inputs[0, 1]，BCELoss的计算结果为：</span></span><br><span class="line">loss[<span class="number">0</span>, <span class="number">1</span>] = -( label[<span class="number">0</span>, <span class="number">1</span>] * log(inputs[<span class="number">0</span>, <span class="number">1</span>]) + (<span class="number">1</span> - label[<span class="number">0</span>, <span class="number">1</span>]) * log(<span class="number">1</span> - inputs[<span class="number">0</span>, <span class="number">1</span>]) )</span><br><span class="line">           = -( <span class="number">0</span> * log(<span class="number">0.8808</span>) + (<span class="number">1</span> - <span class="number">0</span>) * log(<span class="number">1</span> - <span class="number">0.8808</span>) )</span><br><span class="line">           = <span class="number">2.1269525243508878</span></span><br><span class="line"></span><br><span class="line">loss[i, j] 这些值以此类推。</span><br><span class="line"></span><br><span class="line">BCELoss的sum模式就是对所有的loss[i, j]求和所得。</span><br></pre></td></tr></table></figure></p>
+<h2 id="nn-BCEWithLogitsLoss"><a href="#nn-BCEWithLogitsLoss" class="headerlink" title="nn.BCEWithLogitsLoss"></a>nn.BCEWithLogitsLoss</h2><p><strong>功能</strong>: 结合 Sigmoid 与二分类交叉熵<br><strong>注意事项</strong>：网络最后不能加sigmoid函数，因为nn.BCEWithLogitsLoss在内部已经做了sigmoid处理，所以外面再加sigmoid函数的话就会导致输出结果不准确。</p>
+<p>计算公式：</p>
+<script type="math/tex; mode=display">
+l_n = -w_n[ y_n \cdot log \sigma(x_n) + (1 - y_n) \cdot log(1 - \sigma(x_n)) ]</script><p>其中，$x_n$ 是模型输出概率值，$y_n$ 是标签，$\sigma$ 表示sigmoid函数。</p>
+<p>主要参数：</p>
+<ul>
+<li><strong>pos_weight</strong>: 正样本的权值，当正负样本不平衡时，可以用于设置正样本的权值。例如负样本有300个、正样本有有100个的时候，正负样本比例为1/3，这时候就可以设置pos_weight为3，也就是对正样本的loss乘以3，这样就等价于正样本也有300个了，从而实现了正负样本比例均衡。</li>
+<li><strong>weight</strong>: 各类别的loss设置权值</li>
+<li><strong>ignore_index</strong>: 忽略某个类别</li>
+<li><strong>reduction</strong>: 计算模式，可为 none/sum/mean \<br>&emsp; &emsp; &emsp; &emsp; none: 逐个元素(样本)计算 \<br>&emsp; &emsp; &emsp; &emsp; sum: 所有元素求和，返回标量 \<br>&emsp; &emsp; &emsp; &emsp; mean: 加权平均，返回标量</li>
+</ul>
+<blockquote>
+<p>由此可见，如果不考虑 pos_weight 的话，nn.BCEWithLogitsLoss 和 nn.BCELoss 实际上是等价的，因为 nn.BCELoss 需要在外面先对预测结果做sigmoid压缩处理后再输入到 nn.BCELoss 中，而 nn.BCEWithLogitsLoss 只不过是将这个sigmoid处理过程拿到了内部处理了而已。<br>PyTorch 这样设计的原因可能是因为在有些场合下可能只是需要用sigmoid函数来计算一下损失而已，而其他情况下并不需要sigmoid函数。</p>
+</blockquote>
+<h3 id="不使用pos-weight的代码示例"><a href="#不使用pos-weight的代码示例" class="headerlink" title="不使用pos_weight的代码示例"></a>不使用pos_weight的代码示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ----------------------------------- 4 BCE with Logis Loss -----------------------------------</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    inputs = torch.tensor([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">4</span>, <span class="number">5</span>]], dtype=torch.float)</span><br><span class="line">    target = torch.tensor([[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>]], dtype=torch.float)</span><br><span class="line"></span><br><span class="line">    target_bce = target</span><br><span class="line"></span><br><span class="line">    <span class="comment"># inputs = torch.sigmoid(inputs)</span></span><br><span class="line"></span><br><span class="line">    weights = torch.tensor([<span class="number">1</span>, <span class="number">1</span>], dtype=torch.float)</span><br><span class="line"></span><br><span class="line">    loss_f_none_w = nn.BCEWithLogitsLoss(weight=weights, reduction=<span class="string">'none'</span>)</span><br><span class="line">    loss_f_sum = nn.BCEWithLogitsLoss(weight=weights, reduction=<span class="string">'sum'</span>)</span><br><span class="line">    loss_f_mean = nn.BCEWithLogitsLoss(weight=weights, reduction=<span class="string">'mean'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># forward</span></span><br><span class="line">    loss_none_w = loss_f_none_w(inputs, target_bce)</span><br><span class="line">    loss_sum = loss_f_sum(inputs, target_bce)</span><br><span class="line">    loss_mean = loss_f_mean(inputs, target_bce)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># view</span></span><br><span class="line">    print(<span class="string">"\nweights: "</span>, weights)</span><br><span class="line">    print(loss_none_w, loss_sum, loss_mean)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output: </span></span><br><span class="line">tensor([[<span class="number">0.3133</span>, <span class="number">2.1269</span>],</span><br><span class="line">        [<span class="number">0.1269</span>, <span class="number">2.1269</span>],</span><br><span class="line">        [<span class="number">3.0486</span>, <span class="number">0.0181</span>],</span><br><span class="line">        [<span class="number">4.0181</span>, <span class="number">0.0067</span>]]) tensor(<span class="number">11.7856</span>) tensor(<span class="number">1.4732</span>)</span><br></pre></td></tr></table></figure>
+<p>输出结果和BCELoss的一模一样。</p>
+<h3 id="使用pos-weight的代码示例"><a href="#使用pos-weight的代码示例" class="headerlink" title="使用pos_weight的代码示例"></a>使用pos_weight的代码示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># --------------------------------- pos weight</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    inputs = torch.tensor([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">4</span>, <span class="number">5</span>]], dtype=torch.float)</span><br><span class="line">    target = torch.tensor([[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>]], dtype=torch.float)</span><br><span class="line"></span><br><span class="line">    target_bce = target</span><br><span class="line"></span><br><span class="line">    <span class="comment"># itarget</span></span><br><span class="line">    <span class="comment"># inputs = torch.sigmoid(inputs)</span></span><br><span class="line"></span><br><span class="line">    weights = torch.tensor([<span class="number">1</span>], dtype=torch.float)</span><br><span class="line">    pos_w = torch.tensor([<span class="number">3</span>], dtype=torch.float)        <span class="comment"># 3</span></span><br><span class="line"></span><br><span class="line">    loss_f_none_w = nn.BCEWithLogitsLoss(weight=weights, reduction=<span class="string">'none'</span>, pos_weight=pos_w)</span><br><span class="line">    loss_f_sum = nn.BCEWithLogitsLoss(weight=weights, reduction=<span class="string">'sum'</span>, pos_weight=pos_w)</span><br><span class="line">    loss_f_mean = nn.BCEWithLogitsLoss(weight=weights, reduction=<span class="string">'mean'</span>, pos_weight=pos_w)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># forward</span></span><br><span class="line">    loss_none_w = loss_f_none_w(inputs, target_bce)</span><br><span class="line">    loss_sum = loss_f_sum(inputs, target_bce)</span><br><span class="line">    loss_mean = loss_f_mean(inputs, target_bce)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># view</span></span><br><span class="line">    print(<span class="string">"\npos_weights: "</span>, pos_w)</span><br><span class="line">    print(loss_none_w, loss_sum, loss_mean)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">pos_weights:  tensor([<span class="number">3.</span>])</span><br><span class="line">tensor([[<span class="number">0.9398</span>, <span class="number">2.1269</span>],</span><br><span class="line">        [<span class="number">0.3808</span>, <span class="number">2.1269</span>],</span><br><span class="line">        [<span class="number">3.0486</span>, <span class="number">0.0544</span>],</span><br><span class="line">        [<span class="number">4.0181</span>, <span class="number">0.0201</span>]]) tensor(<span class="number">12.7158</span>) tensor(<span class="number">1.5895</span>)</span><br></pre></td></tr></table></figure>
+<p>正样本的loss值都被扩大了3被，导致总体loss值也变大了，这使得模型在训练时会更加关注正样本。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.init/" rel="prev" title="PyTorch笔记/【Tutorials】torch.nn.init">
+      <i class="fa fa-chevron-left"></i> PyTorch笔记/【Tutorials】torch.nn.init
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/12/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.loss-2/" rel="next" title="PyTorch笔记/【Tutorials】torch.nn.loss-2">
+      PyTorch笔记/【Tutorials】torch.nn.loss-2 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是损失函数"><span class="nav-number">1.</span> <span class="nav-text">什么是损失函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PyTorch中的损失函数"><span class="nav-number">2.</span> <span class="nav-text">PyTorch中的损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-CrossEntropyLoss"><span class="nav-number">2.1.</span> <span class="nav-text">nn.CrossEntropyLoss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不带有权值的loss的代码示例"><span class="nav-number">2.1.1.</span> <span class="nav-text">不带有权值的loss的代码示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带有权值的loss的代码示例"><span class="nav-number">2.1.2.</span> <span class="nav-text">带有权值的loss的代码示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-NLLLoss"><span class="nav-number">2.2.</span> <span class="nav-text">nn.NLLLoss</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-BCELoss"><span class="nav-number">2.3.</span> <span class="nav-text">nn.BCELoss</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-BCEWithLogitsLoss"><span class="nav-number">2.4.</span> <span class="nav-text">nn.BCEWithLogitsLoss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不使用pos-weight的代码示例"><span class="nav-number">2.4.1.</span> <span class="nav-text">不使用pos_weight的代码示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用pos-weight的代码示例"><span class="nav-number">2.4.2.</span> <span class="nav-text">使用pos_weight的代码示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

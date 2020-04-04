@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本节主要讲述在 windows c++ 下使用 libtorch + opencv 的部署，感觉比在ubuntu下坑多了，网上很多例子都不能成功执行，这里总结下我的方法，部分参考文献[1]。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch笔记&#x2F;【Entries】C++ Production-3 libtorch &amp; opencv in windows">
+<meta property="og:url" content="http://yoursite.com/2020/03/21/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91C++%20Production-3%20libtorch%20&%20opencv%20in%20windows/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="本节主要讲述在 windows c++ 下使用 libtorch + opencv 的部署，感觉比在ubuntu下坑多了，网上很多例子都不能成功执行，这里总结下我的方法，部分参考文献[1]。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-21T09:10:06.810Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/03/21/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91C++%20Production-3%20libtorch%20&%20opencv%20in%20windows/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>PyTorch笔记/【Entries】C++ Production-3 libtorch & opencv in windows | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91C++%20Production-3%20libtorch%20&%20opencv%20in%20windows/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch笔记/【Entries】C++ Production-3 libtorch & opencv in windows
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-03-21 00:00:00 / Modified: 17:10:06" itemprop="dateCreated datePublished" datetime="2020-03-21T00:00:00+08:00">2020-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本节主要讲述在 windows c++ 下使用 libtorch + opencv 的部署，感觉比在ubuntu下坑多了，网上很多例子都不能成功执行，这里总结下我的方法，部分参考文献[1]。<br><a id="more"></a></p>
+<blockquote>
+<p>笔者友情提示：windows有的时候会有一些莫名其妙的错误，如果您是在 ubuntu 下编写好的c++代码，然后直接拿到 windows 构建后不能正确编译或运行，则可尝试自己在windows下新建c++代码文件，然后将ubuntu下编写好的代码内容拷贝进来。</p>
+</blockquote>
+<h1 id="第一步："><a href="#第一步：" class="headerlink" title="第一步："></a>第一步：</h1><p>下载libtorch和opencv，尽量使用较新版本的，我这里使用的libtorch是1.4版的，opencv是4.2版的。</p>
+<p>下载完成后解压到自己的指定目录下，例如我把它们都放在了 F:/program 目录下。</p>
+<p>添加环境变量：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">libtorch 的 .dll 目录：F:&#x2F;program&#x2F;libtorch-win-shared-with-deps-1.4.0&#x2F;libtorch&#x2F;lib)</span><br><span class="line">OpenCV 的 .dll 目录：F:&#x2F;program&#x2F;opencv-4.2.0-vc14_vc15&#x2F;build&#x2F;x64&#x2F;vc14&#x2F;lib)</span><br></pre></td></tr></table></figure><br>将上面两个目录都添加到系统环境变量PATH中去。</p>
+<h1 id="第一步：模型转换"><a href="#第一步：模型转换" class="headerlink" title="第一步：模型转换"></a>第一步：模型转换</h1><p>PyTorch的C++版本用的Torch Script，官方给了两种将pytorch模型转换成Torch Script的方法，这一步在前文已经说过了，这里不再赘述。</p>
+<p>第三步有两种方法，分别是 “VS 构建方法” 和 “CMake 构建方法”，下面注意介绍。</p>
+<h1 id="第三步：方法一（VS构建方法）"><a href="#第三步：方法一（VS构建方法）" class="headerlink" title="第三步：方法一（VS构建方法）"></a>第三步：方法一（VS构建方法）</h1><p>打开Visual Studio，新建工程后，右击项目，选择<code>属性</code>，配置如下：</p>
+<p><strong>step1</strong>: “配置属性&gt;VC++目录&gt;包含目录”配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">F:\program\libtorch-win-shared-with-deps-1.4.0\libtorch\include</span><br><span class="line">F:\program\opencv-4.2.0-vc14_vc15\build\include</span><br><span class="line">F:\program\opencv-4.2.0-vc14_vc15\build\include\opencv</span><br><span class="line">F:\program\opencv-4.2.0-vc14_vc15\build\include\opencv2</span><br></pre></td></tr></table></figure></p>
+<p><strong>step2</strong>: “配置属性&gt;VC++目录&gt;库目录”配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">F:\program\libtorch-win-shared-with-deps-1.4.0\libtorch\lib</span><br><span class="line">F:\program\opencv-4.2.0-vc14_vc15\build\x64\vc14\lib</span><br></pre></td></tr></table></figure></p>
+<p><strong>step3</strong>: “配置属性&gt;链接器&gt;输入”配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">c10.lib</span><br><span class="line">caffe2_module_test_dynamic.lib</span><br><span class="line">clog.lib</span><br><span class="line">cpuinfo.lib</span><br><span class="line">libprotobuf.lib</span><br><span class="line">libprotobuf-lite.lib</span><br><span class="line">libprotoc.lib</span><br><span class="line">torch.lib</span><br><span class="line">opencv_world420.lib</span><br></pre></td></tr></table></figure></p>
+<p>文献[1]说按照上面的配置完后 还有下面的两个地方需要修改：（我实测下面的两个不改也行）\<br>第一项：属性-&gt;C/C++ -&gt;常规-&gt;SDL检查-&gt;否。\<br>第二项：属性-&gt;C/C++ -&gt;语言-&gt;符号模式-&gt;否。</p>
+<p>配置好环境后，就可以开始编写代码了，这里使用 《libtorch &amp; opencv in ubuntu》中的代码。\<br><strong>注意</strong>：“maskface.h” 中的 “#include <torch/torch.h>” 在 ubuntu 中是可有可无的，但是在 windows 亲测会出错，故在 windows 中这行代码可以直接注释掉。</p>
+<h1 id="第三步：方法二（CMake构建方法）"><a href="#第三步：方法二（CMake构建方法）" class="headerlink" title="第三步：方法二（CMake构建方法）"></a>第三步：方法二（CMake构建方法）</h1><p>在windows下除了能够用vs来构建项目，也可以通过cmake来构建，笔者亲测直接使用ubuntu下编写好的CMakeLists.txt文件放在windows下并不能成功。</p>
+<p><strong>step1</strong>: 首先在自己指定的目录下新建一个文件夹（例如cppml），后面所有的代码及配置文件全部放于该文件夹下。</p>
+<p><strong>step2</strong>: 编写代码<br>这里继续使用前文已经编写好的 c++ 代码。</p>
+<p><strong>step3</strong>: 编写CMakeLists.txt文件<br>下面是在前文ubuntu下编写CMakeLists.txt的基础上并参考文献[1]后所改进后的 CMakeLists.txt</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.0</span> FATAL_ERROR)</span><br><span class="line"><span class="keyword">project</span>(cppml)</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span>(CMAKE_BUILE_TYPE RELEASE)</span><br><span class="line"></span><br><span class="line"><span class="keyword">INCLUDE_DIRECTORIES</span>(</span><br><span class="line">F:/program/libtorch-win-shared-with-deps-<span class="number">1.4</span>.<span class="number">0</span>/libtorch/<span class="keyword">include</span></span><br><span class="line">F:/program/opencv-<span class="number">4.2</span>.<span class="number">0</span>-vc14_vc15/build/<span class="keyword">include</span></span><br><span class="line">F:/program/opencv-<span class="number">4.2</span>.<span class="number">0</span>-vc14_vc15/build/<span class="keyword">include</span>/opencv</span><br><span class="line">F:/program/opencv-<span class="number">4.2</span>.<span class="number">0</span>-vc14_vc15/build/<span class="keyword">include</span>/opencv2</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span>(Torch_LIBRARIES F:/program/libtorch-win-shared-with-deps-<span class="number">1.4</span>.<span class="number">0</span>/libtorch/lib)</span><br><span class="line"><span class="keyword">SET</span>(OpenCV_LIBS F:/program/opencv-<span class="number">4.2</span>.<span class="number">0</span>-vc14_vc15/build/x64/vc14/lib)</span><br><span class="line"></span><br><span class="line"><span class="keyword">LINK_DIRECTORIES</span>(</span><br><span class="line"><span class="variable">$&#123;Torch_LIBRARIES&#125;</span></span><br><span class="line"><span class="variable">$&#123;OpenCV_LIBS&#125;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(cppml maskface.cpp maskface.h example.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意对于不同版本的libtorch或opencv来说链接库文件可能不一样</span></span><br><span class="line"><span class="keyword">target_link_libraries</span>(cppml</span><br><span class="line">c10.lib</span><br><span class="line">caffe2_module_test_dynamic.lib</span><br><span class="line">clog.lib</span><br><span class="line">cpuinfo.lib</span><br><span class="line">libprotobuf.lib</span><br><span class="line">libprotobuf-lite.lib</span><br><span class="line">libprotoc.lib</span><br><span class="line">torch.lib</span><br><span class="line">opencv_world420.lib</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> cppml PROPERTY CXX_STANDARD <span class="number">11</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>step4</strong>: 新建build目录<br>在代码文件的同级目录下，新建一个build目录，用于 cmake 编译的目标目录，<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">F:/path/to/your/cppml:</span><br><span class="line">.</span><br><span class="line">├── build</span><br><span class="line">├── CMakeLists.txt</span><br><span class="line">├── example.cpp</span><br><span class="line">├── maskface.cpp</span><br><span class="line">└── maskface.h</span><br></pre></td></tr></table></figure></p>
+<p><strong>step5</strong>: 使用cmake编译<br>打开 cmake gui 界面，配置项目源代码路径以及目标路径：<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">where is the source code: F:/path/to/your/cppml  <span class="comment"># 这里是刚刚我们建立的项目目录</span></span><br><span class="line">where to build the binaries: F:/path/to/your/cppml/build  <span class="comment"># 目标目录</span></span><br></pre></td></tr></table></figure></p>
+<p>点击Configure进行配置，根据自己的 Visual Studio 版本选择对应的 generator，例如我这里选择的是 “Visual Studio 14 2015 Win64” 。其他的默认即可。</p>
+<p>待出现 Configure done 后，再点击一次 Configure，待再次 Configure done 后，再点击 Generate 生成即可。</p>
+<p>完成上述过程就可以打开项目，在vs项目中即可编译并运行代码了。</p>
+<blockquote>
+<p>注意：如果编译的时候使用的是 Release 版的 libtorch 或者 OpneCV，则在VS中也应该对应的设置为 Release 模式。反之如果使用的是 Debug 版的 libtorch 或者 OpneCV，则在VS中也应该设置为 Debug 模式。</p>
+</blockquote>
+<p>如果运行时提示缺少 .dll 文件，则应该将 libtorch 和 OpneCV 的 bin 目录加入到系统环境变量中，也可以把 lib 文件夹下的 .dll 全部拷贝到我们的 .cpp 所在目录下。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://www.zerahhah.com/article/20" target="_blank" rel="noopener">C++调用pytorch，LibTorch在win10下的vs配置和cmake的配置</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/12/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.models.detection-1%20FasterRCNN/" rel="prev" title="PyTorch笔记/【Tutorials】torchvision.models.detection-1 FasterRCNN">
+      <i class="fa fa-chevron-left"></i> PyTorch笔记/【Tutorials】torchvision.models.detection-1 FasterRCNN
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/21/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91C++%20Production-2%20libtorch%20&%20opencv%20in%20ubuntu/" rel="next" title="PyTorch笔记/【Entries】C++ Production-2 libtorch & opencv in ubuntu">
+      PyTorch笔记/【Entries】C++ Production-2 libtorch & opencv in ubuntu <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一步："><span class="nav-number">1.</span> <span class="nav-text">第一步：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第一步：模型转换"><span class="nav-number">2.</span> <span class="nav-text">第一步：模型转换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三步：方法一（VS构建方法）"><span class="nav-number">3.</span> <span class="nav-text">第三步：方法一（VS构建方法）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三步：方法二（CMake构建方法）"><span class="nav-number">4.</span> <span class="nav-text">第三步：方法二（CMake构建方法）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

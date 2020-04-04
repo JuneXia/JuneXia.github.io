@@ -171,7 +171,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/25/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91PyCharm%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/23/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.3%E3%80%91TFRecords%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -185,7 +185,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/06/25/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91PyCharm%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">【开发环境与工具】PyCharm安装与使用</a>
+            <a href="/2017/10/23/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.3%E3%80%91TFRecords%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记1.3】TFRecords文件读写</a>
         </h1>
 
         <div class="post-meta">
@@ -195,14 +195,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2017-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-25T00:00:00+08:00">2017-06-25</time>
+              <time title="Created: 2017-10-23 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-23T00:00:00+08:00">2017-10-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:27:46" itemprop="dateModified" datetime="2020-01-22T13:27:46+08:00">2020-01-22</time>
+                <time title="Modified: 2020-01-22 14:08:05" itemprop="dateModified" datetime="2020-01-22T14:08:05+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,8 +210,8 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
-                    <span itemprop="name">开发环境与工具</span>
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
                   </a>
                 </span>
             </span>
@@ -227,10 +227,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>笔者在安装PyCharm-Professional-2019.2.1时遇到不能断点调试的问题，后排查可能是由于python3.5版本过低问题，该版PyCharm需要python3.6。后改用PyCharm-Professional-2017就好了。<br>
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp; 除了典型的CSV文件存储方式外，TensorFlow还有专门的文件存储格式：TFRecords文件。<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/06/25/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91PyCharm%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/#more" rel="contents">
+              <a class="btn" href="/2017/10/23/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.3%E3%80%91TFRecords%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -254,7 +254,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.1%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E3%80%81%E5%AF%BC%E6%95%B0%E3%80%81%E6%A2%AF%E5%BA%A6/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/22/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.2%E3%80%91TensorFlow%E9%98%9F%E5%88%97%E5%92%8CCSV%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -268,7 +268,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.1%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E3%80%81%E5%AF%BC%E6%95%B0%E3%80%81%E6%A2%AF%E5%BA%A6/" class="post-title-link" itemprop="url">【数学基础与最优化1.1】基本概念、导数、梯度</a>
+            <a href="/2017/10/22/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.2%E3%80%91TensorFlow%E9%98%9F%E5%88%97%E5%92%8CCSV%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记1.2】TensorFlow队列和CSV文件读写</a>
         </h1>
 
         <div class="post-meta">
@@ -278,14 +278,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2017-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-25T00:00:00+08:00">2017-06-25</time>
+              <time title="Created: 2017-10-22 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-22T00:00:00+08:00">2017-10-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:26:06" itemprop="dateModified" datetime="2020-01-22T13:26:06+08:00">2020-01-22</time>
+                <time title="Modified: 2020-01-22 13:21:58" itemprop="dateModified" datetime="2020-01-22T13:21:58+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -293,589 +293,8 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/" itemprop="url" rel="index">
-                    <span itemprop="name">数学基础与最优化</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>假设A是条件，B是结论<br>（1）由A可以推出B，由B可以推出A，则A是B的充分必要条件( $A=B$ )，或者说A的充分必要条件是B。<br>（2）由A可以推出B，由B不可以推出A，则A是B的充分不必要条件( $A \subseteq B$ )<br>（3）由A不可以推出B，由B可以推出A，则A是B的必要不充分条件( $B \subseteq A$ )<br>（4）由A不可以推出B，由B不可以推出A，则A是B的既不充分也不必要条件( $A \not \subseteq B, B \not \subseteq A$ )<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.1%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E3%80%81%E5%AF%BC%E6%95%B0%E3%80%81%E6%A2%AF%E5%BA%A6/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.2%E3%80%91%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E9%9D%9E%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.2%E3%80%91%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E9%9D%9E%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92/" class="post-title-link" itemprop="url">【数学基础与最优化1.2】线性规划与非线性规划</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-25T00:00:00+08:00">2017-06-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:26:11" itemprop="dateModified" datetime="2020-01-22T13:26:11+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/" itemprop="url" rel="index">
-                    <span itemprop="name">数学基础与最优化</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="线性规划"><a href="#线性规划" class="headerlink" title="线性规划"></a>线性规划</h2><p>&emsp; 在数学中，线性规划（Linear Programming，简称LP）特指目标函数和约束条件皆为线性的最优化问题[1]。<br>&emsp; 线性规划是最优化问题中的一个重要领域。很多最优化问题算法都可以分解为线性规划子问题，然后逐一求解。在线性规划的历史发展过程中所衍伸出的诸多概念，建立了最优化理论的核心思维，例如“对偶”、“分解”、“凸集”的重要性及其一般化等。在微观经济学和商业管理领域中，线性规划亦被大量应用于例如降低生产过程的成本等手段，最终提升产值与营收。乔治·丹齐格被认为是线性规划之父[1]。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/25/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.2%E3%80%91%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E9%9D%9E%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E4%BA%A4%E5%8F%89%E7%86%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E4%BA%A4%E5%8F%89%E7%86%B5/" class="post-title-link" itemprop="url">【机器学习基础】交叉熵</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-25T00:00:00+08:00">2017-06-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:19:33" itemprop="dateModified" datetime="2020-01-22T13:19:33+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="概述-me"><a href="#概述-me" class="headerlink" title="概述 (me)"></a>概述 (me)</h2><p>交叉熵是用来衡量两个分布之间相似程度的一种度量方法，假设$p(x)$为真实分布，$q(x)$为预测的分布，我们通过下面的交叉熵定义来衡量它们之间的相似度：<br>$H = -\sum \limits_{x \in X} p(x) \log q(x)$<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E4%BA%A4%E5%8F%89%E7%86%B5/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88TensorFlow%E5%AE%9E%E7%8E%B0%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88TensorFlow%E5%AE%9E%E7%8E%B0%EF%BC%89/" class="post-title-link" itemprop="url">【机器学习笔记2.4】用逻辑回归做二分类（TensorFlow实现）</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-10 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-10T00:00:00+08:00">2017-06-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 08:40:56" itemprop="dateModified" datetime="2020-01-22T08:40:56+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>相关理论介绍可参阅【机器学习笔记2.1】线性模型之逻辑回归</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88TensorFlow%E5%AE%9E%E7%8E%B0%EF%BC%89/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.6%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9Amnist%E6%89%8B%E5%86%99%E4%BD%93%E8%AF%86%E5%88%AB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.6%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9Amnist%E6%89%8B%E5%86%99%E4%BD%93%E8%AF%86%E5%88%AB/" class="post-title-link" itemprop="url">【机器学习笔记2.6】用Softmax回归做mnist手写体识别</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-10 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-10T00:00:00+08:00">2017-06-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 08:41:06" itemprop="dateModified" datetime="2020-01-22T08:41:06+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="MNIST是什么"><a href="#MNIST是什么" class="headerlink" title="MNIST是什么"></a>MNIST是什么</h3><p>MNIST是一个手写数字数据集，它有60000个训练样本集和10000个测试样本集。可以将MNIST手写体识别看做是深度学习的HelloWorld。<br>MNIST数据集官方网址：<a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">http://yann.lecun.com/exdb/mnist/</a><br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.6%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9Amnist%E6%89%8B%E5%86%99%E4%BD%93%E8%AF%86%E5%88%AB/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.5%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88Tensorflow%E5%AE%9E%E7%8E%B0%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.5%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88Tensorflow%E5%AE%9E%E7%8E%B0%EF%BC%89/" class="post-title-link" itemprop="url">【机器学习笔记2.5】用Softmax回归做二分类（Tensorflow实现）</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-10 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-10T00:00:00+08:00">2017-06-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 14:07:05" itemprop="dateModified" datetime="2020-01-22T14:07:05+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Softmax回归和逻辑回归的区别"><a href="#Softmax回归和逻辑回归的区别" class="headerlink" title="Softmax回归和逻辑回归的区别"></a>Softmax回归和逻辑回归的区别</h2><p>&emsp; 在本节中，我们介绍Softmax回归模型，该模型是logistic回归模型在多分类问题上的推广，在多分类问题中，类标签$y$可以取两个以上的值[1]。当类别数$k=2$时，softmax 回归退化为 logistic 回归。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.5%E3%80%91%E7%94%A8Softmax%E5%9B%9E%E5%BD%92%E5%81%9A%E4%BA%8C%E5%88%86%E7%B1%BB%EF%BC%88Tensorflow%E5%AE%9E%E7%8E%B0%EF%BC%89/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E6%AD%A3%E5%88%99%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E6%AD%A3%E5%88%99%E5%8C%96/" class="post-title-link" itemprop="url">【机器学习笔记3.1】线性模型正则化</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-10 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-10T00:00:00+08:00">2017-06-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 08:41:10" itemprop="dateModified" datetime="2020-01-22T08:41:10+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="过拟合问题描述"><a href="#过拟合问题描述" class="headerlink" title="过拟合问题描述"></a>过拟合问题描述</h2><p>在机器学习应用时，会遇到过拟合(over-fitting)问题，本文将介绍一种被称为正则化(regularization)的技术，它可以有效改善或者减少过拟合问题[1]。<br>如果我们有非常多的特征，我们通过学习得到的假设可能能够非常好地适应训练集（代价函数可能几乎为0），但是可能会无法推广到新的数据，也就是泛化能力比较差。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/10/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E6%AD%A3%E5%88%99%E5%8C%96/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E4%B9%8B%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1%E3%80%91%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E4%B9%8B%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/" class="post-title-link" itemprop="url">【机器学习笔记2.1】线性模型之逻辑回归</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-05-28 00:00:00" itemprop="dateCreated datePublished" datetime="2017-05-28T00:00:00+08:00">2017-05-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 08:40:42" itemprop="dateModified" datetime="2020-01-22T08:40:42+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
                   </a>
                 </span>
             </span>
@@ -892,7 +311,21 @@
 
       
           <a id="more"></a>
-<p>参见 <a href="https://blog.csdn.net/yahstudio/article/details/80615752" target="_blank" rel="noopener">【机器学习笔记2.1】线性模型之逻辑回归</a></p>
+<h2 id="tensorflow队列"><a href="#tensorflow队列" class="headerlink" title="tensorflow队列"></a>tensorflow队列</h2><p>&emsp; 在tensorflow中可以使用FIFOQueue、RandomShuffleQueue等方式创建一个队列[1]。</p>
+<p>代码示例1：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    q = tf.FIFOQueue(<span class="number">3</span>, <span class="string">"float"</span>) <span class="comment"># 创建长度为3，元素数据类型是float的队列。</span></span><br><span class="line">    init = q.enqueue_many(([<span class="number">0.1</span>, <span class="number">0.2</span>, <span class="number">0.3</span>],)) <span class="comment"># 向队列中填充数据（注意这只是预备操作，真正的数据填充是要到sess.run(init)操作时才会完成）</span></span><br><span class="line">    init2 = q.dequeue() <span class="comment"># 出队</span></span><br><span class="line">    init3 = q.enqueue(<span class="number">1.</span>) <span class="comment"># 入队</span></span><br><span class="line"></span><br><span class="line">    sess.run(init)</span><br><span class="line">    sess.run(init2)</span><br><span class="line">    sess.run(init3)</span><br><span class="line"></span><br><span class="line">    quelen =  sess.run(q.size())</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(quelen):</span><br><span class="line">        print(sess.run(q.dequeue()))</span><br></pre></td></tr></table></figure></p>
+<h2 id="tensorflow中队列如何实现入队与出队同时进行"><a href="#tensorflow中队列如何实现入队与出队同时进行" class="headerlink" title="tensorflow中队列如何实现入队与出队同时进行"></a>tensorflow中队列如何实现入队与出队同时进行</h2><p>&emsp; 上述代码是现将所有数据都存入队列，然后再依次从队列中取出，这并没有发挥出队列的价值。队列是为了实现入队与出队操作可以同时进行而设计的，tensorflow中可以通过QueueRunner和Coordinator协作来实现这项工作。<br>下面先简要说下tf.train.Coordinator和tf.train.QueueRunner的用法和意义。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建线程协调器，用于协调主线程和各个子线程之间的交互操作。</span></span><br><span class="line">coord = tf.train.Coordinator()</span><br><span class="line">    </span><br><span class="line">queue_runner = tf.train.QueueRunner(q, enqueue_ops=[add_op, enqueue_op] * <span class="number">2</span>) <span class="comment"># 定义用2个线程去完成这项任务</span></span><br><span class="line"><span class="comment"># 先用QueueRunner定义队列的入队操作，然后用queue_runner创建子线程去处理该入队操作。</span></span><br><span class="line"><span class="comment"># queue_runner在创建线程的时候需要传入Coordinator协调器，用于和主线程协调操作。</span></span><br><span class="line">enqueue_threads = queue_runner.create_threads(sess, coord=coord, start=<span class="literal">True</span>)  <span class="comment"># 启动入队线程</span></span><br><span class="line"><span class="comment"># queue_runner在创建线程的时候如果不传入Coordinator协调器的话，则程序运行结束前会报错。</span></span><br><span class="line"><span class="comment"># 这是因为当主线程运行完毕后就接直接结束了，而没有发出终止其他线程的请求。</span></span><br></pre></td></tr></table></figure></p>
+<p>完整代码如下，代码示例2：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    q = tf.FIFOQueue(<span class="number">10</span>, <span class="string">"float32"</span>) <span class="comment"># 创建一个队列，该队列有10个数据，数据类型是float32</span></span><br><span class="line">    counter = tf.Variable(<span class="number">0.0</span>)</span><br><span class="line">    add_op = tf.assign_add(counter, tf.constant(<span class="number">1.0</span>))</span><br><span class="line">    enqueue_op = q.enqueue(counter)</span><br><span class="line"></span><br><span class="line">    sess.run(tf.initialize_all_variables())</span><br><span class="line">    coord = tf.train.Coordinator()</span><br><span class="line">    queue_runner = tf.train.QueueRunner(q, enqueue_ops=[add_op, enqueue_op] * <span class="number">2</span>)</span><br><span class="line">    enqueue_threads = queue_runner.create_threads(sess, coord=coord, start=<span class="literal">True</span>)  <span class="comment"># 启动入队线程</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">        print(sess.run(q.dequeue()))</span><br><span class="line">    coord.request_stop()</span><br><span class="line">    coord.join(enqueue_threads)</span><br><span class="line">    print(<span class="string">'sess end'</span>)</span><br><span class="line">print(<span class="string">'program end'</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="CSV文件读写"><a href="#CSV文件读写" class="headerlink" title="CSV文件读写"></a>CSV文件读写</h2><p>&emsp; 逗号分隔值（Comma-Separated Values，CSV，有时也称为字符分隔值，因为分隔字符也可以不是逗号），其文件以纯文本形式存储表格数据（数字和文本）[1]。<br>在介绍tensorflow读写csv文件之前，先说下python读写csv文件</p>
+<h3 id="Python读写CSV文件"><a href="#Python读写CSV文件" class="headerlink" title="Python读写CSV文件"></a>Python读写CSV文件</h3><h4 id="Python写CSV文件"><a href="#Python写CSV文件" class="headerlink" title="Python写CSV文件"></a>Python写CSV文件</h4><p>新建img文件夹，并放入若干张图片，如下图所示：<br>img<br>├── cat.0.jpg<br>├── cat.1.jpg<br>├── cat.2.jpg<br>├── cat.3.jpg<br>├── cat.4.jpg<br>├── cat.5.jpg<br>├── cat.6.jpg<br>├── cat.7.jpg<br>├── cat.8.jpg<br>└── cat.9.jpg<br>下面介绍python写csv文件。</p>
+<p>代码示例:3：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">path = <span class="string">'img'</span></span><br><span class="line">filenames=os.listdir(path)</span><br><span class="line">strText = <span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"train_list.csv"</span>, <span class="string">"w"</span>) <span class="keyword">as</span> fid:</span><br><span class="line">    <span class="keyword">for</span> a <span class="keyword">in</span> range(len(filenames)):</span><br><span class="line">        strText = path+os.sep+filenames[a]  + <span class="string">","</span> + filenames[a].split(<span class="string">'.'</span>)[<span class="number">1</span>]  + <span class="string">"\n"</span></span><br><span class="line">        fid.write(strText)</span><br><span class="line">fid.close()</span><br></pre></td></tr></table></figure><br>生成的csv文件内容如下：<br>img/cat.0.jpg,0<br>img/cat.8.jpg,8<br>img/cat.3.jpg,3<br>img/cat.2.jpg,2<br>img/cat.1.jpg,1<br>img/cat.5.jpg,5<br>img/cat.4.jpg,4<br>img/cat.7.jpg,7<br>img/cat.6.jpg,6<br>img/cat.9.jpg,9</p>
+<h4 id="Python读取CSV文件"><a href="#Python读取CSV文件" class="headerlink" title="Python读取CSV文件"></a>Python读取CSV文件</h4><p>代码示例4：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line">image_add_list = []</span><br><span class="line">image_label_list = []</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"train_list.csv"</span>) <span class="keyword">as</span> fid:</span><br><span class="line">    <span class="keyword">for</span> image <span class="keyword">in</span> fid.readlines():</span><br><span class="line">        image_add_list.append(image.strip().split(<span class="string">","</span>)[<span class="number">0</span>])</span><br><span class="line">        image_label_list.append(image.strip().split(<span class="string">","</span>)[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上面这段代码就是csv文件的读取，</span></span><br><span class="line"><span class="comment"># 下面介绍一下如何将图片文件转换成tensorflow所需要的张量形式。</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_image</span><span class="params">(image_path)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.image.convert_image_dtype(</span><br><span class="line">        tf.image.decode_jpeg(</span><br><span class="line">            tf.read_file(image_path), channels=<span class="number">1</span>),</span><br><span class="line">        dtype=tf.uint8)</span><br><span class="line"><span class="comment"># tf.read_file, 读取图片文件</span></span><br><span class="line"><span class="comment"># tf.image.decode_jpeg, 将读取进来的图片文件解码成jpg格式</span></span><br><span class="line"><span class="comment">#                       channels=1表示读取灰度图</span></span><br><span class="line"><span class="comment"># tf.image.convert_image_dtype，将图像转化成TensorFlow需要的张量形式</span></span><br><span class="line"></span><br><span class="line">img = get_image(image_add_list[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    cv2Img = sess.run(img)</span><br><span class="line">    img2 = cv2.resize(cv2Img, (<span class="number">200</span>,<span class="number">200</span>))</span><br><span class="line">    cv2.imshow(<span class="string">'image'</span>, img2)</span><br><span class="line">    cv2.waitKey()</span><br></pre></td></tr></table></figure></p>
+<h3 id="tensorflow读写CSV文件"><a href="#tensorflow读写CSV文件" class="headerlink" title="tensorflow读写CSV文件"></a>tensorflow读写CSV文件</h3><p>&emsp; 关于CSV文件的读写，文献[1]中介绍的是用Python写CSV，用Python读CSV；文献[2]中介绍的是用tensorflow读取CSV。所以，有用tensorflow写CSV吗？好吧，遇到时再说吧。</p>
+<p>&emsp; 新建文件file0.csv、file1.csv，其内容分别如下：<br>file0.csv<br>21,31,41,44,0<br>22,32,42,44,0<br>23,33,53,44,0<br>24,34,44,44,0<br>25,35,45,44,0</p>
+<p>file1.csv<br>11,31,41,50,1<br>12,42,42,55,1<br>13,23,53,55,1<br>14,34,44,45,1<br>15,35,45,55,1</p>
+<h4 id="tensorflow读取CSV文件"><a href="#tensorflow读取CSV文件" class="headerlink" title="tensorflow读取CSV文件"></a>tensorflow读取CSV文件</h4><p>使用 tf.TextLineReader与 tf.decode_csv操作，主要代码讲解如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">filename_queue = tf.train.string_input_producer([<span class="string">"file0.csv"</span>, <span class="string">"file1.csv"</span>])</span><br><span class="line"><span class="comment"># 将文件名列表传递给tf.train.string_input_producer函数。string_input_producer创建一个用于保存文件名的FIFO队列。</span></span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">record_defaults &#x3D; [[1], [1], [1], [1], [1]]</span><br><span class="line">col1, col2, col3, col4, col5 &#x3D; tf.decode_csv(value, record_defaults&#x3D;record_defaults)</span><br><span class="line"># decode_csv操作将value解析成张量列表，record_defaults参数决定了所得张量的类型。</span><br><span class="line"># 注意，如果要读取的每个记录是固定数量字节的二进制文件（这个一般是TFRecords文件而不是csv文件了吧），请使用 tf.FixedLengthRecordReader 读取该文件，并使用 tf.decode_raw 解码文件内容。decode_raw 操作进行从字符串到UINT8张量转换。</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    <span class="comment"># Start populating the filename queue.</span></span><br><span class="line">    coord = tf.train.Coordinator() <span class="comment"># 创建线程协调器</span></span><br><span class="line">    threads = tf.train.start_queue_runners(coord=coord) <span class="comment"># 启动线程，用于往队列中输入数据</span></span><br><span class="line">    <span class="comment"># 对比“代码示例2”中的tf.train.QueueRunner和queue_runner.create_threads，这里用tf.train.start_queue_runners包含了这两步操作</span></span><br><span class="line">    <span class="comment"># 疑问：为什么这里的tf.train.start_queue_runners没有传入sess参数？</span></span><br><span class="line">    <span class="comment"># 这可能是因为tf.train.start_queue_runners是被包含在“with tf.Session() as sess”里的吧</span></span><br></pre></td></tr></table></figure>
+<p>完整代码如下[2]，代码示例5：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">filename_queue = tf.train.string_input_producer([<span class="string">"file0.csv"</span>, <span class="string">"file1.csv"</span>])</span><br><span class="line"></span><br><span class="line">reader = tf.TextLineReader()</span><br><span class="line">key, value = reader.read(filename_queue) <span class="comment"># read操作每次从文件中读取一行</span></span><br><span class="line"><span class="comment"># key是文件名，value是该文件中某一行内容，这些可以在后面通过sess.run查看</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Default values, in case of empty columns. Also specifies the type of the</span></span><br><span class="line"><span class="comment"># decoded result.</span></span><br><span class="line">record_defaults = [[<span class="number">1</span>], [<span class="number">1</span>], [<span class="number">1</span>], [<span class="number">1</span>], [<span class="number">1</span>]]</span><br><span class="line">col1, col2, col3, col4, col5 = tf.decode_csv(value, record_defaults=record_defaults)</span><br><span class="line">features = tf.stack([col1, col2, col3, col4])</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    <span class="comment"># Start populating the filename queue.</span></span><br><span class="line">    coord = tf.train.Coordinator() <span class="comment"># 创建线程协调器</span></span><br><span class="line">    threads = tf.train.start_queue_runners(coord=coord) <span class="comment"># 启动线程，用于往队列中输入数据</span></span><br><span class="line">    <span class="comment"># 注意：如果不启动该线程，则不会有往队列输入数据的操作，则下面的sess.run(...)会一直被阻塞</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1200</span>):</span><br><span class="line">        <span class="comment"># Retrieve a single instance:</span></span><br><span class="line">        example, label = sess.run([features, col5])</span><br><span class="line">        print(example, label)</span><br><span class="line"></span><br><span class="line">    coord.request_stop()</span><br><span class="line">    coord.join(threads)</span><br></pre></td></tr></table></figure></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] 王晓华. TensorFlow深度学习应用实践<br>[2] <a href="http://cwiki.apachecn.org/pages/viewpage.action?pageId=10029497" target="_blank" rel="noopener">ApacheCN &gt;&gt; Tensorflow &gt;&gt; 编程指南 &gt;&gt; 阅读数据</a></p>
 
       
     </div>
@@ -912,7 +345,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.3%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E5%A4%9A%E7%B1%BB%E5%88%AB%E5%88%86%E7%B1%BB/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/20/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.1%E3%80%91%E5%90%84%E7%A7%8D%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -926,7 +359,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/05/28/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.3%E3%80%91%E7%94%A8%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%81%9A%E5%A4%9A%E7%B1%BB%E5%88%AB%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">【机器学习笔记2.3】用逻辑回归做多类别分类</a>
+            <a href="/2017/10/20/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B01.1%E3%80%91%E5%90%84%E7%A7%8D%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记1.1】各种函数的使用</a>
         </h1>
 
         <div class="post-meta">
@@ -936,14 +369,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2017-05-28 00:00:00" itemprop="dateCreated datePublished" datetime="2017-05-28T00:00:00+08:00">2017-05-28</time>
+              <time title="Created: 2017-10-20 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-20T00:00:00+08:00">2017-10-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 08:40:52" itemprop="dateModified" datetime="2020-01-22T08:40:52+08:00">2020-01-22</time>
+                <time title="Modified: 2020-01-22 13:21:11" itemprop="dateModified" datetime="2020-01-22T13:21:11+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -951,8 +384,8 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习笔记</span>
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
                   </a>
                 </span>
             </span>
@@ -969,7 +402,588 @@
 
       
           <a id="more"></a>
-<p>参见 <a href="https://blog.csdn.net/yahstudio/article/details/80729283" target="_blank" rel="noopener">【机器学习笔记2.3】用逻辑回归做多类别分类</a></p>
+<h3 id="numpy随机数"><a href="#numpy随机数" class="headerlink" title="numpy随机数"></a>numpy随机数</h3><p>参考资料[2]<br>np.random.randn(d0, d1, …, dn)，从标准正太分布中产生shape为(d0, d1, …, dn)的随机数组<br>np.random.rand(d0, d1, …, dn)，从区间为[0, 1)的均匀分布中产生shape为(d0, d1, …, dn)的随机数组</p>
+<h3 id="8-2-tensorflow常量、变量、数据类型、常用函数"><a href="#8-2-tensorflow常量、变量、数据类型、常用函数" class="headerlink" title="8.2 tensorflow常量、变量、数据类型、常用函数"></a>8.2 tensorflow常量、变量、数据类型、常用函数</h3><p>tf.int8、tf.float32等tensorflow常用数据类型<br>tf.add、tf.mul等tensorflow常用函数</p>
+<h3 id="8-3-tensorflow矩阵计算"><a href="#8-3-tensorflow矩阵计算" class="headerlink" title="8.3 tensorflow矩阵计算"></a>8.3 tensorflow矩阵计算</h3><p>tf.random_normal、tf.truncated_normal、tf.random_uniform等随机生成矩阵张量（[1]中170页也有提及）</p>
+<p>tf.diag、tf.diag_part、tf.trace、tf.transpose、tf.matmul、tf.matrix_determinant、tf.matrix_inverse、tf.cholesky、tf.matrix_solve</p>
+<h3 id="11-2-2-数据的矩阵化"><a href="#11-2-2-数据的矩阵化" class="headerlink" title="11.2.2 数据的矩阵化"></a>11.2.2 数据的矩阵化</h3><p>tf.mul(matrix1, matrix2) #点乘，要求shape相同，对应相乘，现改用tf.multiply代替。<br>tf.matmul(matrix1, matrix2) # 叉乘，要求matrix1的列数等于matrix2的行数。类似numpy.dot(matrix1, matrix2)</p>
+<h3 id="tf-argmax"><a href="#tf-argmax" class="headerlink" title="tf.argmax()"></a>tf.argmax()</h3><p>首先，明确一点，tf.argmax可以认为就是np.argmax。tensorflow使用numpy实现的这个API。<br>tf.argmax(input, axis=None, name=None, dimension=None, output_type=dtypes.int64):<br><strong>函数功能：</strong>简单的说，就是返回最大值所在的下标[3]；<br><strong>参数解析：</strong><br>    axis：用于多维度计算<br>举例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">test &#x3D; np.array([[1, 2, 3], [2, 3, 4], [5, 4, 3], [8, 7, 2]])</span><br><span class="line">np.argmax(test, 0)　　　＃输出：array([3, 3, 1]</span><br><span class="line">np.argmax(test, 1)　　　＃输出：array([2, 2, 0, 0]</span><br></pre></td></tr></table></figure><br>axis=0 : 按列比较<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">test[0] &#x3D; array([1, 2, 3])</span><br><span class="line">test[1] &#x3D; array([2, 3, 4])</span><br><span class="line">test[2] &#x3D; array([5, 4, 3])</span><br><span class="line">test[3] &#x3D; array([8, 7, 2])</span><br><span class="line"># output   :    [3, 3, 1]</span><br></pre></td></tr></table></figure><br>axis=1 : 按行比较<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">test[0] &#x3D; array([1, 2, 3])  #2</span><br><span class="line">test[1] &#x3D; array([2, 3, 4])  #2</span><br><span class="line">test[2] &#x3D; array([5, 4, 3])  #0</span><br><span class="line">test[3] &#x3D; array([8, 7, 2])  #0</span><br></pre></td></tr></table></figure><br>这是里面都是数组长度一致的情况，如果不一致，axis最大值为最小的数组长度-1，超过则报错。<br>当不一致的时候，axis=0的比较也就变成了每个数组的和的比较。</p>
+<h3 id="tf-reduce-max和tf-reduce-mean"><a href="#tf-reduce-max和tf-reduce-mean" class="headerlink" title="tf.reduce_max和tf.reduce_mean"></a>tf.reduce_max和tf.reduce_mean</h3><p>求最大值tf.reduce_max(input_tensor, reduction_indices=None, keep_dims=False, name=None)<br>求平均值tf.reduce_mean(input_tensor, reduction_indices=None, keep_dims=False, name=None)<br><strong>参数解析：</strong><br>    input_tensor : 待求值的tensor；<br>    reduction_indices : 在哪一维上求解；<br>    keep_dims : 表示是否保留原始数据的维度，False相当于执行完后原始数据就会少一个维度。<br>例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># &#39;x&#39; is [[1., 2.]</span><br><span class="line">#         [3., 4.]]</span><br></pre></td></tr></table></figure><br>以reduce_mean为例[4]：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tf.reduce_mean(x) &#x3D;&#x3D;&gt; 2.5 #如果不指定第二个参数，那么就在所有的元素中取平均值</span><br><span class="line">tf.reduce_mean(x, 0) &#x3D;&#x3D;&gt; [2.,  3.] #指定第二个参数为0，则第一维的元素取平均值，即每一列求平均值</span><br><span class="line">tf.reduce_mean(x, 1) &#x3D;&#x3D;&gt; [1.5,  3.5] #指定第二个参数为1，则第二维的元素取平均值，即每一行求平均值</span><br><span class="line">tf.reduce_mean(x, 1, keep_dims&#x3D;True) &#x3D;&#x3D;&gt; [[1.5],  [3.5]]</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>tf.reduce_mean中的keep_dims有什么作用？<br>设有矩阵A和向量b如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">A &#x3D; [[1., 2.],     b &#x3D; [1., 1.]</span><br><span class="line">     [3., 4.]]</span><br></pre></td></tr></table></figure><br>那么A-b是非法的，但若：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">b &#x3D; [[1.], [1.]]，也即b &#x3D; [[1.],</span><br><span class="line">                          [1.]]</span><br></pre></td></tr></table></figure><br>那么此时A-b就是合法的了，此时：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">A-b&#x3D;[[0., 1.],</span><br><span class="line">     [2., 3.]]</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>上述内容是以tf.reduce_mean()为例，同理，还可用tf.reduce_max()求最大值等。</p>
+<h3 id="tf-equal"><a href="#tf-equal" class="headerlink" title="tf.equal"></a>tf.equal</h3><p>tf.equal(x, y, name=None)<br>例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">import numpy as np</span><br><span class="line"> </span><br><span class="line">A &#x3D; [[1,3,4,5,6]]</span><br><span class="line">B &#x3D; [[1,3,4,3,2]]</span><br><span class="line"> </span><br><span class="line">with tf.Session() as sess:</span><br><span class="line">    print(sess.run(tf.equal(A, B)))</span><br></pre></td></tr></table></figure><br>输出：<br>[[ True  True  True False False]]</p>
+<h3 id="tf-cast"><a href="#tf-cast" class="headerlink" title="tf.cast"></a>tf.cast</h3><p>tf.cast(x, dtype, name=None)<br><strong>函数功能：</strong>张量类型转换函数，将张量x的类型转换为dtype<br>例1：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># tensor &#96;a&#96; is [1.8, 2.2], dtype&#x3D;tf.float</span><br><span class="line">tf.cast(a, tf.int32) &#x3D;&#x3D;&gt; [1, 2]  # dtype&#x3D;tf.int32</span><br></pre></td></tr></table></figure><br>例2：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; tf.Variable([1,0,0,1,1])</span><br><span class="line">b &#x3D; tf.cast(a,dtype&#x3D;tf.bool)</span><br><span class="line">sess &#x3D; tf.Session()</span><br><span class="line">sess.run(tf.initialize_all_variables())</span><br><span class="line">print(sess.run(b))</span><br><span class="line">#[ True False False  True  True]</span><br></pre></td></tr></table></figure></p>
+<h3 id="tf-tile"><a href="#tf-tile" class="headerlink" title="tf.tile"></a>tf.tile</h3><p>tf.tile(input, multiples, name=None)<br><strong>函数功能：</strong><br>tile有平铺之意，用于在同一维度上的复制，用来对张量(Tensor)进行扩展，最终的输出张量的维度不变，但张量的shape会发生改变。<br><strong>参数解析：</strong><br>input, 输入的待扩展的张量；<br>multiples, 扩展方法，假如input是一个2维的张量。那么mutiples就必须是一个1x2的1维张量，这个张量的两个值依次表示input的第1、第2维数据扩展几倍。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># &#39;x&#39; is [[1., 2.]</span><br><span class="line">#         [3., 4.]]</span><br><span class="line"># tile &#x3D; tf.tile(arr, [2])  # failed, multiples列表中的元素个数必须要和arr的维度相等</span><br><span class="line">tile &#x3D; tf.tile(arr, [2, 3])  &#x3D;&#x3D;&gt;  [[1. 2. 1. 2. 1. 2.]</span><br><span class="line">                                   [3. 4. 3. 4. 3. 4.]</span><br><span class="line">                                   [1. 2. 1. 2. 1. 2.]</span><br><span class="line">                                   [3. 4. 3. 4. 3. 4.]]</span><br></pre></td></tr></table></figure></p>
+<p>[1] 王晓华. TensorFlow深度学习应用实践<br>[2] numpy随机数介绍<a href="https://blog.csdn.net/u013920434/article/details/52507173" target="_blank" rel="noopener">https://blog.csdn.net/u013920434/article/details/52507173</a><br>[3] <a href="https://blog.csdn.net/qq575379110/article/details/70538051/" target="_blank" rel="noopener">tf.argmax()以及axis解析</a><br>[4] <a href="https://blog.csdn.net/qq_32166627/article/details/52734387" target="_blank" rel="noopener">tf.reduce_mean和tf.reduce_max</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/15/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91tf.image/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/15/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91tf.image/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记】tf.image</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-10-15 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-15T00:00:00+08:00">2017-10-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:21:03" itemprop="dateModified" datetime="2020-01-22T13:21:03+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h1 id="tf-image下的各种resize"><a href="#tf-image下的各种resize" class="headerlink" title="tf.image下的各种resize"></a>tf.image下的各种resize</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf  </span><br><span class="line"><span class="keyword">import</span> cv2  </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    image_size = (<span class="number">300</span>, <span class="number">400</span>)  </span><br><span class="line">    filename = <span class="string">'/home/xiajun/res/face/VGGFace2/Experiment/mtcnn_align182x182_margin44/n000020/0001_01.png'</span>  </span><br><span class="line">  file_contents = tf.read_file(filename)  </span><br><span class="line">    <span class="comment"># image = tf.image.decode_image(file_contents, 3)  </span></span><br><span class="line">  image = tf.image.decode_png(file_contents, <span class="number">3</span>)  </span><br><span class="line">    rawimage = tf.identity(image)  </span><br><span class="line">  </span><br><span class="line">    resize_images = tf.image.resize_images(image, image_size, align_corners=<span class="literal">True</span>, preserve_aspect_ratio=<span class="literal">True</span>)  <span class="comment"># 如果preserve_aspect_ratio为True，则保持宽高比对原图进行缩放，缩放后的图像宽或高等于image_size中的最小值  </span></span><br><span class="line">  resize_images = tf.cast(resize_images, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 双三次插值  </span></span><br><span class="line">  resize_bicubic = tf.image.resize_bicubic(tf.expand_dims(image, axis=<span class="number">0</span>), image_size)  <span class="comment"># 实测如果设置 half_pixel_centers 参数，会报错  </span></span><br><span class="line">  resize_bicubic = tf.cast(resize_bicubic, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 双线性插值  </span></span><br><span class="line">  resize_bilinear = tf.image.resize_bilinear(tf.expand_dims(image, axis=<span class="number">0</span>), image_size)  <span class="comment"># 实测如果设置 half_pixel_centers 参数，会报错  </span></span><br><span class="line">  resize_bilinear = tf.cast(resize_bilinear, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 最近邻插值  </span></span><br><span class="line">  resize_nearest_neighbor = tf.image.resize_nearest_neighbor(tf.expand_dims(image, axis=<span class="number">0</span>), image_size)  <span class="comment"># 实测如果设置 half_pixel_centers 参数，会报错  </span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 区域插值  </span></span><br><span class="line">  resize_area = tf.image.resize_area(tf.expand_dims(image, axis=<span class="number">0</span>), image_size)  <span class="comment"># 基于区域像素关系的一种重采样或者插值方式.该方法是图像抽取的首选方法,它可以产生更少的波纹,但是当图像放大时,它的效果与INTER_NEAREST效果相似.  </span></span><br><span class="line">  resize_area = tf.cast(resize_area, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    init = tf.initialize_all_variables()  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:  </span><br><span class="line">        sess.run(init)  </span><br><span class="line">  </span><br><span class="line">        cv2.imshow(<span class="string">'rawimg'</span>, sess.run(rawimage))  </span><br><span class="line">  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_images'</span>, sess.run(resize_images))  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_bicubic'</span>, sess.run(resize_bicubic)[<span class="number">0</span>])  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_bilinear'</span>, sess.run(resize_bilinear)[<span class="number">0</span>])  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_nearest_neighbor'</span>, sess.run(resize_nearest_neighbor)[<span class="number">0</span>])  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_area'</span>, sess.run(resize_area)[<span class="number">0</span>])  </span><br><span class="line">  </span><br><span class="line">        cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="tf-image下的各种resize、crop、pad"><a href="#tf-image下的各种resize、crop、pad" class="headerlink" title="tf.image下的各种resize、crop、pad"></a>tf.image下的各种resize、crop、pad</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  <span class="comment"># resize_crop_pad  </span></span><br><span class="line">  image_size = (<span class="number">128</span>, <span class="number">128</span>)  </span><br><span class="line">    filename = <span class="string">'/home/xiajun/res/face/VGGFace2/Experiment/mtcnn_align182x182_margin44/n000020/0001_01.png'</span>  </span><br><span class="line">  file_contents = tf.read_file(filename)  </span><br><span class="line">    <span class="comment"># image = tf.image.decode_image(file_contents, 3)  </span></span><br><span class="line">  image = tf.image.decode_png(file_contents, <span class="number">3</span>)  </span><br><span class="line">    rawimage = tf.identity(image)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 随机裁剪  </span></span><br><span class="line">  random_crop = tf.random_crop(image, image_size + (<span class="number">3</span>,))  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 如果图像宽高小于目标宽高，则使用中心裁剪至目标宽高  </span></span><br><span class="line">  <span class="comment"># 如果图像宽高大于目标宽高，则pad 0 至目标宽高  </span></span><br><span class="line">  resize_image_with_crop_or_pad = tf.image.resize_image_with_crop_or_pad(image, image_size[<span class="number">0</span>], image_size[<span class="number">1</span>])  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># failed  </span></span><br><span class="line"> <span class="comment"># resize_with_crop_or_pad = tf.image.resize_with_crop_or_pad(image, image_size[0], image_size[1])  </span></span><br><span class="line"> <span class="comment"># 先对图像缩放到目标尺寸（保持宽高比），然后如果还是和目标尺寸不匹配则用0填充到目标宽高  </span></span><br><span class="line">  resize_image_with_pad = tf.image.resize_image_with_pad(image, image_size[<span class="number">0</span>], image_size[<span class="number">1</span>])  </span><br><span class="line">    resize_image_with_pad = tf.cast(resize_image_with_pad, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 中心裁剪  </span></span><br><span class="line">  central_crop = tf.image.central_crop(image, <span class="number">0.8</span>)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 先从左上角偏移一个offset作为左上角点，然后以offset_height + target_height, offset_width + target_width为右下角点  </span></span><br><span class="line">  crop_to_bounding_box = tf.image.crop_to_bounding_box(image, <span class="number">10</span>, <span class="number">20</span>, image_size[<span class="number">0</span>], image_size[<span class="number">1</span>])  <span class="comment"># target + offset &lt;= image width&amp;height, 目标图像宽高+offset之和一定要&lt;=原始图像宽高。  </span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 先裁剪后缩放，目前感觉这个函数有点不大好用啊。  </span></span><br><span class="line">  <span class="comment"># crop_and_resize = tf.image.crop_and_resize(tf.expand_dims(image, axis=0), [[0.5, 0.6, 0.9, 0.8]], box_ind=[0], crop_size=(300, 400))  # [1]  </span></span><br><span class="line">  crop_and_resize = tf.image.crop_and_resize(tf.expand_dims(image, axis=<span class="number">0</span>), [[<span class="number">0.5</span>, <span class="number">0.6</span>, <span class="number">0.9</span>, <span class="number">0.8</span>], [<span class="number">0.2</span>, <span class="number">0.6</span>, <span class="number">1.3</span>, <span class="number">0.9</span>]], box_ind=[<span class="number">0</span>, <span class="number">0</span>], crop_size=(<span class="number">300</span>, <span class="number">400</span>))  </span><br><span class="line">    crop_and_resize = tf.cast(crop_and_resize, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 在图片外围填充0  </span></span><br><span class="line">  pad_to_bounding_box = tf.image.pad_to_bounding_box(image, offset_height=<span class="number">10</span>, offset_width=<span class="number">10</span>, target_height=<span class="number">200</span>, target_width=<span class="number">200</span>)  </span><br><span class="line">  </span><br><span class="line">    init = tf.initialize_all_variables()  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:  </span><br><span class="line">        sess.run(init)  </span><br><span class="line">        cv2.imshow(<span class="string">'rawimg'</span>, sess.run(rawimage))  </span><br><span class="line">        cv2.imshow(<span class="string">'random_crop1'</span>, sess.run(random_crop))  </span><br><span class="line">        <span class="comment">#cv2.imshow('random_crop2', sess.run(random_crop))  </span></span><br><span class="line"> <span class="comment">#cv2.imshow('random_crop3', sess.run(random_crop))  cv2.imshow('resize_image_with_crop_or_pad1', sess.run(resize_image_with_crop_or_pad))  </span></span><br><span class="line">        cv2.imshow(<span class="string">'resize_image_with_pad1'</span>, sess.run(resize_image_with_pad))  </span><br><span class="line">        cv2.imshow(<span class="string">'central_crop'</span>, sess.run(central_crop))  </span><br><span class="line">        cv2.imshow(<span class="string">'crop_to_bounding_box'</span>, sess.run(crop_to_bounding_box))  </span><br><span class="line">        cv2.imshow(<span class="string">'pad_to_bounding_box'</span>, sess.run(pad_to_bounding_box))  </span><br><span class="line">  </span><br><span class="line">        images = sess.run(crop_and_resize)  </span><br><span class="line">        <span class="keyword">for</span> i, image <span class="keyword">in</span> enumerate(images):  </span><br><span class="line">            cv2.imshow(<span class="string">'crop_and_resize'</span> + str(i), image)  </span><br><span class="line">  </span><br><span class="line">        cv2.waitKey(<span class="number">1000000</span>)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/13/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.3%E3%80%91%E5%A4%8D%E7%94%A8%E9%A2%84%E8%AE%AD%E7%BB%83%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/13/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.3%E3%80%91%E5%A4%8D%E7%94%A8%E9%A2%84%E8%AE%AD%E7%BB%83%E5%B1%82/" class="post-title-link" itemprop="url">【深度学习笔记1.3】复用预训练层</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-10-13 17:28:05" itemprop="dateCreated datePublished" datetime="2017-10-13T17:28:05+08:00">2017-10-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:04" itemprop="dateModified" datetime="2020-01-22T13:25:04+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp; 从零开始训练一个非常大的 DNN 通常不是一个好主意，相反，您应该总是尝试找到一个现有的神经网络来完成与您正在尝试解决的任务类似的任务，然后复用这个网络的较低层：这就是所谓的迁移学习。这不仅会大大加快训练速度，还将需要更少的训练数据[1]。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/10/13/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.3%E3%80%91%E5%A4%8D%E7%94%A8%E9%A2%84%E8%AE%AD%E7%BB%83%E5%B1%82/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/04/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91tensorflow%E7%9A%84%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E6%B3%95%E5%92%8Cscope/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/04/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91tensorflow%E7%9A%84%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E6%B3%95%E5%92%8Cscope/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记】tensorflow的变量初始化方法和scope</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-10-04 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-04T00:00:00+08:00">2017-10-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:20:59" itemprop="dateModified" datetime="2020-01-22T13:20:59+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://manutdzou.github.io/2018/02/23/variable.html" target="_blank" rel="noopener">tensorflow的变量初始化和scope</a><br>[2] <a href="https://www.zhihu.com/question/54513728" target="_blank" rel="noopener">tensorflow里面name_scope, variable_scope等如何理解？</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/03/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/03/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记】学习记录</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-10-03 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-03T00:00:00+08:00">2017-10-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:20:56" itemprop="dateModified" datetime="2020-01-22T13:20:56+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h1 id="张量限幅"><a href="#张量限幅" class="headerlink" title="张量限幅"></a>张量限幅</h1><h2 id="clip-by-value"><a href="#clip-by-value" class="headerlink" title="clip_by_value"></a>clip_by_value</h2><p>tf.maximum<br>tf.minimum<br>tf.clip_by_value(tensor, 2, 8)</p>
+<h2 id="relu"><a href="#relu" class="headerlink" title="relu"></a>relu</h2><p>clip_by_norm<br>gradient clipping</p>
+<h2 id="Gradient-clipping"><a href="#Gradient-clipping" class="headerlink" title="Gradient clipping"></a>Gradient clipping</h2><p>梯度裁减，解决Gradient Exploding or vanishing.<br>参考[1].47.张量限幅2</p>
+<h2 id="clip-by-norm"><a href="#clip-by-norm" class="headerlink" title="clip_by_norm"></a>clip_by_norm</h2><h3 id="tf-clip-by-norm"><a href="#tf-clip-by-norm" class="headerlink" title="tf.clip_by_norm"></a>tf.clip_by_norm</h3><p>改变一个Tensor的大小，但又不改变其方向<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = tf.random.normal([<span class="number">2</span>, <span class="number">2</span>], mean=<span class="number">10</span>)</span><br><span class="line"><span class="comment"># tf.norm(a)</span></span><br><span class="line">aa = tf.clip_by_norm(a, n)</span><br></pre></td></tr></table></figure></p>
+<h3 id="tf-clip-by-global-norm"><a href="#tf-clip-by-global-norm" class="headerlink" title="tf.clip_by_global_norm"></a>tf.clip_by_global_norm</h3><p>对所有参数进行缩放</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] 龙龙深度学习</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/02/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91%E4%BD%BF%E7%94%A8Dataset%E5%92%8CIterator%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/02/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91%E4%BD%BF%E7%94%A8Dataset%E5%92%8CIterator%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记】使用Dataset和Iterator读取数据</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-10-02 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-02T00:00:00+08:00">2017-10-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:20:49" itemprop="dateModified" datetime="2020-01-22T13:20:49+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="tf-data-Dataset建立数据pipeline"><a href="#tf-data-Dataset建立数据pipeline" class="headerlink" title="tf.data.Dataset建立数据pipeline"></a>tf.data.Dataset建立数据pipeline</h1><p>本节分别讲述了在eager和session模式下迭代消耗tf.data.Dataset数据的实例。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/10/02/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91%E4%BD%BF%E7%94%A8Dataset%E5%92%8CIterator%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/16/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%20[%E8%BD%AC]%E3%80%91tf.cond%20%E4%B8%8E%20tf.control_dependencies%20%E7%9A%84%E6%8E%A7%E5%88%B6%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/09/16/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%20%5B%E8%BD%AC%5D%E3%80%91tf.cond%20%E4%B8%8E%20tf.control_dependencies%20%E7%9A%84%E6%8E%A7%E5%88%B6%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记 [转]】tf.cond 与 tf.control_dependencies 的控制问题</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2017-09-16T00:00:00+08:00">2017-09-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:20:41" itemprop="dateModified" datetime="2020-01-22T13:20:41+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本文转自：<a href="http://yanjoy.win/2017/04/18/tfcond/" target="_blank" rel="noopener">tf.cond 与 tf.control_dependencies 的控制问题</a><br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/09/16/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%20%5B%E8%BD%AC%5D%E3%80%91tf.cond%20%E4%B8%8E%20tf.control_dependencies%20%E7%9A%84%E6%8E%A7%E5%88%B6%E9%97%AE%E9%A2%98/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/13/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.x%E3%80%91%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E4%B8%8E%E6%81%A2%E5%A4%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/09/13/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.x%E3%80%91%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E4%B8%8E%E6%81%A2%E5%A4%8D/" class="post-title-link" itemprop="url">【深度学习笔记1.x】模型保存与恢复</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-09-13 17:28:05" itemprop="dateCreated datePublished" datetime="2017-09-13T17:28:05+08:00">2017-09-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-11 11:52:15" itemprop="dateModified" datetime="2020-02-11T11:52:15+08:00">2020-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="DNN基于Tensorflow的简单应用"><a href="#DNN基于Tensorflow的简单应用" class="headerlink" title="DNN基于Tensorflow的简单应用"></a>DNN基于Tensorflow的简单应用</h2><p>在 TensorFlow 训练 MLP 最简单的方法是使用高级 API：tf.contrib.learn，这与 sklearn 的 API 非常相似。但如果您想要更好地控制网络架构，您可能更喜欢使用 TensorFlow 的较低级别的 Python API [1]。暂且先主要学习这些较低级别的API吧。</p>
+<h3 id="代码示例3"><a href="#代码示例3" class="headerlink" title="代码示例3"></a>代码示例3</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</span><br><span class="line"></span><br><span class="line">datapath = <span class="string">"/home/***/res/MNIST_data"</span></span><br><span class="line">mnist = input_data.read_data_sets(datapath, validation_size=<span class="number">0</span>, one_hot=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">n_epochs = <span class="number">10</span></span><br><span class="line">batch_size = <span class="number">50</span></span><br><span class="line">learning_rate = <span class="number">0.01</span></span><br><span class="line"></span><br><span class="line">n_inputs = <span class="number">28</span>*<span class="number">28</span>  <span class="comment"># MNIST</span></span><br><span class="line">n_hidden1 = <span class="number">300</span></span><br><span class="line">n_hidden2 = <span class="number">100</span></span><br><span class="line">n_outputs = <span class="number">10</span></span><br><span class="line"></span><br><span class="line">X = tf.placeholder(tf.float32, shape=(<span class="literal">None</span>, n_inputs), name=<span class="string">"X"</span>)</span><br><span class="line">y = tf.placeholder(tf.int64, shape=(<span class="literal">None</span>, n_outputs), name=<span class="string">"y"</span>)</span><br><span class="line">yy = tf.placeholder(tf.int64, shape=(<span class="literal">None</span>, ), name=<span class="string">"yy"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">neuron_layer</span><span class="params">(X, n_neurons, name, activation=None)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(name):</span><br><span class="line">        n_inputs = int(X.get_shape()[<span class="number">1</span>])</span><br><span class="line">        stddev = <span class="number">2</span> / np.sqrt(n_inputs)</span><br><span class="line">        init = tf.truncated_normal((n_inputs, n_neurons), stddev=stddev)</span><br><span class="line">        W = tf.Variable(init, name=<span class="string">"weights"</span>)</span><br><span class="line">        b = tf.Variable(tf.zeros([n_neurons]), name=<span class="string">"biases"</span>)</span><br><span class="line">        z = tf.matmul(X, W) + b</span><br><span class="line">        <span class="keyword">if</span> activation == <span class="string">"relu"</span>:</span><br><span class="line">            <span class="keyword">return</span> tf.nn.relu(z)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> z</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建DNN层方法1：</span></span><br><span class="line"><span class="string">''</span></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">"dnn"</span>):</span><br><span class="line">    hidden1 = neuron_layer(X, n_hidden1, <span class="string">"hidden1"</span>, activation=<span class="string">"relu"</span>)</span><br><span class="line">    hidden2 = neuron_layer(hidden1, n_hidden2, <span class="string">"hidden2"</span>, activation=<span class="string">"relu"</span>)</span><br><span class="line">    logits = neuron_layer(hidden2, n_outputs, <span class="string">"outputs"</span>)</span><br><span class="line"><span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建DNN层方法2：</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">from tensorflow.contrib.layers import fully_connected</span></span><br><span class="line"><span class="string">with tf.name_scope("dnn"):</span></span><br><span class="line"><span class="string">    hidden1 = fully_connected(X, n_hidden1, scope="hidden1")</span></span><br><span class="line"><span class="string">    hidden2 = fully_connected(hidden1, n_hidden2, scope="hidden2")</span></span><br><span class="line"><span class="string">    logits = fully_connected(hidden2, n_outputs, scope="outputs", activation_fn=None)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建DNN层方法3：</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">with tf.name_scope("dnn"):</span></span><br><span class="line"><span class="string">    hidden1 = tf.layers.dense(X, n_hidden1, name="hidden1", activation=tf.nn.relu)</span></span><br><span class="line"><span class="string">    hidden2 = tf.layers.dense(hidden1, n_hidden2, name="hidden2", activation=tf.nn.relu)</span></span><br><span class="line"><span class="string">    logits = tf.layers.dense(hidden2, n_outputs, name="outputs")</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    #prediction = tf.layers.dense(hidden2, n_outputs)</span></span><br><span class="line"><span class="string">    #logits = tf.identity(prediction, name='outputs')</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">"loss"</span>):</span><br><span class="line">    <span class="comment"># xentropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits)</span></span><br><span class="line">    xentropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=tf.argmax(y, <span class="number">1</span>), logits=logits)  <span class="comment"># [2]</span></span><br><span class="line">    loss = tf.reduce_mean(xentropy, name=<span class="string">"loss"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">"train"</span>):</span><br><span class="line">    optimizer = tf.train.GradientDescentOptimizer(learning_rate)</span><br><span class="line">    training_op = optimizer.minimize(loss)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">"eval"</span>):</span><br><span class="line">    correct = tf.nn.in_top_k(logits, yy, <span class="number">1</span>)</span><br><span class="line">    accuracy = tf.reduce_mean(tf.cast(correct, tf.float32))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line">saver = tf.train.Saver()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    init.run()</span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> range(n_epochs):</span><br><span class="line">        <span class="keyword">for</span> iteration <span class="keyword">in</span> range(mnist.train.num_examples // batch_size):</span><br><span class="line">            X_batch, y_batch = mnist.train.next_batch(batch_size)</span><br><span class="line">            sess.run(training_op, feed_dict=&#123;X: X_batch, y: y_batch&#125;)</span><br><span class="line"></span><br><span class="line">        yy_batch = np.argmax(y_batch, <span class="number">1</span>)</span><br><span class="line">        acc_train = accuracy.eval(feed_dict=&#123;X: X_batch, yy: yy_batch&#125;)</span><br><span class="line">        yy_batch = np.argmax(mnist.test.labels, <span class="number">1</span>)</span><br><span class="line">        acc_test = accuracy.eval(feed_dict=&#123;X: mnist.test.images, yy: yy_batch&#125;)</span><br><span class="line">        print(epoch, <span class="string">"Train accuracy:"</span>, acc_train, <span class="string">"Test accuracy:"</span>, acc_test)</span><br><span class="line"></span><br><span class="line">    save_path = saver.save(sess, <span class="string">"./my_model_final.ckpt"</span>)</span><br></pre></td></tr></table></figure>
+<p>代码提示：<br>上述代码中y和yy这两个占位符实际上也可以只用yy一个即可，这要求代码做如下改动。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 交叉熵计算方法：</span></span><br><span class="line">xentropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=yy, logits=logits)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练、预测时都将y_batch改为np.argmax(y_batch, axis=1)，例如：</span></span><br><span class="line">sess.run(training_op, feed_dict=&#123;X: X_batch, yy: np.argmax(y_batch, axis=<span class="number">1</span>)&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="模型恢复"><a href="#模型恢复" class="headerlink" title="模型恢复"></a>模型恢复</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.platform <span class="keyword">import</span> gfile</span><br><span class="line"><span class="keyword">import</span> tensorflow.examples.tutorials.mnist.input_data <span class="keyword">as</span> input_data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_model_filenames</span><span class="params">(model_dir)</span>:</span></span><br><span class="line">    files = os.listdir(model_dir)</span><br><span class="line">    meta_files = [s <span class="keyword">for</span> s <span class="keyword">in</span> files <span class="keyword">if</span> s.endswith(<span class="string">'.meta'</span>)]</span><br><span class="line">    <span class="keyword">if</span> len(meta_files)==<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'No meta file found in the model directory (%s)'</span> % model_dir)</span><br><span class="line">    <span class="keyword">elif</span> len(meta_files)&gt;<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'There should not be more than one meta file in the model directory (%s)'</span> % model_dir)</span><br><span class="line">    meta_file = meta_files[<span class="number">0</span>]</span><br><span class="line">    ckpt = tf.train.get_checkpoint_state(model_dir)</span><br><span class="line">    <span class="keyword">if</span> ckpt <span class="keyword">and</span> ckpt.model_checkpoint_path:</span><br><span class="line">        ckpt_file = os.path.basename(ckpt.model_checkpoint_path)</span><br><span class="line">        <span class="keyword">return</span> meta_file, ckpt_file</span><br><span class="line"></span><br><span class="line">    meta_files = [s <span class="keyword">for</span> s <span class="keyword">in</span> files <span class="keyword">if</span> <span class="string">'.ckpt'</span> <span class="keyword">in</span> s]</span><br><span class="line">    max_step = <span class="number">-1</span></span><br><span class="line">    <span class="keyword">for</span> f <span class="keyword">in</span> files:</span><br><span class="line">        step_str = re.match(<span class="string">r'(^model-[\w\- ]+.ckpt-(\d+))'</span>, f)</span><br><span class="line">        <span class="keyword">if</span> step_str <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> len(step_str.groups())&gt;=<span class="number">2</span>:</span><br><span class="line">            step = int(step_str.groups()[<span class="number">1</span>])</span><br><span class="line">            <span class="keyword">if</span> step &gt; max_step:</span><br><span class="line">                max_step = step</span><br><span class="line">                ckpt_file = step_str.groups()[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> meta_file, ckpt_file</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_model</span><span class="params">(model, input_map=None)</span>:</span></span><br><span class="line">    <span class="comment"># Check if the model is a model directory (containing a metagraph and a checkpoint file)</span></span><br><span class="line">    <span class="comment">#  or if it is a protobuf file with a frozen graph</span></span><br><span class="line">    model_exp = os.path.expanduser(model)</span><br><span class="line">    <span class="keyword">if</span> (os.path.isfile(model_exp)):</span><br><span class="line">        print(<span class="string">'Model filename: %s'</span> % model_exp)</span><br><span class="line">        <span class="keyword">with</span> gfile.FastGFile(model_exp, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            graph_def = tf.GraphDef()</span><br><span class="line">            graph_def.ParseFromString(f.read())</span><br><span class="line">            tf.import_graph_def(graph_def, input_map=input_map, name=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'Model directory: %s'</span> % model_exp)</span><br><span class="line">        meta_file, ckpt_file = get_model_filenames(model_exp)</span><br><span class="line"></span><br><span class="line">        print(<span class="string">'Metagraph file: %s'</span> % meta_file)</span><br><span class="line">        print(<span class="string">'Checkpoint file: %s'</span> % ckpt_file)</span><br><span class="line"></span><br><span class="line">        saver = tf.train.import_meta_graph(os.path.join(model_exp, meta_file), input_map=input_map)</span><br><span class="line">        saver.restore(tf.get_default_session(), os.path.join(model_exp, ckpt_file))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">datapath = <span class="string">"/home/***/res/MNIST_data"</span></span><br><span class="line">mnist = input_data.read_data_sets(datapath, validation_size=<span class="number">0</span>, one_hot=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Graph().as_default():</span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">        <span class="comment"># load_model('./my_model_final_no_dnnscope')  # OK</span></span><br><span class="line"></span><br><span class="line">        saver = tf.train.import_meta_graph(</span><br><span class="line">            <span class="string">'/home/***/devstu/handml/my_model_final/my_model_final.ckpt.meta'</span>)</span><br><span class="line">        saver.restore(sess, tf.train.latest_checkpoint(<span class="string">'./my_model_final'</span>))</span><br><span class="line"></span><br><span class="line">        <span class="string">''</span></span><br><span class="line">        <span class="comment"># 如果在下面的 get_tensor_by_name 中不知道张量名，则可以通过这里的打印看出来。</span></span><br><span class="line">        <span class="keyword">for</span> op <span class="keyword">in</span> tf.get_default_graph().as_graph_def().node:</span><br><span class="line">            print(op.name)</span><br><span class="line">        <span class="string">''</span></span><br><span class="line"></span><br><span class="line">        X_placeholder = tf.get_default_graph().get_tensor_by_name(<span class="string">'X:0'</span>)</span><br><span class="line">        yy = tf.get_default_graph().get_tensor_by_name(<span class="string">'yy:0'</span>)</span><br><span class="line">        <span class="comment"># logits = tf.get_default_graph().get_tensor_by_name('outputs:0')  # error</span></span><br><span class="line">        logits = tf.get_default_graph().get_tensor_by_name(<span class="string">'dnn/outputs/add:0'</span>)</span><br><span class="line">        accuracy = tf.get_default_graph().get_tensor_by_name(<span class="string">'eval/Mean:0'</span>)</span><br><span class="line"></span><br><span class="line">        X_batch = mnist.test.images</span><br><span class="line">        y_batch = mnist.test.labels</span><br><span class="line">        yy_batch = np.argmax(y_batch, <span class="number">1</span>)</span><br><span class="line">        acc_rate = accuracy.eval(feed_dict=&#123;X_placeholder: X_batch, yy: yy_batch&#125;)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 上面是模型训练时定义的accuracy评测标准，实际使用时也可以用下面的方法进行预测</span></span><br><span class="line">        predict_array = sess.run(logits, feed_dict=&#123;X_placeholder:X_batch&#125;)</span><br><span class="line">        <span class="comment"># predict_array = logits.eval(feed_dict=&#123;X_placeholder: X_new_scaled&#125;)  # 效果同上</span></span><br><span class="line">        y_pred = np.argmax(predict_array, axis=<span class="number">1</span>)</span><br><span class="line">        acc_rate = np.mean(np.equal(y_pred, yy_batch))</span><br><span class="line">        print(y_pred)</span><br><span class="line">        print(acc_rate)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'end'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://github.com/apachecn/hands_on_Ml_with_Sklearn_and_TF/blob/dev/docs/10.%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%BB%8B%E7%BB%8D.md" target="_blank" rel="noopener">hands_on_Ml_with_Sklearn_and_TF.第9章.人工神经网络简介</a> \<br>[2] <a href="https://blog.csdn.net/accumulate_zhang/article/details/78254417" target="_blank" rel="noopener">《TensorFlow实战实例》的一些错误更正ValueError: Only call <code>sparse_softmax_cross_entropy_with_logits</code> with named a</a> \</p>
 
       
     </div>
@@ -989,7 +1003,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1055,14 +1069,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>

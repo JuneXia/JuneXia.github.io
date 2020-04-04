@@ -46,16 +46,16 @@
   };
 </script>
 
-  <meta name="description" content="论文：Focal Loss for Dense Object Detection &amp;emsp; Focal Loss 最初被提出是用来解决目标检测的[1]，在目标检测领域常见的算法主要可以分为两大类：two-stage detector和one-stage detector。前者是指类似Faster RCNN，RFCN这样需要region proposal的检测算法，这类算法可以达到很高的准确率，">
+  <meta name="description" content="论文：Focal Loss for Dense Object Detection">
 <meta property="og:type" content="article">
 <meta property="og:title" content="dl&#x2F;【Paper笔记 Detection】Focal Loss">
 <meta property="og:url" content="http://yoursite.com/2019/04/05/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Detection%E3%80%91Focal%20Loss/index.html">
 <meta property="og:site_name" content="Paper搬运菌">
-<meta property="og:description" content="论文：Focal Loss for Dense Object Detection &amp;emsp; Focal Loss 最初被提出是用来解决目标检测的[1]，在目标检测领域常见的算法主要可以分为两大类：two-stage detector和one-stage detector。前者是指类似Faster RCNN，RFCN这样需要region proposal的检测算法，这类算法可以达到很高的准确率，">
+<meta property="og:description" content="论文：Focal Loss for Dense Object Detection">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/focalloss.jpg">
 <meta property="article:published_time" content="2019-04-05T09:28:05.000Z">
-<meta property="article:modified_time" content="2020-03-05T12:42:36.478Z">
+<meta property="article:modified_time" content="2020-04-03T09:01:19.462Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/focalloss.jpg">
 
@@ -205,7 +205,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-05 20:42:36" itemprop="dateModified" datetime="2020-03-05T20:42:36+08:00">2020-03-05</time>
+                <time title="Modified: 2020-04-03 17:01:19" itemprop="dateModified" datetime="2020-04-03T17:01:19+08:00">2020-04-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -230,8 +230,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>论文：<a href="https://arxiv.org/abs/1708.02002" target="_blank" rel="noopener">Focal Loss for Dense Object Detection</a></p>
-<p>&emsp; Focal Loss 最初被提出是用来解决目标检测的[1]，在目标检测领域常见的算法主要可以分为两大类：two-stage detector和one-stage detector。前者是指类似Faster RCNN，RFCN这样需要region proposal的检测算法，这类算法可以达到很高的准确率，但是速度较慢。<a id="more"></a><br>后者是指类似YOLO，SSD这样不需要region proposal，直接回归的检测算法，这类算法速度很快，但是准确率不如前者。作者提出focal loss的出发点也是希望one-stage detector可以达到two-stage detector的准确率，同时不影响原有的速度。</p>
+        <p>论文：<a href="https://arxiv.org/abs/1708.02002" target="_blank" rel="noopener">Focal Loss for Dense Object Detection</a><br><a id="more"></a></p>
+<p>&emsp; Focal Loss 最初被提出是用来解决目标检测的[1]，在目标检测领域常见的算法主要可以分为两大类：two-stage detector和one-stage detector。前者是指类似Faster RCNN，RFCN这样需要region proposal的检测算法，这类算法可以达到很高的准确率，但是速度较慢。<!-- more --><br>后者是指类似YOLO，SSD这样不需要region proposal，直接回归的检测算法，这类算法速度很快，但是准确率不如前者。作者提出focal loss的出发点也是希望one-stage detector可以达到two-stage detector的准确率，同时不影响原有的速度。</p>
 <p>&emsp; 作者认为one-stage detector的准确率不如two-stage detector的原因是：样本的类别不均衡导致的，负样本数量太大，占总的loss的大部分，而且多是容易分类的，因此使得模型的优化方向并不是我们所希望的那样。因此针对类别不均衡问题，作者提出一种新的损失函数：focal loss，这个损失函数是在标准交叉熵损失基础上修改得到的。这个函数可以通过减少易分类样本的权重，使得模型在训练时更专注于难分类的样本。focal loss计算公式以及其和交叉熵的比较如下：</p>
 <div align=center>
   <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/focalloss.jpg" width = 80% height = 80% />
@@ -337,14 +337,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>

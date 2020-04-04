@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本节主要讲述使用libtorch+opencv在ubuntu c++环境下sdk封装的完整示例。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch笔记&#x2F;【Entries】C++ Production-2 libtorch &amp; opencv in ubuntu">
+<meta property="og:url" content="http://yoursite.com/2020/03/21/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91C++%20Production-2%20libtorch%20&%20opencv%20in%20ubuntu/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="本节主要讲述使用libtorch+opencv在ubuntu c++环境下sdk封装的完整示例。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-21T09:10:05.578Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/03/21/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91C++%20Production-2%20libtorch%20&%20opencv%20in%20ubuntu/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>PyTorch笔记/【Entries】C++ Production-2 libtorch & opencv in ubuntu | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91C++%20Production-2%20libtorch%20&%20opencv%20in%20ubuntu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch笔记/【Entries】C++ Production-2 libtorch & opencv in ubuntu
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-03-21 00:00:00 / Modified: 17:10:05" itemprop="dateCreated datePublished" datetime="2020-03-21T00:00:00+08:00">2020-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本节主要讲述使用libtorch+opencv在ubuntu c++环境下sdk封装的完整示例。<br><a id="more"></a></p>
+<h1 id="在-CLion-IDE-中使用libtorch和opencv"><a href="#在-CLion-IDE-中使用libtorch和opencv" class="headerlink" title="在 CLion IDE 中使用libtorch和opencv"></a>在 CLion IDE 中使用libtorch和opencv</h1><p>由于OpenCV已经安装过，所以这里暂时就不讲Opencv编译和安装的事了，这里之间使用安装好的Opencv.</p>
+<p>其实这里要稍微改下<code>前文</code>中的 CMakeLists.txt 即可。</p>
+<blockquote>
+<p>抱歉：因这是个人随笔，文章命名会随内容而动态改变，故这里引用 <code>前文</code> 来代指前面写过的系列文章。</p>
+</blockquote>
+<h2 id="CMakeLists-txt"><a href="#CMakeLists-txt" class="headerlink" title="CMakeLists.txt"></a>CMakeLists.txt</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.13</span>)</span><br><span class="line"><span class="keyword">project</span>(<span class="keyword">test</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(Torch_DIR /home/to/program/libtorch/share/cmake/Torch)   <span class="comment"># 根据自己保存的路径输入</span></span><br><span class="line"><span class="comment">#set(OpenCV_DIR /home/to/program/opencv-3.4.0/build)   # 我的opencv之前已经安装过，并且已安装到/usr/local/lib系统路径下</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">find_package</span>(Torch REQUIRED)   <span class="comment"># 查找库</span></span><br><span class="line"><span class="keyword">find_package</span>(OpenCV REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">NOT</span> Torch_FOUND)</span><br><span class="line">    <span class="keyword">message</span>(FATAL_ERROR <span class="string">"Pytorch Not Found!"</span>)</span><br><span class="line"><span class="keyword">endif</span>(<span class="keyword">NOT</span> Torch_FOUND)</span><br><span class="line"></span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">"Pytorch status:"</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">"    libraries: $&#123;TORCH_LIBRARIES&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">"OpenCV library status:"</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">"    version: $&#123;OpenCV_VERSION&#125;"</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">"    libraries: $&#123;OpenCV_LIBS&#125;"</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">"    include path: $&#123;OpenCV_INCLUDE_DIRS&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(<span class="keyword">test</span> main.cpp)</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>(<span class="keyword">test</span> <span class="variable">$&#123;TORCH_LIBRARIES&#125;</span> <span class="variable">$&#123;OpenCV_LIBS&#125;</span>)   <span class="comment"># 添加链接文件</span></span><br></pre></td></tr></table></figure>
+<h2 id="maskface-cpp"><a href="#maskface-cpp" class="headerlink" title="maskface.cpp"></a>maskface.cpp</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Created by xiajun on 20-3-17.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"maskface.h"</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">maskface::maskface(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; filename)</span><br><span class="line">&#123;</span><br><span class="line">    _margin = <span class="number">0</span>;</span><br><span class="line">    _imshape[<span class="number">0</span>] = <span class="number">160</span>;</span><br><span class="line">    _imshape[<span class="number">1</span>] = <span class="number">160</span>;</span><br><span class="line">    _imshape[<span class="number">2</span>] = <span class="number">3</span>;</span><br><span class="line">    _module = torch::jit::load(filename);</span><br><span class="line"></span><br><span class="line">    torch::Tensor inputs = torch::zeros(&#123;<span class="number">1</span>, _imshape[<span class="number">2</span>], _imshape[<span class="number">0</span>], _imshape[<span class="number">1</span>]&#125;);</span><br><span class="line">    inputs = inputs.toType(torch::kFloat);</span><br><span class="line">    _module.forward(&#123;inputs&#125;).toTensor();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">int</span>, <span class="keyword">float</span>&gt;&gt; maskface::predict(cv::Mat images, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; bboxes)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(images.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR: images empty, please check your image!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">throw</span> images;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(bboxes.size() == <span class="number">0</span> <span class="keyword">or</span> bboxes[<span class="number">0</span>].size() != <span class="number">4</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR: bboxes empty, please check your bboxes!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">throw</span> bboxes;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">int</span>, <span class="keyword">float</span>&gt;&gt; ret;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;::iterator iter1;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;cv::Mat&gt; rois;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// cv::cvtColor(images, images, cv::COLOR_BGR2RGB);</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">auto</span> batch_size = bboxes.size();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(iter1 = bboxes.begin(); iter1 != bboxes.end(); iter1++)</span><br><span class="line">        &#123;</span><br><span class="line">            cv::Mat roi;</span><br><span class="line">            vec = *iter1;</span><br><span class="line">            <span class="comment">//std::cout &lt;&lt; vec &lt;&lt; std::endl;</span></span><br><span class="line"></span><br><span class="line">            vec[<span class="number">0</span>] = <span class="built_in">std</span>::max(vec[<span class="number">0</span>] - _margin/<span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">            vec[<span class="number">1</span>] = <span class="built_in">std</span>::max(vec[<span class="number">1</span>] - _margin/<span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">            vec[<span class="number">2</span>] = <span class="built_in">std</span>::max(vec[<span class="number">2</span>] + _margin, <span class="number">0</span>);</span><br><span class="line">            vec[<span class="number">3</span>] = <span class="built_in">std</span>::max(vec[<span class="number">3</span>] + _margin, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//std::cout &lt;&lt; vec &lt;&lt; std::endl;</span></span><br><span class="line">            cv::<span class="function">Rect <span class="title">rect</span><span class="params">(vec[<span class="number">0</span>], vec[<span class="number">1</span>], vec[<span class="number">2</span>], vec[<span class="number">3</span>])</span></span>;</span><br><span class="line">            cv::resize(images(rect), roi, cv::Size(_imshape[<span class="number">0</span>], _imshape[<span class="number">1</span>]), <span class="number">0</span>, <span class="number">0</span>, cv::INTER_CUBIC);</span><br><span class="line"></span><br><span class="line">            rois.push_back(roi);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        torch::Tensor inputs = torch::zeros(&#123;<span class="keyword">long</span>(batch_size), _imshape[<span class="number">2</span>], _imshape[<span class="number">0</span>], _imshape[<span class="number">1</span>]&#125;);</span><br><span class="line">        inputs = inputs.toType(torch::kFloat);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rois.size(); i++)</span><br><span class="line">        &#123;</span><br><span class="line"><span class="comment">//        cv::imshow("show", rois[i]);</span></span><br><span class="line"><span class="comment">//        cv::waitKey();</span></span><br><span class="line"></span><br><span class="line">            torch::Tensor tensor_image = torch::from_blob(rois[i].data, &#123;<span class="number">1</span>, rois[i].rows, rois[i].cols, _imshape[<span class="number">2</span>]&#125;, torch::kByte);</span><br><span class="line"></span><br><span class="line">            tensor_image = tensor_image.permute(&#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>&#125;);</span><br><span class="line">            tensor_image = tensor_image.toType(torch::kFloat);</span><br><span class="line">            tensor_image = tensor_image.div(<span class="number">255</span>);</span><br><span class="line">            <span class="comment">//tensor_image = tensor_image.to(torch::kCUDA);</span></span><br><span class="line"></span><br><span class="line">            tensor_image[<span class="number">0</span>][<span class="number">0</span>] = tensor_image[<span class="number">0</span>][<span class="number">0</span>].sub_(<span class="number">0.485</span>).div_(<span class="number">0.229</span>);</span><br><span class="line">            tensor_image[<span class="number">0</span>][<span class="number">1</span>] = tensor_image[<span class="number">0</span>][<span class="number">1</span>].sub_(<span class="number">0.456</span>).div_(<span class="number">0.224</span>);</span><br><span class="line">            tensor_image[<span class="number">0</span>][<span class="number">2</span>] = tensor_image[<span class="number">0</span>][<span class="number">2</span>].sub_(<span class="number">0.406</span>).div_(<span class="number">0.225</span>);</span><br><span class="line">            <span class="comment">//auto img_var = torch::autograd::make_variable(tensor_image, false);</span></span><br><span class="line"></span><br><span class="line">            inputs[i] = tensor_image[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">auto</span> t = (<span class="keyword">double</span>) cv::getTickCount();</span><br><span class="line">        torch::Tensor result = _module.forward(&#123;inputs&#125;).toTensor();</span><br><span class="line">        at::Tensor probs = torch::softmax(result, <span class="number">1</span>);</span><br><span class="line">        at::Tensor preds = torch::argmax(result, <span class="number">1</span>);</span><br><span class="line">        t = (<span class="keyword">double</span>) cv::getTickCount() - t;</span><br><span class="line">        <span class="comment">// printf("execution time = %gs\n", t / cv::getTickFrequency());</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; batch_size; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">auto</span> pred = preds[i].item&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line">            <span class="keyword">auto</span> prob = probs[i][pred].item&lt;<span class="keyword">float</span>&gt;();</span><br><span class="line"></span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">int</span>, <span class="keyword">float</span>&gt; rslt;</span><br><span class="line">            rslt[pred] = prob;</span><br><span class="line">            ret.push_back(rslt);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"predict: "</span> &lt;&lt; ret &lt;&lt; <span class="string">"\t"</span></span><br><span class="line">                  &lt;&lt; <span class="string">"execute time: "</span> &lt;&lt; t / cv::getTickFrequency()</span><br><span class="line">                  &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//    for(int i = 0; i &lt; ret.size(); i++)</span></span><br><span class="line"><span class="comment">//    &#123;</span></span><br><span class="line"><span class="comment">//        std::map&lt;int, float&gt; rslt = ret[i];</span></span><br><span class="line"><span class="comment">//        std::cout &lt;&lt; rslt &lt;&lt; std::endl;</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (...)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR: predict runtime error!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">maskface::~maskface()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="maskface-h"><a href="#maskface-h" class="headerlink" title="maskface.h"></a>maskface.h</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Created by xiajun on 20-3-17.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> CPPML_MASKFACE_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CPPML_MASKFACE_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;torch/script.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;torch/torch.h&gt;  // dispensible on ubuntu, but must not on windows.</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="comment">//#include &lt;opencv2/imgproc/imgproc.hpp&gt;</span></span><br><span class="line"><span class="comment">//#include &lt;opencv2/core.hpp&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">maskface</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> _margin;</span><br><span class="line">	<span class="keyword">int</span> _imshape[<span class="number">3</span>];</span><br><span class="line">	torch::jit::script::Module _module;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">/* function: create function</span></span><br><span class="line"><span class="comment">	 * params: </span></span><br><span class="line"><span class="comment">	 *     filename: model path */</span></span><br><span class="line">	maskface(<span class="built_in">std</span>::<span class="built_in">string</span>&amp; filename);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*function: predict function</span></span><br><span class="line"><span class="comment">	*  params:</span></span><br><span class="line"><span class="comment">	*      images: rgb image.</span></span><br><span class="line"><span class="comment">	*      bboxes: [b, 4], b denote multi-face from one image, 4 value (x_left, y_left, width, height) for every bbox respectively.</span></span><br><span class="line"><span class="comment">	*  return:</span></span><br><span class="line"><span class="comment">	*      if param_error:</span></span><br><span class="line"><span class="comment">	*          throw</span></span><br><span class="line"><span class="comment">	*      elif runtime_error:</span></span><br><span class="line"><span class="comment">	*          return empty vector.</span></span><br><span class="line"><span class="comment">	*      else:</span></span><br><span class="line"><span class="comment">	*          predict result, [ &#123;label: confidence&#125;, ... ]*/</span></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">int</span>, <span class="keyword">float</span>&gt;&gt; predict(cv::Mat images, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; bboxes);</span><br><span class="line"></span><br><span class="line">	~maskface();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">//CPPML_MASKFACE_H</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="example-cpp"><a href="#example-cpp" class="headerlink" title="example.cpp"></a>example.cpp</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Created by xiajun on 20-3-17.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"maskface.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &lt; <span class="number">4</span>) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"usage: CppProject &lt;path-to-exported-script-module&gt; "</span></span><br><span class="line">                  &lt;&lt; <span class="string">"&lt;path-to-image&gt;  &lt;path-to-category-text&gt;\n"</span>;</span><br><span class="line">        <span class="comment">// return -1;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *model_path = <span class="string">"/home/xiajun/dev/proml/maskface/modeltest.pt"</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *image_path = <span class="string">"/home/xiajun/res/face/maskface/test-images/test_00000008.jpg"</span>;</span><br><span class="line"></span><br><span class="line">    maskface <span class="keyword">module</span> = maskface(model_path);</span><br><span class="line"></span><br><span class="line"><span class="comment">//    cv::namedWindow("show", cv::WINDOW_AUTOSIZE);</span></span><br><span class="line">    cv::Mat input;</span><br><span class="line">    cv::Mat image = cv::imread(image_path, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; bboxes(<span class="number">2</span>);</span><br><span class="line">    bboxes[<span class="number">0</span>].resize(<span class="number">4</span>);</span><br><span class="line">    bboxes[<span class="number">1</span>].resize(<span class="number">4</span>);</span><br><span class="line">    bboxes[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">30</span>;</span><br><span class="line">    bboxes[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">50</span>;</span><br><span class="line">    bboxes[<span class="number">0</span>][<span class="number">2</span>] = <span class="number">70</span>;</span><br><span class="line">    bboxes[<span class="number">0</span>][<span class="number">3</span>] = <span class="number">70</span>;</span><br><span class="line"></span><br><span class="line">    bboxes[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">70</span>;</span><br><span class="line">    bboxes[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">10</span>;</span><br><span class="line">    bboxes[<span class="number">1</span>][<span class="number">2</span>] = <span class="number">70</span>;</span><br><span class="line">    bboxes[<span class="number">1</span>][<span class="number">3</span>] = <span class="number">70</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; bboxes2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">auto</span> result = <span class="keyword">module</span>.predict(image, bboxes);</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; result &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (...)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"catch"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码编写完成之后，直接编译构建即可。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <code>前文</code></p>
+<blockquote>
+<p>抱歉：因这是个人随笔，文章命名会随内容而动态改变，故这里引用 <code>前文</code> 来代指前面写过的系列文章。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/21/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91C++%20Production-3%20libtorch%20&%20opencv%20in%20windows/" rel="prev" title="PyTorch笔记/【Entries】C++ Production-3 libtorch & opencv in windows">
+      <i class="fa fa-chevron-left"></i> PyTorch笔记/【Entries】C++ Production-3 libtorch & opencv in windows
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/26/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Detection%E3%80%91SSD/" rel="next" title="dl/【Paper笔记 Detection】SSD">
+      dl/【Paper笔记 Detection】SSD <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#在-CLion-IDE-中使用libtorch和opencv"><span class="nav-number">1.</span> <span class="nav-text">在 CLion IDE 中使用libtorch和opencv</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CMakeLists-txt"><span class="nav-number">1.1.</span> <span class="nav-text">CMakeLists.txt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#maskface-cpp"><span class="nav-number">1.2.</span> <span class="nav-text">maskface.cpp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#maskface-h"><span class="nav-number">1.3.</span> <span class="nav-text">maskface.h</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#example-cpp"><span class="nav-number">1.4.</span> <span class="nav-text">example.cpp</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">2.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

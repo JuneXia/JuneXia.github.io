@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="论文思想已弄明白，待整理。代码已贴注释。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dl&#x2F;【Paper笔记 Backbone】MobileNetv2">
+<meta property="og:url" content="http://yoursite.com/2020/04/01/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Backbone%E3%80%91MobileNetv2/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="论文思想已弄明白，待整理。代码已贴注释。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-04-03T09:01:19.450Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/04/01/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Backbone%E3%80%91MobileNetv2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>dl/【Paper笔记 Backbone】MobileNetv2 | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/01/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Backbone%E3%80%91MobileNetv2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          dl/【Paper笔记 Backbone】MobileNetv2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-04-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-01T00:00:00+08:00">2020-04-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-03 17:01:19" itemprop="dateModified" datetime="2020-04-03T17:01:19+08:00">2020-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>论文思想已弄明白，待整理。代码已贴注释。<br><a id="more"></a></p>
+<p><strong>Abstract</strong><br>&emsp; In this paper we describe a new mobile architecture, MobileNetV2, that improves the state of the art performance of mobile models on multiple tasks and benchmarks as well as across a spectrum of different model sizes. We also describe efficient ways of applying these mobile models to object detection in a novel framework we call SSDLite. Additionally, we demonstrate how to build mobile semantic segmentation models through a reduced form of DeepLabv3 which we call Mobile DeepLabv3.<br>&emsp; is based on an <strong>inverted residual structure</strong> where the shortcut connections are between the thin bottleneck layers. The intermediate expansion layer uses lightweight depthwise convolutions to filter features as a source of non-linearity. Additionally, we find that it is important to remove non-linearities in the narrow layers in order to maintain representational power. We demonstrate that this improves performance and provide an intuition that led to this design.<br>&emsp; Finally, our approach allows decoupling(decouple去耦合;使分离) of the input/output domains from the expressiveness(n. 善于表现;表情丰富;表现) of the transformation, which provides a convenient framework for further analysis. We measure our performance on ImageNet [1] classification, COCO object detection [2], VOC image segmentation [3]. We evaluate the trade-offs between accuracy, and number of operations measured by multiply-adds (MAdd), as well as actual latency, and the number of parameters.</p>
+<p>PyTorch 官方实现代码解析</p>
+<p>torchvison.models.mobilenet.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"><span class="keyword">from</span> .utils <span class="keyword">import</span> load_state_dict_from_url</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">__all__ = [<span class="string">'MobileNetV2'</span>, <span class="string">'mobilenet_v2'</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model_urls = &#123;</span><br><span class="line">    <span class="string">'mobilenet_v2'</span>: <span class="string">'https://download.pytorch.org/models/mobilenet_v2-b0353104.pth'</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_make_divisible</span><span class="params">(v, divisor, min_value=None)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    This function is taken from the original tf repo.</span></span><br><span class="line"><span class="string">    It ensures that all layers have a channel number that is divisible by 8</span></span><br><span class="line"><span class="string">    It can be seen here:</span></span><br><span class="line"><span class="string">    https://github.com/tensorflow/models/blob/master/research/slim/nets/mobilenet/mobilenet.py</span></span><br><span class="line"><span class="string">    :param v:</span></span><br><span class="line"><span class="string">    :param divisor:</span></span><br><span class="line"><span class="string">    :param min_value:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> min_value <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        min_value = divisor</span><br><span class="line">    new_v = max(min_value, int(v + divisor / <span class="number">2</span>) // divisor * divisor)</span><br><span class="line">    <span class="comment"># Make sure that round down does not go down by more than 10%.</span></span><br><span class="line">    <span class="comment"># 确保向下取整的时候不会超过10%.</span></span><br><span class="line">    <span class="keyword">if</span> new_v &lt; <span class="number">0.9</span> * v:</span><br><span class="line">        new_v += divisor</span><br><span class="line">    <span class="keyword">return</span> new_v</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConvBNReLU</span><span class="params">(nn.Sequential)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    :param in_planes: the number of input channel.</span></span><br><span class="line"><span class="string">    :param out_planes: the number of output channel.</span></span><br><span class="line"><span class="string">    :param kernel_size:</span></span><br><span class="line"><span class="string">    :param stride:</span></span><br><span class="line"><span class="string">    :param groups: it's denote general converlution while groups=1, depth-wise converlution while groups=in_planes.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_planes, out_planes, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, groups=<span class="number">1</span>)</span>:</span></span><br><span class="line">        padding = (kernel_size - <span class="number">1</span>) // <span class="number">2</span></span><br><span class="line">        super(ConvBNReLU, self).__init__(</span><br><span class="line">            nn.Conv2d(in_planes, out_planes, kernel_size, stride, padding, groups=groups, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(out_planes),</span><br><span class="line">            nn.ReLU6(inplace=<span class="literal">True</span>)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InvertedResidual</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, inp, oup, stride, expand_ratio)</span>:</span></span><br><span class="line">        super(InvertedResidual, self).__init__()</span><br><span class="line">        self.stride = stride</span><br><span class="line">        <span class="keyword">assert</span> stride <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">        hidden_dim = int(round(inp * expand_ratio))</span><br><span class="line">        <span class="comment"># hidden_dim is matched to $tk$ of paper.</span></span><br><span class="line"></span><br><span class="line">        self.use_res_connect = self.stride == <span class="number">1</span> <span class="keyword">and</span> inp == oup</span><br><span class="line">        <span class="comment"># set using residul connect or not.</span></span><br><span class="line"></span><br><span class="line">        layers = []</span><br><span class="line">        <span class="keyword">if</span> expand_ratio != <span class="number">1</span>:</span><br><span class="line">            <span class="comment"># pw</span></span><br><span class="line">            layers.append(ConvBNReLU(inp, hidden_dim, kernel_size=<span class="number">1</span>))</span><br><span class="line">            <span class="comment"># In practicaly, layers 的 append or extend 是等效的，只不过append是一次追加一个元素，而extend是一次追加多个元素</span></span><br><span class="line">            layers.extend([</span><br><span class="line">            <span class="comment"># dw</span></span><br><span class="line">            ConvBNReLU(hidden_dim, hidden_dim, stride=stride, groups=hidden_dim),</span><br><span class="line">            <span class="comment"># pw-linear</span></span><br><span class="line">            nn.Conv2d(hidden_dim, oup, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(oup),</span><br><span class="line">        ])</span><br><span class="line">        self.conv = nn.Sequential(*layers)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.use_res_connect:</span><br><span class="line">            <span class="keyword">return</span> x + self.conv(x)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self.conv(x)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MobileNetV2</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num_classes=<span class="number">1000</span>, width_mult=<span class="number">1.0</span>, inverted_residual_setting=None, round_nearest=<span class="number">8</span>)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        MobileNet V2 main class</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            num_classes (int): Number of classes</span></span><br><span class="line"><span class="string">            width_mult (float): Width multiplier - adjusts number of channels in each layer by this amount</span></span><br><span class="line"><span class="string">            inverted_residual_setting: Network structure</span></span><br><span class="line"><span class="string">            round_nearest (int): Round the number of channels in each layer to be a multiple of this number</span></span><br><span class="line"><span class="string">            Set to 1 to turn off rounding</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        super(MobileNetV2, self).__init__()</span><br><span class="line">        block = InvertedResidual</span><br><span class="line">        input_channel = <span class="number">32</span></span><br><span class="line">        last_channel = <span class="number">1280</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> inverted_residual_setting <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            inverted_residual_setting = [</span><br><span class="line">                <span class="comment"># t, c, n, s</span></span><br><span class="line">                <span class="comment"># t: 扩展因子，用于在pw卷积中用于将k个输入channel数量变换到tk个输出channel。</span></span><br><span class="line">                <span class="comment"># c: 输出channel</span></span><br><span class="line">                <span class="comment"># n: InvertedResidual需要重复的次数</span></span><br><span class="line">                <span class="comment"># s: 卷基层stride</span></span><br><span class="line">                [<span class="number">1</span>, <span class="number">16</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                [<span class="number">6</span>, <span class="number">24</span>, <span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">                [<span class="number">6</span>, <span class="number">32</span>, <span class="number">3</span>, <span class="number">2</span>],</span><br><span class="line">                [<span class="number">6</span>, <span class="number">64</span>, <span class="number">4</span>, <span class="number">2</span>],</span><br><span class="line">                [<span class="number">6</span>, <span class="number">96</span>, <span class="number">3</span>, <span class="number">1</span>],</span><br><span class="line">                [<span class="number">6</span>, <span class="number">160</span>, <span class="number">3</span>, <span class="number">2</span>],</span><br><span class="line">                [<span class="number">6</span>, <span class="number">320</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">            ]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># only check the first element, assuming user knows t,c,n,s are required</span></span><br><span class="line">        <span class="keyword">if</span> len(inverted_residual_setting) == <span class="number">0</span> <span class="keyword">or</span> len(inverted_residual_setting[<span class="number">0</span>]) != <span class="number">4</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"inverted_residual_setting should be non-empty "</span></span><br><span class="line">                             <span class="string">"or a 4-element list, got &#123;&#125;"</span>.format(inverted_residual_setting))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># building first layer</span></span><br><span class="line">        input_channel = _make_divisible(input_channel * width_mult, round_nearest)</span><br><span class="line">        self.last_channel = _make_divisible(last_channel * max(<span class="number">1.0</span>, width_mult), round_nearest)</span><br><span class="line"></span><br><span class="line">        features = [ConvBNReLU(<span class="number">3</span>, input_channel, stride=<span class="number">2</span>)]</span><br><span class="line">        <span class="comment"># building inverted residual blocks</span></span><br><span class="line">        <span class="keyword">for</span> t, c, n, s <span class="keyword">in</span> inverted_residual_setting:</span><br><span class="line">            output_channel = _make_divisible(c * width_mult, round_nearest)</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">                stride = s <span class="keyword">if</span> i == <span class="number">0</span> <span class="keyword">else</span> <span class="number">1</span>  <span class="comment"># 在每个inverted residual blocks中，第一个卷积的stride用s，第二个卷积的stride都统一的用1</span></span><br><span class="line"></span><br><span class="line">                features.append(block(input_channel, output_channel, stride, expand_ratio=t))</span><br><span class="line">                input_channel = output_channel</span><br><span class="line">        <span class="comment"># building last several layers</span></span><br><span class="line">        features.append(ConvBNReLU(input_channel, self.last_channel, kernel_size=<span class="number">1</span>))</span><br><span class="line">        <span class="comment"># make it nn.Sequential</span></span><br><span class="line">        self.features = nn.Sequential(*features)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># building classifier</span></span><br><span class="line">        self.classifier = nn.Sequential(</span><br><span class="line">            nn.Dropout(<span class="number">0.2</span>),</span><br><span class="line">            nn.Linear(self.last_channel, num_classes),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># weight initialization</span></span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self.modules():</span><br><span class="line">            <span class="keyword">if</span> isinstance(m, nn.Conv2d):</span><br><span class="line">                nn.init.kaiming_normal_(m.weight, mode=<span class="string">'fan_out'</span>)</span><br><span class="line">                <span class="keyword">if</span> m.bias <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    nn.init.zeros_(m.bias)</span><br><span class="line">            <span class="keyword">elif</span> isinstance(m, nn.BatchNorm2d):</span><br><span class="line">                nn.init.ones_(m.weight)</span><br><span class="line">                nn.init.zeros_(m.bias)</span><br><span class="line">            <span class="keyword">elif</span> isinstance(m, nn.Linear):</span><br><span class="line">                nn.init.normal_(m.weight, <span class="number">0</span>, <span class="number">0.01</span>)</span><br><span class="line">                nn.init.zeros_(m.bias)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        x = self.features(x)</span><br><span class="line">        x = x.mean([<span class="number">2</span>, <span class="number">3</span>])  <span class="comment"># avg-pooling</span></span><br><span class="line">        x = self.classifier(x)</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mobilenet_v2</span><span class="params">(pretrained=False, progress=True, **kwargs)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Constructs a MobileNetV2 architecture from</span></span><br><span class="line"><span class="string">    `"MobileNetV2: Inverted Residuals and Linear Bottlenecks" &lt;https://arxiv.org/abs/1801.04381&gt;`_.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        pretrained (bool): If True, returns a model pre-trained on ImageNet</span></span><br><span class="line"><span class="string">        progress (bool): If True, displays a progress bar of the download to stderr</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    model = MobileNetV2(**kwargs)</span><br><span class="line">    <span class="keyword">if</span> pretrained:</span><br><span class="line">        state_dict = load_state_dict_from_url(model_urls[<span class="string">'mobilenet_v2'</span>],</span><br><span class="line">                                              progress=progress)</span><br><span class="line">        model.load_state_dict(state_dict)</span><br><span class="line">    <span class="keyword">return</span> model</span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/31/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Backbone%E3%80%91MobileNetv1/" rel="prev" title="dl/【Paper笔记 Backbone】MobileNetv1">
+      <i class="fa fa-chevron-left"></i> dl/【Paper笔记 Backbone】MobileNetv1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/02/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91VSCode%20related/" rel="next" title="开发环境与工具/【开发环境与工具】VSCode related">
+      开发环境与工具/【开发环境与工具】VSCode related <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

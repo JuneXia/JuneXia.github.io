@@ -54,7 +54,7 @@
 <meta property="og:description" content="解决了在VS-Code中预览Markdown的mermaid图表的预览问题，那么发布到hexo后该怎么预览mermaid图表呢。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-02-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-10T08:35:40.787Z">
+<meta property="article:modified_time" content="2020-03-23T12:24:24.833Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/02/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Blog%E3%80%91%E5%85%B3%E4%BA%8Emermaid%E5%9B%BE%E8%A1%A8%E7%9A%84%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/">
@@ -203,7 +203,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-10 16:35:40" itemprop="dateModified" datetime="2020-03-10T16:35:40+08:00">2020-03-10</time>
+                <time title="Modified: 2020-03-23 20:24:24" itemprop="dateModified" datetime="2020-03-23T20:24:24+08:00">2020-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -229,9 +229,135 @@
 
       
         <p>解决了在VS-Code中预览Markdown的mermaid图表的预览问题，那么发布到hexo后该怎么预览mermaid图表呢。<br><a id="more"></a></p>
-<p><strong>注意：下回先不安装hexo-filter-mermaid-diagrams，直接将 hexo next _config.yml文件的mermaid设为true，然后发布试试看能不能成。</strong></p>
+<h1 id="安装与配置"><a href="#安装与配置" class="headerlink" title="安装与配置"></a>安装与配置</h1><p><strong>注意：下回先不安装hexo-filter-mermaid-diagrams，直接将 hexo next _config.yml文件的mermaid设为true，然后发布试试看能不能成。</strong></p>
 <p>step1: 安装hexo mermaid插件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-filter-mermaid-diagrams</span><br></pre></td></tr></table></figure></p>
 <p>step2: 使能 hexo next _config.yml文件mermaid<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Mermaid tag</span><br><span class="line">mermaid:</span><br><span class="line">  enable: true</span><br><span class="line">  # Available themes: default | dark | forest | neutral</span><br><span class="line">  theme: default</span><br></pre></td></tr></table></figure></p>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><ol>
+<li>flowchart<pre class="mermaid">graph TD;
+ A-->B;
+ A-->C;
+ B-->D;
+ C-->D;</pre>
+
+
+</li>
+</ol>
+<pre class="mermaid">graph TB
+    c1-->a2
+    subgraph one
+    a1-->a2
+    end
+    subgraph two
+    b1-->b2
+    end
+    subgraph three
+    c1-->c2
+    end</pre>
+
+
+<ol>
+<li>Sequence diagrams<pre class="mermaid">sequenceDiagram
+ participant Alice
+ participant Bob
+ Alice->>John: Hello John, how are you?
+ loop Healthcheck
+     John->>John: Fight against hypochondria
+ end
+ Note right of John: Rational thoughts <br/>prevail!
+ John-->>Alice: Great!
+ John->>Bob: How about you?
+ Bob-->>John: Jolly good!</pre>
+
+
+</li>
+</ol>
+<ol>
+<li>Class diagrams<pre class="mermaid">classDiagram
+  Animal <|-- Duck
+  Animal <|-- Fish
+  Animal <|-- Zebra
+  Animal : +int age
+  Animal : +String gender
+  Animal: +isMammal()
+  Animal: +mate()
+  class Duck{
+      +String beakColor
+      +swim()
+      +quack()
+  }
+  class Fish{
+      -int sizeInFeet
+      -canEat()
+  }
+  class Zebra{
+      +bool is_wild
+      +run()
+  }</pre>
+
+
+</li>
+</ol>
+<ol>
+<li><p>State diagrams</p>
+<pre class="mermaid">stateDiagram
+    [*] --> Active
+
+    state Active {
+        [*] --> NumLockOff
+        NumLockOff --> NumLockOn : EvNumLockPressed
+        NumLockOn --> NumLockOff : EvNumLockPressed
+        --
+        [*] --> CapsLockOff
+        CapsLockOff --> CapsLockOn : EvCapsLockPressed
+        CapsLockOn --> CapsLockOff : EvCapsLockPressed
+        --
+        [*] --> ScrollLockOff
+        ScrollLockOff --> ScrollLockOn : EvCapsLockPressed
+        ScrollLockOn --> ScrollLockOff : EvCapsLockPressed
+    }</pre>
+
+
+</li>
+</ol>
+<ol>
+<li><p>Gantt diagrams</p>
+<pre class="mermaid">gantt
+    dateFormat  YYYY-MM-DD
+    title Adding GANTT diagram functionality to mermaid
+
+    section A section
+    Completed task            :done,    des1, 2014-01-06,2014-01-08
+    Active task               :active,  des2, 2014-01-09, 3d
+    Future task               :         des3, after des2, 5d
+    Future task2              :         des4, after des3, 5d
+
+    section Critical tasks
+    Completed task in the critical line :crit, done, 2014-01-06,24h
+    Implement parser and jison          :crit, done, after des1, 2d
+    Create tests for parser             :crit, active, 3d
+    Future task in critical line        :crit, 5d
+    Create tests for renderer           :2d
+    Add to mermaid                      :1d
+
+    section Documentation
+    Describe gantt syntax               :active, a1, after des1, 3d
+    Add gantt diagram to demo page      :after a1  , 20h
+    Add another diagram to demo page    :doc1, after a1  , 48h
+
+    section Last section
+    Describe gantt syntax               :after doc1, 3d
+    Add gantt diagram to demo page      :20h
+    Add another diagram to demo page    :48h</pre>
+</li>
+<li><p>Pie chart diagrams</p>
+<pre class="mermaid">pie
+ "Dogs" : 386
+ "Cats" : 85
+ "Rats" : 15</pre>
+
+
+</li>
+</ol>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://yelog.org/2019/11/12/3-hexo-support-mermaid/" target="_blank" rel="noopener">3-hexo支持mermaid图表</a></p>
 
     </div>
@@ -252,8 +378,8 @@
       <i class="fa fa-chevron-left"></i> 开发环境与工具/【Markdown】关于插件的使用
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/02/28/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20FaceDetection%E3%80%91SSH/" rel="next" title="dl/【Paper笔记 FaceDetection】SSH">
-      dl/【Paper笔记 FaceDetection】SSH <i class="fa fa-chevron-right"></i>
+    <a href="/2020/02/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.optim-1%20Optimizer/" rel="next" title="PyTorch笔记/【Tutorials】torch.optim-1 Optimizer">
+      PyTorch笔记/【Tutorials】torch.optim-1 Optimizer <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -314,7 +440,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">1.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装与配置"><span class="nav-number">1.</span> <span class="nav-text">安装与配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例"><span class="nav-number">2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -328,14 +454,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>

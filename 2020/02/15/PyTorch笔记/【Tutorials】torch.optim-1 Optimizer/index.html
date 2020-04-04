@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="有了 Loss 之后，怎样采用 Loss 去更新模型参数使得 Loss 逐步降低呢，这就是优化器（Optimizer）要干的活。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch笔记&#x2F;【Tutorials】torch.optim-1 Optimizer">
+<meta property="og:url" content="http://yoursite.com/2020/02/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.optim-1%20Optimizer/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="有了 Loss 之后，怎样采用 Loss 去更新模型参数使得 Loss 逐步降低呢，这就是优化器（Optimizer）要干的活。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer1.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer2.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer3.jpg">
+<meta property="article:published_time" content="2020-02-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-20T02:35:30.897Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer1.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/02/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.optim-1%20Optimizer/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>PyTorch笔记/【Tutorials】torch.optim-1 Optimizer | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.optim-1%20Optimizer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch笔记/【Tutorials】torch.optim-1 Optimizer
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-15 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-15T00:00:00+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-20 10:35:30" itemprop="dateModified" datetime="2020-03-20T10:35:30+08:00">2020-03-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>有了 Loss 之后，怎样采用 Loss 去更新模型参数使得 Loss 逐步降低呢，这就是优化器（Optimizer）要干的活。<br><a id="more"></a></p>
+<h1 id="什么是优化器"><a href="#什么是优化器" class="headerlink" title="什么是优化器"></a>什么是优化器</h1><p>&emsp; pytorch的优化器: <strong>管理</strong>并<strong>更新</strong>模型中可学习参数的值,使得模型输出更接近真实标签，其中“管理”指的是优化器可以修改哪一部分参数，而“更新”指的是优化器使用的某种策略去更新这些参数的值，而在神经网络中一般都是采用梯度下降更新策略去更新参数。</p>
+<html>
+    <table style="margin-left: auto; margin-right: auto;">
+        <tr>
+            <td>
+                <!--左侧内容-->
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer1.jpg" width = 50% height = 50% />
+                </div>
+            </td>
+            <td>
+                <!--右侧内容-->
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer2.jpg" width = 50% height = 50% />
+                </div>
+            </td>
+        </tr>
+    </table>
+    <center>图1 &nbsp; 左侧为一元函数，右侧为二元函数</center>
+</html>
+
+<p><strong>导数</strong>: 函数<strong>在指定坐标轴上的</strong>变化率 \<br><strong>方向导数</strong>: 指定方向上的变化率，对于一元函数，通常不会考虑它的方向导数，因为它的方向导数很受限制；通常会在二元或者三元函数中去讨论方向导数的概念；\<br><strong>梯度</strong>: 梯度是一个向量, 这个向量的方向为方向导数取得最大值的方向，而这个向量的模长就是方向导数的值（也就是变化率）。<br><strong>梯度下降</strong>: 梯度是增长最快的方向，而梯度下降就是朝着梯度的负方向下降速度是最快的。</p>
+<h1 id="Optimizer的属性"><a href="#Optimizer的属性" class="headerlink" title="Optimizer的属性"></a>Optimizer的属性</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Optimizer</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, params, defaults)</span>:</span></span><br><span class="line">        self.defaults = defaults</span><br><span class="line">        self.state = defaultdict(dict)</span><br><span class="line">        self.param_groups = []</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 伪代码</span></span><br><span class="line">        param_groups = [&#123;<span class="string">'params'</span>: param_groups&#125;]</span><br></pre></td></tr></table></figure>
+<p>基本属性</p>
+<ul>
+<li><strong>defaults</strong>: 优化器超参数，例如里面会存储学习率、momentum、weight_decay等超参数。</li>
+<li><strong>state</strong>: 参数的缓存，如 momentum 的缓存（momentum会使用到前几次更新时的梯度）</li>
+<li><strong>params_groups</strong>: 管理的参数组，params_groups是一个list，而这个list的每个元素又是一个dict，每个dict存储一组参数。具体可参见图2.</li>
+<li><strong>_step_count</strong>: 记录更新次数，学习率调整中使用。</li>
+</ul>
+<h1 id="Optimizer的方法"><a href="#Optimizer的方法" class="headerlink" title="Optimizer的方法"></a>Optimizer的方法</h1><h2 id="zero-grad"><a href="#zero-grad" class="headerlink" title=".zero_grad"></a>.zero_grad</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Optimizer</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">zero_grad</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">r"""Clears the gradients of all optimized :class:`torch.Tensor` s."""</span></span><br><span class="line">        <span class="keyword">for</span> group <span class="keyword">in</span> self.param_groups:</span><br><span class="line">            <span class="keyword">for</span> p <span class="keyword">in</span> group[<span class="string">'params'</span>]:</span><br><span class="line">                <span class="keyword">if</span> p.grad <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    p.grad.detach_()</span><br><span class="line">                    p.grad.zero_()</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：清空所管理参数的梯度</p>
+<p><strong>注意</strong>：在Pytorch，张量梯度不自动清零，而是累加历史梯度，所以需要在每次使用梯度更新完参数后将参数的梯度清零，或者在backword之前将梯度清零也行。</p>
+<p>代码示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ----------------------------------- zero_grad -----------------------------------</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    print(<span class="string">"weight.grad is &#123;&#125;\n"</span>.format(weight.grad))</span><br><span class="line">    optimizer.zero_grad()</span><br><span class="line">    print(<span class="string">"after optimizer.zero_grad(), weight.grad is\n&#123;&#125;"</span>.format(weight.grad))</span><br></pre></td></tr></table></figure></p>
+<p>优化器中存储的参数的地址和参数自己的地址是一样的，这说明优化器中存储的只是参数的地址而已，这样可以解决内存空间。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"weight in optimizer:&#123;&#125;"</span>.format(id(optimizer.param_groups[<span class="number">0</span>][<span class="string">'params'</span>][<span class="number">0</span>])))</span><br><span class="line">print(<span class="string">"weight in weight:&#123;&#125;"</span>.format(id(weight)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">weight <span class="keyword">in</span> optimizer: <span class="number">140320210504008</span></span><br><span class="line">weight <span class="keyword">in</span> weight:    <span class="number">140320210504008</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="step"><a href="#step" class="headerlink" title=".step"></a>.step</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Optimizer</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">step</span><span class="params">(self, closure=None)</span>:</span></span><br><span class="line">        <span class="string">"""Performs a single optimization step.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Arguments:</span></span><br><span class="line"><span class="string">            closure (callable, optional): A closure that reevaluates the model</span></span><br><span class="line"><span class="string">                and returns the loss.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        loss = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">if</span> closure <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            loss = closure()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> group <span class="keyword">in</span> self.param_groups:</span><br><span class="line">            weight_decay = group[<span class="string">'weight_decay'</span>]</span><br><span class="line">            momentum = group[<span class="string">'momentum'</span>]</span><br><span class="line">            dampening = group[<span class="string">'dampening'</span>]</span><br><span class="line">            nesterov = group[<span class="string">'nesterov'</span>]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> p <span class="keyword">in</span> group[<span class="string">'params'</span>]:</span><br><span class="line">                <span class="keyword">if</span> p.grad <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                d_p = p.grad.data</span><br><span class="line">                <span class="keyword">if</span> weight_decay != <span class="number">0</span>:</span><br><span class="line">                    d_p.add_(weight_decay, p.data)</span><br><span class="line">                <span class="keyword">if</span> momentum != <span class="number">0</span>:</span><br><span class="line">                    param_state = self.state[p]</span><br><span class="line">                    <span class="keyword">if</span> <span class="string">'momentum_buffer'</span> <span class="keyword">not</span> <span class="keyword">in</span> param_state:</span><br><span class="line">                        buf = param_state[<span class="string">'momentum_buffer'</span>] = torch.clone(d_p).detach()</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        buf = param_state[<span class="string">'momentum_buffer'</span>]</span><br><span class="line">                        buf.mul_(momentum).add_(<span class="number">1</span> - dampening, d_p)</span><br><span class="line">                    <span class="keyword">if</span> nesterov:</span><br><span class="line">                        d_p = d_p.add(momentum, buf)</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        d_p = buf</span><br><span class="line"></span><br><span class="line">                p.data.add_(-group[<span class="string">'lr'</span>], d_p)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> loss</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：执行一步更新，具体更新方法会根据优化策略来进行。</p>
+<p>代码示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># @file name  : optimizer_methods.py</span></span><br><span class="line"><span class="string"># @author     : TingsongYu https://github.com/TingsongYu</span></span><br><span class="line"><span class="string"># @date       : 2019-10-14 10:08:00</span></span><br><span class="line"><span class="string"># @brief      : optimizer's methods</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">BASE_DIR = os.path.dirname(os.path.abspath(__file__))</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">from</span> tools.common_tools <span class="keyword">import</span> set_seed</span><br><span class="line"></span><br><span class="line">set_seed(<span class="number">1</span>)  <span class="comment"># 设置随机种子</span></span><br><span class="line"></span><br><span class="line">weight = torch.randn((<span class="number">2</span>, <span class="number">2</span>), requires_grad=<span class="literal">True</span>)</span><br><span class="line">weight.grad = torch.ones((<span class="number">2</span>, <span class="number">2</span>))  <span class="comment"># 为了便于观察效果这里将grad设置为1</span></span><br><span class="line"></span><br><span class="line">optimizer = optim.SGD([weight], lr=<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ----------------------------------- step -----------------------------------</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    print(<span class="string">"weight before step:&#123;&#125;"</span>.format(weight.data))</span><br><span class="line">    optimizer.step()        <span class="comment"># 修改lr=1 0.1观察结果</span></span><br><span class="line">    print(<span class="string">"weight after step:&#123;&#125;"</span>.format(weight.data))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">weight before step:</span><br><span class="line">tensor([[<span class="number">0.6614</span>, <span class="number">0.2669</span>],</span><br><span class="line">        [<span class="number">0.0617</span>, <span class="number">0.6213</span>]])</span><br><span class="line"></span><br><span class="line">weight after step:</span><br><span class="line">tensor([[ <span class="number">0.5614</span>,  <span class="number">0.1669</span>],</span><br><span class="line">        [<span class="number">-0.0383</span>,  <span class="number">0.5213</span>]])</span><br></pre></td></tr></table></figure><br>计算过程：\<br>$w_{i} = w_{i-1} - lr * \Delta = 0.6614 - 0.1 * 1 = 0.5614$</p>
+<h2 id="add-param-group"><a href="#add-param-group" class="headerlink" title=".add_param_group"></a>.add_param_group</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Optimizer</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_param_group</span><span class="params">(self, param_group)</span>:</span></span><br><span class="line">        <span class="string">r"""Add a param group to the :class:`Optimizer` s `param_groups`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        This can be useful when fine tuning a pre-trained network as frozen layers can be made</span></span><br><span class="line"><span class="string">        trainable and added to the :class:`Optimizer` as training progresses.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Arguments:</span></span><br><span class="line"><span class="string">            param_group (dict): Specifies what Tensors should be optimized along with group</span></span><br><span class="line"><span class="string">            specific optimization options.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">assert</span> isinstance(param_group, dict), <span class="string">"param group must be a dict"</span></span><br><span class="line"></span><br><span class="line">        params = param_group[<span class="string">'params'</span>]</span><br><span class="line">        <span class="keyword">if</span> isinstance(params, torch.Tensor):</span><br><span class="line">            param_group[<span class="string">'params'</span>] = [params]</span><br><span class="line">        <span class="keyword">elif</span> isinstance(params, set):</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">'optimizer parameters need to be organized in ordered collections, but '</span></span><br><span class="line">                            <span class="string">'the ordering of tensors in sets will change between runs. Please use a list instead.'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            param_group[<span class="string">'params'</span>] = list(params)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> param <span class="keyword">in</span> param_group[<span class="string">'params'</span>]:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> isinstance(param, torch.Tensor):</span><br><span class="line">                <span class="keyword">raise</span> TypeError(<span class="string">"optimizer can only optimize Tensors, "</span></span><br><span class="line">                                <span class="string">"but one of the params is "</span> + torch.typename(param))</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> param.is_leaf:</span><br><span class="line">                <span class="keyword">raise</span> ValueError(<span class="string">"can't optimize a non-leaf Tensor"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> name, default <span class="keyword">in</span> self.defaults.items():</span><br><span class="line">            <span class="keyword">if</span> default <span class="keyword">is</span> required <span class="keyword">and</span> name <span class="keyword">not</span> <span class="keyword">in</span> param_group:</span><br><span class="line">                <span class="keyword">raise</span> ValueError(<span class="string">"parameter group didn't specify a value of required optimization parameter "</span> +</span><br><span class="line">                                 name)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                param_group.setdefault(name, default)</span><br><span class="line"></span><br><span class="line">        param_set = set()</span><br><span class="line">        <span class="keyword">for</span> group <span class="keyword">in</span> self.param_groups:</span><br><span class="line">            param_set.update(set(group[<span class="string">'params'</span>]))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> param_set.isdisjoint(set(param_group[<span class="string">'params'</span>])):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"some parameters appear in more than one parameter group"</span>)</span><br><span class="line"></span><br><span class="line">        self.param_groups.append(param_group)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：添加参数组。具体来说就是：可以将参数分组添加到优化器，对不同组的参数有不同超参数设置，例如在模型的finetune当中可以将模型参数分成两组，让模型前面的特征提取部分的学习率小一些，而让后面我们自己添加的全连接层的学习率大一些。</p>
+<p>代码示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ----------------------------------- add_param_group -----------------------------------</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    print(<span class="string">"optimizer.param_groups is\n&#123;&#125;"</span>.format(optimizer.param_groups))</span><br><span class="line"></span><br><span class="line">    w2 = torch.randn((<span class="number">3</span>, <span class="number">3</span>), requires_grad=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    optimizer.add_param_group(&#123;<span class="string">"params"</span>: w2, <span class="string">'lr'</span>: <span class="number">0.0001</span>&#125;)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"optimizer.param_groups is\n&#123;&#125;"</span>.format(optimizer.param_groups))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">optimizer.param_groups <span class="keyword">is</span></span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'dampening'</span>: <span class="number">0</span>, <span class="string">'lr'</span>: <span class="number">0.1</span>, <span class="string">'nesterov'</span>: <span class="literal">False</span>, <span class="string">'weight_decay'</span>: <span class="number">0</span>, <span class="string">'momentum'</span>: <span class="number">0</span>, </span><br><span class="line">        <span class="string">'params'</span>: [tensor([[<span class="number">0.6614</span>, <span class="number">0.2669</span>], [<span class="number">0.0617</span>, <span class="number">0.6213</span>]], requires_grad=<span class="literal">True</span>)]</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">optimizer.param_groups <span class="keyword">is</span></span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'dampening'</span>: <span class="number">0</span>, <span class="string">'lr'</span>: <span class="number">0.1</span>, <span class="string">'nesterov'</span>: <span class="literal">False</span>, <span class="string">'weight_decay'</span>: <span class="number">0</span>, <span class="string">'momentum'</span>: <span class="number">0</span>, </span><br><span class="line">        <span class="string">'params'</span>: [tensor([[<span class="number">0.6614</span>, <span class="number">0.2669</span>],[<span class="number">0.0617</span>, <span class="number">0.6213</span>]], requires_grad=<span class="literal">True</span>)]</span><br><span class="line">    &#125;, </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'dampening'</span>: <span class="number">0</span>, <span class="string">'lr'</span>: <span class="number">0.0001</span>, <span class="string">'nesterov'</span>: <span class="literal">False</span>, <span class="string">'weight_decay'</span>: <span class="number">0</span>, <span class="string">'momentum'</span>: <span class="number">0</span>, </span><br><span class="line">        <span class="string">'params'</span>: [tensor([[<span class="number">-0.4519</span>, <span class="number">-0.1661</span>, <span class="number">-1.5228</span>], [ <span class="number">0.3817</span>, <span class="number">-1.0276</span>, <span class="number">-0.5631</span>], [<span class="number">-0.8923</span>, <span class="number">-0.0583</span>, <span class="number">-0.1955</span>]], requires_grad=<span class="literal">True</span>)]</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure><br>可以看到，上面两组参数拥有不同的学习率。</p>
+<h2 id="state-dict"><a href="#state-dict" class="headerlink" title=".state_dict"></a>.state_dict</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Optimizer</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">state_dict</span><span class="params">(self)</span>:</span></span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">'state'</span>: packed_state,</span><br><span class="line">            <span class="string">'param_groups'</span>: param_groups,</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：获取优化器当前状态信息<strong>字典</strong></p>
+<p>代码示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ----------------------------------- state_dict -----------------------------------</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line"></span><br><span class="line">    optimizer = optim.SGD([weight], lr=<span class="number">0.1</span>, momentum=<span class="number">0.9</span>)</span><br><span class="line">    opt_state_dict = optimizer.state_dict()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"state_dict before step:\n"</span>, opt_state_dict)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">        optimizer.step()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"state_dict after step:\n"</span>, optimizer.state_dict())</span><br><span class="line"></span><br><span class="line">    torch.save(optimizer.state_dict(), os.path.join(BASE_DIR, <span class="string">"optimizer_state_dict.pkl"</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">state_dict before step:</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">'param_groups'</span>: [&#123;<span class="string">'params'</span>: [<span class="number">140186313140480</span>], <span class="string">'nesterov'</span>: <span class="literal">False</span>, <span class="string">'weight_decay'</span>: <span class="number">0</span>, <span class="string">'lr'</span>: <span class="number">0.1</span>, <span class="string">'dampening'</span>: <span class="number">0</span>, <span class="string">'momentum'</span>: <span class="number">0.9</span>&#125;], </span><br><span class="line">    <span class="string">'state'</span>: &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">state_dict after step:</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">'param_groups'</span>: [&#123;<span class="string">'params'</span>: [<span class="number">140186313140480</span>], <span class="string">'nesterov'</span>: <span class="literal">False</span>, <span class="string">'weight_decay'</span>: <span class="number">0</span>, <span class="string">'lr'</span>: <span class="number">0.1</span>, <span class="string">'dampening'</span>: <span class="number">0</span>, <span class="string">'momentum'</span>: <span class="number">0.9</span>&#125;], </span><br><span class="line">    <span class="string">'state'</span>: &#123;<span class="number">140186313140480</span>: &#123;<span class="string">'momentum_buffer'</span>: tensor([[<span class="number">6.5132</span>, <span class="number">6.5132</span>], [<span class="number">6.5132</span>, <span class="number">6.5132</span>]])&#125;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="load-state-dict"><a href="#load-state-dict" class="headerlink" title=".load_state_dict"></a>.load_state_dict</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Optimizer</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">load_state_dict</span><span class="params">(self, state_dict)</span>:</span></span><br><span class="line">        <span class="string">r"""Loads the optimizer state.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Arguments:</span></span><br><span class="line"><span class="string">            state_dict (dict): optimizer state. Should be an object returned</span></span><br><span class="line"><span class="string">                from a call to :meth:`state_dict`.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># deepcopy, to be consistent with module API</span></span><br><span class="line">        state_dict = deepcopy(state_dict)</span><br><span class="line">        <span class="comment"># Validate the state_dict</span></span><br><span class="line">        groups = self.param_groups</span><br><span class="line">        saved_groups = state_dict[<span class="string">'param_groups'</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> len(groups) != len(saved_groups):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"loaded state dict has a different number of "</span></span><br><span class="line">                             <span class="string">"parameter groups"</span>)</span><br><span class="line">        param_lens = (len(g[<span class="string">'params'</span>]) <span class="keyword">for</span> g <span class="keyword">in</span> groups)</span><br><span class="line">        saved_lens = (len(g[<span class="string">'params'</span>]) <span class="keyword">for</span> g <span class="keyword">in</span> saved_groups)</span><br><span class="line">        <span class="keyword">if</span> any(p_len != s_len <span class="keyword">for</span> p_len, s_len <span class="keyword">in</span> zip(param_lens, saved_lens)):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"loaded state dict contains a parameter group "</span></span><br><span class="line">                             <span class="string">"that doesn't match the size of optimizer's group"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Update the state</span></span><br><span class="line">        id_map = &#123;old_id: p <span class="keyword">for</span> old_id, p <span class="keyword">in</span></span><br><span class="line">                  zip(chain(*(g[<span class="string">'params'</span>] <span class="keyword">for</span> g <span class="keyword">in</span> saved_groups)),</span><br><span class="line">                      chain(*(g[<span class="string">'params'</span>] <span class="keyword">for</span> g <span class="keyword">in</span> groups)))&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：加载状态信息字典</p>
+<p>&emsp; state_dict 和 load_state_dict 是一个组合操作，state_dict 用于获取优化器当前状态信息字典，而load_state_dict将状态字典加载到优化器中。<br>通常每隔几个epoch的就要保存一次模型的状态信息，避免训练意外终止后要从头训练的苦恼。</p>
+<p>代码示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -----------------------------------load state_dict -----------------------------------</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line"></span><br><span class="line">    optimizer = optim.SGD([weight], lr=<span class="number">0.1</span>, momentum=<span class="number">0.9</span>)</span><br><span class="line">    state_dict = torch.load(os.path.join(BASE_DIR, <span class="string">"optimizer_state_dict.pkl"</span>))</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"state_dict before load state:\n"</span>, optimizer.state_dict())</span><br><span class="line">    optimizer.load_state_dict(state_dict)</span><br><span class="line">    print(<span class="string">"state_dict after load state:\n"</span>, optimizer.state_dict())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">state_dict before load state:</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">'param_groups'</span>: [&#123;<span class="string">'params'</span>: [<span class="number">140186313140480</span>], <span class="string">'nesterov'</span>: <span class="literal">False</span>, <span class="string">'weight_decay'</span>: <span class="number">0</span>, <span class="string">'lr'</span>: <span class="number">0.1</span>, <span class="string">'dampening'</span>: <span class="number">0</span>, <span class="string">'momentum'</span>: <span class="number">0.9</span>&#125;], </span><br><span class="line">    <span class="string">'state'</span>: &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">state_dict after load state:</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">'param_groups'</span>: [&#123;<span class="string">'params'</span>: [<span class="number">140186313140480</span>], <span class="string">'nesterov'</span>: <span class="literal">False</span>, <span class="string">'weight_decay'</span>: <span class="number">0</span>, <span class="string">'lr'</span>: <span class="number">0.1</span>, <span class="string">'dampening'</span>: <span class="number">0</span>, <span class="string">'momentum'</span>: <span class="number">0.9</span>&#125;], </span><br><span class="line">    <span class="string">'state'</span>: &#123;<span class="number">140186313140480</span>: &#123;<span class="string">'momentum_buffer'</span>: tensor([[<span class="number">6.5132</span>, <span class="number">6.5132</span>], [<span class="number">6.5132</span>, <span class="number">6.5132</span>]])&#125;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="完整的训练代码示例"><a href="#完整的训练代码示例" class="headerlink" title="完整的训练代码示例"></a>完整的训练代码示例</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 参见：《DataLoader and Dataset》 所在章节。</span></span><br></pre></td></tr></table></figure>
+<p>下图是程序在运行完 <code>optimizer = optim.SGD(net.parameters(), lr=LR, momentum=0.9)</code> 后的内存状态：</p>
+<p><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer3.jpg" width = 100% height = 100% />
+</div><center>图2 &nbsp;  优化器中的存储内容展示</center></p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Blog%E3%80%91%E5%85%B3%E4%BA%8Emermaid%E5%9B%BE%E8%A1%A8%E7%9A%84%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/" rel="prev" title="开发环境与工具/【Blog】关于mermaid图表的显示问题">
+      <i class="fa fa-chevron-left"></i> 开发环境与工具/【Blog】关于mermaid图表的显示问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/16/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.optim-2%20Optimizer2/" rel="next" title="PyTorch笔记/【Tutorials】torch.optim-2 Optimizer2">
+      PyTorch笔记/【Tutorials】torch.optim-2 Optimizer2 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是优化器"><span class="nav-number">1.</span> <span class="nav-text">什么是优化器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Optimizer的属性"><span class="nav-number">2.</span> <span class="nav-text">Optimizer的属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Optimizer的方法"><span class="nav-number">3.</span> <span class="nav-text">Optimizer的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#zero-grad"><span class="nav-number">3.1.</span> <span class="nav-text">.zero_grad</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#step"><span class="nav-number">3.2.</span> <span class="nav-text">.step</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#add-param-group"><span class="nav-number">3.3.</span> <span class="nav-text">.add_param_group</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#state-dict"><span class="nav-number">3.4.</span> <span class="nav-text">.state_dict</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#load-state-dict"><span class="nav-number">3.5.</span> <span class="nav-text">.load_state_dict</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#完整的训练代码示例"><span class="nav-number">4.</span> <span class="nav-text">完整的训练代码示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

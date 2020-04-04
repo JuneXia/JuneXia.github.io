@@ -171,7 +171,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/12/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20%E7%88%AC%E8%99%AB%E3%80%91selenium%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/16/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.optim-2%20Optimizer2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -185,7 +185,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/10/12/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20%E7%88%AC%E8%99%AB%E3%80%91selenium%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/" class="post-title-link" itemprop="url">【Python笔记 爬虫】selenium自动化测试工具</a>
+            <a href="/2020/02/16/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.optim-2%20Optimizer2/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】torch.optim-2 Optimizer2</a>
         </h1>
 
         <div class="post-meta">
@@ -195,14 +195,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-10-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-10-12T00:00:00+08:00">2019-10-12</time>
+              <time title="Created: 2020-02-16 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-16T00:00:00+08:00">2020-02-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:19:57" itemprop="dateModified" datetime="2020-01-22T13:19:57+08:00">2020-01-22</time>
+                <time title="Modified: 2020-04-04 13:46:41" itemprop="dateModified" datetime="2020-04-04T13:46:41+08:00">2020-04-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,8 +210,8 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">Python笔记</span>
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
                   </a>
                 </span>
             </span>
@@ -227,10 +227,233 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>selenium是一个自动化测试工具，利用它可以驱动浏览器执行特定的操作，如点击、下拉等。如果使用Chrome来配合selenium，则还需要安装与Chrome版本对应的ChromeDriver。这方面资料网上有很多，这里就不重复造轮子了。<br>
+          <h1 id="leaning-rate-学习率"><a href="#leaning-rate-学习率" class="headerlink" title="leaning rate 学习率"></a>leaning rate 学习率</h1><p>在之前已经讲到过梯度下降的更新策略如下式所示：</p>
+<script type="math/tex; mode=display">w_{i+1} = w_i - \text{grad}(w_i)</script><p>下面以 $y = f(x) = 4x^2$ 为例来观察梯度下降公式的使用，以及该公式可能存在的问。\<br>其中 x 可类比为参数，y 可类比为 loss \<br>而 y 的导数就是：$y’ = f’(x) = 8x$ \</p>
+<p>使用梯度下降更新策略更新参数的过程：\<br>$x_0 = 2, y_0 = 16, f’(x_0) = 16$ \<br>$x_1 = x_0 - f’(x_0) = 2 - 16 = -14, y_1 = 784, f’(x_1) = -112$ \<br>$x_2 = x_1 - f’(x_1) = -14 + 112 = 98, y_2 = 38416, f’(x_2) = 784$ \<br>……</p>
+<p>可以看到 y 值(loss)越来越大，参数 x 的尺度也越来越大。</p>
+<p>方程 $y = f(x) = 4x^2$ 曲线绘制代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">@file name  : learning_rate.py</span></span><br><span class="line"><span class="string"># @author     : TingsongYu https://github.com/TingsongYu</span></span><br><span class="line"><span class="string">@date       : 2019-10-16</span></span><br><span class="line"><span class="string">@brief      : 梯度下降的学习率演示</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">torch.manual_seed(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x_t)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    y = (2x)^2 = 4*x^2      dy/dx = 8x</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">return</span> torch.pow(<span class="number">2</span>*x_t, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># init</span></span><br><span class="line">x = torch.tensor([<span class="number">2.</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ------------------------------ plot data ------------------------------</span></span><br><span class="line">flag = <span class="number">0</span></span><br><span class="line"><span class="comment"># flag = 1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line"></span><br><span class="line">    x_t = torch.linspace(<span class="number">-3</span>, <span class="number">3</span>, <span class="number">100</span>)</span><br><span class="line">    y = func(x_t)</span><br><span class="line">    plt.plot(x_t.numpy(), y.numpy(), label=<span class="string">"y = 4*x^2"</span>)</span><br><span class="line">    plt.grid()</span><br><span class="line">    plt.xlabel(<span class="string">"x"</span>)</span><br><span class="line">    plt.ylabel(<span class="string">"y"</span>)</span><br><span class="line">    plt.legend()</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure></p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_lr1.jpg" width = 60% height = 60% />
+</div>
+
+
+<h2 id="学习率对梯度下降的影响"><a href="#学习率对梯度下降的影响" class="headerlink" title="学习率对梯度下降的影响"></a>学习率对梯度下降的影响</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ------------------------------ gradient descent ------------------------------</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    iter_rec, loss_rec, x_rec = list(), list(), list()</span><br><span class="line"></span><br><span class="line">    lr = <span class="number">0.2</span>    <span class="comment"># /1. /.5 /.2 /.1 /.125</span></span><br><span class="line">    max_iteration = <span class="number">4</span>   <span class="comment"># /1. 4     /.5 4   /.2 20 200</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(max_iteration):</span><br><span class="line"></span><br><span class="line">        y = func(x)</span><br><span class="line">        y.backward()</span><br><span class="line"></span><br><span class="line">        print(<span class="string">"Iter:&#123;&#125;, X:&#123;:8&#125;, X.grad:&#123;:8&#125;, loss:&#123;:10&#125;"</span>.format(</span><br><span class="line">            i, x.detach().numpy()[<span class="number">0</span>], x.grad.detach().numpy()[<span class="number">0</span>], y.item()))</span><br><span class="line"></span><br><span class="line">        x_rec.append(x.item())</span><br><span class="line"></span><br><span class="line">        x.data.sub_(lr * x.grad)    <span class="comment"># x -= x.grad  数学表达式意义:  x = x - x.grad    # 0.5 0.2 0.1 0.125</span></span><br><span class="line">        x.grad.zero_()</span><br><span class="line"></span><br><span class="line">        iter_rec.append(i)</span><br><span class="line">        loss_rec.append(y)</span><br><span class="line"></span><br><span class="line">    plt.subplot(<span class="number">121</span>).plot(iter_rec, loss_rec, <span class="string">'-ro'</span>)</span><br><span class="line">    plt.xlabel(<span class="string">"Iteration"</span>)</span><br><span class="line">    plt.ylabel(<span class="string">"Loss value"</span>)</span><br><span class="line"></span><br><span class="line">    x_t = torch.linspace(<span class="number">-3</span>, <span class="number">3</span>, <span class="number">100</span>)</span><br><span class="line">    y = func(x_t)</span><br><span class="line">    plt.subplot(<span class="number">122</span>).plot(x_t.numpy(), y.numpy(), label=<span class="string">"y = 4*x^2"</span>)</span><br><span class="line">    plt.grid()</span><br><span class="line">    y_rec = [func(torch.tensor(i)).item() <span class="keyword">for</span> i <span class="keyword">in</span> x_rec]</span><br><span class="line">    plt.subplot(<span class="number">122</span>).plot(x_rec, y_rec, <span class="string">'-ro'</span>)</span><br><span class="line">    plt.legend()</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+<html>
+    <table style="margin-left: auto; margin-right: auto;">
+        <tr>
+            <td>
+                <!--左侧内容-->
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_lr2.jpg" width = 70% height = 50% />
+                </div>
+            </td>
+            <td>
+                <!--右侧内容-->
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_lr3.jpg" width = 70% height = 50% />
+                </div>
+            </td>
+            <td>
+                <!--左侧内容-->
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_lr4.jpg" width = 70% height = 50% />
+                </div>
+            </td>
+        </tr>
+    </table>
+    <center>图1 &nbsp; 学习率对梯度下降的影响(左边学习率为1，中间学习率为0.2,右边学习率为0.125)</center>
+</html>
+
+<p>观察上图可知，当学习率为0.125时，y 通过迭代一步就可以到达底部，这是为什么呢？\<br>因为，我们已经知道了 y 的表达式 $y = f(x) = 4x^2$，我们希望 y（loss）达到最小值，\<br>y 达到最小值时的 x（参数）取值是 0，也就是我说我们已经知道了梯度下降的结果是 0.</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    w_{i+1} = w_i - lr * \text{grad}(w_i) \Rightarrow x_1 &= x_0 - lr * \text{grad}(x_0) \\
+                                                   0 &= 2 - lr * \text{grad}(2) \\
+                                                   0 &= 2 - lr * 16 \\
+                                      \Rightarrow lr &= \frac{1}{8} = 0.125
+\end{aligned}</script><p>也就是说我们这里事先知道了 y 的表达式，然后求取 y 的极小值点所对应的参数 $x^*$，然后将 $x^*$ 带入梯度下降公式，自然就能求出最直接的学习率。当然现实应用中一般都是不知道表达式的。</p>
+<p>不同学习率对梯度下降更新速度的影响：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ------------------------------ multi learning rate ------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    iteration = <span class="number">100</span></span><br><span class="line">    num_lr = <span class="number">10</span></span><br><span class="line">    lr_min, lr_max = <span class="number">0.01</span>, <span class="number">0.2</span>  <span class="comment"># .5 .3 .2</span></span><br><span class="line"></span><br><span class="line">    lr_list = np.linspace(lr_min, lr_max, num=num_lr).tolist()</span><br><span class="line">    loss_rec = [[] <span class="keyword">for</span> l <span class="keyword">in</span> range(len(lr_list))]</span><br><span class="line">    iter_rec = list()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, lr <span class="keyword">in</span> enumerate(lr_list):</span><br><span class="line">        x = torch.tensor([<span class="number">2.</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">for</span> iter <span class="keyword">in</span> range(iteration):</span><br><span class="line"></span><br><span class="line">            y = func(x)</span><br><span class="line">            y.backward()</span><br><span class="line">            x.data.sub_(lr * x.grad)  <span class="comment"># x.data -= x.grad</span></span><br><span class="line">            x.grad.zero_()</span><br><span class="line"></span><br><span class="line">            loss_rec[i].append(y.item())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, loss_r <span class="keyword">in</span> enumerate(loss_rec):</span><br><span class="line">        plt.plot(range(len(loss_r)), loss_r, label=<span class="string">"LR: &#123;&#125;"</span>.format(lr_list[i]))</span><br><span class="line">    plt.legend()</span><br><span class="line">    plt.xlabel(<span class="string">'Iterations'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'Loss value'</span>)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure></p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_lr5.jpg" width = 60% height = 60% />
+</div>
+
+
+<h1 id="momentum-动量"><a href="#momentum-动量" class="headerlink" title="momentum 动量"></a>momentum 动量</h1><p><strong>Momentum(动量，冲量)</strong>：结合当前梯度与上一次更新信息，用于当前更新。</p>
+<h2 id="指数加权平均"><a href="#指数加权平均" class="headerlink" title="指数加权平均"></a>指数加权平均</h2><p>在讲momentum之前，先来讲一下指数加权平均的概念。</p>
+<p><strong>指数加权平均</strong>：(在时间序列分析中常用)</p>
+<script type="math/tex; mode=display">
+v_t = \beta \cdot v_{t-1} + (1 - \beta) \cdot \theta_{t}</script><p>$\theta_t$ 表示当前时刻的参数(权重) \<br>$v_{t-1}$ 表示上一时刻参数的指数加权平均值 \<br>$v_t$ 表示当前时刻参数的指数加权平均值 \</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    v_{100} &= \beta \cdot v_{99} + (1 - \beta) \cdot \theta_{100} \\
+            &= (1 - \beta) \cdot \theta_{100} + \beta \cdot (\beta \cdot v_{98} + (1 - \beta) \cdot \theta_{99}) \\
+            &= ... \\
+            &= (1 - \beta) \cdot \theta_{100} + (1 - \beta) \cdot \beta \cdot \theta_{99} + (1 - \beta) \cdot \beta^2 \cdot \theta_{98} + \beta^3 \cdot v_{97} \\
+            &= \sum^N_i (1 - \beta) \cdot \beta^i \cdot \theta_{N - i}
+\end{aligned}</script><p>观察上面的公式可知，当前时刻参数 $v_{100}$ 等于之前历史时刻参数的加权平均，距离 $v_{100}$ 越远的参数所占的权重越小(呈指数下降趋势)，而当前时刻的参数 $v_{100}$ 所占的权重最大。</p>
+<p>探索超参数 $\beta$ 设置为不同值时对加权平均的影响：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">@file name  : momentum.py</span></span><br><span class="line"><span class="string"># @author     : TingsongYu https://github.com/TingsongYu</span></span><br><span class="line"><span class="string">@date       : 2019-10-17</span></span><br><span class="line"><span class="string">@brief      : 梯度下降的动量 momentum</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">torch.manual_seed(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exp_w_func</span><span class="params">(beta, time_list)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> [(<span class="number">1</span> - beta) * np.power(beta, exp) <span class="keyword">for</span> exp <span class="keyword">in</span> time_list]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">beta = <span class="number">0.9</span></span><br><span class="line">num_point = <span class="number">100</span></span><br><span class="line">time_list = np.arange(num_point).tolist()</span><br><span class="line"></span><br><span class="line"><span class="comment"># ------------------------------ exponential weight ------------------------------</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    weights = exp_w_func(beta, time_list)</span><br><span class="line"></span><br><span class="line">    plt.plot(time_list, weights, <span class="string">'-ro'</span>, label=<span class="string">"Beta: &#123;&#125;\ny = B^t * (1-B)"</span>.format(beta))</span><br><span class="line">    plt.xlabel(<span class="string">"time"</span>)</span><br><span class="line">    plt.ylabel(<span class="string">"weight"</span>)</span><br><span class="line">    plt.legend()</span><br><span class="line">    plt.title(<span class="string">"exponentially weighted average"</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">    print(np.sum(weights))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ------------------------------ multi weights ------------------------------</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    beta_list = [<span class="number">0.98</span>, <span class="number">0.95</span>, <span class="number">0.9</span>, <span class="number">0.8</span>]</span><br><span class="line">    w_list = [exp_w_func(beta, time_list) <span class="keyword">for</span> beta <span class="keyword">in</span> beta_list]</span><br><span class="line">    <span class="keyword">for</span> i, w <span class="keyword">in</span> enumerate(w_list):</span><br><span class="line">        plt.plot(time_list, w, label=<span class="string">"Beta: &#123;&#125;"</span>.format(beta_list[i]))</span><br><span class="line">        plt.xlabel(<span class="string">"time"</span>)</span><br><span class="line">        plt.ylabel(<span class="string">"weight"</span>)</span><br><span class="line">    plt.legend()</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure></p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_momentum1.jpg" width = 60% height = 60% />
+</div>
+
+<p>观察上图可知，超参数 $\beta$ 的作用当于是<strong>记忆周期</strong>，当 $\beta$ 值越小，它的记忆周期越短（即只能记住较近时刻的作用），如上图中红色曲线所示。</p>
+<p>$\beta$ 通常取 0.9，这表示相对过往所有历史时刻的参数，模型更关注最近的10次参数。</p>
+<h2 id="PyTorch中的momentum"><a href="#PyTorch中的momentum" class="headerlink" title="PyTorch中的momentum"></a>PyTorch中的momentum</h2><p>一般的梯度下降：</p>
+<script type="math/tex; mode=display">
+w_{i + 1} = w_i - lr \cdot g(w_i)</script><p>PyTorch中的梯度下降更新公式：(m对应指数加权平均中的$\beta$)</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    v_i &= m \cdot v_{i-1} + g(w_i) \\
+w_{i+1} &= w_i - lr \cdot v_i
+\end{aligned}</script><p>注意pytorch中的实现没有完全按照前面所说的指数加权平均来计算的，$g(w_i)$ 前面没有乘 $1 - m$</p>
+<p>举个具体的例子吧：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    v_{100} &= m \cdot v_{99} + g(w_{100}) \\
+            &= g(w_{100}) + m \cdot (m \cdot v_{98} + g(w_{99})) \\
+            &= g(w_{100}) + m \cdot g(w_{99}) + m^2 \cdot v_{98} \\
+            &= g(w_{100}) + m \cdot g(w_{99}) + m^2 \cdot g(w_{98}) + m^3 \cdot v_{97}
+\end{aligned}</script><p>代码示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ------------------------------ SGD momentum ------------------------------</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> torch.pow(<span class="number">2</span>*x, <span class="number">2</span>)    <span class="comment"># y = (2x)^2 = 4*x^2        dy/dx = 8x</span></span><br><span class="line"></span><br><span class="line">    iteration = <span class="number">100</span></span><br><span class="line">    m = <span class="number">0.</span>     <span class="comment"># .9 .63</span></span><br><span class="line"></span><br><span class="line">    lr_list = [<span class="number">0.01</span>, <span class="number">0.03</span>]</span><br><span class="line"></span><br><span class="line">    momentum_list = list()</span><br><span class="line">    loss_rec = [[] <span class="keyword">for</span> l <span class="keyword">in</span> range(len(lr_list))]</span><br><span class="line">    iter_rec = list()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, lr <span class="keyword">in</span> enumerate(lr_list):</span><br><span class="line">        x = torch.tensor([<span class="number">2.</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        momentum = <span class="number">0.</span> <span class="keyword">if</span> lr == <span class="number">0.03</span> <span class="keyword">else</span> m</span><br><span class="line">        momentum_list.append(momentum)</span><br><span class="line"></span><br><span class="line">        optimizer = optim.SGD([x], lr=lr, momentum=momentum)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> iter <span class="keyword">in</span> range(iteration):</span><br><span class="line"></span><br><span class="line">            y = func(x)</span><br><span class="line">            y.backward()</span><br><span class="line"></span><br><span class="line">            optimizer.step()</span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line"></span><br><span class="line">            loss_rec[i].append(y.item())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, loss_r <span class="keyword">in</span> enumerate(loss_rec):</span><br><span class="line">        plt.plot(range(len(loss_r)), loss_r, label=<span class="string">"LR: &#123;&#125; M:&#123;&#125;"</span>.format(lr_list[i], momentum_list[i]))</span><br><span class="line">    plt.legend()</span><br><span class="line">    plt.xlabel(<span class="string">'Iterations'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'Loss value'</span>)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure></p>
+<html>
+    <table style="margin-left: auto; margin-right: auto;">
+        <tr>
+            <td>
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_momentum2.jpg" width = 50% height = 50% />
+                </div>
+            </td>
+            <td>
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_momentum3.jpg" width = 50% height = 50% />
+                </div>
+            </td>
+            <td>
+                <div align=center>
+                <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_momentum4.jpg" width = 50% height = 50% />
+                </div>
+            </td>
+        </tr>
+    </table>
+</html>
+
+<ol>
+<li>上面左图，当不设置momentum时，较大的学习率相对小学习率会更快收敛；</li>
+<li>上面中图，为小学习率设置一个momentum（大学习率的momentum仍然为0），小学习率会更快抵达极值点，但随后有反弹并来回震荡，最后慢慢收敛；\<blockquote>
+<p>震荡是由于momentum太大所导致的，因为momentum太大，所以当loss抵达极小值时又受到之前梯度（惯性）的影响，从而还是以较大的步伐越过极小值点，这样就出现了来回震荡的现象。\</p>
+</blockquote>
+</li>
+<li>上面右图，将momentum调小，此时小学习率也会很快的收敛。</li>
+</ol>
+<blockquote>
+<p>而通过这个例子我们也可以知道选择合适的momentum是有助于loss更快达到极值点，但是开发中一般只有上帝视角才知道什么样的momentum值合适，所以实际开发中momentum一般还是设置为 0.9</p>
+</blockquote>
+<h1 id="PyTorch中的优化器"><a href="#PyTorch中的优化器" class="headerlink" title="PyTorch中的优化器"></a>PyTorch中的优化器</h1><h2 id="torch-optim-SGD"><a href="#torch-optim-SGD" class="headerlink" title="torch.optim.SGD"></a>torch.optim.SGD</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SGD</span><span class="params">(Optimizer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, params, lr=required, momentum=<span class="number">0</span>, dampening=<span class="number">0</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 weight_decay=<span class="number">0</span>, nesterov=False)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setstate__</span><span class="params">(self, state)</span>:</span></span><br><span class="line">        super(SGD, self).__setstate__(state)</span><br><span class="line">        <span class="keyword">for</span> group <span class="keyword">in</span> self.param_groups:</span><br><span class="line">            group.setdefault(<span class="string">'nesterov'</span>, <span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">step</span><span class="params">(self, closure=None)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> loss</span><br></pre></td></tr></table></figure>
+<p>主要参数：</p>
+<ul>
+<li><strong>params</strong>: 管理的参数组</li>
+<li><strong>lr</strong>: 初始学习率</li>
+<li><strong>momentum</strong>: 动量系数，$\beta$</li>
+<li><strong>weight_decay</strong>: L2正则化系数</li>
+<li><strong>nesterov</strong>: 是否采用NAG</li>
+</ul>
+<p>NAG 参考文献：《On the importance of initialization and momentum in deep learning》</p>
+<h2 id="Pytorch-的十种优化器"><a href="#Pytorch-的十种优化器" class="headerlink" title="Pytorch 的十种优化器"></a>Pytorch 的十种优化器</h2><ol>
+<li>optim.SGD: 随机梯度下降法</li>
+<li>optim.Adagrad: 自适应学习率梯度下降法</li>
+<li>optim.RMSprop: Adagrad 的改进</li>
+<li>optim.Adadelta: Adagrad 的改进</li>
+<li>optim.Adam: RMSprop 结合 Momentum</li>
+<li>optim.Adamax: Adam增加学习率上限</li>
+<li>optim.SparseAdam: 稀疏版的梯度下降</li>
+<li>optim.ASGD: 随机平均梯度下降</li>
+<li>optim.Rprop: 弹性反向传播，通常在将全部数据加入一个batch去训练时会用到</li>
+<li>optim.LBFGS: 对BFGS在内存消耗上的改进</li>
+</ol>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/torch_Optimizer_momentum5.jpg" width = 60% height = 60% />
+</div>
+
+
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.optim-1%20Optimizer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.optim-1%20Optimizer/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】torch.optim-1 Optimizer</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-15 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-15T00:00:00+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-20 10:35:30" itemprop="dateModified" datetime="2020-03-20T10:35:30+08:00">2020-03-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>有了 Loss 之后，怎样采用 Loss 去更新模型参数使得 Loss 逐步降低呢，这就是优化器（Optimizer）要干的活。<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/10/12/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20%E7%88%AC%E8%99%AB%E3%80%91selenium%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/#more" rel="contents">
+              <a class="btn" href="/2020/02/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.optim-1%20Optimizer/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -254,7 +477,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/27/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7%EF%BC%88%E6%8C%87%E5%AE%9Ahome%E7%9B%AE%E5%BD%95%EF%BC%89/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Blog%E3%80%91%E5%85%B3%E4%BA%8Emermaid%E5%9B%BE%E8%A1%A8%E7%9A%84%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -268,7 +491,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/09/27/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7%EF%BC%88%E6%8C%87%E5%AE%9Ahome%E7%9B%AE%E5%BD%95%EF%BC%89/" class="post-title-link" itemprop="url">【开发环境与工具】添加用户（指定home目录）</a>
+            <a href="/2020/02/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Blog%E3%80%91%E5%85%B3%E4%BA%8Emermaid%E5%9B%BE%E8%A1%A8%E7%9A%84%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">开发环境与工具/【Blog】关于mermaid图表的显示问题</a>
         </h1>
 
         <div class="post-meta">
@@ -278,14 +501,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-09-27 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-27T00:00:00+08:00">2019-09-27</time>
+              <time title="Created: 2020-02-12 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-12T00:00:00+08:00">2020-02-12</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:27:07" itemprop="dateModified" datetime="2020-01-22T13:27:07+08:00">2020-01-22</time>
+                <time title="Modified: 2020-03-23 20:24:24" itemprop="dateModified" datetime="2020-03-23T20:24:24+08:00">2020-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -310,10 +533,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>公司就一台服务器，大家都要用，固态硬盘通常比较小，我们公司的固态硬盘只有512G，倒是有一块10T的机械硬盘，能否将每个人的home目录默认就是放在这个硬盘上的呢？答案是可以的。<br>
+          <p>解决了在VS-Code中预览Markdown的mermaid图表的预览问题，那么发布到hexo后该怎么预览mermaid图表呢。<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/09/27/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7%EF%BC%88%E6%8C%87%E5%AE%9Ahome%E7%9B%AE%E5%BD%95%EF%BC%89/#more" rel="contents">
+              <a class="btn" href="/2020/02/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Blog%E3%80%91%E5%85%B3%E4%BA%8Emermaid%E5%9B%BE%E8%A1%A8%E7%9A%84%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -337,7 +560,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/22/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.Module-1%20Model%20Building/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Markdown%E3%80%91%E5%85%B3%E4%BA%8E%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -351,7 +574,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/09/22/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.Module-1%20Model%20Building/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】torch.nn.Module-1 Model Building</a>
+            <a href="/2020/02/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Markdown%E3%80%91%E5%85%B3%E4%BA%8E%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">开发环境与工具/【Markdown】关于插件的使用</a>
         </h1>
 
         <div class="post-meta">
@@ -361,14 +584,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-09-22 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-22T00:00:00+08:00">2019-09-22</time>
+              <time title="Created: 2020-02-12 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-12T00:00:00+08:00">2020-02-12</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-10 20:42:45" itemprop="dateModified" datetime="2020-03-10T20:42:45+08:00">2020-03-10</time>
+                <time title="Modified: 2020-03-10 16:26:08" itemprop="dateModified" datetime="2020-03-10T16:26:08+08:00">2020-03-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -376,8 +599,8 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">PyTorch笔记</span>
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">开发环境与工具</span>
                   </a>
                 </span>
             </span>
@@ -393,10 +616,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>&emsp; 在《【Tutorials】autograd-2 Logistic Regression》一节中已经提到了机器学习模型训练的一般步骤，如下图所指示，关于数据部分我们在前面已经说过了，本节主要讲述模型构建相关的问题。<br>
+          <h1 id="为了解决Graph预览问题"><a href="#为了解决Graph预览问题" class="headerlink" title="为了解决Graph预览问题"></a>为了解决Graph预览问题</h1><p>在VS-Code中使用 Markdown All in One 无法支持 mermaid 图表的预览，一顿搜索之后发现大家推荐安装 Markdown Preview Enhanced 插件来解决该问题。<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/09/22/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.Module-1%20Model%20Building/#more" rel="contents">
+              <a class="btn" href="/2020/02/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Markdown%E3%80%91%E5%85%B3%E4%BA%8E%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -420,7 +643,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/22/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.Module-2%20Convolution/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/12/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.loss-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -434,7 +657,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/09/22/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.Module-2%20Convolution/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】torch.nn.Module-2 Convolution</a>
+            <a href="/2020/02/12/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.loss-2/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】torch.nn.loss-2</a>
         </h1>
 
         <div class="post-meta">
@@ -444,14 +667,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-09-22 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-22T00:00:00+08:00">2019-09-22</time>
+              <time title="Created: 2020-02-12 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-12T00:00:00+08:00">2020-02-12</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-12 14:08:19" itemprop="dateModified" datetime="2020-03-12T14:08:19+08:00">2020-03-12</time>
+                <time title="Modified: 2020-03-19 18:58:24" itemprop="dateModified" datetime="2020-03-19T18:58:24+08:00">2020-03-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -476,216 +699,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="1d-2d-3d-Convolution"><a href="#1d-2d-3d-Convolution" class="headerlink" title="1d/2d/3d Convolution"></a>1d/2d/3d Convolution</h1><p>看ppt吧，如果要总结，最好弄个动图吧</p>
-<h1 id="nn-Conv2d"><a href="#nn-Conv2d" class="headerlink" title="nn.Conv2d"></a>nn.Conv2d</h1><ul>
-<li>in_channels: 输入通道数</li>
-<li>out_channels: 输出通道数，等价于卷积核个数</li>
-<li>kernel_size: 卷积核尺寸</li>
-<li>stride: 步长</li>
-<li>padding: 边界填充个数</li>
-<li>dilation: 空洞卷积大小. (空洞卷积常用语图像分割任务，主要作用是为了提升感受野，也就是说输出图像上的一个像素看到的是上一层图像更大的区域)</li>
-<li>groups: 分组卷积设置，表示分组卷积的组数。（一般用于模型轻量化，像ShuffleNet、SqueezeNet、MobileNet它们都有分组的概念，另外想AlexNet也是分组卷积，只不过AlexNet采用的分组卷积是由于硬件资源有限而采用的分两个GPU进行训练的。）</li>
-<li>bias: 偏置</li>
-</ul>
-<p><strong>输出尺寸计算</strong>：\<br>简化版：(不带padding, 也不带dilation)</p>
-<script type="math/tex; mode=display">out_{size} = \frac{in_{size} - kernel_{size}}{stride} + 1</script><p>完整版：</p>
-<script type="math/tex; mode=display">H_{out} = \frac{H_{in} + 2 \times padding[0] - dilation[0] \times (kernel_{size}[0] - 1) - 1}{stride[0]} + 1</script><p><strong>对老师这里讲得卷积核和input的计算方式表示怀疑</strong></p>
-<p><div align=center>
-  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_conv1.jpg" width = 60% height = 60% />
-</div></p>
-<center>图1 &nbsp;2维卷积3维Tensor(不考虑batch那一维)</center>
-
-
-<h1 id="Transpose-Convolution"><a href="#Transpose-Convolution" class="headerlink" title="Transpose Convolution"></a>Transpose Convolution</h1><p>&emsp; 转置卷积(Transpose Convolution)又称为反卷积(Deconvolution)或者部分跨越卷积(Fractionally-strided Convolution), 用于对图像进行上采样(UpSample)，这在图像分割任务中会经常被使用。</p>
-<blockquote>
-<p>为了避免与《信号与系统》中的反卷积混淆，一般还是叫转置卷积(Transpose Convolution)</p>
-</blockquote>
-<p>为什么称为转置卷积?</p>
-<p>正常卷积: \<br>假设图像尺寸为$4 \times 4$, 卷积核为 $3 \times 3$ , padding=0, stride=1 \<br>则在代码中会将图片和卷积核都转换为矩阵，转换后的矩阵形式如下：\<br>图像: $I_{16 \times 1}$ , 即图像会被展平\<br>卷积核: $K_{4 \times 16}$ , 下标4表示输出有4行（这需要根据input、kernel、padding、stride、dilation这些值来计算），下标16是先将卷积核展平($3 \times 3 = 9$)再填充0至16个数的长度，下面表格给出了这一操作的示意图。\<br>输出: $O_{4 \times 1} = K_{4 \times 16} \cdot I_{16 \times 1}$</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Input</th>
-<th>$I_{1}$</th>
-<th>$I_{2}$</th>
-<th>$I_{3}$</th>
-<th>$I_{4}$</th>
-<th>$I_{5}$</th>
-<th>$I_{6}$</th>
-<th>$I_{7}$</th>
-<th>$I_{8}$</th>
-<th>$I_{9}$</th>
-<th>$I_{10}$</th>
-<th>$I_{11}$</th>
-<th>$I_{12}$</th>
-<th>$I_{13}$</th>
-<th>$I_{14}$</th>
-<th>$I_{15}$</th>
-<th>$I_{16}$</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$Kernel$</td>
-<td>$K_{1}$</td>
-<td>$K_{2}$</td>
-<td>$K_{3}$</td>
-<td>$0$</td>
-<td>$K_{4}$</td>
-<td>$K_{5}$</td>
-<td>$K_{6}$</td>
-<td>$0$</td>
-<td>$K_{7}$</td>
-<td>$K_{8}$</td>
-<td>$K_{9}$</td>
-<td>$0$</td>
-<td>$0$</td>
-<td>$0$</td>
-<td>$0$</td>
-<td>$0$</td>
-</tr>
-<tr>
-<td>$Kernel$</td>
-<td>$0$</td>
-<td>$K_{1}$</td>
-<td>$K_{2}$</td>
-<td>$K_{3}$</td>
-<td>$0$</td>
-<td>$K_{4}$</td>
-<td>$K_{5}$</td>
-<td>$K_{6}$</td>
-<td>$0$</td>
-<td>$K_{7}$</td>
-<td>$K_{8}$</td>
-<td>$K_{9}$</td>
-<td>$0$</td>
-<td>$0$</td>
-<td>$0$</td>
-<td>$0$</td>
-</tr>
-<tr>
-<td>$Kernel$</td>
-<td>$0$</td>
-<td>$0$</td>
-<td>$0$</td>
-<td>$0$</td>
-<td>$K_{1}$</td>
-<td>$K_{2}$</td>
-<td>$K_{3}$</td>
-<td>$0$</td>
-<td>$K_{4}$</td>
-<td>$K_{5}$</td>
-<td>$K_{6}$</td>
-<td>$0$</td>
-<td>$K_{7}$</td>
-<td>$K_{8}$</td>
-<td>$K_{9}$</td>
-<td>$0$</td>
-</tr>
-<tr>
-<td>$Kernel$</td>
-<td>$0$</td>
-<td>$0$</td>
-<td>$0$</td>
-<td>$0$</td>
-<td>$0$</td>
-<td>$K_{1}$</td>
-<td>$K_{2}$</td>
-<td>$K_{3}$</td>
-<td>$0$</td>
-<td>$K_{4}$</td>
-<td>$K_{5}$</td>
-<td>$K_{6}$</td>
-<td>$0$</td>
-<td>$K_{7}$</td>
-<td>$K_{8}$</td>
-<td>$K_{9}$</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>转置卷积: \<br>假设图像尺寸为 $2 \times 2$ , 卷积核为 $3 \times 3$ , padding=0, stride=1 \<br>则在代码中会将图片和卷积核都转换为矩阵，转换后的矩阵形式如下：\<br>图像: $I_{4 \times 1}$ , 即图像会被展平 \<br>卷积核: $K_{16 \times 4}$，下标16表示输出有16行（这也需要根据各种size计算得来），下标4表示的是从$3 \times 3$的卷积核中取出来的4个数（），\<br>输出: $O_{16 \times 1} = K_{16 \times 4} \cdot I_{4 \times 1}$</p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】torchvision</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-09-20 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-20T00:00:00+08:00">2019-09-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-09 09:17:56" itemprop="dateModified" datetime="2020-03-09T09:17:56+08:00">2020-03-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">PyTorch笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>PyTorch提供的计算机视觉工具包<br>
+          <p>本节主要介绍PyTorch中的剩下的14种损失函数，加上前文的4种loss，一共是18种。<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision/#more" rel="contents">
+              <a class="btn" href="/2020/02/12/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.loss-2/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -709,7 +726,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-2%20Data%20Augmentation/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/12/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.loss-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -723,7 +740,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-2%20Data%20Augmentation/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】torchvision.transforms-2 Data Augmentation</a>
+            <a href="/2020/02/12/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.loss-1/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】torch.nn.loss-1</a>
         </h1>
 
         <div class="post-meta">
@@ -733,14 +750,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-09-20 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-20T00:00:00+08:00">2019-09-20</time>
+              <time title="Created: 2020-02-12 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-12T00:00:00+08:00">2020-02-12</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-11 11:32:21" itemprop="dateModified" datetime="2020-03-11T11:32:21+08:00">2020-03-11</time>
+                <time title="Modified: 2020-03-18 21:06:46" itemprop="dateModified" datetime="2020-03-18T21:06:46+08:00">2020-03-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -765,10 +782,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>本节主要介绍PyTorch中的数据增强(Data Augmentation)方法。<br>
+          <p>本节首先讲述什么是损失函数以及损失函数与代价函数、目标函数之间的关系，然后讲述了PyTorch中的常用损失函数。<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-2%20Data%20Augmentation/#more" rel="contents">
+              <a class="btn" href="/2020/02/12/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.loss-1/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -792,7 +809,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-1%20Normalize/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.init/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -806,7 +823,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-1%20Normalize/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】torchvision.transforms-1 Normalize</a>
+            <a href="/2020/02/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.init/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】torch.nn.init</a>
         </h1>
 
         <div class="post-meta">
@@ -816,14 +833,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-09-20 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-20T00:00:00+08:00">2019-09-20</time>
+              <time title="Created: 2020-02-11 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-11T00:00:00+08:00">2020-02-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-09 20:19:59" itemprop="dateModified" datetime="2020-03-09T20:19:59+08:00">2020-03-09</time>
+                <time title="Modified: 2020-03-20 14:04:24" itemprop="dateModified" datetime="2020-03-20T14:04:24+08:00">2020-03-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -848,10 +865,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>本节主要介绍PyTorch中的数据标准化(Normalize)方法。<br>
+          <p>本节首先介绍梯度消失与梯度爆炸，然后逐步分析权值初始化的重要性，随后介绍了正对不同激活函数的初始化方法。<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/09/20/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torchvision.transforms-1%20Normalize/#more" rel="contents">
+              <a class="btn" href="/2020/02/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.init/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -875,7 +892,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91DataLoader%20and%20Dataset/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/09/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91conda%E5%AE%89%E8%A3%85paddle/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -889,7 +906,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91DataLoader%20and%20Dataset/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】DataLoader and Dataset</a>
+            <a href="/2020/02/09/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91conda%E5%AE%89%E8%A3%85paddle/" class="post-title-link" itemprop="url">【开发环境与工具】conda安装paddle</a>
         </h1>
 
         <div class="post-meta">
@@ -899,14 +916,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-09-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-15T00:00:00+08:00">2019-09-15</time>
+              <time title="Created: 2020-02-09 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-09T00:00:00+08:00">2020-02-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-09 08:59:41" itemprop="dateModified" datetime="2020-03-09T08:59:41+08:00">2020-03-09</time>
+                <time title="Modified: 2020-02-17 08:45:42" itemprop="dateModified" datetime="2020-02-17T08:45:42+08:00">2020-02-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -914,8 +931,8 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">PyTorch笔记</span>
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">开发环境与工具</span>
                   </a>
                 </span>
             </span>
@@ -931,127 +948,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>本节主要讲述PyTorch中的DataLoader与Dataset的使用，并举代码示例用LeNet做人民币的二分类。<br><!-- mored --></p>
-<p><div align=center>
-  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/DataLoader_and_Dataset1.jpg" width = 60% height = 60% />
-</div></p>
-<center>图1 &nbsp; 获取及处理数据的一般流程</center>
-
-<h1 id="DataLoader"><a href="#DataLoader" class="headerlink" title="DataLoader"></a>DataLoader</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DataLoader</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">r"""</span></span><br><span class="line"><span class="string">    Data loader. Combines a dataset and a sampler, and provides an iterable over</span></span><br><span class="line"><span class="string">    the given dataset.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The :class:`~torch.utils.data.DataLoader` supports both map-style and</span></span><br><span class="line"><span class="string">    iterable-style datasets with single- or multi-process loading, customizing</span></span><br><span class="line"><span class="string">    loading order and optional automatic batching (collation) and memory pinning.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    See :py:mod:`torch.utils.data` documentation page for more details.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Arguments:</span></span><br><span class="line"><span class="string">        dataset (Dataset): dataset from which to load the data.</span></span><br><span class="line"><span class="string">        batch_size (int, optional): how many samples per batch to load</span></span><br><span class="line"><span class="string">            (default: ``1``).</span></span><br><span class="line"><span class="string">        shuffle (bool, optional): set to ``True`` to have the data reshuffled</span></span><br><span class="line"><span class="string">            at every epoch (default: ``False``).</span></span><br><span class="line"><span class="string">        sampler (Sampler, optional): defines the strategy to draw samples from</span></span><br><span class="line"><span class="string">            the dataset. If specified, :attr:`shuffle` must be ``False``.</span></span><br><span class="line"><span class="string">        batch_sampler (Sampler, optional): like :attr:`sampler`, but returns a batch of</span></span><br><span class="line"><span class="string">            indices at a time. Mutually exclusive with :attr:`batch_size`,</span></span><br><span class="line"><span class="string">            :attr:`shuffle`, :attr:`sampler`, and :attr:`drop_last`.</span></span><br><span class="line"><span class="string">        num_workers (int, optional): how many subprocesses to use for data</span></span><br><span class="line"><span class="string">            loading. ``0`` means that the data will be loaded in the main process.</span></span><br><span class="line"><span class="string">            (default: ``0``)</span></span><br><span class="line"><span class="string">        collate_fn (callable, optional): merges a list of samples to form a</span></span><br><span class="line"><span class="string">            mini-batch of Tensor(s).  Used when using batched loading from a</span></span><br><span class="line"><span class="string">            map-style dataset.</span></span><br><span class="line"><span class="string">        pin_memory (bool, optional): If ``True``, the data loader will copy Tensors</span></span><br><span class="line"><span class="string">            into CUDA pinned memory before returning them.  If your data elements</span></span><br><span class="line"><span class="string">            are a custom type, or your :attr:`collate_fn` returns a batch that is a custom type,</span></span><br><span class="line"><span class="string">            see the example below.</span></span><br><span class="line"><span class="string">        drop_last (bool, optional): set to ``True`` to drop the last incomplete batch,</span></span><br><span class="line"><span class="string">            if the dataset size is not divisible by the batch size. If ``False`` and</span></span><br><span class="line"><span class="string">            the size of dataset is not divisible by the batch size, then the last batch</span></span><br><span class="line"><span class="string">            will be smaller. (default: ``False``)</span></span><br><span class="line"><span class="string">        timeout (numeric, optional): if positive, the timeout value for collecting a batch</span></span><br><span class="line"><span class="string">            from workers. Should always be non-negative. (default: ``0``)</span></span><br><span class="line"><span class="string">        worker_init_fn (callable, optional): If not ``None``, this will be called on each</span></span><br><span class="line"><span class="string">            worker subprocess with the worker id (an int in ``[0, num_workers - 1]``) as</span></span><br><span class="line"><span class="string">            input, after seeding and before data loading. (default: ``None``)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. warning:: If the ``spawn`` start method is used, :attr:`worker_init_fn`</span></span><br><span class="line"><span class="string">                 cannot be an unpicklable object, e.g., a lambda function. See</span></span><br><span class="line"><span class="string">                 :ref:`multiprocessing-best-practices` on more details related</span></span><br><span class="line"><span class="string">                 to multiprocessing in PyTorch.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. note:: ``len(dataloader)`` heuristic is based on the length of the sampler used.</span></span><br><span class="line"><span class="string">              When :attr:`dataset` is an :class:`~torch.utils.data.IterableDataset`,</span></span><br><span class="line"><span class="string">              an infinite sampler is used, whose :meth:`__len__` is not</span></span><br><span class="line"><span class="string">              implemented, because the actual length depends on both the</span></span><br><span class="line"><span class="string">              iterable as well as multi-process loading configurations. So one</span></span><br><span class="line"><span class="string">              should not query this method unless they work with a map-style</span></span><br><span class="line"><span class="string">              dataset. See `Dataset Types`_ for more details on these two types</span></span><br><span class="line"><span class="string">              of datasets.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    __initialized = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, dataset, batch_size=<span class="number">1</span>, shuffle=False, sampler=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                 batch_sampler=None, num_workers=<span class="number">0</span>, collate_fn=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                 pin_memory=False, drop_last=False, timeout=<span class="number">0</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 worker_init_fn=None, multiprocessing_context=None)</span>:</span></span><br><span class="line">        torch._C._log_api_usage_once(<span class="string">"python.data_loader"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> num_workers &lt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'num_workers option should be non-negative; '</span></span><br><span class="line">                             <span class="string">'use num_workers=0 to disable multiprocessing.'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> timeout &lt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'timeout option should be non-negative'</span>)</span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
-<p><strong>功能</strong>: 构建可迭代的数据装载器</p>
-<ul>
-<li><strong>dataset</strong>: Dataset类，决定数据从哪读取以及如何读取</li>
-<li><strong>batchsize</strong>:</li>
-<li><strong>num_works</strong>: 是否采用多进程读取数据，一般会设置为4、6、8</li>
-<li><strong>shuffle</strong>: 每个epoch是否乱序</li>
-<li><strong>drop_last</strong>: 当样本数不能被batchsize整除时，是否舍弃最后一批数据</li>
-</ul>
-<blockquote>
-<p><strong>理解一下 Epoch、Iteration、Batchsize 的概念</strong>：\<br>Epoch: 所有训练样本都已输入到模型中,称为一个Epoch \<br>Iteration: 一批样本输入到模型中,称之为一个Iteration \<br>Batchsize: 批大小,决定一个Epoch有多少个Iteration</p>
-<p>举个例子：\<br>样本总数:80, Batchsize:8 \<br>1 Epoch = 10 Iteration</p>
-<p>样本总数:87, Batchsize:8 \<br>1 Epoch = 10 Iteration ? drop_last = True \<br>1 Epoch = 11 Iteration ? drop_last = False</p>
-</blockquote>
-<p><div align=center>
-  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/DataLoader_and_Dataset2.jpg" width = 60% height = 60% />
-</div></p>
-<center>图2 &nbsp; 数据读取一般要考虑解决的问题</center>
-
-<p><br></p>
-<p><div align=center>
-  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/DataLoader_and_Dataset3.jpg" width = 60% height = 60% />
-</div></p>
-<center>图3 &nbsp; PyTorch中的数据加载流程图</center>
-
-<h1 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dataset</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">r"""An abstract class representing a :class:`Dataset`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    All datasets that represent a map from keys to data samples should subclass</span></span><br><span class="line"><span class="string">    it. All subclasses should overrite :meth:`__getitem__`, supporting fetching a</span></span><br><span class="line"><span class="string">    data sample for a given key. Subclasses could also optionally overwrite</span></span><br><span class="line"><span class="string">    :meth:`__len__`, which is expected to return the size of the dataset by many</span></span><br><span class="line"><span class="string">    :class:`~torch.utils.data.Sampler` implementations and the default options</span></span><br><span class="line"><span class="string">    of :class:`~torch.utils.data.DataLoader`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. note::</span></span><br><span class="line"><span class="string">      :class:`~torch.utils.data.DataLoader` by default constructs a index</span></span><br><span class="line"><span class="string">      sampler that yields integral indices.  To make it work with a map-style</span></span><br><span class="line"><span class="string">      dataset with non-integral indices/keys, a custom sampler must be provided.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, index)</span>:</span></span><br><span class="line">        <span class="keyword">raise</span> NotImplementedError</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> ConcatDataset([self, other])</span><br></pre></td></tr></table></figure>
-<p><strong>功能</strong>: Dataset 抽象类 , 所有自定义的 Dataset 都需要继承它, 并且复写<strong>getitem</strong>()</p>
-<p>__getitem__ : 接收一个索引，返回一个样本</p>
-<h1 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h1><p><strong>tools/my_dataset.py</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># @file name  : dataset.py</span></span><br><span class="line"><span class="string"># @author     : yts3221@126.com</span></span><br><span class="line"><span class="string"># @date       : 2019-08-21 10:08:00</span></span><br><span class="line"><span class="string"># @brief      : 各数据集的Dataset定义</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> Dataset</span><br><span class="line"></span><br><span class="line">random.seed(<span class="number">1</span>)</span><br><span class="line">rmb_label = &#123;<span class="string">"1"</span>: <span class="number">0</span>, <span class="string">"100"</span>: <span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RMBDataset</span><span class="params">(Dataset)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data_dir, transform=None)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        rmb面额分类任务的Dataset</span></span><br><span class="line"><span class="string">        :param data_dir: str, 数据集所在路径</span></span><br><span class="line"><span class="string">        :param transform: torch.transform，数据预处理</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.label_name = &#123;<span class="string">"1"</span>: <span class="number">0</span>, <span class="string">"100"</span>: <span class="number">1</span>&#125;</span><br><span class="line">        self.data_info = self.get_img_info(data_dir)  <span class="comment"># data_info存储所有图片路径和标签，在DataLoader中通过index读取样本</span></span><br><span class="line">        self.transform = transform</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, index)</span>:</span></span><br><span class="line">        path_img, label = self.data_info[index]</span><br><span class="line">        img = Image.open(path_img).convert(<span class="string">'RGB'</span>)     <span class="comment"># 0~255</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.transform <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            img = self.transform(img)   <span class="comment"># 在这里做transform，转为tensor等等</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> img, label</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.data_info)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_img_info</span><span class="params">(data_dir)</span>:</span></span><br><span class="line">        data_info = list()</span><br><span class="line">        <span class="keyword">for</span> root, dirs, _ <span class="keyword">in</span> os.walk(data_dir):</span><br><span class="line">            <span class="comment"># 遍历类别</span></span><br><span class="line">            <span class="keyword">for</span> sub_dir <span class="keyword">in</span> dirs:</span><br><span class="line">                img_names = os.listdir(os.path.join(root, sub_dir))</span><br><span class="line">                img_names = list(filter(<span class="keyword">lambda</span> x: x.endswith(<span class="string">'.jpg'</span>), img_names))</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 遍历图片</span></span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> range(len(img_names)):</span><br><span class="line">                    img_name = img_names[i]</span><br><span class="line">                    path_img = os.path.join(root, sub_dir, img_name)</span><br><span class="line">                    label = rmb_label[sub_dir]</span><br><span class="line">                    data_info.append((path_img, int(label)))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> data_info</span><br></pre></td></tr></table></figure></p>
-<p><strong>dataloader_dataset_train.py</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># @file name  : train_lenet.py</span></span><br><span class="line"><span class="string"># @author     : tingsongyu</span></span><br><span class="line"><span class="string"># @date       : 2019-09-07 10:08:00</span></span><br><span class="line"><span class="string"># @brief      : 人民币分类模型训练</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> model.lenet <span class="keyword">import</span> LeNet</span><br><span class="line"><span class="keyword">from</span> tools.my_dataset <span class="keyword">import</span> RMBDataset</span><br><span class="line"><span class="keyword">from</span> libml.utils.config <span class="keyword">import</span> SysConfig</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_seed</span><span class="params">(seed=<span class="number">1</span>)</span>:</span></span><br><span class="line">    random.seed(seed)</span><br><span class="line">    np.random.seed(seed)</span><br><span class="line">    torch.manual_seed(seed)</span><br><span class="line">    torch.cuda.manual_seed(seed)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set_seed()  <span class="comment"># 设置随机种子</span></span><br><span class="line">rmb_label = &#123;<span class="string">"1"</span>: <span class="number">0</span>, <span class="string">"100"</span>: <span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 参数设置</span></span><br><span class="line">MAX_EPOCH = <span class="number">10</span></span><br><span class="line">BATCH_SIZE = <span class="number">16</span></span><br><span class="line">LR = <span class="number">0.01</span></span><br><span class="line">log_interval = <span class="number">10</span></span><br><span class="line">val_interval = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 1/5 数据 ============================</span></span><br><span class="line"></span><br><span class="line">split_dir = os.path.join(SysConfig[<span class="string">'home_path'</span>], <span class="string">'res'</span>, <span class="string">'RMB_data/rmb_split'</span>)</span><br><span class="line">train_dir = os.path.join(split_dir, <span class="string">"train"</span>)</span><br><span class="line">valid_dir = os.path.join(split_dir, <span class="string">"valid"</span>)</span><br><span class="line"></span><br><span class="line">norm_mean = [<span class="number">0.485</span>, <span class="number">0.456</span>, <span class="number">0.406</span>]</span><br><span class="line">norm_std = [<span class="number">0.229</span>, <span class="number">0.224</span>, <span class="number">0.225</span>]</span><br><span class="line"></span><br><span class="line">train_transform = transforms.Compose([</span><br><span class="line">    transforms.Resize((<span class="number">32</span>, <span class="number">32</span>)),</span><br><span class="line">    transforms.RandomCrop(<span class="number">32</span>, padding=<span class="number">4</span>),</span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">    transforms.Normalize(norm_mean, norm_std),</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">valid_transform = transforms.Compose([</span><br><span class="line">    transforms.Resize((<span class="number">32</span>, <span class="number">32</span>)),</span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">    transforms.Normalize(norm_mean, norm_std),</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建MyDataset实例</span></span><br><span class="line">train_data = RMBDataset(data_dir=train_dir, transform=train_transform)</span><br><span class="line">valid_data = RMBDataset(data_dir=valid_dir, transform=valid_transform)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建DataLoder</span></span><br><span class="line">train_loader = DataLoader(dataset=train_data, batch_size=BATCH_SIZE, shuffle=<span class="literal">True</span>)</span><br><span class="line">valid_loader = DataLoader(dataset=valid_data, batch_size=BATCH_SIZE)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 2/5 模型 ============================</span></span><br><span class="line"></span><br><span class="line">net = LeNet(classes=<span class="number">2</span>)</span><br><span class="line">net.initialize_weights()</span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 3/5 损失函数 ============================</span></span><br><span class="line">criterion = nn.CrossEntropyLoss()                                                   <span class="comment"># 选择损失函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 4/5 优化器 ============================</span></span><br><span class="line">optimizer = optim.SGD(net.parameters(), lr=LR, momentum=<span class="number">0.9</span>)                        <span class="comment"># 选择优化器</span></span><br><span class="line">scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=<span class="number">10</span>, gamma=<span class="number">0.1</span>)     <span class="comment"># 设置学习率下降策略</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ step 5/5 训练 ============================</span></span><br><span class="line">train_curve = list()</span><br><span class="line">valid_curve = list()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(MAX_EPOCH):</span><br><span class="line"></span><br><span class="line">    loss_mean = <span class="number">0.</span></span><br><span class="line">    correct = <span class="number">0.</span></span><br><span class="line">    total = <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">    net.train()</span><br><span class="line">    <span class="keyword">for</span> i, data <span class="keyword">in</span> enumerate(train_loader):</span><br><span class="line"></span><br><span class="line">        <span class="comment"># forward</span></span><br><span class="line">        inputs, labels = data</span><br><span class="line">        outputs = net(inputs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># backward</span></span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        loss = criterion(outputs, labels)</span><br><span class="line">        loss.backward()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># update weights</span></span><br><span class="line">        optimizer.step()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 统计分类情况</span></span><br><span class="line">        _, predicted = torch.max(outputs.data, <span class="number">1</span>)</span><br><span class="line">        total += labels.size(<span class="number">0</span>)</span><br><span class="line">        correct += (predicted == labels).squeeze().sum().numpy()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 打印训练信息</span></span><br><span class="line">        loss_mean += loss.item()</span><br><span class="line">        train_curve.append(loss.item())</span><br><span class="line">        <span class="keyword">if</span> (i+<span class="number">1</span>) % log_interval == <span class="number">0</span>:</span><br><span class="line">            loss_mean = loss_mean / log_interval</span><br><span class="line">            print(<span class="string">"Training:Epoch[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Iteration[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Loss: &#123;:.4f&#125; Acc:&#123;:.2%&#125;"</span>.format(</span><br><span class="line">                epoch, MAX_EPOCH, i+<span class="number">1</span>, len(train_loader), loss_mean, correct / total))</span><br><span class="line">            loss_mean = <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">    scheduler.step()  <span class="comment"># 更新学习率</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># validate the model</span></span><br><span class="line">    <span class="keyword">if</span> (epoch+<span class="number">1</span>) % val_interval == <span class="number">0</span>:</span><br><span class="line"></span><br><span class="line">        correct_val = <span class="number">0.</span></span><br><span class="line">        total_val = <span class="number">0.</span></span><br><span class="line">        loss_val = <span class="number">0.</span></span><br><span class="line">        net.eval()</span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            <span class="keyword">for</span> j, data <span class="keyword">in</span> enumerate(valid_loader):</span><br><span class="line">                inputs, labels = data</span><br><span class="line">                outputs = net(inputs)</span><br><span class="line">                loss = criterion(outputs, labels)</span><br><span class="line"></span><br><span class="line">                _, predicted = torch.max(outputs.data, <span class="number">1</span>)</span><br><span class="line">                total_val += labels.size(<span class="number">0</span>)</span><br><span class="line">                correct_val += (predicted == labels).squeeze().sum().numpy()</span><br><span class="line"></span><br><span class="line">                loss_val += loss.item()</span><br><span class="line"></span><br><span class="line">            valid_curve.append(loss_val/valid_loader.__len__())</span><br><span class="line">            print(<span class="string">"Valid:\t Epoch[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Iteration[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Loss: &#123;:.4f&#125; Acc:&#123;:.2%&#125;"</span>.format(</span><br><span class="line">                epoch, MAX_EPOCH, j+<span class="number">1</span>, len(valid_loader), loss_val, correct_val / total_val))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">train_x = range(len(train_curve))</span><br><span class="line">train_y = train_curve</span><br><span class="line"></span><br><span class="line">train_iters = len(train_loader)</span><br><span class="line">valid_x = np.arange(<span class="number">1</span>, len(valid_curve)+<span class="number">1</span>) * train_iters*val_interval <span class="comment"># 由于valid中记录的是epochloss，需要对记录点进行转换到iterations</span></span><br><span class="line">valid_y = valid_curve</span><br><span class="line"></span><br><span class="line">plt.plot(train_x, train_y, label=<span class="string">'Train'</span>)</span><br><span class="line">plt.plot(valid_x, valid_y, label=<span class="string">'Valid'</span>)</span><br><span class="line"></span><br><span class="line">plt.legend(loc=<span class="string">'upper right'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'loss value'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Iteration'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================ inference ============================</span></span><br><span class="line"></span><br><span class="line">BASE_DIR = os.path.dirname(os.path.abspath(__file__))</span><br><span class="line">test_dir = os.path.join(BASE_DIR, <span class="string">"test_data"</span>)</span><br><span class="line"></span><br><span class="line">test_data = RMBDataset(data_dir=test_dir, transform=valid_transform)</span><br><span class="line">valid_loader = DataLoader(dataset=test_data, batch_size=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, data <span class="keyword">in</span> enumerate(valid_loader):</span><br><span class="line">    <span class="comment"># forward</span></span><br><span class="line">    inputs, labels = data</span><br><span class="line">    outputs = net(inputs)</span><br><span class="line">    _, predicted = torch.max(outputs.data, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    rmb = <span class="number">1</span> <span class="keyword">if</span> predicted.numpy()[<span class="number">0</span>] == <span class="number">0</span> <span class="keyword">else</span> <span class="number">100</span></span><br><span class="line">    print(<span class="string">"模型获得&#123;&#125;元"</span>.format(rmb))</span><br></pre></td></tr></table></figure></p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91TensorBoard-2%20%E7%9B%91%E6%8E%A7loss,acc,grad/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91TensorBoard-2%20%E7%9B%91%E6%8E%A7loss,acc,grad/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】TensorBoard-2 监控loss,acc,grad</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-09-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-15T00:00:00+08:00">2019-09-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-07 14:21:03" itemprop="dateModified" datetime="2020-03-07T14:21:03+08:00">2020-03-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">PyTorch笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>思路总结：</strong> \</p>
-<ul>
-<li>一般的，网络param的梯度在前面的epoch分布可能都会比较大，而越往后训练，这些梯度值一般会慢慢减小，而且分布范围也会逐渐减小；</li>
-<li>梯度到训练后期比较小甚至接近与0时，这并不一定是梯度消失，可以通过观察loss曲线，发现后期的loss值是也比较小的，因为梯度是loss对param的倒数，所以此时梯度自然也就比较小了。(<strong>感觉这段话讲得好像不对吧，我的理解是：训练后期梯度比较小不仅仅是因为loss值比较小，更重要的是此时loss波动较前期小，即此时的loss相对平滑，这才是造成后期的梯度较小的原因吧。</strong>)</li>
-<li>通过观察网络各层参数的梯度，如果发现前面layer的梯度比较小，那么就需要看最后一层的梯度分布情况，如果最后一层的梯度也是比较小的，则这并不是梯度消失现象，因为此时可能是因为loss本身的值就比较低；而如果发现前面layer的梯度较小，而最后一层的梯度较大，则这时候就是梯度消失现象了，因为梯度是从后往前传递的。</li>
-</ul>
+          <p>&emsp; 我按官方文档 <a href="https://www.paddlepaddle.org.cn/documentation/docs/zh/beginners_guide/install/install_Conda.html" target="_blank" rel="noopener">使用conda安装paddle</a><br>步骤安装失败，好多坑啊。这里结合官方文档踩坑记录如下：<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91TensorBoard-2%20%E7%9B%91%E6%8E%A7loss,acc,grad/#more" rel="contents">
+              <a class="btn" href="/2020/02/09/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91conda%E5%AE%89%E8%A3%85paddle/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1075,7 +975,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91TensorBoard-1/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/01/Python%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91Python%20Operators/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1089,7 +989,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/09/15/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91TensorBoard-1/" class="post-title-link" itemprop="url">PyTorch笔记/【Tutorials】TensorBoard-1</a>
+            <a href="/2020/02/01/Python%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91Python%20Operators/" class="post-title-link" itemprop="url">Python笔记/【Entries】Python Operators</a>
         </h1>
 
         <div class="post-meta">
@@ -1099,14 +999,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-09-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-15T00:00:00+08:00">2019-09-15</time>
+              <time title="Created: 2020-02-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-01T00:00:00+08:00">2020-02-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-11 20:16:23" itemprop="dateModified" datetime="2020-03-11T20:16:23+08:00">2020-03-11</time>
+                <time title="Modified: 2020-03-31 14:19:59" itemprop="dateModified" datetime="2020-03-31T14:19:59+08:00">2020-03-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1131,58 +1031,98 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>要求tensorboard版本至少是1.14<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install tensorboard</span><br></pre></td></tr></table></figure></p>
-<h1 id="tensorboard使用示例"><a href="#tensorboard使用示例" class="headerlink" title="tensorboard使用示例"></a>tensorboard使用示例</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> torch.utils.tensorboard <span class="keyword">import</span> SummaryWriter</span><br><span class="line"></span><br><span class="line">writer = SummaryWriter(comment=<span class="string">'test_tensorboard'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    writer.add_scalar(<span class="string">'y=2x'</span>, x * <span class="number">2</span>, x)</span><br><span class="line">    writer.add_scalar(<span class="string">'y=pow(2, x)'</span>, <span class="number">2</span> ** x, x)</span><br><span class="line"></span><br><span class="line">    writer.add_scalars(<span class="string">'data/scalar_group'</span>, &#123;<span class="string">"xsinx"</span>: x * np.sin(x),</span><br><span class="line">                                             <span class="string">"xcosx"</span>: x * np.cos(x),</span><br><span class="line">                                             <span class="string">"arctanx"</span>: np.arctan(x)&#125;, x)</span><br><span class="line">writer.close()</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> to project path</span><br><span class="line">$ tensorboard --logdir=./runs</span><br></pre></td></tr></table></figure>
-<h1 id="SummaryWriter使用详解"><a href="#SummaryWriter使用详解" class="headerlink" title="SummaryWriter使用详解"></a>SummaryWriter使用详解</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SummaryWriter</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""Writes entries directly to event files in the log_dir to be</span></span><br><span class="line"><span class="string">    consumed by TensorBoard.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The `SummaryWriter` class provides a high-level API to create an event file</span></span><br><span class="line"><span class="string">    in a given directory and add summaries and events to it. The class updates the</span></span><br><span class="line"><span class="string">    file contents asynchronously. This allows a training program to call methods</span></span><br><span class="line"><span class="string">    to add data to the file directly from the training loop, without slowing down</span></span><br><span class="line"><span class="string">    training.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, log_dir=None, comment=<span class="string">''</span>, purge_step=None, max_queue=<span class="number">10</span>, flush_secs=<span class="number">120</span>, filename_suffix=<span class="string">''</span>)</span>:</span></span><br><span class="line">        <span class="string">"""Creates a `SummaryWriter` that will write out events and summaries</span></span><br><span class="line"><span class="string">        to the event file.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            log_dir (string): Save directory location. Default is</span></span><br><span class="line"><span class="string">              runs/**CURRENT_DATETIME_HOSTNAME**, which changes after each run.</span></span><br><span class="line"><span class="string">              Use hierarchical folder structure to compare</span></span><br><span class="line"><span class="string">              between runs easily. e.g. pass in 'runs/exp1', 'runs/exp2', etc.</span></span><br><span class="line"><span class="string">              for each new experiment to compare across them.</span></span><br><span class="line"><span class="string">            comment (string): Comment log_dir suffix appended to the default</span></span><br><span class="line"><span class="string">              ``log_dir``. If ``log_dir`` is assigned, this argument has no effect.</span></span><br><span class="line"><span class="string">            purge_step (int):</span></span><br><span class="line"><span class="string">              When logging crashes at step :math:`T+X` and restarts at step :math:`T`,</span></span><br><span class="line"><span class="string">              any events whose global_step larger or equal to :math:`T` will be</span></span><br><span class="line"><span class="string">              purged and hidden from TensorBoard.</span></span><br><span class="line"><span class="string">              Note that crashed and resumed experiments should have the same ``log_dir``.</span></span><br><span class="line"><span class="string">            max_queue (int): Size of the queue for pending events and</span></span><br><span class="line"><span class="string">              summaries before one of the 'add' calls forces a flush to disk.</span></span><br><span class="line"><span class="string">              Default is ten items.</span></span><br><span class="line"><span class="string">            flush_secs (int): How often, in seconds, to flush the</span></span><br><span class="line"><span class="string">              pending events and summaries to disk. Default is every two minutes.</span></span><br><span class="line"><span class="string">            filename_suffix (string): Suffix added to all event filenames in</span></span><br><span class="line"><span class="string">              the log_dir directory. More details on filename construction in</span></span><br><span class="line"><span class="string">              tensorboard.summary.writer.event_file_writer.EventFileWriter.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Examples::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            from torch.utils.tensorboard import SummaryWriter</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            # create a summary writer with automatically generated folder name.</span></span><br><span class="line"><span class="string">            writer = SummaryWriter()</span></span><br><span class="line"><span class="string">            # folder location: runs/May04_22-14-54_s-MacBook-Pro.local/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            # create a summary writer using the specified folder name.</span></span><br><span class="line"><span class="string">            writer = SummaryWriter("my_experiment")</span></span><br><span class="line"><span class="string">            # folder location: my_experiment</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            # create a summary writer with comment appended.</span></span><br><span class="line"><span class="string">            writer = SummaryWriter(comment="LR_0.1_BATCH_16")</span></span><br><span class="line"><span class="string">            # folder location: runs/May04_22-14-54_s-MacBook-Pro.localLR_0.1_BATCH_16/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        torch._C._log_api_usage_once(<span class="string">"tensorboard.create.summarywriter"</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> log_dir:</span><br><span class="line">            <span class="keyword">import</span> socket</span><br><span class="line">            <span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line">            current_time = datetime.now().strftime(<span class="string">'%b%d_%H-%M-%S'</span>)</span><br><span class="line">            log_dir = os.path.join(</span><br><span class="line">                <span class="string">'runs'</span>, current_time + <span class="string">'_'</span> + socket.gethostname() + comment)</span><br><span class="line">        self.log_dir = log_dir</span><br><span class="line">        self.purge_step = purge_step</span><br><span class="line">        self.max_queue = max_queue</span><br><span class="line">        self.flush_secs = flush_secs</span><br><span class="line">        self.filename_suffix = filename_suffix</span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
-<p><strong>功能</strong>：提供创建event-file的高级接口</p>
-<ul>
-<li><strong>log_dir</strong>: event-file输出文件夹，如果不指定，则会在当前目录下创建runs文件夹，event-file将被保存到runs目录下的对应文件夹下；如果指定了log_dir，则comment不起作用；</li>
-<li><strong>comment*</strong>: 不指定log_dir时，文件夹后缀</li>
-<li><strong>filename_suffix</strong>: event-file 文件名后缀</li>
-</ul>
-<p><strong>注</strong>：通常不会使用默认的log_dir，因为开发中一般都要将代码和数据分离。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> torch.utils.tensorboard <span class="keyword">import</span> SummaryWriter</span><br><span class="line"></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    log_dir = <span class="string">"./train_log/test_log_dir"</span></span><br><span class="line">    <span class="comment"># writer = SummaryWriter(log_dir=log_dir, comment='_scalars', filename_suffix="12345678")</span></span><br><span class="line">    writer = SummaryWriter(comment=<span class="string">'_scalars'</span>, filename_suffix=<span class="string">"12345678"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">        writer.add_scalar(<span class="string">'y=pow_2_x'</span>, <span class="number">2</span> ** x, x)</span><br><span class="line"></span><br><span class="line">    writer.close()</span><br></pre></td></tr></table></figure>
-<p><strong>指定log_dir时生成的文件目录</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── train_log</span><br><span class="line">│   └── test_log_dir</span><br><span class="line">│       └── events.out.tfevents.1583414749.ailab-server.13132.012345678</span><br></pre></td></tr></table></figure></p>
-<p><strong>不指定log_dir时生成的文件目录</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── runs</span><br><span class="line">│   └── Mar05_08-26-58_ailab-server_scalars</span><br><span class="line">│       └── events.out.tfevents.1583414821.ailab-server.13260.012345678</span><br></pre></td></tr></table></figure></p>
-<h2 id="成员方法：add-scalar"><a href="#成员方法：add-scalar" class="headerlink" title="成员方法：add_scalar"></a>成员方法：add_scalar</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SummaryWriter</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(...)</span>:</span></span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line">    ... </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_scalar</span><span class="params">(self, tag, scalar_value, global_step=None, walltime=None)</span>:</span></span><br><span class="line">        <span class="string">"""Add scalar data to summary.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            tag (string): Data identifier</span></span><br><span class="line"><span class="string">            scalar_value (float or string/blobname): Value to save</span></span><br><span class="line"><span class="string">            global_step (int): Global step value to record</span></span><br><span class="line"><span class="string">            walltime (float): Optional override default walltime (time.time())</span></span><br><span class="line"><span class="string">              with seconds after epoch of event</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Examples::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            from torch.utils.tensorboard import SummaryWriter</span></span><br><span class="line"><span class="string">            writer = SummaryWriter()</span></span><br><span class="line"><span class="string">            x = range(100)</span></span><br><span class="line"><span class="string">            for i in x:</span></span><br><span class="line"><span class="string">                writer.add_scalar('y=2x', i * 2, i)</span></span><br><span class="line"><span class="string">            writer.close()</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Expected result:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        .. image:: _static/img/tensorboard/add_scalar.png</span></span><br><span class="line"><span class="string">           :scale: 50 %</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> self._check_caffe2_blob(scalar_value):</span><br><span class="line">            scalar_value = workspace.FetchBlob(scalar_value)</span><br><span class="line">        self._get_file_writer().add_summary(</span><br><span class="line">            scalar(tag, scalar_value), global_step, walltime)</span><br></pre></td></tr></table></figure>
-<p><strong>功能</strong>：记录标量</p>
-<ul>
-<li><strong>tag</strong>: 图像标签名，图的唯一标识</li>
-<li><strong>scalar_value</strong>: 要记录的标量</li>
-<li><strong>global_step</strong>: x轴</li>
-</ul>
-<h2 id="成员方法：add-scalars"><a href="#成员方法：add-scalars" class="headerlink" title="成员方法：add_scalars"></a>成员方法：add_scalars</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SummaryWriter</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(...)</span>:</span></span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line">    ... </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_scalars</span><span class="params">(self, main_tag, tag_scalar_dict, global_step=None, walltime=None)</span>:</span></span><br><span class="line">        <span class="string">"""Adds many scalar data to summary.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Note that this function also keeps logged scalars in memory. In extreme case it explodes your RAM.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            main_tag (string): The parent name for the tags</span></span><br><span class="line"><span class="string">            tag_scalar_dict (dict): Key-value pair storing the tag and corresponding values</span></span><br><span class="line"><span class="string">            global_step (int): Global step value to record</span></span><br><span class="line"><span class="string">            walltime (float): Optional override default walltime (time.time())</span></span><br><span class="line"><span class="string">              seconds after epoch of event</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Examples::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            from torch.utils.tensorboard import SummaryWriter</span></span><br><span class="line"><span class="string">            writer = SummaryWriter()</span></span><br><span class="line"><span class="string">            r = 5</span></span><br><span class="line"><span class="string">            for i in range(100):</span></span><br><span class="line"><span class="string">                writer.add_scalars('run_14h', &#123;'xsinx':i*np.sin(i/r),</span></span><br><span class="line"><span class="string">                                                'xcosx':i*np.cos(i/r),</span></span><br><span class="line"><span class="string">                                                'tanx': np.tan(i/r)&#125;, i)</span></span><br><span class="line"><span class="string">            writer.close()</span></span><br><span class="line"><span class="string">            # This call adds three values to the same scalar plot with the tag</span></span><br><span class="line"><span class="string">            # 'run_14h' in TensorBoard's scalar section.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Expected result:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        .. image:: _static/img/tensorboard/add_scalars.png</span></span><br><span class="line"><span class="string">           :scale: 50 %</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        walltime = time.time() <span class="keyword">if</span> walltime <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">else</span> walltime</span><br><span class="line">        fw_logdir = self._get_file_writer().get_logdir()</span><br><span class="line">        <span class="keyword">for</span> tag, scalar_value <span class="keyword">in</span> tag_scalar_dict.items():</span><br><span class="line">            fw_tag = fw_logdir + <span class="string">"/"</span> + main_tag.replace(<span class="string">"/"</span>, <span class="string">"_"</span>) + <span class="string">"_"</span> + tag</span><br><span class="line">            <span class="keyword">if</span> fw_tag <span class="keyword">in</span> self.all_writers.keys():</span><br><span class="line">                fw = self.all_writers[fw_tag]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                fw = FileWriter(fw_tag, self.max_queue, self.flush_secs,</span><br><span class="line">                                self.filename_suffix)</span><br><span class="line">                self.all_writers[fw_tag] = fw</span><br><span class="line">            <span class="keyword">if</span> self._check_caffe2_blob(scalar_value):</span><br><span class="line">                scalar_value = workspace.FetchBlob(scalar_value)</span><br><span class="line">            fw.add_summary(scalar(main_tag, scalar_value),</span><br><span class="line">                           global_step, walltime)</span><br></pre></td></tr></table></figure>
-<p><strong>功能</strong>：在同一个图中记录多个标量</p>
-<ul>
-<li><strong>main_tag</strong>: 该图的标签，等同于add_scalar中的tag</li>
-<li><strong>tag_scalar_dict*</strong>: key是变量的tag，value是变量的值</li>
-<li><strong>global_step</strong>: x轴</li>
-</ul>
-<p><strong>代码示例：</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> torch.utils.tensorboard <span class="keyword">import</span> SummaryWriter</span><br><span class="line"></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line"></span><br><span class="line">    max_epoch = <span class="number">100</span></span><br><span class="line"></span><br><span class="line">    writer = SummaryWriter(comment=<span class="string">'test_comment'</span>, filename_suffix=<span class="string">"test_suffix"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(max_epoch):</span><br><span class="line"></span><br><span class="line">        writer.add_scalar(<span class="string">'y=2x'</span>, x * <span class="number">2</span>, x)</span><br><span class="line">        writer.add_scalar(<span class="string">'y=pow_2_x'</span>, <span class="number">2</span> ** x, x)</span><br><span class="line"></span><br><span class="line">        writer.add_scalars(<span class="string">'data/scalar_group'</span>, &#123;<span class="string">"xsinx"</span>: x * np.sin(x),</span><br><span class="line">                                                 <span class="string">"xcosx"</span>: x * np.cos(x)&#125;, x)</span><br><span class="line"></span><br><span class="line">    writer.close()</span><br></pre></td></tr></table></figure></p>
-<h2 id="成员方法：add-histogram"><a href="#成员方法：add-histogram" class="headerlink" title="成员方法：add_histogram"></a>成员方法：add_histogram</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SummaryWriter</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(...)</span>:</span></span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line">    ... </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_histogram</span><span class="params">(self, tag, values, global_step=None, bins=<span class="string">'tensorflow'</span>, walltime=None, max_bins=None)</span>:</span></span><br><span class="line">        <span class="string">"""Add histogram to summary.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            tag (string): Data identifier</span></span><br><span class="line"><span class="string">            values (torch.Tensor, numpy.array, or string/blobname): Values to build histogram</span></span><br><span class="line"><span class="string">            global_step (int): Global step value to record</span></span><br><span class="line"><span class="string">            bins (string): One of &#123;'tensorflow','auto', 'fd', ...&#125;. This determines how the bins are made. You can find</span></span><br><span class="line"><span class="string">              other options in: https://docs.scipy.org/doc/numpy/reference/generated/numpy.histogram.html</span></span><br><span class="line"><span class="string">            walltime (float): Optional override default walltime (time.time())</span></span><br><span class="line"><span class="string">              seconds after epoch of event</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Examples::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            from torch.utils.tensorboard import SummaryWriter</span></span><br><span class="line"><span class="string">            import numpy as np</span></span><br><span class="line"><span class="string">            writer = SummaryWriter()</span></span><br><span class="line"><span class="string">            for i in range(10):</span></span><br><span class="line"><span class="string">                x = np.random.random(1000)</span></span><br><span class="line"><span class="string">                writer.add_histogram('distribution centers', x + i, i)</span></span><br><span class="line"><span class="string">            writer.close()</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Expected result:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        .. image:: _static/img/tensorboard/add_histogram.png</span></span><br><span class="line"><span class="string">           :scale: 50 %</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> self._check_caffe2_blob(values):</span><br><span class="line">            values = workspace.FetchBlob(values)</span><br><span class="line">        <span class="keyword">if</span> isinstance(bins, six.string_types) <span class="keyword">and</span> bins == <span class="string">'tensorflow'</span>:</span><br><span class="line">            bins = self.default_bins</span><br><span class="line">        self._get_file_writer().add_summary(</span><br><span class="line">            histogram(tag, values, bins, max_bins=max_bins), global_step, walltime)</span><br></pre></td></tr></table></figure>
-<p><strong>功能</strong>：统计直方图与多分位数折线图，对模型分析模型参数分布以及梯度分布是很有用的。<br>关于多分位折线图，我的理解是：监控values的数值区间中多个位置的value的变化情况的折线图。</p>
-<ul>
-<li><strong>tag</strong>: 图像的标签名，图的唯一标识符</li>
-<li><strong>values</strong>: 要统计的参数</li>
-<li><strong>global_step</strong>: y轴</li>
-<li><strong>bins</strong>: 取直方图的bins，通常取默认的“tensorflow”即可。（关于bins，我的理解就是将values的数值区间划分成一个个的bin(箱子)，然后统计落在每个bin的value的个数）</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> torch.utils.tensorboard <span class="keyword">import</span> SummaryWriter</span><br><span class="line"></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line"></span><br><span class="line">    writer = SummaryWriter(comment=<span class="string">'test_comment'</span>, filename_suffix=<span class="string">"test_suffix"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">2</span>):</span><br><span class="line"></span><br><span class="line">        np.random.seed(x)</span><br><span class="line"></span><br><span class="line">        data_union = np.arange(<span class="number">100</span>)</span><br><span class="line">        data_normal = np.random.normal(size=<span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line">        writer.add_histogram(<span class="string">'distribution union'</span>, data_union, x)</span><br><span class="line">        writer.add_histogram(<span class="string">'distribution normal'</span>, data_normal, x)</span><br><span class="line"></span><br><span class="line">        plt.subplot(<span class="number">121</span>).hist(data_union, label=<span class="string">"union"</span>)</span><br><span class="line">        plt.subplot(<span class="number">122</span>).hist(data_normal, label=<span class="string">"normal"</span>)</span><br><span class="line">        plt.legend()</span><br><span class="line">        plt.show()</span><br><span class="line"></span><br><span class="line">    writer.close()</span><br></pre></td></tr></table></figure>
-<p>tensorboard(左)和plt(右)画的其中一个epoch的分布图如下：</p>
-<div align=center>
-  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/tensorboard_histograms.jpg" width = 50% height = 50% /><img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/tensorboard_histograms2.jpg" width = 50% height = 60% />
-</div>
+          <p>本节主要讲述Python的两个操作符*和**的作用。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/01/Python%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91Python%20Operators/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
 
-<p>可以看到plt画出的normal直方图和tensorboard画出的normal直方图基本类似，但是对于union直方图，正确的应该是plt所画出的图，tensorboard的是由于其内部做了一些显示上的优化。</p>
-<p>再来看看tensorboard画出的distribution图（多分位数折线图）：</p>
-<div align=center>
-  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/tensorboard_distributions.jpg" width = 60% height = 60% />
-</div>
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
 
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/25/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91mysql%E8%BF%81%E7%A7%BB%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%B0%E5%8F%A6%E4%B8%80%E5%8F%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/">
 
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
 
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/25/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91mysql%E8%BF%81%E7%A7%BB%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%B0%E5%8F%A6%E4%B8%80%E5%8F%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="post-title-link" itemprop="url">【开发环境与工具】mysql迁移远程服务器数据库到另一台服务器</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-11-25 00:00:00" itemprop="dateCreated datePublished" datetime="2019-11-25T00:00:00+08:00">2019-11-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 14:20:50" itemprop="dateModified" datetime="2020-01-22T14:20:50+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">开发环境与工具</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>问题描述：需要将远程服务器(云服务器)上的数据库迁移到另一台服务器上<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/25/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91mysql%E8%BF%81%E7%A7%BB%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%B0%E5%8F%A6%E4%B8%80%E5%8F%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1201,7 +1141,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1267,14 +1207,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>

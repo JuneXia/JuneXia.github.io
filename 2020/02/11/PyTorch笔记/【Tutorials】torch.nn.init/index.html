@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本节首先介绍梯度消失与梯度爆炸，然后逐步分析权值初始化的重要性，随后介绍了正对不同激活函数的初始化方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch笔记&#x2F;【Tutorials】torch.nn.init">
+<meta property="og:url" content="http://yoursite.com/2020/02/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.init/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="本节首先介绍梯度消失与梯度爆炸，然后逐步分析权值初始化的重要性，随后介绍了正对不同激活函数的初始化方法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_init1.jpg">
+<meta property="article:published_time" content="2020-02-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-20T06:04:24.782Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_init1.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/02/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.init/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>PyTorch笔记/【Tutorials】torch.nn.init | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.init/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch笔记/【Tutorials】torch.nn.init
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-11 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-11T00:00:00+08:00">2020-02-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-20 14:04:24" itemprop="dateModified" datetime="2020-03-20T14:04:24+08:00">2020-03-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本节首先介绍梯度消失与梯度爆炸，然后逐步分析权值初始化的重要性，随后介绍了正对不同激活函数的初始化方法。<br><a id="more"></a></p>
+<p>&emsp; 一个好的权值初始化能够加快模型的收敛，而不恰当的初始化可能引发梯度消失或爆炸，最终导致模型无法收敛。</p>
+<h1 id="梯度消失与爆炸"><a href="#梯度消失与爆炸" class="headerlink" title="梯度消失与爆炸"></a>梯度消失与爆炸</h1><p>关于梯度消失与爆炸(Gradient Vanishing and Exploding)，我们来看看$\mathbf{W_2}$的梯度求取过程：</p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_init1.jpg" width = 80% height = 80% />
+</div>
+
+<script type="math/tex; mode=display">
+\begin{aligned}
+\mathbf{H_2} &= \mathbf{W_2} * \mathbf{W_2} \\
+\Delta \! \mathbf{W_2} &= \frac{\partial Loss}{\partial \mathbf{W_2}} 
+                   = \frac{\partial Loss}{\partial out} * \frac{\partial out}{\partial \mathbf{H_2}} * \frac{\partial \mathbf{H_2}}{\partial \mathbf{w_2}} \\
+                  &= \frac{\partial Loss}{\partial out} * \frac{\partial out}{\partial \mathbf{H_2}} * \mathbf{H_1}
+\end{aligned} \tag{1}</script><p>&emsp; 由式(1)可以看出，$\mathbf{W_2}$ 的梯度 $\Delta \! \mathbf{W_2}$ 会依赖上一层的输出 $\mathbf{H_1}$，如果 $\mathbf{H_1} \rightarrow 0$，则 $\Delta \! \mathbf{W_2} \rightarrow 0$，引发梯度消失；如果 $\mathbf{H_1} \rightarrow \infty$，则 $\Delta \! \mathbf{W_2} \rightarrow \infty$，引发梯度爆炸。</p>
+<p>梯度消失：$\mathbf{H_1} \rightarrow 0 \qquad \Rightarrow \qquad \Delta \! \mathbf{W_2} \rightarrow 0$ \<br>梯度爆炸：$\mathbf{H_1} \rightarrow \infty \qquad \Rightarrow \qquad \Delta \! \mathbf{W_2} \rightarrow \infty$</p>
+<p>&emsp; 从公式(1)角度来看，要避免梯度消失与爆炸，就要严格控制各个网络层的输出尺度(不能太大也不能太小)。</p>
+<p>为了便于讨论，我们先不考虑激活函数对神经网络的影响。</p>
+<h2 id="标准正态分布初始化"><a href="#标准正态分布初始化" class="headerlink" title="标准正态分布初始化"></a>标准正态分布初始化</h2><p>下面我们使用标准正态分布(0均值1标准差)来初始化权值，通过代码来验证一下梯度消失与爆炸：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># @file name  : grad_vanish_explod.py</span></span><br><span class="line"><span class="string"># @author     : tingsongyu</span></span><br><span class="line"><span class="string"># @date       : 2019-09-30 10:08:00</span></span><br><span class="line"><span class="string"># @brief      : 梯度消失与爆炸实验</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> tools.common_tools <span class="keyword">import</span> set_seed</span><br><span class="line"></span><br><span class="line">set_seed(<span class="number">1</span>)  <span class="comment"># 设置随机种子</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MLP</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, neural_num, layers)</span>:</span></span><br><span class="line">        super(MLP, self).__init__()</span><br><span class="line">        self.linears = nn.ModuleList([nn.Linear(neural_num, neural_num, bias=<span class="literal">False</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(layers)])</span><br><span class="line">        self.neural_num = neural_num</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> (i, linear) <span class="keyword">in</span> enumerate(self.linears):</span><br><span class="line">            x = linear(x)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self.modules():</span><br><span class="line">            <span class="keyword">if</span> isinstance(m, nn.Linear):</span><br><span class="line">                <span class="comment"># 标准正态分布初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                nn.init.normal_(m.weight.data)  <span class="comment"># 标准正态分布 normal: mean=0, std=1</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    layer_nums = <span class="number">100</span></span><br><span class="line">    neural_nums = <span class="number">256</span></span><br><span class="line">    batch_size = <span class="number">16</span></span><br><span class="line"></span><br><span class="line">    net = MLP(neural_nums, layer_nums)</span><br><span class="line">    net.initialize()</span><br><span class="line"></span><br><span class="line">    inputs = torch.randn((batch_size, neural_nums))  <span class="comment"># normal: mean=0, std=1</span></span><br><span class="line"></span><br><span class="line">    output = net(inputs)</span><br><span class="line">    print(output)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">tensor([[nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        ...,</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan]], grad_fn=&lt;MmBackward&gt;)</span><br></pre></td></tr></table></figure>
+<p>发现上述代码的输出是 nan，也就是说我们的数据非常大或者非常小，已经超出了当前精度可表示的范围。<br>为了分析在网络的哪一层开始就出现了 nan，我们在forward函数中增加一些打印代码，这里我们使用标准差来衡量数据的尺度范围。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MLP</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, neural_num, layers)</span>:</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> (i, linear) <span class="keyword">in</span> enumerate(self.linears):</span><br><span class="line">            x = linear(x)</span><br><span class="line"></span><br><span class="line">            print(<span class="string">"layer:&#123;&#125;, std:&#123;&#125;"</span>.format(i, x.std()))</span><br><span class="line">            <span class="keyword">if</span> torch.isnan(x.std()):</span><br><span class="line">                print(<span class="string">"output is nan in &#123;&#125; layers"</span>.format(i))</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">layer:<span class="number">0</span>, std:<span class="number">15.959932327270508</span></span><br><span class="line">layer:<span class="number">1</span>, std:<span class="number">256.6237487792969</span></span><br><span class="line">layer:<span class="number">2</span>, std:<span class="number">4107.24560546875</span></span><br><span class="line">layer:<span class="number">3</span>, std:<span class="number">65576.8125</span></span><br><span class="line">layer:<span class="number">4</span>, std:<span class="number">1045011.875</span></span><br><span class="line">layer:<span class="number">5</span>, std:<span class="number">17110406.0</span></span><br><span class="line">layer:<span class="number">6</span>, std:<span class="number">275461408.0</span></span><br><span class="line">layer:<span class="number">7</span>, std:<span class="number">4402537472.0</span></span><br><span class="line">...</span><br><span class="line">layer:<span class="number">29</span>, std:<span class="number">1.322983152787379e+36</span></span><br><span class="line">layer:<span class="number">30</span>, std:<span class="number">2.0786817918687285e+37</span></span><br><span class="line">layer:<span class="number">31</span>, std:nan</span><br><span class="line">output <span class="keyword">is</span> nan <span class="keyword">in</span> <span class="number">31</span> layers</span><br><span class="line">tensor([[        inf, <span class="number">-2.6817e+38</span>,         inf,  ...,         inf,</span><br><span class="line">                 inf,         inf],</span><br><span class="line">        [       -inf,        -inf,  <span class="number">1.4387e+38</span>,  ..., <span class="number">-1.3409e+38</span>,</span><br><span class="line">         <span class="number">-1.9660e+38</span>,        -inf],</span><br><span class="line">        [<span class="number">-1.5873e+37</span>,         inf,        -inf,  ...,         inf,</span><br><span class="line">                -inf,  <span class="number">1.1484e+38</span>],</span><br><span class="line">        ...,</span><br><span class="line">        [ <span class="number">2.7754e+38</span>, <span class="number">-1.6783e+38</span>, <span class="number">-1.5531e+38</span>,  ...,         inf,</span><br><span class="line">         <span class="number">-9.9440e+37</span>, <span class="number">-2.5132e+38</span>],</span><br><span class="line">        [<span class="number">-7.7183e+37</span>,        -inf,         inf,  ..., <span class="number">-2.6505e+38</span>,</span><br><span class="line">                 inf,         inf],</span><br><span class="line">        [        inf,         inf,        -inf,  ...,        -inf,</span><br><span class="line">                 inf,  <span class="number">1.7432e+38</span>]], grad_fn=&lt;MmBackward&gt;)</span><br></pre></td></tr></table></figure>
+<p>发现网络在layer31就已经出现了 nan。</p>
+<h2 id="通过方差来分析为什么会出现梯度消失与爆炸"><a href="#通过方差来分析为什么会出现梯度消失与爆炸" class="headerlink" title="通过方差来分析为什么会出现梯度消失与爆炸"></a>通过方差来分析为什么会出现梯度消失与爆炸</h2><p>下面我们通过方差的公式推导来观察网络层的输出标准差为什么会越来越大，最后超出了我们的表示范围。</p>
+<p>在进行方差公式推导之前，我们先复习一下关于方差的3个基本公式。</p>
+<ol>
+<li>$E(X * Y) = E(X) * E(Y)$，两个相互独立的随机变量乘积的期望等于它们各自期望的乘积</li>
+<li>$D(X) = E(X^2) - [E(X)]^2$</li>
+<li>$D(X + Y) = D(X) + D(Y)$，两个相互独立的随机变量之和的方差等于它们各自方差之和</li>
+<li>1.2.3 $\Rightarrow D(X * Y) = D(X) * D(Y) + D(X) * [E(Y)]^2 + D(Y) * [E(X)]^2$ \<br>&emsp; &emsp; &emsp; 若 $E(X) = 0, E(Y) = 0$ \<br>&emsp; &emsp; &emsp; 则 $D(X * Y) = D(X) * D(Y)$</li>
+</ol>
+<p>以第一个隐藏层的第一个输出 $H_{11}$ 为例，来分析网络层的标准差是如何变化的。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    H_{11} &= \sum^n_{i=0} D(X_i) * D(W_{1i}) \\
+    因为 D(X * Y) &= D(X) * D(Y) \\
+    所以 D(H_{11}) &= \sum^n_{i=0} D(X_i) * D(W_{1i})
+\end{aligned}</script><p>由于输入 $X$ 是服从0均值1标准差的，所以 $D(X) = 1$, 而W也被设置成标准正态分布(0均值1标准差)，所以 $D(W1) = 1$，所以有：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    D(H_{11}) &= n * (1 * 1) \\
+    &= n
+\end{aligned} \tag{2}</script><p>则标准差： $std(H_{11}) = \sqrt{D(H_{11})} = \sqrt{n}$ \<br>相应的 $std(H_{12})、std(H_{13})、… 、std(H_{1m})$ 也都等于 $\sqrt{n}$</p>
+<blockquote>
+<p>&emsp; 从公式(2)可知，$D(H_{11})$ 主要由上一层神经元的个数n、上一层输出值的方差 $D(X)$ 以及当前层 $W$ 的方差所决定的，同理其他层的其他神经元也是类似的。</p>
+</blockquote>
+<p>&emsp; 从公式推导我们发现，对于输入方差为1的数据，经过一层前向网络的传播，第一个隐藏层输出值的方差就变成了n，即方差扩大了n倍，标准差扩大了 $\sqrt{n}$ 倍，如果再往下传播到第二个隐藏层的时候，同理可推知其输出值方差变为 $n<em>(n</em>1)=n^2$，标准差就变成了 $\sqrt{n^2} = n$. \<br>&emsp; 综上所述，每往后传播一层，输出值的标准差都会在前一层的基础上扩大 $\sqrt{n}$ 倍，也就是说每一层的输出值的尺度扩大了 $\sqrt{n}$ 倍，最终超出了精度可表示的范围，引发 nan.</p>
+<blockquote>
+<p>通过上述代码的输出，也可以看出每一层的输出值的标准差都会扩大 $\sqrt{n}$ 倍：\<br>上述代码中 n = 256 \<br>layer:0, std:15.959932327270508 = $\sqrt{256}$ \<br>layer:1, std:256.6237487792969 = $\sqrt{256} * \sqrt{256}$ \<br>layer:2, std:4107.24560546875 = $\sqrt{256} * \sqrt{256} * \sqrt{256}$ \<br>…</p>
+</blockquote>
+<h2 id="改进的正态分布初始化"><a href="#改进的正态分布初始化" class="headerlink" title="改进的正态分布初始化"></a>改进的正态分布初始化</h2><p>&emsp; 通过公式(2)我们发现，如果要想让每一层输出值的方差保持尺度不变，那么只能让方差等于1，也就是让下式成立：</p>
+<script type="math/tex; mode=display">D(\mathbf{H_1}) = n * D(\mathbf{X}) * D(\mathbf{W}) = 1</script><p>也就是要求：</p>
+<script type="math/tex; mode=display">D(\mathbf{W}) = \frac{1}{n} \quad \Rightarrow \quad std(\mathbf{W}) = \sqrt{\frac{1}{n}}</script><p>根据这个思想，我们将代码中每层weight的标准差都初始化为 $\sqrt{\frac{1}{n}}$.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MLP</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, neural_num, layers)</span>:</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self.modules():</span><br><span class="line">            <span class="keyword">if</span> isinstance(m, nn.Linear):</span><br><span class="line">                <span class="comment"># 标准正态分布初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                <span class="comment"># nn.init.normal_(m.weight.data)  # 标准正态分布 normal: mean=0, std=1</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># 改进后正态分布初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                nn.init.normal_(m.weight.data, std=np.sqrt(<span class="number">1</span>/self.neural_num))</span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">layer:<span class="number">0</span>, std:<span class="number">0.9974957704544067</span></span><br><span class="line">layer:<span class="number">1</span>, std:<span class="number">1.0024365186691284</span></span><br><span class="line">layer:<span class="number">2</span>, std:<span class="number">1.002745509147644</span></span><br><span class="line">...</span><br><span class="line">layer:<span class="number">98</span>, std:<span class="number">1.1617801189422607</span></span><br><span class="line">layer:<span class="number">99</span>, std:<span class="number">1.2215301990509033</span></span><br><span class="line">tensor([[<span class="number">-1.0696</span>, <span class="number">-1.1373</span>,  <span class="number">0.5047</span>,  ..., <span class="number">-0.4766</span>,  <span class="number">1.5904</span>, <span class="number">-0.1076</span>],</span><br><span class="line">        [ <span class="number">0.4572</span>,  <span class="number">1.6211</span>,  <span class="number">1.9660</span>,  ..., <span class="number">-0.3558</span>, <span class="number">-1.1235</span>,  <span class="number">0.0979</span>],</span><br><span class="line">        [ <span class="number">0.3909</span>, <span class="number">-0.9998</span>, <span class="number">-0.8680</span>,  ..., <span class="number">-2.4161</span>,  <span class="number">0.5035</span>,  <span class="number">0.2814</span>],</span><br><span class="line">        ...,</span><br><span class="line">        [ <span class="number">0.1876</span>,  <span class="number">0.7971</span>, <span class="number">-0.5918</span>,  ...,  <span class="number">0.5395</span>, <span class="number">-0.8932</span>,  <span class="number">0.1211</span>],</span><br><span class="line">        [<span class="number">-0.0102</span>, <span class="number">-1.5027</span>, <span class="number">-2.6860</span>,  ...,  <span class="number">0.6954</span>, <span class="number">-0.1858</span>, <span class="number">-0.8027</span>],</span><br><span class="line">        [<span class="number">-0.5871</span>, <span class="number">-1.3739</span>, <span class="number">-2.9027</span>,  ...,  <span class="number">1.6734</span>,  <span class="number">0.5094</span>, <span class="number">-0.9986</span>]],</span><br><span class="line">       grad_fn=&lt;MmBackward&gt;)</span><br></pre></td></tr></table></figure>
+<p>可以看到现在每一层的标准差都在1附近，且最后一层的输出值也都在正常范围内。</p>
+<h2 id="有激活函数的神经网络的初始化"><a href="#有激活函数的神经网络的初始化" class="headerlink" title="有激活函数的神经网络的初始化"></a>有激活函数的神经网络的初始化</h2><p>但是上面的推导还没有考虑到激活函数的存在，下面我们将代码中每一层的输出都加上一个激活函数，然后看看会出现什么现象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MLP</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, neural_num, layers)</span>:</span></span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> (i, linear) <span class="keyword">in</span> enumerate(self.linears):</span><br><span class="line">            x = linear(x)</span><br><span class="line">            x = torch.tanh(x)  <span class="comment"># 每一层输出增加一个激活函数</span></span><br><span class="line"></span><br><span class="line">            print(<span class="string">"layer:&#123;&#125;, std:&#123;&#125;"</span>.format(i, x.std()))</span><br><span class="line">            <span class="keyword">if</span> torch.isnan(x.std()):</span><br><span class="line">                print(<span class="string">"output is nan in &#123;&#125; layers"</span>.format(i))</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(self)</span>:</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">layer:<span class="number">0</span>, std:<span class="number">0.6273701786994934</span></span><br><span class="line">layer:<span class="number">1</span>, std:<span class="number">0.48910173773765564</span></span><br><span class="line">layer:<span class="number">2</span>, std:<span class="number">0.4099564850330353</span></span><br><span class="line">...</span><br><span class="line">layer:<span class="number">98</span>, std:<span class="number">0.07842092216014862</span></span><br><span class="line">layer:<span class="number">99</span>, std:<span class="number">0.08206240087747574</span></span><br><span class="line">tensor([[<span class="number">-0.1103</span>, <span class="number">-0.0739</span>,  <span class="number">0.1278</span>,  ..., <span class="number">-0.0508</span>,  <span class="number">0.1544</span>, <span class="number">-0.0107</span>],</span><br><span class="line">        [ <span class="number">0.0807</span>,  <span class="number">0.1208</span>,  <span class="number">0.0030</span>,  ..., <span class="number">-0.0385</span>, <span class="number">-0.1887</span>, <span class="number">-0.0294</span>],</span><br><span class="line">        [ <span class="number">0.0321</span>, <span class="number">-0.0833</span>, <span class="number">-0.1482</span>,  ..., <span class="number">-0.1133</span>,  <span class="number">0.0206</span>,  <span class="number">0.0155</span>],</span><br><span class="line">        ...,</span><br><span class="line">        [ <span class="number">0.0108</span>,  <span class="number">0.0560</span>, <span class="number">-0.1099</span>,  ...,  <span class="number">0.0459</span>, <span class="number">-0.0961</span>, <span class="number">-0.0124</span>],</span><br><span class="line">        [ <span class="number">0.0398</span>, <span class="number">-0.0874</span>, <span class="number">-0.2312</span>,  ...,  <span class="number">0.0294</span>, <span class="number">-0.0562</span>, <span class="number">-0.0556</span>],</span><br><span class="line">        [<span class="number">-0.0234</span>, <span class="number">-0.0297</span>, <span class="number">-0.1155</span>,  ...,  <span class="number">0.1143</span>,  <span class="number">0.0083</span>, <span class="number">-0.0675</span>]],</span><br><span class="line">       grad_fn=&lt;TanhBackward&gt;)</span><br></pre></td></tr></table></figure>
+<p>可以看到，网络各层的标准差随着前向传播的进行变得越来越小，也就是数据会变得越来越小，从而导致梯度消失，而这并不是我们希望看到的现象。</p>
+<h1 id="Xavier方法与Kaiming方法"><a href="#Xavier方法与Kaiming方法" class="headerlink" title="Xavier方法与Kaiming方法"></a>Xavier方法与Kaiming方法</h1><h2 id="Xavier初始化：针对饱和激活函数"><a href="#Xavier初始化：针对饱和激活函数" class="headerlink" title="Xavier初始化：针对饱和激活函数"></a>Xavier初始化：针对饱和激活函数</h2><p>&emsp; 针对具有激活函数的神经网络该如何初始化，2010年，Xavier发表了一篇文章《Understanding the difficulty of training deep feedforward neural networks》详细探讨了这个问题。在论文中，结合方差一致性原则，也就是让网络每一层输出值的方差都尽量等于1，同时针对饱和激活函数(如Sigmoid、Tanh)进行分析。</p>
+<blockquote>
+<p><strong>方差一致性</strong>：保持数据尺度维持在恰当范围，通常方差为1.</p>
+</blockquote>
+<p>通过论文中的公式推导，可以得到权值 $\mathbf{W}$ 应该满足下面两个等式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    n_i * D(\mathbf{W}) &= 1 \\
+    n_{i + 1} * D(\mathbf{W}) &= 1
+\end{aligned}</script><p>这里 $n_i$ 表示输入层(上一层)的神经元个数，$n_{i+1}$ 表示输出层(当前层)的神经元个数，这是同时考虑了前向传播和反向传播的输出尺度问题而得到的两个等式，同时结合方差一致性原则，最终就得到了：</p>
+<script type="math/tex; mode=display">
+D(\mathbf{W}) = \frac{1}{n_i + n_{i+1}}  \tag{3}</script><p>&emsp; 前面说的都是对 $\mathbf{W}$ 采用标准正态分布进行初始化(即0均值1标准差)，而 Xavier 通常采用的是均匀分布，下面开始推导均匀分布的上下限。\<br>设 $\mathbf{W}$ 服从均匀分布：</p>
+<script type="math/tex; mode=display">W \sim U[-a, \ a]</script><blockquote>
+<p>因为通常采用0均值，所以上下限是对称的，即 $-a$ 和 $a$ 是对称的。</p>
+</blockquote>
+<p>由均匀分布的方差公式可得：</p>
+<script type="math/tex; mode=display">
+D(\mathbf{W}) = \frac{(-a - a)^2}{12} 
+            = \frac{(2a)^2}{12} 
+            = \frac{a^2}{3}  \tag{4}</script><p>我们希望公式(3)和公式(4)应该相等，即：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \frac{2}{n_i + n_{i+1}} = \frac{a^2}{3} 
+    \quad \Rightarrow \quad 
+    a = \frac{\sqrt{6}}{\sqrt{n_i + n_{i+1}}}
+\end{aligned}</script><p>于是就得到了 $\mathbf{W}$ 所服从的均匀分布，也就是 Xavier 初始化：</p>
+<script type="math/tex; mode=display">
+\mathbf{W} \sim U \Big[-\frac{\sqrt{6}}{\sqrt{n_i + n_{i+1}}}, \ \ \frac{\sqrt{6}}{\sqrt{n_i + n_{i+1}}} \Big]  \tag{5}</script><p>下面将在代码中使用 Xavier 初始化。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MLP</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, neural_num, layers)</span>:</span></span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self.modules():</span><br><span class="line">            <span class="keyword">if</span> isinstance(m, nn.Linear):</span><br><span class="line">                <span class="comment"># 标准正态分布初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                <span class="comment"># nn.init.normal_(m.weight.data)  # 标准正态分布 normal: mean=0, std=1</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># 改进后正态分布初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                <span class="comment"># nn.init.normal_(m.weight.data, std=np.sqrt(1/self.neural_num))</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># 使用自定义的 Xavier 初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                a = np.sqrt(<span class="number">6</span> / (self.neural_num + self.neural_num))</span><br><span class="line"></span><br><span class="line">                <span class="comment"># tanh激活函数的增益</span></span><br><span class="line">                tanh_gain = nn.init.calculate_gain(<span class="string">'tanh'</span>)</span><br><span class="line">                a *= tanh_gain</span><br><span class="line"></span><br><span class="line">                nn.init.uniform_(m.weight.data, -a, a)</span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">layer:<span class="number">0</span>, std:<span class="number">0.7571136355400085</span></span><br><span class="line">layer:<span class="number">1</span>, std:<span class="number">0.6924336552619934</span></span><br><span class="line">layer:<span class="number">2</span>, std:<span class="number">0.6677976846694946</span></span><br><span class="line">...</span><br><span class="line">layer:<span class="number">98</span>, std:<span class="number">0.6407693028450012</span></span><br><span class="line">layer:<span class="number">99</span>, std:<span class="number">0.6442864537239075</span></span><br><span class="line">tensor([[ <span class="number">0.1031</span>,  <span class="number">0.1310</span>,  <span class="number">0.8196</span>,  ...,  <span class="number">0.9400</span>, <span class="number">-0.6374</span>,  <span class="number">0.5231</span>],</span><br><span class="line">        [<span class="number">-0.9587</span>, <span class="number">-0.2373</span>,  <span class="number">0.8548</span>,  ..., <span class="number">-0.2302</span>,  <span class="number">0.9325</span>,  <span class="number">0.0123</span>],</span><br><span class="line">        [ <span class="number">0.9490</span>, <span class="number">-0.2336</span>,  <span class="number">0.8702</span>,  ..., <span class="number">-0.9591</span>,  <span class="number">0.7902</span>,  <span class="number">0.6200</span>],</span><br><span class="line">        ...,</span><br><span class="line">        [ <span class="number">0.7191</span>,  <span class="number">0.0887</span>, <span class="number">-0.4353</span>,  ..., <span class="number">-0.9587</span>,  <span class="number">0.2494</span>,  <span class="number">0.5407</span>],</span><br><span class="line">        [<span class="number">-0.9583</span>,  <span class="number">0.5227</span>, <span class="number">-0.8054</span>,  ..., <span class="number">-0.4229</span>, <span class="number">-0.6074</span>,  <span class="number">0.9681</span>],</span><br><span class="line">        [ <span class="number">0.6117</span>,  <span class="number">0.3952</span>,  <span class="number">0.1042</span>,  ...,  <span class="number">0.3919</span>, <span class="number">-0.5273</span>,  <span class="number">0.0751</span>]],</span><br><span class="line">       grad_fn=&lt;TanhBackward&gt;)</span><br></pre></td></tr></table></figure></p>
+<p>使用 PyTorch 自带的 Xavier 初始化：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self.modules():</span><br><span class="line">            <span class="keyword">if</span> isinstance(m, nn.Linear):</span><br><span class="line">                <span class="comment"># 标准正态分布初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                <span class="comment"># nn.init.normal_(m.weight.data)  # 标准正态分布 normal: mean=0, std=1</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># 改进后正态分布初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                <span class="comment"># nn.init.normal_(m.weight.data, std=np.sqrt(1/self.neural_num))</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># 使用自定义的 Xavier 初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                <span class="comment"># a = np.sqrt(6 / (self.neural_num + self.neural_num))</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># tanh激活函数的增益</span></span><br><span class="line">                <span class="comment"># tanh_gain = nn.init.calculate_gain('tanh')</span></span><br><span class="line">                <span class="comment"># a *= tanh_gain</span></span><br><span class="line">                <span class="comment">#</span></span><br><span class="line">                <span class="comment"># nn.init.uniform_(m.weight.data, -a, a)</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># Pytorch自带的Xvaier初始化函数</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                tanh_gain = nn.init.calculate_gain(<span class="string">'tanh'</span>)</span><br><span class="line">                nn.init.xavier_uniform_(m.weight.data, gain=tanh_gain)</span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">layer:<span class="number">0</span>, std:<span class="number">0.7571136355400085</span></span><br><span class="line">layer:<span class="number">1</span>, std:<span class="number">0.6924336552619934</span></span><br><span class="line">layer:<span class="number">2</span>, std:<span class="number">0.6677976846694946</span></span><br><span class="line">...</span><br><span class="line">layer:<span class="number">98</span>, std:<span class="number">0.6407693028450012</span></span><br><span class="line">layer:<span class="number">99</span>, std:<span class="number">0.6442864537239075</span></span><br><span class="line">tensor([[ <span class="number">0.1031</span>,  <span class="number">0.1310</span>,  <span class="number">0.8196</span>,  ...,  <span class="number">0.9400</span>, <span class="number">-0.6374</span>,  <span class="number">0.5231</span>],</span><br><span class="line">        [<span class="number">-0.9587</span>, <span class="number">-0.2373</span>,  <span class="number">0.8548</span>,  ..., <span class="number">-0.2302</span>,  <span class="number">0.9325</span>,  <span class="number">0.0123</span>],</span><br><span class="line">        [ <span class="number">0.9490</span>, <span class="number">-0.2336</span>,  <span class="number">0.8702</span>,  ..., <span class="number">-0.9591</span>,  <span class="number">0.7902</span>,  <span class="number">0.6200</span>],</span><br><span class="line">        ...,</span><br><span class="line">        [ <span class="number">0.7191</span>,  <span class="number">0.0887</span>, <span class="number">-0.4353</span>,  ..., <span class="number">-0.9587</span>,  <span class="number">0.2494</span>,  <span class="number">0.5407</span>],</span><br><span class="line">        [<span class="number">-0.9583</span>,  <span class="number">0.5227</span>, <span class="number">-0.8054</span>,  ..., <span class="number">-0.4229</span>, <span class="number">-0.6074</span>,  <span class="number">0.9681</span>],</span><br><span class="line">        [ <span class="number">0.6117</span>,  <span class="number">0.3952</span>,  <span class="number">0.1042</span>,  ...,  <span class="number">0.3919</span>, <span class="number">-0.5273</span>,  <span class="number">0.0751</span>]],</span><br><span class="line">       grad_fn=&lt;TanhBackward&gt;)</span><br></pre></td></tr></table></figure></p>
+<h2 id="关于激活函数增益"><a href="#关于激活函数增益" class="headerlink" title="关于激活函数增益"></a>关于激活函数增益</h2><blockquote>
+<p><strong>激活函数增益</strong>，这个增益的概念是指数据输入到激活函数之后标准差的变化:</p>
+<script type="math/tex; mode=display">gain = \frac{std(\mathbf{X})}{std(tanh(\mathbf{X}))}</script><p>$std(\mathbf{X})$ 是输入数据 $\mathbf{X}$ 的标准差，$std(tanh(\mathbf{X}))$ 是输入数据经过 tanh 激活函数后的输出数据的标准差。</p>
+<p>关于激活函数的增益，老师讲的并不详细，这里补充一些我自己的理解：\<br>激活函数 tanh 就像是一个非线性系统，输入 X 经过这个系统之后得到的输出值的数据分布相对输入数据分布肯定会发生一些变化，从标准差来看就是输出标准差相对输入标准差会不一样。由于 tanh 的特性，输出数据的标准差相对输入数据会有所减小，即 tanh 这个非线性系统将输入的数据变得更加集中了些，这一点从 tanh 的s型曲线压缩数据的特性也能看出来。</p>
+<p>但是上述代码中，为什么将均匀分布的上下限又向外扩充 tanh_gain 倍呢？</p>
+</blockquote>
+<p>PyTorch中提供的计算增益的方法为：<br>torch.nn.init.calculate_gain<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculate_gain</span><span class="params">(nonlinearity, param=None)</span>:</span></span><br><span class="line">    <span class="string">r"""Return the recommended gain value for the given nonlinearity function.</span></span><br><span class="line"><span class="string">    The values are as follows:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    ================= ====================================================</span></span><br><span class="line"><span class="string">    nonlinearity      gain</span></span><br><span class="line"><span class="string">    ================= ====================================================</span></span><br><span class="line"><span class="string">    Linear / Identity :math:`1`</span></span><br><span class="line"><span class="string">    Conv&#123;1,2,3&#125;D      :math:`1`</span></span><br><span class="line"><span class="string">    Sigmoid           :math:`1`</span></span><br><span class="line"><span class="string">    Tanh              :math:`\frac&#123;5&#125;&#123;3&#125;`</span></span><br><span class="line"><span class="string">    ReLU              :math:`\sqrt&#123;2&#125;`</span></span><br><span class="line"><span class="string">    Leaky Relu        :math:`\sqrt&#123;\frac&#123;2&#125;&#123;1 + \text&#123;negative\_slope&#125;^2&#125;&#125;`</span></span><br><span class="line"><span class="string">    ================= ====================================================</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        nonlinearity: the non-linear function (`nn.functional` name)</span></span><br><span class="line"><span class="string">        param: optional parameter for the non-linear function</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Examples:</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; gain = nn.init.calculate_gain('leaky_relu', 0.2)  # leaky_relu with negative_slope=0.2</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    linear_fns = [<span class="string">'linear'</span>, <span class="string">'conv1d'</span>, <span class="string">'conv2d'</span>, <span class="string">'conv3d'</span>, <span class="string">'conv_transpose1d'</span>, <span class="string">'conv_transpose2d'</span>, <span class="string">'conv_transpose3d'</span>]</span><br><span class="line">    <span class="keyword">if</span> nonlinearity <span class="keyword">in</span> linear_fns <span class="keyword">or</span> nonlinearity == <span class="string">'sigmoid'</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> nonlinearity == <span class="string">'tanh'</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">5.0</span> / <span class="number">3</span></span><br><span class="line">    <span class="keyword">elif</span> nonlinearity == <span class="string">'relu'</span>:</span><br><span class="line">        <span class="keyword">return</span> math.sqrt(<span class="number">2.0</span>)</span><br><span class="line">    <span class="keyword">elif</span> nonlinearity == <span class="string">'leaky_relu'</span>:</span><br><span class="line">        <span class="keyword">if</span> param <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            negative_slope = <span class="number">0.01</span></span><br><span class="line">        <span class="keyword">elif</span> <span class="keyword">not</span> isinstance(param, bool) <span class="keyword">and</span> isinstance(param, int) <span class="keyword">or</span> isinstance(param, float):</span><br><span class="line">            <span class="comment"># True/False are instances of int, hence check above</span></span><br><span class="line">            negative_slope = param</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"negative_slope &#123;&#125; not a valid number"</span>.format(param))</span><br><span class="line">        <span class="keyword">return</span> math.sqrt(<span class="number">2.0</span> / (<span class="number">1</span> + negative_slope ** <span class="number">2</span>))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">"Unsupported nonlinearity &#123;&#125;"</span>.format(nonlinearity))</span><br></pre></td></tr></table></figure><br><strong>主要功能</strong>：计算激活函数的方差变化尺度<br>主要参数：</p>
+<ul>
+<li><strong>nonlinearity</strong>: 激活函数名称</li>
+<li><strong>param</strong>: 激活函数的参数，如Leaky ReLU的negative_slop</li>
+</ul>
+<p>关于激活函数增益，下面也给出一个代码示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line"></span><br><span class="line">    x = torch.randn(<span class="number">10000</span>)</span><br><span class="line">    out = torch.tanh(x)</span><br><span class="line"></span><br><span class="line">    gain = x.std() / out.std()</span><br><span class="line">    print(<span class="string">'gain:&#123;&#125;'</span>.format(gain))</span><br><span class="line"></span><br><span class="line">    tanh_gain = nn.init.calculate_gain(<span class="string">'tanh'</span>)</span><br><span class="line">    print(<span class="string">'tanh_gain in PyTorch:'</span>, tanh_gain)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">gain: <span class="number">1.5982500314712524</span></span><br><span class="line">tanh_gain <span class="keyword">in</span> PyTorch: <span class="number">1.6666666666666667</span></span><br></pre></td></tr></table></figure><br>从代码输出结果发现，我们自己计算的激活增益和PyTorch计算的激活增益几乎是相等的。</p>
+<h2 id="Kaiming初始化：针对非饱和激活函数"><a href="#Kaiming初始化：针对非饱和激活函数" class="headerlink" title="Kaiming初始化：针对非饱和激活函数"></a>Kaiming初始化：针对非饱和激活函数</h2><p>&emsp; 虽然2010年Xavier针对Sigmoid、tanh这一类的饱和激活函数提出了有效的初始化方法，但是自2010年的AlexNet出现之后，非饱和激活函数ReLU被广泛使用，由于非饱和函数的性质，Xavier初始化方法不再适用，下面给出代码示例以说明之：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> (i, linear) <span class="keyword">in</span> enumerate(self.linears):</span><br><span class="line">            x = linear(x)</span><br><span class="line">            <span class="comment"># x = torch.tanh(x)</span></span><br><span class="line">            x = torch.relu(x)</span><br><span class="line"></span><br><span class="line">            print(<span class="string">"layer:&#123;&#125;, std:&#123;&#125;"</span>.format(i, x.std()))</span><br><span class="line">            <span class="keyword">if</span> torch.isnan(x.std()):</span><br><span class="line">                print(<span class="string">"output is nan in &#123;&#125; layers"</span>.format(i))</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self.modules():</span><br><span class="line">            <span class="keyword">if</span> isinstance(m, nn.Linear):</span><br><span class="line">                <span class="comment"># Pytorch自带的Xvaier初始化函数</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                tanh_gain = nn.init.calculate_gain(<span class="string">'tanh'</span>)</span><br><span class="line">                nn.init.xavier_uniform_(m.weight.data, gain=tanh_gain)</span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">layer:<span class="number">0</span>, std:<span class="number">0.9689465165138245</span></span><br><span class="line">layer:<span class="number">1</span>, std:<span class="number">1.0872339010238647</span></span><br><span class="line">layer:<span class="number">2</span>, std:<span class="number">1.2967971563339233</span></span><br><span class="line">layer:<span class="number">3</span>, std:<span class="number">1.4487521648406982</span></span><br><span class="line">...</span><br><span class="line">layer:<span class="number">98</span>, std:<span class="number">6797727.5</span></span><br><span class="line">layer:<span class="number">99</span>, std:<span class="number">7640645.5</span></span><br><span class="line">tensor([[       <span class="number">0.0000</span>,  <span class="number">3028695.5000</span>, <span class="number">12379588.0000</span>,  ...,</span><br><span class="line">          <span class="number">3593894.2500</span>,        <span class="number">0.0000</span>, <span class="number">24658908.0000</span>],</span><br><span class="line">        [       <span class="number">0.0000</span>,  <span class="number">2758809.7500</span>, <span class="number">11016995.0000</span>,  ...,</span><br><span class="line">          <span class="number">2970420.5000</span>,        <span class="number">0.0000</span>, <span class="number">23173856.0000</span>],</span><br><span class="line">        [       <span class="number">0.0000</span>,  <span class="number">2909410.2500</span>, <span class="number">13117430.0000</span>,  ...,</span><br><span class="line">          <span class="number">3867128.7500</span>,        <span class="number">0.0000</span>, <span class="number">28463468.0000</span>],</span><br><span class="line">        ...,</span><br><span class="line">        [       <span class="number">0.0000</span>,  <span class="number">3913274.7500</span>, <span class="number">15489629.0000</span>,  ...,</span><br><span class="line">          <span class="number">5777740.0000</span>,        <span class="number">0.0000</span>, <span class="number">33226524.0000</span>],</span><br><span class="line">        [       <span class="number">0.0000</span>,  <span class="number">3673706.7500</span>, <span class="number">12739651.0000</span>,  ...,</span><br><span class="line">          <span class="number">4193523.2500</span>,        <span class="number">0.0000</span>, <span class="number">26862460.0000</span>],</span><br><span class="line">        [       <span class="number">0.0000</span>,  <span class="number">1913917.0000</span>, <span class="number">10243700.0000</span>,  ...,</span><br><span class="line">          <span class="number">4573404.0000</span>,        <span class="number">0.0000</span>, <span class="number">22720538.0000</span>]],</span><br><span class="line">       grad_fn=&lt;ReluBackward0&gt;)</span><br></pre></td></tr></table></figure>
+<p>从代码输出可以看出，对于ReLU激活函数，Xavier初始化方法会使网络层输出标准差逐层变大。</p>
+<p>针对这一问题，2015年何凯明等人发表了一篇文章《Delving deep into rectifiers: Surpassing human-level performance on ImageNet classification》，提出了解决方法。Kaiming初始化针对的是ReLU及其变种激活函数。</p>
+<p>在论文中，通过公式推导就可以知道，对于ReLU激活函数，网络层的权值$\mathbf{W}$的方差就应该满足：</p>
+<script type="math/tex; mode=display">
+D(\mathbf{W}) = \frac{2}{n_i}  \tag{6}</script><p>对于ReLU的变种激活函数，$\mathbf{W}$的方差就应该满足：</p>
+<script type="math/tex; mode=display">
+D(\mathbf{W}) = \frac{2}{(1+a^2)*n_i}  \tag{7}</script><p>其中 $n_i$ 表示输入层神经元的个数，$a$ 表示负半轴的斜率。<br>当式(7)中的 $a=0$ 时，就得到了式(6)，因此式(6)可以看成是式(7)的特殊形式。</p>
+<p>因此，权值 $\mathbf{W}$ 的标准差应该满足：</p>
+<script type="math/tex; mode=display">
+std(\mathbf{W}) = \sqrt{\frac{2}{(1+a^2)*n_i}}</script><p>下面在代码中使用Kaiming初始化：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> (i, linear) <span class="keyword">in</span> enumerate(self.linears):</span><br><span class="line">            x = linear(x)</span><br><span class="line">            <span class="comment"># x = torch.tanh(x)</span></span><br><span class="line">            x = torch.relu(x)</span><br><span class="line"></span><br><span class="line">            print(<span class="string">"layer:&#123;&#125;, std:&#123;&#125;"</span>.format(i, x.std()))</span><br><span class="line">            <span class="keyword">if</span> torch.isnan(x.std()):</span><br><span class="line">                print(<span class="string">"output is nan in &#123;&#125; layers"</span>.format(i))</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self.modules():</span><br><span class="line">            <span class="keyword">if</span> isinstance(m, nn.Linear):</span><br><span class="line">                <span class="comment"># 标准正态分布初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                <span class="comment"># nn.init.normal_(m.weight.data)  # 标准正态分布 normal: mean=0, std=1</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># 改进后正态分布初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                <span class="comment"># nn.init.normal_(m.weight.data, std=np.sqrt(1/self.neural_num))</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># 使用自己实现的 Xavier 初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                <span class="comment"># a = np.sqrt(6 / (self.neural_num + self.neural_num))</span></span><br><span class="line">                <span class="comment">#</span></span><br><span class="line">                <span class="comment"># # tanh激活函数的增益</span></span><br><span class="line">                <span class="comment"># tanh_gain = nn.init.calculate_gain('tanh')</span></span><br><span class="line">                <span class="comment"># a *= tanh_gain</span></span><br><span class="line">                <span class="comment">#</span></span><br><span class="line">                <span class="comment"># nn.init.uniform_(m.weight.data, -a, a)</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># Pytorch自带的Xvaier初始化函数</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                <span class="comment"># tanh_gain = nn.init.calculate_gain('tanh')</span></span><br><span class="line">                <span class="comment"># nn.init.xavier_uniform_(m.weight.data, gain=tanh_gain)</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># 使用自己实现的Kaiming初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                <span class="comment"># nn.init.normal_(m.weight.data, std=np.sqrt(2 / self.neural_num))</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># 使用Pytorch自带的Kaiming初始化</span></span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">                nn.init.kaiming_normal_(m.weight.data)</span><br><span class="line">                <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">layer:<span class="number">0</span>, std:<span class="number">0.826629638671875</span></span><br><span class="line">layer:<span class="number">1</span>, std:<span class="number">0.8786815404891968</span></span><br><span class="line">layer:<span class="number">2</span>, std:<span class="number">0.9134422540664673</span></span><br><span class="line">...</span><br><span class="line">layer:<span class="number">98</span>, std:<span class="number">0.6579315066337585</span></span><br><span class="line">layer:<span class="number">99</span>, std:<span class="number">0.6668476462364197</span></span><br><span class="line">tensor([[<span class="number">0.0000</span>, <span class="number">1.3437</span>, <span class="number">0.0000</span>,  ..., <span class="number">0.0000</span>, <span class="number">0.6444</span>, <span class="number">1.1867</span>],</span><br><span class="line">        [<span class="number">0.0000</span>, <span class="number">0.9757</span>, <span class="number">0.0000</span>,  ..., <span class="number">0.0000</span>, <span class="number">0.4645</span>, <span class="number">0.8594</span>],</span><br><span class="line">        [<span class="number">0.0000</span>, <span class="number">1.0023</span>, <span class="number">0.0000</span>,  ..., <span class="number">0.0000</span>, <span class="number">0.5148</span>, <span class="number">0.9196</span>],</span><br><span class="line">        ...,</span><br><span class="line">        [<span class="number">0.0000</span>, <span class="number">1.2873</span>, <span class="number">0.0000</span>,  ..., <span class="number">0.0000</span>, <span class="number">0.6454</span>, <span class="number">1.1411</span>],</span><br><span class="line">        [<span class="number">0.0000</span>, <span class="number">1.3589</span>, <span class="number">0.0000</span>,  ..., <span class="number">0.0000</span>, <span class="number">0.6749</span>, <span class="number">1.2438</span>],</span><br><span class="line">        [<span class="number">0.0000</span>, <span class="number">1.1807</span>, <span class="number">0.0000</span>,  ..., <span class="number">0.0000</span>, <span class="number">0.5668</span>, <span class="number">1.0600</span>]],</span><br><span class="line">       grad_fn=&lt;ReluBackward0&gt;)</span><br></pre></td></tr></table></figure></p>
+<h1 id="总结：PyTorch中的10种初始化方法"><a href="#总结：PyTorch中的10种初始化方法" class="headerlink" title="总结：PyTorch中的10种初始化方法"></a>总结：PyTorch中的10种初始化方法</h1><p>PyTorch提供了10种权值初始化方法，这10种初始化方法又可以分位4大类，分别为：</p>
+<blockquote>
+<ol>
+<li>Xavier 均匀分布</li>
+<li>Xavier 正态分布</li>
+</ol>
+<ol>
+<li>Kaiming 均匀分布</li>
+<li>Kaiming 正态分布</li>
+</ol>
+<ol>
+<li>均匀分布</li>
+<li>正态分布</li>
+<li>常数分布</li>
+</ol>
+<ol>
+<li>正交矩阵初始化</li>
+<li>单位矩阵初始化</li>
+<li>稀疏矩阵初始化</li>
+</ol>
+</blockquote>
+<p>在实际开发中具体选择哪种还要具体问题具体对待，但无论选择哪种方法都要遵循<strong>方差一致性原则</strong>，尽量保证每一层输出值得方差都是1.</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/09/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91conda%E5%AE%89%E8%A3%85paddle/" rel="prev" title="【开发环境与工具】conda安装paddle">
+      <i class="fa fa-chevron-left"></i> 【开发环境与工具】conda安装paddle
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/12/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.loss-1/" rel="next" title="PyTorch笔记/【Tutorials】torch.nn.loss-1">
+      PyTorch笔记/【Tutorials】torch.nn.loss-1 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#梯度消失与爆炸"><span class="nav-number">1.</span> <span class="nav-text">梯度消失与爆炸</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#标准正态分布初始化"><span class="nav-number">1.1.</span> <span class="nav-text">标准正态分布初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过方差来分析为什么会出现梯度消失与爆炸"><span class="nav-number">1.2.</span> <span class="nav-text">通过方差来分析为什么会出现梯度消失与爆炸</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#改进的正态分布初始化"><span class="nav-number">1.3.</span> <span class="nav-text">改进的正态分布初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有激活函数的神经网络的初始化"><span class="nav-number">1.4.</span> <span class="nav-text">有激活函数的神经网络的初始化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Xavier方法与Kaiming方法"><span class="nav-number">2.</span> <span class="nav-text">Xavier方法与Kaiming方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Xavier初始化：针对饱和激活函数"><span class="nav-number">2.1.</span> <span class="nav-text">Xavier初始化：针对饱和激活函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于激活函数增益"><span class="nav-number">2.2.</span> <span class="nav-text">关于激活函数增益</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kaiming初始化：针对非饱和激活函数"><span class="nav-number">2.3.</span> <span class="nav-text">Kaiming初始化：针对非饱和激活函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结：PyTorch中的10种初始化方法"><span class="nav-number">3.</span> <span class="nav-text">总结：PyTorch中的10种初始化方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

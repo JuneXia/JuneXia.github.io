@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本节主要讲述PyTorch中的Pooling Layer、Linear Layer和Activation Layer.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch笔记&#x2F;【Tutorials】torch.nn.Module-3 Pooling Linear Activation">
+<meta property="og:url" content="http://yoursite.com/2019/09/25/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.Module-3%20Pooling%20Linear%20Activation/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="本节主要讲述PyTorch中的Pooling Layer、Linear Layer和Activation Layer.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_pooling1.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_pooling2.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_activation_sigmoid.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_activation_tanh.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_activation_relu.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_activation_LeakyRelu.jpg">
+<meta property="article:published_time" content="2019-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-13T13:23:07.868Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_pooling1.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2019/09/25/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.Module-3%20Pooling%20Linear%20Activation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>PyTorch笔记/【Tutorials】torch.nn.Module-3 Pooling Linear Activation | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.Module-3%20Pooling%20Linear%20Activation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch笔记/【Tutorials】torch.nn.Module-3 Pooling Linear Activation
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-25 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-25T00:00:00+08:00">2019-09-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-13 21:23:07" itemprop="dateModified" datetime="2020-03-13T21:23:07+08:00">2020-03-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本节主要讲述PyTorch中的Pooling Layer、Linear Layer和Activation Layer.<br><a id="more"></a></p>
+<h1 id="Pooling-Layer"><a href="#Pooling-Layer" class="headerlink" title="Pooling Layer"></a>Pooling Layer</h1><p>池化运算: 对信号进行 “收集” 并 “总结”, 类似水池收集水资源,因而得名池化层</p>
+<blockquote>
+<p>“收集”:多变少 \<br>“总结”:最大值/平均值</p>
+</blockquote>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_pooling1.jpg" width = 60% height = 60% />
+</div>
+
+
+<h2 id="nn-MaxPool2d"><a href="#nn-MaxPool2d" class="headerlink" title="nn.MaxPool2d"></a>nn.MaxPool2d</h2><p>&emsp; nn.MaxPool2d 继承自 _MaxPoolNd，nn.MaxPool2d 自己没有初始化函数，它使用的是 _MaxPoolNd 的初始化函数，nn.MaxPool2d 自己实现forward函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_MaxPoolNd</span><span class="params">(Module)</span>:</span></span><br><span class="line">    __constants__ = [<span class="string">'kernel_size'</span>, <span class="string">'stride'</span>, <span class="string">'padding'</span>, <span class="string">'dilation'</span>,</span><br><span class="line">                     <span class="string">'return_indices'</span>, <span class="string">'ceil_mode'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, kernel_size, stride=None, padding=<span class="number">0</span>, dilation=<span class="number">1</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 return_indices=False, ceil_mode=False)</span>:</span></span><br><span class="line">        super(_MaxPoolNd, self).__init__()</span><br><span class="line">        self.kernel_size = kernel_size</span><br><span class="line">        self.stride = stride <span class="keyword">or</span> kernel_size</span><br><span class="line">        self.padding = padding</span><br><span class="line">        self.dilation = dilation</span><br><span class="line">        self.return_indices = return_indices</span><br><span class="line">        self.ceil_mode = ceil_mode</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">extra_repr</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'kernel_size=&#123;kernel_size&#125;, stride=&#123;stride&#125;, padding=&#123;padding&#125;'</span> \</span><br><span class="line">            <span class="string">', dilation=&#123;dilation&#125;, ceil_mode=&#123;ceil_mode&#125;'</span>.format(**self.__dict__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MaxPool2d</span><span class="params">(_MaxPoolNd)</span>:</span></span><br><span class="line">    <span class="string">r"""Applies a 2D max pooling over an input signal composed of several input</span></span><br><span class="line"><span class="string">    planes.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> F.max_pool2d(input, self.kernel_size, self.stride,</span><br><span class="line">                            self.padding, self.dilation, self.ceil_mode,</span><br><span class="line">                            self.return_indices)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：对二维信号(图像)进行最大池化</p>
+<p>主要参数：</p>
+<ul>
+<li><strong>kernel_size</strong>: 池化核尺寸，通常使用正方形的池化核，例如(2, 2)</li>
+<li><strong>stride</strong>: 步长，通常和kernel_size相等，即不重叠采样。例如kernel_size=(2, 2), stride也设为(2, 2)</li>
+<li><strong>padding</strong>: 填充个数</li>
+<li><strong>dilation</strong>: 池化核间隔大小</li>
+<li><strong>ceil_mode</strong>: 尺寸向上取整或者向下取整。在计算输出feature-map尺寸的时候，有一个除法操作，如果该除法不能整除时就需要采用取整操作，当ceil_mode为True时采用向上取整,而False表示采样向下取整，默认为False.</li>
+<li><strong>return_indices</strong>: 记录池化像素索引，用于记录最大值像素所在的位置的索引，该索引通常在<strong>最大值反池化</strong>上采样的时候使用。</li>
+</ul>
+<blockquote>
+<p>关于<strong>最大值反池化</strong>：<br>在早期的自编码器以及图像分割任务当中都会涉及上采样的操作，当时都会采用最大值反池化进行上采样:</p>
+<div align=center><img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_pooling2.jpg" width = 60% height = 60% /></div>
+
+
+</blockquote>
+<h2 id="nn-AvgPool2d"><a href="#nn-AvgPool2d" class="headerlink" title="nn.AvgPool2d"></a>nn.AvgPool2d</h2><p><strong>功能</strong>：对二维信号(图像)进行平均池化</p>
+<p>主要参数：</p>
+<ul>
+<li><strong>kernel_size</strong>: 池化核尺寸，同nn.MaxPool2d</li>
+<li><strong>stride</strong>: 步长，同nn.MaxPool2d</li>
+<li><strong>padding</strong>: 填充个数，同nn.MaxPool2d</li>
+<li><strong>ceil_mode</strong>: 尺寸向上取整，同nn.MaxPool2d</li>
+<li><strong>count_include_pad</strong>: 填充值用于计算，即在计算平均值的时候是否采用填充值进行计算，如果设置为True，那么在计算平均值的时候，也会将填充值这些像素加进来进行计算。</li>
+<li><strong>divisor_override</strong>: 除法因子。我们知道，在做池化平均的时候，是将池化核内的所有像素值相加 再除以这些像素值的个数，而通过divisor_override这个参数，我们可以改变这一模式，即不再除以像素值的个数，而是除以divisor_override.</li>
+</ul>
+<p>nn.MaxPool2d、nn.AvgPool2d 代码示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># @file name  : nn_layers_others.py</span></span><br><span class="line"><span class="string"># @author     : tingsongyu</span></span><br><span class="line"><span class="string"># @date       : 2019-09-25 10:08:00</span></span><br><span class="line"><span class="string"># @brief      : 其它网络层</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> tools.common_tools <span class="keyword">import</span> transform_invert, set_seed</span><br><span class="line"></span><br><span class="line">set_seed(<span class="number">1</span>)  <span class="comment"># 设置随机种子</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ================================= load img ==================================</span></span><br><span class="line">path_img = os.path.join(os.path.dirname(os.path.abspath(__file__)), <span class="string">"lena.png"</span>)</span><br><span class="line">img = Image.open(path_img).convert(<span class="string">'RGB'</span>)  <span class="comment"># 0~255</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># convert to tensor</span></span><br><span class="line">img_transform = transforms.Compose([transforms.ToTensor()])</span><br><span class="line">img_tensor = img_transform(img)</span><br><span class="line">img_tensor.unsqueeze_(dim=<span class="number">0</span>)    <span class="comment"># C*H*W to B*C*H*W</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ================================= create convolution layer ==================================</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ================ maxpool</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    maxpool_layer = nn.MaxPool2d((<span class="number">2</span>, <span class="number">2</span>), stride=(<span class="number">2</span>, <span class="number">2</span>))   <span class="comment"># input:(i, o, size) weights:(o, i , h, w)</span></span><br><span class="line">    img_pool = maxpool_layer(img_tensor)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ================ avgpool</span></span><br><span class="line"><span class="comment"># flag = 1</span></span><br><span class="line">flag = <span class="number">0</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    avgpoollayer = nn.AvgPool2d((<span class="number">2</span>, <span class="number">2</span>), stride=(<span class="number">2</span>, <span class="number">2</span>))   <span class="comment"># input:(i, o, size) weights:(o, i , h, w)</span></span><br><span class="line">    img_pool = avgpoollayer(img_tensor)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ================================= visualization ==================================</span></span><br><span class="line">print(<span class="string">"池化前尺寸:&#123;&#125;\n池化后尺寸:&#123;&#125;"</span>.format(img_tensor.shape, img_pool.shape))</span><br><span class="line">img_pool = transform_invert(img_pool[<span class="number">0</span>, <span class="number">0</span>:<span class="number">3</span>, ...], img_transform)</span><br><span class="line">img_raw = transform_invert(img_tensor.squeeze(), img_transform)</span><br><span class="line">plt.subplot(<span class="number">122</span>).imshow(img_pool)</span><br><span class="line">plt.subplot(<span class="number">121</span>).imshow(img_raw)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
+<p>关于 nn.AvgPool2d 的 divisor_override参数的使用代码示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ================ avgpool divisor_override</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    img_tensor = torch.ones((<span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">4</span>))</span><br><span class="line">    avgpool_layer = nn.AvgPool2d((<span class="number">2</span>, <span class="number">2</span>), stride=(<span class="number">2</span>, <span class="number">2</span>), divisor_override=<span class="number">3</span>)</span><br><span class="line">    img_pool = avgpool_layer(img_tensor)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"raw_img:\n&#123;&#125;\npooling_img:\n&#123;&#125;"</span>.format(img_tensor, img_pool))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">raw_img:</span><br><span class="line">tensor([[[[<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">          [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">          [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">          [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>]]]])</span><br><span class="line">pooling_img:</span><br><span class="line">tensor([[[[<span class="number">1.3333</span>, <span class="number">1.3333</span>],</span><br><span class="line">          [<span class="number">1.3333</span>, <span class="number">1.3333</span>]]]])</span><br></pre></td></tr></table></figure></p>
+<h2 id="nn-MaxUnpool2d"><a href="#nn-MaxUnpool2d" class="headerlink" title="nn.MaxUnpool2d"></a>nn.MaxUnpool2d</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_MaxUnpoolNd</span><span class="params">(Module)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">extra_repr</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'kernel_size=&#123;&#125;, stride=&#123;&#125;, padding=&#123;&#125;'</span>.format(</span><br><span class="line">            self.kernel_size, self.stride, self.padding</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MaxUnpool2d</span><span class="params">(_MaxUnpoolNd)</span>:</span></span><br><span class="line">    <span class="string">r"""Computes a partial inverse of :class:`MaxPool2d`.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, kernel_size, stride=None, padding=<span class="number">0</span>)</span>:</span></span><br><span class="line">        super(MaxUnpool2d, self).__init__()</span><br><span class="line">        self.kernel_size = _pair(kernel_size)</span><br><span class="line">        self.stride = _pair(stride <span class="keyword">or</span> kernel_size)</span><br><span class="line">        self.padding = _pair(padding)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input, indices, output_size=None)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> F.max_unpool2d(input, indices, self.kernel_size, self.stride,</span><br><span class="line">                              self.padding, output_size)</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：对二维信号(图像)进行最大池化上采样</p>
+<p>主要参数：</p>
+<ul>
+<li><strong>kernel_size</strong>: 池化核尺寸</li>
+<li><strong>stride</strong>: 步长</li>
+<li><strong>padding</strong>: 填充个数</li>
+</ul>
+<p>代码示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ================ max unpool</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    <span class="comment"># pooling</span></span><br><span class="line">    img_tensor = torch.randint(high=<span class="number">5</span>, size=(<span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">4</span>), dtype=torch.float)</span><br><span class="line">    maxpool_layer = nn.MaxPool2d((<span class="number">2</span>, <span class="number">2</span>), stride=(<span class="number">2</span>, <span class="number">2</span>), return_indices=<span class="literal">True</span>)</span><br><span class="line">    img_pool, indices = maxpool_layer(img_tensor)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># unpooling</span></span><br><span class="line">    img_reconstruct = torch.randn_like(img_pool, dtype=torch.float)</span><br><span class="line">    maxunpool_layer = nn.MaxUnpool2d((<span class="number">2</span>, <span class="number">2</span>), stride=(<span class="number">2</span>, <span class="number">2</span>))</span><br><span class="line">    img_unpool = maxunpool_layer(img_reconstruct, indices)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"raw_img:\n&#123;&#125;\nimg_pool:\n&#123;&#125;"</span>.format(img_tensor, img_pool))</span><br><span class="line">    print(<span class="string">"img_reconstruct:\n&#123;&#125;\nimg_unpool:\n&#123;&#125;"</span>.format(img_reconstruct, img_unpool))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">raw_img:</span><br><span class="line">tensor([[[[<span class="number">0.</span>, <span class="number">4.</span>, <span class="number">4.</span>, <span class="number">3.</span>],</span><br><span class="line">          [<span class="number">3.</span>, <span class="number">3.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">          [<span class="number">4.</span>, <span class="number">2.</span>, <span class="number">3.</span>, <span class="number">4.</span>],</span><br><span class="line">          [<span class="number">1.</span>, <span class="number">3.</span>, <span class="number">3.</span>, <span class="number">0.</span>]]]])</span><br><span class="line">img_pool:</span><br><span class="line">tensor([[[[<span class="number">4.</span>, <span class="number">4.</span>],</span><br><span class="line">          [<span class="number">4.</span>, <span class="number">4.</span>]]]])</span><br><span class="line">img_reconstruct:</span><br><span class="line">tensor([[[[<span class="number">-1.0276</span>, <span class="number">-0.5631</span>],</span><br><span class="line">          [<span class="number">-0.8923</span>, <span class="number">-0.0583</span>]]]])</span><br><span class="line">img_unpool:</span><br><span class="line">tensor([[[[ <span class="number">0.0000</span>, <span class="number">-1.0276</span>, <span class="number">-0.5631</span>,  <span class="number">0.0000</span>],</span><br><span class="line">          [ <span class="number">0.0000</span>,  <span class="number">0.0000</span>,  <span class="number">0.0000</span>,  <span class="number">0.0000</span>],</span><br><span class="line">          [<span class="number">-0.8923</span>,  <span class="number">0.0000</span>,  <span class="number">0.0000</span>, <span class="number">-0.0583</span>],</span><br><span class="line">          [ <span class="number">0.0000</span>,  <span class="number">0.0000</span>,  <span class="number">0.0000</span>,  <span class="number">0.0000</span>]]]])</span><br></pre></td></tr></table></figure></p>
+<h1 id="Linear-Layer"><a href="#Linear-Layer" class="headerlink" title="Linear Layer"></a>Linear Layer</h1><p>线性层(Linear Layer)又称全连接层, 其每个神经元与上一层所有神经元相连实现对前一层的<strong>线性组合</strong>或者<strong>叫线性变换</strong>(如果不考虑非线性变换的话).</p>
+<h2 id="nn-Linear"><a href="#nn-Linear" class="headerlink" title="nn.Linear"></a>nn.Linear</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Linear</span><span class="params">(Module)</span>:</span></span><br><span class="line">    <span class="string">r"""Applies a linear transformation to the incoming data: :math:`y = xA^T + b`</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        in_features: size of each input sample</span></span><br><span class="line"><span class="string">        out_features: size of each output sample</span></span><br><span class="line"><span class="string">        bias: If set to ``False``, the layer will not learn an additive bias.</span></span><br><span class="line"><span class="string">            Default: ``True``</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Shape:</span></span><br><span class="line"><span class="string">        - Input: :math:`(N, *, H_&#123;in&#125;)` where :math:`*` means any number of</span></span><br><span class="line"><span class="string">          additional dimensions and :math:`H_&#123;in&#125; = \text&#123;in\_features&#125;`</span></span><br><span class="line"><span class="string">        - Output: :math:`(N, *, H_&#123;out&#125;)` where all but the last dimension</span></span><br><span class="line"><span class="string">          are the same shape as the input and :math:`H_&#123;out&#125; = \text&#123;out\_features&#125;`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Attributes:</span></span><br><span class="line"><span class="string">        weight: the learnable weights of the module of shape</span></span><br><span class="line"><span class="string">            :math:`(\text&#123;out\_features&#125;, \text&#123;in\_features&#125;)`. The values are</span></span><br><span class="line"><span class="string">            initialized from :math:`\mathcal&#123;U&#125;(-\sqrt&#123;k&#125;, \sqrt&#123;k&#125;)`, where</span></span><br><span class="line"><span class="string">            :math:`k = \frac&#123;1&#125;&#123;\text&#123;in\_features&#125;&#125;`</span></span><br><span class="line"><span class="string">        bias:   the learnable bias of the module of shape :math:`(\text&#123;out\_features&#125;)`.</span></span><br><span class="line"><span class="string">                If :attr:`bias` is ``True``, the values are initialized from</span></span><br><span class="line"><span class="string">                :math:`\mathcal&#123;U&#125;(-\sqrt&#123;k&#125;, \sqrt&#123;k&#125;)` where</span></span><br><span class="line"><span class="string">                :math:`k = \frac&#123;1&#125;&#123;\text&#123;in\_features&#125;&#125;`</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Examples::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; m = nn.Linear(20, 30)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; input = torch.randn(128, 20)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; output = m(input)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; print(output.size())</span></span><br><span class="line"><span class="string">        torch.Size([128, 30])</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    __constants__ = [<span class="string">'bias'</span>, <span class="string">'in_features'</span>, <span class="string">'out_features'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_features, out_features, bias=True)</span>:</span></span><br><span class="line">        super(Linear, self).__init__()</span><br><span class="line">        self.in_features = in_features</span><br><span class="line">        self.out_features = out_features</span><br><span class="line">        self.weight = Parameter(torch.Tensor(out_features, in_features))</span><br><span class="line">        <span class="keyword">if</span> bias:</span><br><span class="line">            self.bias = Parameter(torch.Tensor(out_features))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.register_parameter(<span class="string">'bias'</span>, <span class="literal">None</span>)</span><br><span class="line">        self.reset_parameters()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reset_parameters</span><span class="params">(self)</span>:</span></span><br><span class="line">        init.kaiming_uniform_(self.weight, a=math.sqrt(<span class="number">5</span>))</span><br><span class="line">        <span class="keyword">if</span> self.bias <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            fan_in, _ = init._calculate_fan_in_and_fan_out(self.weight)</span><br><span class="line">            bound = <span class="number">1</span> / math.sqrt(fan_in)</span><br><span class="line">            init.uniform_(self.bias, -bound, bound)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> F.linear(input, self.weight, self.bias)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">extra_repr</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'in_features=&#123;&#125;, out_features=&#123;&#125;, bias=&#123;&#125;'</span>.format(</span><br><span class="line">            self.in_features, self.out_features, self.bias <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span></span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+<p><strong>功能</strong>：对一维信号(向量)进行线性组合</p>
+<p>主要参数：</p>
+<ul>
+<li><strong>in_features</strong>: 输入结点数</li>
+<li><strong>out_features</strong>: 输出结点数</li>
+<li><strong>bias</strong>: 是否需要偏置</li>
+</ul>
+<p>计算公式：$\boldsymbol{y = xW^T + bias}$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ================ linear</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    inputs = torch.tensor([[<span class="number">1.</span>, <span class="number">2</span>, <span class="number">3</span>]])</span><br><span class="line">    linear_layer = nn.Linear(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 注意： linear_layer.weight 是一个[4x3]的矩阵，但是PyTorch在内部计算的时候会自动将其转换为[3x4]的矩阵进行计算。</span></span><br><span class="line">    linear_layer.weight.data = torch.tensor([[<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">                                             [<span class="number">2.</span>, <span class="number">2.</span>, <span class="number">2.</span>],</span><br><span class="line">                                             [<span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>],</span><br><span class="line">                                             [<span class="number">4.</span>, <span class="number">4.</span>, <span class="number">4.</span>]])</span><br><span class="line"></span><br><span class="line">    linear_layer.bias.data.fill_(<span class="number">0.5</span>)</span><br><span class="line">    output = linear_layer(inputs)</span><br><span class="line">    print(inputs, inputs.shape)</span><br><span class="line">    print(linear_layer.weight.data, linear_layer.weight.data.shape)</span><br><span class="line">    print(output, output.shape)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">tensor([[<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>]]) torch.Size([<span class="number">1</span>, <span class="number">3</span>])</span><br><span class="line">tensor([[<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">        [<span class="number">2.</span>, <span class="number">2.</span>, <span class="number">2.</span>],</span><br><span class="line">        [<span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>],</span><br><span class="line">        [<span class="number">4.</span>, <span class="number">4.</span>, <span class="number">4.</span>]]) torch.Size([<span class="number">4</span>, <span class="number">3</span>])</span><br><span class="line">tensor([[ <span class="number">6.5000</span>, <span class="number">12.5000</span>, <span class="number">18.5000</span>, <span class="number">24.5000</span>]], grad_fn=&lt;AddmmBackward&gt;) torch.Size([<span class="number">1</span>, <span class="number">4</span>])</span><br></pre></td></tr></table></figure>
+<h1 id="Activation-Layer"><a href="#Activation-Layer" class="headerlink" title="Activation Layer"></a>Activation Layer</h1><p>激活函数对特征进行非线性变换, 赋予多层神经网络具有<strong>深度</strong>的意义。为什么这么说呢？<br>想象一下，假如没有激活函数，设有输入 $X$，3层全连接层的权重分别为 $W_1, W_2, W_3$，则有下面的推导：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+  H_1 &= X * W_1 \\
+  H_2 &= H_1 * W_2 \\
+  Output &= H_2 * W_3 \\
+  &= H_1 * W_2 * W_3 \\
+  &= X * (W_1 * W_2 * W_3) \\
+  &= X * W
+\end{aligned}</script><p>由上述推到可知，一个3层的线性全连接层其实等价于1层线性层，这是由于线性运算的<strong>结合律</strong>决定的。当然上述推导过程是在没有激活函数的情况下进行的，这也反应了激活函数的重要性，如果没有激活函数，再多的全连接网络，都相当于只有一层网络。</p>
+<h2 id="nn-Sigmoid"><a href="#nn-Sigmoid" class="headerlink" title="nn.Sigmoid"></a>nn.Sigmoid</h2><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_activation_sigmoid.jpg" width = 60% height = 60% />
+</div>
+
+<p>sigmoid函数也称logistic函数。</p>
+<p>计算公式：$y = \frac{1}{1 + e^{-x}}$<br>梯度公式：$y’ = y * (1 - y)$</p>
+<p>由于多层神经网络在计算梯度的时候采用的是链式法则，在链式法则中是要叠加的乘以激活函数的梯度，由于sigmoid的梯度取值范围是 $[0, 0.25]$，叠加相乘会导致梯度越乘越小，进而导致梯度消失。</p>
+<p>sigmoid的分布也是非常不好的，从上图蓝色曲线可以看到sigmoid的输出值都是大于0的，也就是说sigmoid的分布都是非0均值的，这会破坏数据的0均值分布。</p>
+<p>特性：</p>
+<ul>
+<li>输出值在(0, 1), 符合概率</li>
+<li>导数范围是[0, 0.25], 易导致梯度消失</li>
+<li>输出为非0均值, 破坏数据分布</li>
+</ul>
+<h2 id="nn-tanh"><a href="#nn-tanh" class="headerlink" title="nn.tanh"></a>nn.tanh</h2><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_activation_tanh.jpg" width = 60% height = 60% />
+</div>
+
+<p>$tanh$ 又称双曲正切函数。<br>计算公式：$y = \frac{sin(x)}{cos(x)} = \frac{e^x - e^{-x}}{e^x + e^{-x}} = \frac{2}{1 + e^{-2x}} + 1$<br>梯度公式：$y’ = 1 - y^2$<br>特性：</p>
+<ul>
+<li>输出值在(-1, 1)之间，数据符合0均值，这一点上比sigmoid就要好一些了。</li>
+<li>导数范围是(0, 1)，比sigmoid的(0, 0.25)尺度更大一些，梯度消失没sigmoid那么严重，但也比较易导致梯度消失.</li>
+</ul>
+<h2 id="nn-ReLU"><a href="#nn-ReLU" class="headerlink" title="nn.ReLU"></a>nn.ReLU</h2><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_activation_relu.jpg" width = 60% height = 60% />
+</div>
+
+<p>&emsp; ReLU(Rectified Linear Units)中文名称线性修正单元。\</p>
+<blockquote>
+<p>为什么称之为线性修正单元？<br>因为ReLU在x的正半轴 $y = x$ 是线性的，而负半轴输出都是0(不再是线性的)，所以说它是对$y=x$这一线性关系的修正，所以称之为线性修正单元。</p>
+</blockquote>
+<p>计算公式：$y = max(0, x)$ \<br>梯度公式：</p>
+<script type="math/tex; mode=display">
+y = \begin{cases}
+    1, \qquad &x > 0 \\
+    undefined, \qquad &x = 0 \\
+    0, \qquad &x < 0
+\end{cases}</script><p>特性：</p>
+<ul>
+<li>输出值均为正数，负半轴导致死神经元</li>
+<li>导数是1，缓解梯度消失，但是又引来了另一个问题：由于导数是1，所以在叠加相乘的时候不会改变梯度的尺度，这样叠加相乘会容易引发梯度爆炸。</li>
+</ul>
+<h2 id="nn-LeakyReLU"><a href="#nn-LeakyReLU" class="headerlink" title="nn.LeakyReLU"></a>nn.LeakyReLU</h2><ul>
+<li><strong>negative_slope</strong>: 负半轴斜率</li>
+</ul>
+<h2 id="nn-PReLU"><a href="#nn-PReLU" class="headerlink" title="nn.PReLU"></a>nn.PReLU</h2><ul>
+<li><strong>init</strong>: 可学习斜率</li>
+</ul>
+<h2 id="nn-RReLU"><a href="#nn-RReLU" class="headerlink" title="nn.RReLU"></a>nn.RReLU</h2><p>RReLU的第一个R表示Rand.</p>
+<ul>
+<li><strong>lower</strong>: 均匀分布下限</li>
+<li><strong>upper</strong>: 均匀分布上限</li>
+</ul>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nn_Module_activation_LeakyRelu.jpg" width = 60% height = 60% />
+</div>
+
+
+<h2 id="激活函数总结"><a href="#激活函数总结" class="headerlink" title="激活函数总结"></a>激活函数总结</h2><p>&emsp; sigmoid、tanh都是饱和函数，会引发梯度消失，因此可以采用非饱和函数ReLU进行替换，而针对ReLU函数的负半轴带来的一系列问题，ReLU又有一系列的变种。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] DeepShare.net &gt; PyTorch框架</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/09/22/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.nn.Module-1%20Model%20Building/" rel="prev" title="PyTorch笔记/【Tutorials】torch.nn.Module-1 Model Building">
+      <i class="fa fa-chevron-left"></i> PyTorch笔记/【Tutorials】torch.nn.Module-1 Model Building
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/09/27/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7%EF%BC%88%E6%8C%87%E5%AE%9Ahome%E7%9B%AE%E5%BD%95%EF%BC%89/" rel="next" title="【开发环境与工具】添加用户（指定home目录）">
+      【开发环境与工具】添加用户（指定home目录） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pooling-Layer"><span class="nav-number">1.</span> <span class="nav-text">Pooling Layer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-MaxPool2d"><span class="nav-number">1.1.</span> <span class="nav-text">nn.MaxPool2d</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-AvgPool2d"><span class="nav-number">1.2.</span> <span class="nav-text">nn.AvgPool2d</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-MaxUnpool2d"><span class="nav-number">1.3.</span> <span class="nav-text">nn.MaxUnpool2d</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linear-Layer"><span class="nav-number">2.</span> <span class="nav-text">Linear Layer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-Linear"><span class="nav-number">2.1.</span> <span class="nav-text">nn.Linear</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Activation-Layer"><span class="nav-number">3.</span> <span class="nav-text">Activation Layer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-Sigmoid"><span class="nav-number">3.1.</span> <span class="nav-text">nn.Sigmoid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-tanh"><span class="nav-number">3.2.</span> <span class="nav-text">nn.tanh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-ReLU"><span class="nav-number">3.3.</span> <span class="nav-text">nn.ReLU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-LeakyReLU"><span class="nav-number">3.4.</span> <span class="nav-text">nn.LeakyReLU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-PReLU"><span class="nav-number">3.5.</span> <span class="nav-text">nn.PReLU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-RReLU"><span class="nav-number">3.6.</span> <span class="nav-text">nn.RReLU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#激活函数总结"><span class="nav-number">3.7.</span> <span class="nav-text">激活函数总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>
