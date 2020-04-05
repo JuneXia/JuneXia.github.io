@@ -5,7 +5,12 @@ tags:
 categories: ["深度学习笔记"]
 mathjax: true
 ---
-论文思想已弄明白，待整理。代码已贴注释。
+[MobileNetV2: Inverted Residuals and Linear Bottlenecks](https://arxiv.org/abs/1801.04381) \
+Mark Sandler Andrew Howard Menglong Zhu Andrey Zhmoginov Liang-Chieh Chen \
+Google Inc. \
+{sandler, howarda, menglong, azhmogin, lcchen}@google.com
+
+代码已贴注释，论文整理未完待续。
 <!-- more -->
 
 **Abstract**
@@ -13,11 +18,39 @@ mathjax: true
 &emsp; is based on an **inverted residual structure** where the shortcut connections are between the thin bottleneck layers. The intermediate expansion layer uses lightweight depthwise convolutions to filter features as a source of non-linearity. Additionally, we find that it is important to remove non-linearities in the narrow layers in order to maintain representational power. We demonstrate that this improves performance and provide an intuition that led to this design. 
 &emsp; Finally, our approach allows decoupling(decouple去耦合;使分离) of the input/output domains from the expressiveness(n. 善于表现;表情丰富;表现) of the transformation, which provides a convenient framework for further analysis. We measure our performance on ImageNet [1] classification, COCO object detection [2], VOC image segmentation [3]. We evaluate the trade-offs between accuracy, and number of operations measured by multiply-adds (MAdd), as well as actual latency, and the number of parameters.
 
+# Introduction
+&emsp; Neural networks have revolutionized many areas of machine intelligence, enabling superhuman accuracy for challenging image recognition tasks. However, the drive to improve accuracy often comes at a cost: modern state of the art networks require high computational resources beyond the capabilities of many mobile and embedded applications.
 
+&emsp; This paper introduces a new neural network architecture that is specifically tailored(tailor v.专门制作,定制;(裁缝)度身缝制(衣服);使适应,迎合) for mobile and resource constrained environments. Our network pushes the state of the art for mobile tailored computer vision models, by significantly decreasing the number of operations and memory needed while retaining the same accuracy. 
 
+&emsp; Our main contribution is a novel layer module: the **inverted residual with linear bottleneck**. 
+This module takes as an input a low-dimensional compressed representation which is first expanded to high dimension and filtered with a lightweight depthwise convolution. 
+该模块采用低维压缩representation作为输入，该representation首先会被扩展到高维，然后用轻量级的depthwise convolution进行滤波。
+Features are subsequently projected back to a low-dimensional representation with a linear convolution. The official implementation is available as part of TensorFlow-Slim model library in [4]. 
 
+&emsp; This module can be efficiently implemented using standard operations in any modern framework and allows our models to beat(n.拍子;敲击;vt.打败;搅拌;adj.筋疲力尽的;疲惫不堪的) state of the art along multiple performance points using standard benchmarks. 
+这个模块可以在任何现代框架中使用标准操作来有效地实现，并且使用标准benchmarks，可以让我们的模型在多个性能点上超越当前技术水平。
+Furthermore, this convolutional module is particularly suitable for mobile designs, because it allows to significantly reduce the memory footprint needed during inference by `never fully materializing large intermediate tensors. (不完全实现大型中间张量)`. 
+This reduces the need for `main memory(主存)` access in many embedded hardware designs, that provide small amounts of very fast software controlled cache memory.
 
+# Related Work
+&emsp; Tuning(n. 调音;音调;(电子或收音机)调谐;协调一致) deep neural architectures to strike(v.撞击;打;行进;达到(平衡)) an optimal balance between accuracy and performance `has been an area of active research(积极研究的一个领域)` for the last several years. 
+调整深度神经结构以在精度和性能之间取得最佳平衡，是过去几年积极研究的一个领域。
+Both manual architecture search and improvements in training algorithms, `carried out(实施,贯彻)` by numerous teams has lead to dramatic improvements over early designs such as AlexNet [5], VGGNet [6], GoogLeNet [7], and ResNet [8]. 
+手工架构搜索以及大量团队对一些训练算法的改进，导致了对早期算法的巨大改进，
+Recently there has been lots of progress in algorithmic architecture exploration included hyperparameter optimization [9, 10, 11] as well as various methods of network pruning(prune n.修剪;剪枝) [12, 13, 14, 15, 16, 17] and connectivity learning [18, 19]. \
+A substantial(n. 本质;重要材料;adj.大量的;实质的) amount of work has also been dedicated(dedicate v. 致力;献身;题献;把…用于) to changing the connectivity structure of the internal convolutional blocks such as in ShuffleNet [20] or introducing sparsity [21] and others [22].
+大量工作还致力于改变内部卷积块的connectivity结构，如ShuffleNet或引入稀疏性和其他。
 
+&emsp; Recently, [23, 24, 25, 26], opened up a new direction of bringing optimization methods including genetic algorithms and reinforcement learning to architectural search. 
+近年来，[23,24,25,26]开辟了一个新方向，包括将遗传算法、强化学习等优化方法引入到架构搜索。
+However one drawback is that the resulting networks end up very complex. In this paper, we pursue the goal of developing better intuition(n.直觉;直觉力;直觉的知识) about how neural networks operate and use that to guide the simplest possible network design. Our approach should be seen as complimentary(adj.补充;赠送的;称赞的;问候的) to the one described in [23] and related work. 
+我们的方法应该被看作是对[23]和相关工作中所描述的方法的补充。
+`In this vein(在这方面)` our approach is similar to those taken by [20, 22] and allows to further improve the performance, while providing a glimpse(n.一瞥,一看; vt.瞥见) on its internal operation. 
+在这方面，我们的方法类似于[20,22]所采取的方法，并允许进一步改进性能，同时提供对其内部操作的一瞥。
+Our network design is based on MobileNetV1 [27]. It retains its simplicity and does not require any special operators while significantly improves its accuracy, achieving state of the art on multiple image classification and detection tasks for mobile applications.
+
+未完待续。。。
 
 
 PyTorch 官方实现代码解析
