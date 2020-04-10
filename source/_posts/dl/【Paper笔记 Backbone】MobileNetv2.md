@@ -50,7 +50,97 @@ However one drawback is that the resulting networks end up very complex. In this
 在这方面，我们的方法类似于[20,22]所采取的方法，并允许进一步改进性能，同时提供对其内部操作的一瞥。
 Our network design is based on MobileNetV1 [27]. It retains its simplicity and does not require any special operators while significantly improves its accuracy, achieving state of the art on multiple image classification and detection tasks for mobile applications.
 
-未完待续。。。
+# Preliminaries, discussion and intuition
+## Depthwise Separable Convolutions
+&emsp; Depthwise Separable Convolutions are a key building block for many efficient neural network architectures [27, 28, 20] and we use them in the present work as well. The basic idea is to replace a full convolutional operator with a factorized(factorize vt.因式分解) version that splits convolution into two separate layers. The first layer is called a **depthwise convolution**, it performs lightweight filtering by applying a single convolutional filter per input channel. The second layer is a $1 \times 1$ convolution, called a **pointwise convolution**, which is responsible for building new features through computing linear combinations of the input channels.
+&emsp; Standard convolution takes an $h_i × w_i × d_i$ input tensor $L_i$, and applies convolutional kernel $K \in R^{k×k×d_i×d_j}$ to produce an $h_i × w_i × d_j$ output tensor $L_j$. Standard convolutional layers have the computational cost of $h_i · w_i · d_i · d_j · k · k$.
+
+&emsp; Depthwise separable convolutions are a drop-in replacement for standard convolutional layers. Empirically they work almost as well as regular convolutions but only cost:
+$$
+h_i \cdot w_i \cdot d_i (k^2 + d_j)  \tag{1}
+$$
+这个式子的由来（我的理解）：
+$h_i \cdot w_i \cdot d_i \cdot k \cdot k + h_i \cdot w_i \cdot d_i \cdot 1 \cdot 1 \cdot d_j$，前面是depthwise卷积的计算量，后面是pointwise卷积的计算量。
+
+&emsp; which is the sum of the depthwise and $1 × 1$ pointwise convolutions. Effectively depthwise separable convolution reduces computation compared to traditional layers by almost a factor of $k^2$ (more precisely(adv.精确地;恰恰), by a factor $k^2d_j/(k^2 + d_j)$). 
+
+这个结论的简单推理如下：
+$$
+\begin{aligned}
+    \frac{h_i \cdot w_i \cdot d_i (k^2 + d_j)} {h_i · w_i · d_i · d_j · k · k} = \frac{k^2 \cdot d_j} {k^2 + d_j}
+\end{aligned}
+$$
+假设卷积核 $k$ 设置为3，$d_j = 100$，则上式等于：$\frac{9 \cdot 100} {9 + 100} \approx \frac{900}{100} = 9 = 3^2$ \
+
+MobileNetV2 uses $k = 3$ ($3 \times 3$ depthwise separable convolutions) so the computational cost is 8 to 9 times smaller than that of standard convolutions at only a small reduction in accuracy [27].
+
+## Linear Bottlenecks
+&emsp; Consider a deep neural network consisting of $n$ layers $L_i$ each of which has an activation tensor of dimensions $h_i \times w_i \times d_i$. Throughout this section we will be discussing the basic properties of these activation tensors, which we will treat as containers of $h_i \times w_i$ pixels with $d_i$ dimensions. Informally(adv. 非正式地;不拘礼节地;通俗地), for an input set of real images, we say that the set of layer activations (for any layer $L_i$) forms a “manifold of interest”. 
+> manifold \
+> adv. 非常多
+> n. （汽车引擎用以进气和排气）歧管，多支管；有多种形式之物；流形
+> adj. 多种多样的，许多种类的
+> v. 复印；使……多样化
+
+It has been long assumed that manifolds of interest in neural networks could be embedded in low-dimensional subspaces. 
+长期以来，人们一直认为对神经网络感兴趣的流形可以嵌入到低维子空间中。
+In other words, when we look at all individual d-channel pixels of a deep convolutional layer, `the information encoded in those values actually lie in some manifold(这些值中编码的信息实际上是一些流形)`, which in turn is embeddable into a low-dimensional subspace.
+> Note that dimensionality of the manifold differs from the dimensionality of a subspace that could be embedded via a linear transformation.
+
+&emsp; At a first glance(v.瞥闪,瞥见,扫视,匆匆一看;浏览), such a fact could then be captured and exploited(exploit vt. 开发,开拓;剥削;开采;n.勋绩;功绩) by simply reducing the dimensionality of a layer thus reducing the dimensionality of the operating space. 
+乍一看，这样一个事实可以通过简单地减少一个层的维度来捕获和利用，从而减少操作空间的维度。
+
+`This has been successfully exploited by MobileNetV1`[27] to effectively trade off between computation and accuracy via a width multiplier parameter, and has been incorporated into efficient model designs of other networks as well [20]. 
+`MobileNetV1 已经成功地利用这一点`，通过宽度乘子参数有效地在computation和accuracy之间进行权衡，并且这一方法已被纳入到其他网络以及[20]的高效模型设计中。
+
+Following that intuition(n.直觉), the width multiplier approach allows one to reduce the dimensionality of the activation space until the manifold of interest spans this entire(adj.全部的;全体的) space. 
+根据这种直觉，宽度乘子方法允许我们降低激活空间的维度，直到interest manifold跨越整个空间。
+
+However, this intuition breaks down when we recall that deep convolutional neural networks actually have non-linear per coordinate transformations, such as ReLU. 
+然而，当我们回想起深度卷积神经网络实际上具有每个坐标的非线性转换(如ReLU)时，这种直觉就失效了。
+
+For example, ReLU applied to a line in 1D space produces a 'ray', where as in $R^n$ space, it generally results in a `piece-wise(adj.[数]分段的;adv.分段地)` linear curve with $n$-joints.
+例如，ReLU应用到一维空间中的一条直线上会产生一条射线，而在$R^n$空间中，它通常会产生具有$n$个关节的分段线性曲线。
+
+&emsp; It is easy to see that in general if a result of a layer transformation ReLU($Bx$) has a non-zero volume $S$, the points mapped to interior $S$ are obtained via a linear transformation $B$ of the input, thus indicating that the part of the input space corresponding to the full dimensional output, is limited to a linear transformation. 
+通常很容易看到，一个layer变换ReLU($Bx$)的结果是有一个非 0 volume $S$，那么映射到内部$S$的点是通过输入的一个线性变换$B$得到的，从而表明，与full dimensional输出相对应的输入空间部分，被限制为一个线性变换。
+
+In other words, deep networks only have the power of a linear classifier on the non-zero volume part of the output domain. We refer to supplemental material for a more formal statement.
+换句话说，深度网络只在输出域的非零volume部分具有线性分类器的能力。
+
+> TODO: 这几段话看的云里雾里……
+
+&emsp; On the other hand, when ReLU collapses the channel, it inevitably loses information in *that channel*. However if we have lots of channels, and there is a a structure in the activation manifold that information might still be preserved in the other channels. In supplemental(adj.补充的(等于supplementary);追加的) materials, we show that if the input manifold can be embedded into a significantly(adv.显著地;相当数量地) lower-dimensional subspace of the activation space then the ReLU transformation preserves the information while introducing the needed complexity into the set of expressible functions.
+
+&emsp; To summarize, we have highlighted two properties that are indicative(adj.象征的;指示的;表示…的) of the requirement that the manifold of interest should lie in a low-dimensional subspace of the higher-dimensional activation space:
+综上所述，我们强调了两个性质，这两个性质表明了我们所关心的流形应该位于高维激活空间的低维子空间中：
+
+1. If the manifold of interest remains non-zero volume after ReLU transformation, it corresponds to a linear transformation.
+2. ReLU is capable of preserving complete information about the input manifold, but only if the input  manifold lies in a low-dimensional subspace of the input space. \
+ReLU能够保存输入流形的完整信息，但前提是输入流形位于输入空间的低维子空间中。
+
+&emsp; These two insights provide us with an `empirical hint(经验提示)` for optimizing existing neural architectures: assuming the manifold of interest is low-dimensional we can capture this by inserting *linear bottleneck* layers into the convolutional blocks. Experimental evidence suggests that using linear layers is crucial as it prevents(prevent v.防止;阻止;预防) nonlinearities from destroying(destroy vt.破坏;消灭;毁坏) too much information. In Section 6, we show empirically that using non-linear layers in bottlenecks indeed hurts the performance by several percent, `further validating our hypothesis.(从而进一步验证了我们的假设)`. 
+> We note that in the presence of shortcuts the information loss is actually less strong. \
+> 我们注意到，在存在shortcuts的情况下，信息损失实际上不那么严重。
+
+We note that similar reports where non-linearity was helped were reported in [29] where non-linearity was removed from the input of the traditional residual block and that lead to improved performance on CIFAR dataset.
+> 蹩脚直译：\
+> 我们注意到，在[29]中也有关于非线性层是有帮助的这样类似的报道，而non-linearity被从传统残差块中的输入中移除，从而提高了CIFAR数据集的性能。
+> 
+> 理解翻译：\
+> 我们注意到，也有类似的报道，在[29]中报告说非线性是有帮助的，然而却将传统残差块输入中的非线性移除，从而提高了CIFAR数据集的性能。(言外之意就是说：非线性确实有帮助，但在[29]中还是将其移除了，而移除了效果会更好)
+
+&emsp; For the remainder(n.[数]余数,残余;剩余物;其余的人; adj.剩余的; v.廉价出售) of this paper we will be utilizing bottleneck convolutions. 
+We will refer to the ratio between the size of the input bottleneck and the inner size as the *expansion ratio*.
+我们将输入瓶颈的大小与内部大小的比值称为扩展比。
+
+## Inverted residuals
+&emsp; The bottleneck blocks appear similar to residual block where each block contains an input followed by several bottlenecks then followed by expansion [8]. However, inspired by the intuition that the bottlenecks actually contain all the necessary information, while an expansion layer acts merely as an implementation(n.[计]实现;履行;实施) detail that accompanies a non-linear transformation of the tensor, we use shortcuts directly between the bottlenecks.
+
+**Running time and parameter count for bottleneck convolution** &emsp; The basic implementation structure is illustrated in Table 1. For a block of size $h \times w$, expansion factor $t$ and kernel size $k$ with $d'$ input channels and $d''$ output channels, the total number of multiply add required is $h · w · d' · t(d' + k^2 + d'')$. Compared with (1)(指公式(1)) this expression has an extra term, as indeed we have an extra $1 \times 1$ convolution, however the nature of our networks allows us to utilize much smaller input and output dimensions. In Table 3 we compare the needed sizes for each resolution between MobileNetV1, MobileNetV2 and ShuffleNet.
+
+
+
 
 
 PyTorch 官方实现代码解析
