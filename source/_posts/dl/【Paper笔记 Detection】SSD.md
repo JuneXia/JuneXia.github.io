@@ -144,6 +144,7 @@ The confidence loss is the softmax loss over multiple classes confidences ($c$)
 <div align=center>
   <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/SSD5.jpg" width = 60% height = 60% />
 </div>
+
 and the weight term $\alpha$ is set to 1 by cross validation.
 
 
