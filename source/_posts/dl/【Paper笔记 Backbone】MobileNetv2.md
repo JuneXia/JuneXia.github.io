@@ -110,6 +110,23 @@ In other words, deep networks only have the power of a linear classifier on the 
 
 > TODO: 这几段话看的云里雾里……
 
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv2-1.jpg" width = 80% height = 80% />
+</div>
+Figure 1: &emsp; Examples of ReLU transformations of low-dimensional manifolds embedded in higher-dimensional spaces. In these examples the initial spiral(n.螺旋;旋涡;adj.螺旋形的;盘旋的) is embedded into an $n$-dimensional space using random matrix $T$ followed by ReLU, and then projected back to the 2D space using $T^{-1}$. In examples above n = 2,3 result in information loss where certain points of the manifold collapse into each other, while for n = 15 to 30 the transformation is highly `non-convex(非凸)`.
+
+> 上面这段话的意思实际就是说：作者做了一些实验案例，即使用随机矩阵 $T$ 和 ReLU 将初始初始螺旋形嵌入到一个n维空间中，然后使用 $T^{-1}$ 将其投影回2D空间。而当n=2或3时，即螺旋形先被嵌入到2维空间中然后再被投影回2D空间，这会导致某些点塌陷(变形)，而当n=15到30时，这种塌陷(变形)会有所缓解。
+
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv2-2.jpg" width = 80% height = 80% />
+</div>
+Figure 2: Evolution(n.演变;进化论;进展) of separable convolution blocks. The diagonally(adv.对角地;斜对地) hatched(hatch n.v.孵化;策划; hatched adj.阴影线的) texture indicates layers that do not contain non-linearities. The last (lightly colored) layer indicates the beginning of the next block. Note: 2d and 2c are equivalent(相等的;等价的) blocks when stacked(stack n.v.堆叠). Best viewed in color.
+
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv2-3.jpg" width = 80% height = 80% />
+</div>
+Figure 3: The difference between residual block [8, 30] and inverted residual. Diagonally hatched layers do not use non-linearities. We use thickness(n.厚度;层;浓度;含混不清) of each block to indicate its relative(n.相关物;adj.相对的) number of channels. Note how classical(adj.经典的;传统的) residuals connects the layers with high number of channels, whereas the inverted residuals connect the bottlenecks. Best viewed in color.
+
 &emsp; On the other hand, when ReLU collapses the channel, it inevitably loses information in *that channel*. However if we have lots of channels, and there is a a structure in the activation manifold that information might still be preserved in the other channels. In supplemental(adj.补充的(等于supplementary);追加的) materials, we show that if the input manifold can be embedded into a significantly(adv.显著地;相当数量地) lower-dimensional subspace of the activation space then the ReLU transformation preserves the information while introducing the needed complexity into the set of expressible functions.
 
 &emsp; To summarize, we have highlighted two properties that are indicative(adj.象征的;指示的;表示…的) of the requirement that the manifold of interest should lie in a low-dimensional subspace of the higher-dimensional activation space:
@@ -138,6 +155,27 @@ We will refer to the ratio between the size of the input bottleneck and the inne
 &emsp; The bottleneck blocks appear similar to residual block where each block contains an input followed by several bottlenecks then followed by expansion [8]. However, inspired by the intuition that the bottlenecks actually contain all the necessary information, while an expansion layer acts merely as an implementation(n.[计]实现;履行;实施) detail that accompanies a non-linear transformation of the tensor, we use shortcuts directly between the bottlenecks.
 
 **Running time and parameter count for bottleneck convolution** &emsp; The basic implementation structure is illustrated in Table 1. For a block of size $h \times w$, expansion factor $t$ and kernel size $k$ with $d'$ input channels and $d''$ output channels, the total number of multiply add required is $h · w · d' · t(d' + k^2 + d'')$. Compared with (1)(指公式(1)) this expression has an extra term, as indeed we have an extra $1 \times 1$ convolution, however the nature of our networks allows us to utilize much smaller input and output dimensions. In Table 3 we compare the needed sizes for each resolution between MobileNetV1, MobileNetV2 and ShuffleNet.
+
+## Information flow interpretation
+&emsp; One interesting property of our architecture is that it provides a natural separation between the input/output domains of the building blocks (bottleneck layers), and the layer transformation that is a non-linear function that converts input to the output. The former(前者) can be seen as the capacity of the network at each layer, whereas the latter(后者) as the expressiveness(n. 表达能力;善于表现;表情丰富). 
+
+This is in contrast with traditional convolutional blocks, both regular and separable, where both expressiveness and capacity are tangled(tangle v.(使)缠结在一起;(使)乱成一团;争吵;打架;n.缠结;混乱,纷乱;争吵;打架) together and are functions of the output layer depth.
+这与传统的卷积块形成对比，无论是规则块还是可分块，在传统卷积块中，表达性和容量都是纠缠在一起的，是输出层深度的函数。
+
+&emsp; In particular, in our case, when inner layer depth is 0 the underlying convolution is the identity function thanks to the shortcut connection. 
+特别地，在我们的例子中，当内层深度为 0 时，由于快捷连接，底层卷积是 identity function. \
+When the expansion ratio is smaller than 1, this is a classical residual convolutional block [8, 30]. However, for our purposes we show that expansion ratio greater than 1 is the most useful.
+
+&emsp; This interpretation allows us to study the expressiveness of the network separately from its capacity and we believe that further exploration of this separation is warranted(warrant n.根据;证明;正当理由;委任状;vt.保证;担保;批准;辩解) to provide a better understanding of the network properties.
+这一解释使我们能够独立于网络的容量来研究网络的表达性，我们相信，对这种分离的进一步探索有助于更好地理解网络的特性。
+
+
+# Model Architecture
+
+
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv2-4.jpg" width = 80% height = 80% />
+</div>
 
 
 

@@ -31,7 +31,7 @@ We introduce two simple global hyperparameters that efficiently `trade off(权�
 &emsp; There has been rising interest in building small and efficient neural networks in the recent literature, e.g. [16, 34, 12, 36, 22]. 
 Many different approaches can be generally categorized into either compressing pretrained networks or training small networks directly. 
 许多不同的方法可以大致分为压缩预训练网络和直接训练小型网络。
-`This pape(本文)`r proposes a class of network architectures that allows a model developer to specifically choose a small network that matches the resource restrictions (latency, size) for their application. MobileNets primarily focus on optimizing for latency but also yield small networks. Many papers on small networks focus only on size but do not consider speed.
+`This paper(本文)` proposes a class of network architectures that allows a model developer to specifically choose a small network that matches the resource restrictions (latency, size) for their application. MobileNets primarily focus on optimizing for latency but also yield small networks. Many papers on small networks focus only on size but do not consider speed.
 
 &emsp; MobileNets are built primarily from depthwise separable convolutions initially introduced in [26] and subsequently used in Inception models [13] to reduce the computation in the first few layers. 
 Flattened networks [16] build a network out of fully factorized(factorize vt. 因式分解;把复杂计算分解为基本运算) convolutions and showed the potential of extremely factorized networks. 
