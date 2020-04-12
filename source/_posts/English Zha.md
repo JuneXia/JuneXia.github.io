@@ -1,6 +1,6 @@
 ---
 title: 
-date: 2019-06-25
+date: 2018-06-25
 tags:
 categories: ["深度学习笔记"]
 mathjax: true
@@ -82,6 +82,24 @@ We **note that** similar reports **where** non-linearity was helped were reporte
 
 --------
 <br>
+
+This is in contrast with traditional convolutional blocks, both regular and separable, where both expressiveness and capacity are tangled together and are functions of the output layer depth.
+
+&emsp; &emsp; From `MobileNetV2: Inverted Residuals and Linear Bottlenecks`
+
+> TIPS: \
+> expressiveness  n. 表达能力;善于表现;表情丰富
+> 
+> Translate: \
+> 这与传统的卷积块形成对比，无论是规则块还是可分块，在传统卷积块中，表达性和容量都是纠缠在一起的，是输出层深度的函数。
+
+
+--------
+<br>
+
+
+
+
 
 
 
