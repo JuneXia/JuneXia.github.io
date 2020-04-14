@@ -11,8 +11,43 @@ Applications \
 Andrew G. Howard Menglong Zhu Bo Chen Dmitry Kalenichenko
 Weijun Wang Tobias Weyand Marco Andreetto Hartwig Adam \
 Google Inc.
-{howarda,menglong,bochen,dkalenichenko,weijunw,weyand,anm,hadam}@google.com
+{howarda,menglong,bochen,dkalenichenko,weijunw,weyand,anm,hadam}@google.com \
+2017年发表
 <!-- more -->
+
+MobileNets网络是由google团队在2017年提出的,专注于移动端或者嵌入式设备中的轻量级CNN网络。相比传统卷积神经网络,在准确率小幅降低的前提下大大减少模型参数与运算量。（相比VGG16准确率减少了0.9%,参数只有VGG的1/32） [2]
+
+MobileNets中的亮点：
+- Depthwise Convolution(大大减少运算量和参数数量)
+- 增加超参数 $\alpha、\beta$，其中 $\alpha$ 用于控制卷积层卷积核的个数，而 $\beta$ 适用于控制输入feature map的大小，这两个超参数都是人工手动设定的，不是网络学习出来的。
+
+**传统卷积**：\
+- 卷积核channel=输入特征矩阵channel
+- 输出特征矩阵channel=卷积核个数
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv1-3.jpg" width = 70% height = 70% />
+</div>
+图片来自 [2]
+
+**Depthwise Conv**(DW卷积/深度卷积): \
+- 卷积核channel = 1
+- 输入特征矩阵channel = 卷积核个数=输出特正矩阵channel
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv1-4.jpg" width = 70% height = 70% />
+</div>
+
+**Pointwise Conv**(PW卷积/逐点卷积): \
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv1-5.jpg" width = 70% height = 70% />
+</div>
+
+**Depthwise Separable Conv**(深度可分离卷积): \
+将 DW 卷积和 PW 卷积连在一起就组成了深度可分离卷积。
+
+> depthwise 部分的卷积核容易废掉，即卷积核参数大部分为零 [2]。
+
+[2] 进度：> 12:27
+---------------------------
 
 **Abstract**
 &emsp; We present a class of efficient models called MobileNets for mobile and embedded vision applications. MobileNets are based on a streamlined architecture that uses `depthwise separable convolutions` to build light weight deep neural networks. 
@@ -153,7 +188,7 @@ where $\rho \in (0, 1]$ which is typically set implicitly so that the input reso
 
 
 
-
-
-
-
+# 参考文献
+[1] MobileNets: Efficient Convolutional Neural Networks for Mobile Vision
+Applications \
+[2] [7.1 MobileNet网络详解](https://www.bilibili.com/video/BV1yE411p7L7?from=search&seid=12436550085054920783)

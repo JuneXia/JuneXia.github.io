@@ -15,7 +15,7 @@ Google Inc. \
 
 **Abstract**
 &emsp; In this paper we describe a new mobile architecture, MobileNetV2, that improves the state of the art performance of mobile models on multiple tasks and benchmarks as well as across a spectrum of different model sizes. We also describe efficient ways of applying these mobile models to object detection in a novel framework we call SSDLite. Additionally, we demonstrate how to build mobile semantic segmentation models through a reduced form of DeepLabv3 which we call Mobile DeepLabv3. 
-&emsp; is based on an **inverted residual structure** where the shortcut connections are between the thin bottleneck layers. The intermediate expansion layer uses lightweight depthwise convolutions to filter features as a source of non-linearity. Additionally, we find that it is important to remove non-linearities in the narrow layers in order to maintain representational power. We demonstrate that this improves performance and provide an intuition that led to this design. 
+&emsp; is based on an **inverted residual structure**(倒残差结构) where the shortcut connections are between the thin bottleneck layers. The intermediate expansion layer uses lightweight depthwise convolutions to filter features as a source of non-linearity. Additionally, we find that it is important to remove non-linearities in the narrow layers in order to maintain representational power. We demonstrate that this improves performance and provide an intuition that led to this design. 
 &emsp; Finally, our approach allows decoupling(decouple去耦合;使分离) of the input/output domains from the expressiveness(n. 善于表现;表情丰富;表现) of the transformation, which provides a convenient framework for further analysis. We measure our performance on ImageNet [1] classification, COCO object detection [2], VOC image segmentation [3]. We evaluate the trade-offs between accuracy, and number of operations measured by multiply-adds (MAdd), as well as actual latency, and the number of parameters.
 
 # Introduction
@@ -115,7 +115,12 @@ In other words, deep networks only have the power of a linear classifier on the 
 </div>
 Figure 1: &emsp; Examples of ReLU transformations of low-dimensional manifolds embedded in higher-dimensional spaces. In these examples the initial spiral(n.螺旋;旋涡;adj.螺旋形的;盘旋的) is embedded into an $n$-dimensional space using random matrix $T$ followed by ReLU, and then projected back to the 2D space using $T^{-1}$. In examples above n = 2,3 result in information loss where certain points of the manifold collapse into each other, while for n = 15 to 30 the transformation is highly `non-convex(非凸)`.
 
-> 上面这段话的意思实际就是说：作者做了一些实验案例，即使用随机矩阵 $T$ 和 ReLU 将初始初始螺旋形嵌入到一个n维空间中，然后使用 $T^{-1}$ 将其投影回2D空间。而当n=2或3时，即螺旋形先被嵌入到2维空间中然后再被投影回2D空间，这会导致某些点塌陷(变形)，而当n=15到30时，这种塌陷(变形)会有所缓解。
+> 上面这段话的意思实际就是说：作者做了一些实验案例，即使用随机矩阵 $T$ 和 ReLU 将初始初始的2维螺旋形嵌入到一个n维空间中，然后使用 $T^{-1}$ 将其投影回2D空间。而当n=2或3时，即螺旋形先被嵌入到2或3维空间中然后再被投影回2D空间，这会导致某些点塌陷(变形)，而当n=15到30时，这种塌陷(变形)会有所缓解。
+> 
+> 而这实际上就是说，对低维特征使用ReLU这种非线性激活函数会导致严重的信息损失。
+> 
+> 从而道出了作者在MobileNetv2中使用线性激活函数替代非线性激活函数的原因：
+> 由于倒残差结构的输入、输出都是低维特征，而用ReLU这种非线性激活函数会导致信息损失比较严重，所以作者在MobileNetv2中用线性激活函数替代了非线性激活函数。
 
 <div align=center>
   <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv2-2.jpg" width = 80% height = 80% />
