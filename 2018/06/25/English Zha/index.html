@@ -49,15 +49,15 @@
   <meta name="description" content="In a convolutional fashion, we evaluate a small set (e.g. 4) of default boxes of different aspect ratios at each location in several feature maps with different scales.&amp;emsp; &amp;emsp; From SSD:Single Sh">
 <meta property="og:type" content="article">
 <meta property="og:title" content="English Zha">
-<meta property="og:url" content="http://yoursite.com/2019/06/25/English%20Zha/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/06/25/English%20Zha/index.html">
 <meta property="og:site_name" content="Paper搬运菌">
 <meta property="og:description" content="In a convolutional fashion, we evaluate a small set (e.g. 4) of default boxes of different aspect ratios at each location in several feature maps with different scales.&amp;emsp; &amp;emsp; From SSD:Single Sh">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2019-06-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-04-03T09:01:19.446Z">
+<meta property="article:published_time" content="2018-06-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-04-13T00:52:53.210Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2019/06/25/English%20Zha/">
+<link rel="canonical" href="http://yoursite.com/2018/06/25/English%20Zha/">
 
 
 <script id="page-configurations">
@@ -173,7 +173,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/25/English%20Zha/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/English%20Zha/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -196,14 +196,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2019-06-25T00:00:00+08:00">2019-06-25</time>
+              <time title="Created: 2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-03 17:01:19" itemprop="dateModified" datetime="2020-04-03T17:01:19+08:00">2020-04-03</time>
+                <time title="Modified: 2020-04-13 08:52:53" itemprop="dateModified" datetime="2020-04-13T08:52:53+08:00">2020-04-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -228,31 +228,55 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>In a convolutional fashion, we evaluate a small set (e.g. 4) <strong>of</strong> default boxes <strong>of</strong> different aspect ratios at each location in several feature maps with different scales.<br>&emsp; &emsp; <code>From SSD:Single Shot MultiBox Detector</code></p>
+        <p>In a convolutional fashion, we evaluate a small set (e.g. 4) <strong>of</strong> default boxes <strong>of</strong> different aspect ratios at each location in several feature maps with different scales.<br>&emsp; &emsp; From <code>SSD:Single Shot MultiBox Detector</code></p>
 <blockquote>
 <p>TIPS:<br>v. &ensp;n1 of n2 of n3  → v. &ensp;n1 n3 的 n2 \<br><code>in several feature maps with different scales.</code> 在几个不同尺度的feature map中</p>
 <p>Translate:<br>使用卷积的方法，我们在几个不同尺度的feature map中的每个位置  评估一小组(e.g. 4)不同长宽比的default boxes.</p>
 </blockquote>
 <hr>
 <p><br></p>
-<p>To achieve high detection accuracy we <strong>produce</strong> predictions <strong>of</strong> different scales <strong>from</strong> feature maps <strong>of</strong> different scales, and explicitly separate predictions by aspect ratio.<br>&emsp; &emsp; <code>From SSD:Single Shot MultiBox Detector</code></p>
+<p>To achieve high detection accuracy we <strong>produce</strong> predictions <strong>of</strong> different scales <strong>from</strong> feature maps <strong>of</strong> different scales, and explicitly separate predictions by aspect ratio.<br>&emsp; &emsp; From <code>SSD:Single Shot MultiBox Detector</code></p>
 <blockquote>
 <p>TIPS:<br>v. &ensp;n1 of n2 from n3 of n4  →  n4 的 n3 &ensp;v. &ensp;n2 的 n1</p>
 <p>Translate:<br>为了实现较高的检测精度，我们从不同尺度的特征图中生成不同尺度的预测，并通过纵横比明确地分离预测。</p>
 </blockquote>
 <hr>
 <p><br></p>
-<p>Down sampling <strong>is handled with</strong> strided convolution <strong>in</strong> the depthwise convolutions <strong>as well as in</strong> the first layer.<br>&emsp; &emsp; <code>MobileNets: Efficient Convolutional Neural Networks for Mobile Vision</code></p>
+<p>Down sampling <strong>is handled with</strong> strided convolution <strong>in</strong> the depthwise convolutions <strong>as well as in</strong> the first layer.<br>&emsp; &emsp; From <code>MobileNets: Efficient Convolutional Neural Networks for Mobile Vision</code></p>
 <blockquote>
 <p>TIPS: \<br>n1 <strong>be v.ed with</strong> n2 <strong>in</strong> n3 <strong>as well as in</strong> n4. → n1 <strong>在</strong> n3 <strong>和</strong> n4 <strong>中都 v.ed with</strong> n2.</p>
 <p>Translate:<br>下行采样在深度卷积和第一层卷积中都使用了strided convolution.</p>
 </blockquote>
 <hr>
 <p><br></p>
-<p>When training MobileNets we <strong>do not use</strong> side heads or label smoothing <strong>and</strong> additionally reduce the amount image <strong>of</strong> distortions <strong>by</strong> limiting the size <strong>of</strong> small crops <strong>that</strong> are used in large Inception training.<br>&emsp; &emsp; <code>MobileNets: Efficient Convolutional Neural Networks for Mobile Vision</code></p>
+<p>When training MobileNets we <strong>do not use</strong> side heads or label smoothing <strong>and</strong> additionally reduce the amount image <strong>of</strong> distortions <strong>by</strong> limiting the size <strong>of</strong> small crops <strong>that</strong> are used in large Inception training.<br>&emsp; &emsp; From <code>MobileNets: Efficient Convolutional Neural Networks for Mobile Vision</code></p>
 <blockquote>
 <p>TIPS:<br>additionally &ensp; adv. 此外；又，加之</p>
 <p>Translate<br>当训练MobileNet的时候，我们不使用side heads或者标签平滑，并且通过限制small crops的尺寸来减少失真图片数量，这个small crops在大型 Inception 训练中会被用到。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<p>To summarize, we have highlighted two properties <strong>that</strong> are indicative of the requirement <strong>that</strong> the manifold of interest should lie in a low-dimensional subspace of the higher-dimensional activation space.</p>
+<p>&emsp; &emsp; From <code>MobileNetV2: Inverted Residuals and Linear Bottlenecks</code></p>
+<blockquote>
+<p>TIPS: \<br>indicative(adj.象征的;指示的;表示…的) \<br>be indicative of, 表明</p>
+<p>Translate:\<br>综上所述，我们强调了两个性质，这两个性质表明了我们所关心的流形应该位于高维激活空间的低维子空间中</p>
+</blockquote>
+<hr>
+<p><br></p>
+<p>We <strong>note that</strong> similar reports <strong>where</strong> non-linearity was helped were reported in [29] <strong>where</strong> non-linearity was removed from the input of the traditional residual block and that lead to improved performance on CIFAR dataset.</p>
+<p>&emsp; &emsp; From <code>MobileNetV2: Inverted Residuals and Linear Bottlenecks</code></p>
+<blockquote>
+<p>蹩脚直译：\<br>我们注意到，在[29]中也有关于非线性层是有帮助的这样类似的报道，而non-linearity被从传统残差块中的输入中移除，从而提高了CIFAR数据集的性能。</p>
+<p>理解翻译：\<br>我们注意到，也有类似的报道，在[29]中报告说非线性是有帮助的，然而却将传统残差块输入中的非线性移除，从而提高了CIFAR数据集的性能。(言外之意就是说：非线性确实有帮助，但在[29]中还是将其移除了，而移除了效果会更好)</p>
+</blockquote>
+<hr>
+<p><br></p>
+<p>This is in contrast with traditional convolutional blocks, both regular and separable, where both expressiveness and capacity are tangled together and are functions of the output layer depth.</p>
+<p>&emsp; &emsp; From <code>MobileNetV2: Inverted Residuals and Linear Bottlenecks</code></p>
+<blockquote>
+<p>TIPS: \<br>expressiveness  n. 表达能力;善于表现;表情丰富</p>
+<p>Translate: \<br>这与传统的卷积块形成对比，无论是规则块还是可分块，在传统卷积块中，表达性和容量都是纠缠在一起的，是输出层深度的函数。</p>
 </blockquote>
 <hr>
 <p><br></p>
@@ -271,12 +295,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/05/24/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Detection%E3%80%91Entries/" rel="prev" title="dl/【Paper笔记 Detection】Entries">
-      <i class="fa fa-chevron-left"></i> dl/【Paper笔记 Detection】Entries
+    <a href="/2018/06/25/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20%5B%E8%BD%AC%5D%E3%80%91%E8%BF%AD%E4%BB%A3%E5%99%A8(Iterator)/" rel="prev" title="【Python笔记 [转]】迭代器(Iterator)">
+      <i class="fa fa-chevron-left"></i> 【Python笔记 [转]】迭代器(Iterator)
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/07/05/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20FaceDetection%E3%80%91RetinaFace/" rel="next" title="dl/【Paper笔记 FaceDetection】RetinaFace">
-      dl/【Paper笔记 FaceDetection】RetinaFace <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(performance%20measure)/" rel="next" title="【机器学习基础】性能度量(performance measure)">
+      【机器学习基础】性能度量(performance measure) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -350,7 +374,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

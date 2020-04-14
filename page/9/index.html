@@ -171,6 +171,469 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Markdown%E3%80%91letax/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/05/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Markdown%E3%80%91letax/" class="post-title-link" itemprop="url">开发环境与工具/【Markdown】letax</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-05-12 00:00:00" itemprop="dateCreated datePublished" datetime="2018-05-12T00:00:00+08:00">2018-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-19 18:56:38" itemprop="dateModified" datetime="2020-03-19T18:56:38+08:00">2020-03-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">开发环境与工具</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h1 id="数学字体"><a href="#数学字体" class="headerlink" title="数学字体"></a>数学字体</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>需求</th>
+<th>latex语法</th>
+<th>显示效果</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>正体加粗</td>
+<td>\bold{A}</td>
+<td>$\bold{A}$</td>
+<td>该方法在vscode中可显示，但发布到hexo后不能正确显示</td>
+</tr>
+<tr>
+<td>正体加粗</td>
+<td>\textbf{x}</td>
+<td>$\textbf{x}$</td>
+<td>支持对数字英文字母加粗，但不支持对希腊字母加粗</td>
+</tr>
+<tr>
+<td>正体加粗</td>
+<td>\mathbf{x}</td>
+<td>$\mathbf{x}$</td>
+<td>支持对数字英文字母加粗，但不支持对希腊字母加粗</td>
+</tr>
+<tr>
+<td>斜体加粗</td>
+<td>\boldsymbol{A}</td>
+<td>$\boldsymbol{A}$</td>
+<td>将正体变为斜体加粗，支持对希腊字母加粗</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="数学符号"><a href="#数学符号" class="headerlink" title="数学符号"></a>数学符号</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>需求</th>
+<th>latex语法</th>
+<th>显示效果</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>点乘</td>
+<td>a \cdot b</td>
+<td>$a \cdot b$</td>
+<td></td>
+</tr>
+<tr>
+<td>叉乘</td>
+<td>a \times b</td>
+<td>$a \times b$</td>
+<td></td>
+</tr>
+<tr>
+<td>点除</td>
+<td>a \div b</td>
+<td>$a \div b$</td>
+<td></td>
+</tr>
+<tr>
+<td>分数</td>
+<td>\frac {a} {b}</td>
+<td>$\frac{a}{b}$</td>
+<td></td>
+</tr>
+<tr>
+<td>绝对值号</td>
+<td></td>
+<td>或者 \vert</td>
+<td>$\vert$</td>
+<td></td>
+</tr>
+<tr>
+<td>范数符号</td>
+<td>\</td>
+<td>或者 \Vert</td>
+<td>$\Vert$</td>
+<td></td>
+</tr>
+<tr>
+<td>大于等于号</td>
+<td>\geq</td>
+<td>$\geq$</td>
+<td>后面记得加空格，不然识别出错</td>
+</tr>
+<tr>
+<td>小于等于号</td>
+<td>\leq</td>
+<td>$\leq$</td>
+<td></td>
+</tr>
+<tr>
+<td>等于号</td>
+<td>\not =</td>
+<td>$\not =$</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>\land</td>
+<td>$\land$</td>
+<td></td>
+</tr>
+<tr>
+<td>指示函数符号</td>
+<td>\mathbb I</td>
+<td>$\mathbb I$</td>
+<td>周志华机器学习书本中出现过</td>
+</tr>
+<tr>
+<td>一阶偏导</td>
+<td>\frac{\partial f}{\partial x}</td>
+<td>$\frac{\partial f}{\partial x}$</td>
+<td></td>
+</tr>
+<tr>
+<td>n阶偏导</td>
+<td>\frac{\partial^{n} f}{\partial x^{n}}</td>
+<td>$\frac{\partial^{n} f}{\partial x^{n}}$</td>
+<td></td>
+</tr>
+<tr>
+<td>一阶导数</td>
+<td>\frac{\mathrm{d} y }{\mathrm{d} x}</td>
+<td>$\frac{\mathrm{d} y }{\mathrm{d} x}$</td>
+<td></td>
+</tr>
+<tr>
+<td>n阶导数</td>
+<td>\frac{\mathrm{d}^{n} y }{\mathrm{d} x^{n}}</td>
+<td>$\frac{\mathrm{d}^{n} y }{\mathrm{d} x^{n}}$</td>
+<td></td>
+</tr>
+<tr>
+<td>点形式的求导符号</td>
+<td>\frac{ \dot y }{ \dot x }</td>
+<td>$\frac{ \dot y }{ \dot x }$</td>
+<td>一个点</td>
+</tr>
+<tr>
+<td>点形式的求导符号</td>
+<td>\frac{ \ddot y }{ \ddot x }</td>
+<td>$\frac{ \ddot y }{ \ddot x }$</td>
+<td>两个点</td>
+</tr>
+<tr>
+<td>波浪号</td>
+<td>\sim</td>
+<td>$\sim$</td>
+<td></td>
+</tr>
+<tr>
+<td>斜体</td>
+<td>log (x)</td>
+<td>$log (x)$</td>
+<td></td>
+</tr>
+<tr>
+<td>正体</td>
+<td>\text{log } (x)</td>
+<td>$\text{log} (x)$</td>
+<td></td>
+</tr>
+<tr>
+<td>正体</td>
+<td>\text{log } x</td>
+<td>$\text{log } x$</td>
+<td>text中可以写空格</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="数学公式中的空格"><a href="#数学公式中的空格" class="headerlink" title="数学公式中的空格"></a>数学公式中的空格</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>两个quad空格</td>
+<td>a \qquad b</td>
+<td>$a \qquad b$</td>
+<td>两个m的宽度</td>
+</tr>
+<tr>
+<td>quad空格</td>
+<td>a \quad b</td>
+<td>$a \quad b$</td>
+<td>一个m的宽度</td>
+</tr>
+<tr>
+<td>大空格</td>
+<td>a\ b</td>
+<td>$a\ b$</td>
+<td>1/3m宽度</td>
+</tr>
+<tr>
+<td>中等空格</td>
+<td>a\\;b</td>
+<td>$a\;b$</td>
+<td>2/7m宽度</td>
+</tr>
+<tr>
+<td>小空格</td>
+<td>a\\,b</td>
+<td>$a\,b$</td>
+<td>1/6m宽度</td>
+</tr>
+<tr>
+<td>没有空格</td>
+<td>ab</td>
+<td>$ab$</td>
+<td></td>
+</tr>
+<tr>
+<td>紧贴</td>
+<td>a\!b</td>
+<td>$a!b$</td>
+<td>缩进1/6m宽度 (<strong>注意</strong>: 这种写法在vscode中没问题，但发布到hexo后显示不正确。再hexo中正确的做法是: 1. 对于换行公式可以使用 \! 紧贴; 2. 而对于行内公式要使用 \\! 紧贴)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>\quad、1em、em、m代表当前字体下接近字符‘M’的宽度。</p>
+<h1 id="方程组"><a href="#方程组" class="headerlink" title="方程组"></a>方程组</h1><p><strong>注意事项</strong>：</p>
+<ol>
+<li>以\begin和\end包裹的公式，如果要加 tag 标签，则应该加在 \end{…}之后</li>
+<li>在公式中显示星号(*)在vscode中直接输入就可以了，但是在发布到hexo则不行。\<br>如果要发布到hexo，则行内公式如果要显示星号(*)，则需要加反斜杠(\)对其进行转义；而换行公式则不必如此</li>
+</ol>
+<p>1</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{pmatrix}</script><p>2</p>
+<script type="math/tex; mode=display">
+\begin{gathered}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{gathered}</script><p>3</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{aligned}</script><p>4</p>
+<script type="math/tex; mode=display">
+\begin{alignedat}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{alignedat}</script><p>5</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{bmatrix}</script><p>6</p>
+<script type="math/tex; mode=display">
+\begin{Bmatrix}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{Bmatrix}</script><p>7</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{cases}</script><p>8</p>
+<script type="math/tex; mode=display">
+\begin{dcases}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{dcases}</script><p>9</p>
+<script type="math/tex; mode=display">
+\begin{Vmatrix}
+    min \ f(x_1, x_2, ..., x_n) \\
+s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{Vmatrix}</script><p>10</p>
+<blockquote>
+<p>&amp;表示以等号为对齐标记</p>
+<script type="math/tex; mode=display">
+\begin{aligned}  
+f(x) &= (m+n)^2 \\  
+&= m^2+2mn+n^2 \\  
+\end{aligned}</script></blockquote>
+<p>11</p>
+<blockquote>
+<p>这里没有等号，要想实现左对齐，可以在左侧直接加一个 &amp;</p>
+<script type="math/tex; mode=display">
+\begin{aligned}  
+& min \ f(x_1, x_2, ..., x_n) \\
+& s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
+\end{aligned}</script></blockquote>
+<p>12<br>$<br>\begin{aligned}<br>f(x) &amp;= (m+n)^2 \\<br>&amp;= m^2+2mn+n^2 \\<br>\end{aligned}<br>$</p>
+<h1 id="异常问题处理"><a href="#异常问题处理" class="headerlink" title="异常问题处理"></a>异常问题处理</h1><h2 id="异常1：-hexo无法发布双大括号的问题"><a href="#异常1：-hexo无法发布双大括号的问题" class="headerlink" title="异常1： hexo无法发布双大括号的问题"></a>异常1： hexo无法发布双大括号的问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">\dfrac&#123;\partial f&#125;&#123;\partial x&#125; + \mu_1 \dfrac&#123;&#123;\rm d&#125;g_1&#125;&#123;&#123;\rm d&#125;x&#125; + \mu_2 \dfrac&#123;&#123;\rm d&#125;g_2&#125;&#123;&#123;\rm d&#125;x&#125;&#x3D; 0,</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>上述latex在vscode下是正常显示的，但是hexo无法发布</p>
+<p>解决办法：双大括号间加入空格即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在&#123;&#123;之间加入空格，&#125;&#123;这种双大括号无碍</span><br></pre></td></tr></table></figure></p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="https://blog.csdn.net/thither_shore/article/details/52260742" target="_blank" rel="noopener">CSDN-markdown 之 LaTeX 特殊公式格式笔记</a></p>
+<p><a href="https://blog.csdn.net/deepinC/article/details/81103326" target="_blank" rel="noopener">markdown数学公式符号记录</a></p>
+<p><a href="http://www.mohu.org/info/symbols/symbols.htm" target="_blank" rel="noopener">常用数学符号的 LaTeX 表示方法</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91Inception-ResNet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91Inception-ResNet/" class="post-title-link" itemprop="url">【深度学习笔记2.4】Inception-ResNet</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-19 17:28:05" itemprop="dateCreated datePublished" datetime="2018-04-19T17:28:05+08:00">2018-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:39" itemprop="dateModified" datetime="2020-01-22T13:25:39+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<p>[1] <a href="https://www.jiqizhixin.com/articles/2018-05-30-7" target="_blank" rel="noopener">从Inception v1到Inception-ResNet，一文概览Inception家族的「奋斗史」</a><br>[2] <a href="https://my.oschina.net/u/876354/blog/1637819" target="_blank" rel="noopener">大话CNN经典模型：GoogLeNet（从Inception v1到v4的演进）</a><br>[3] <a href="https://www.imooc.com/article/69476" target="_blank" rel="noopener">Inception v4与Inception-Resnet v1/v2</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E3%80%91IoU/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -855,173 +1318,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/11/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/" class="post-title-link" itemprop="url">【深度学习笔记1.2】梯度消失与梯度爆炸</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-11-11 17:28:05" itemprop="dateCreated datePublished" datetime="2017-11-11T17:28:05+08:00">2017-11-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-16 09:22:53" itemprop="dateModified" datetime="2020-02-16T09:22:53+08:00">2020-02-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h2><p>&emsp; 梯度下降法（Gradient descent）是一种基于函数一阶性质的优化算法，其本质是在某个位置将目标函数一阶展开，利用其一阶性质持续向函数值下降最快的方向前进，以期找到函数的全局最小解。梯度下降属于梯度优化方法大类，此外还有最速下降法，共轭梯度法等等。还有其他方法基于目标函数的二阶性质，比如牛顿法、拟牛顿法等[1]。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/11/11/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.2%E3%80%91%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记2.1】tf.nn.conv2d，tf.nn.max_pool</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-10-26 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-26T00:00:00+08:00">2017-10-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 14:08:11" itemprop="dateModified" datetime="2020-01-22T14:08:11+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">TensorFlow笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="tf-nn-conv2d函数解析"><a href="#tf-nn-conv2d函数解析" class="headerlink" title="tf.nn.conv2d函数解析"></a>tf.nn.conv2d函数解析</h2><p><strong>tf.nn.conv2d(input, filter, strides, padding, use_cudnn_on_gpu=None, name=None)</strong></p>
-<p>除去name参数用以指定该操作的name，与方法有关的一共五个参数：<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/10/26/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B02.1%E3%80%91tf.nn.conv2d%EF%BC%8Ctf.nn.max_pool/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1092,7 +1388,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -53,12 +53,15 @@
 <meta property="og:site_name" content="Paper搬运菌">
 <meta property="og:description" content="MobileNets: Efficient Convolutional Neural Networks for Mobile VisionApplications \Andrew G. Howard Menglong Zhu Bo Chen Dmitry KalenichenkoWeijun Wang Tobias Weyand Marco Andreetto Hartwig Adam \Goog">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv1-3.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv1-4.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv1-5.jpg">
 <meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv1-1.jpg">
 <meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv1-2.jpg">
 <meta property="article:published_time" content="2020-03-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-04-03T09:01:19.446Z">
+<meta property="article:modified_time" content="2020-04-14T02:05:00.723Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv1-1.jpg">
+<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv1-3.jpg">
 
 <link rel="canonical" href="http://yoursite.com/2020/03/31/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Backbone%E3%80%91MobileNetv1/">
 
@@ -206,7 +209,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-03 17:01:19" itemprop="dateModified" datetime="2020-04-03T17:01:19+08:00">2020-04-03</time>
+                <time title="Modified: 2020-04-14 10:05:00" itemprop="dateModified" datetime="2020-04-14T10:05:00+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -231,15 +234,46 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>MobileNets: Efficient Convolutional Neural Networks for Mobile Vision<br>Applications \<br>Andrew G. Howard Menglong Zhu Bo Chen Dmitry Kalenichenko<br>Weijun Wang Tobias Weyand Marco Andreetto Hartwig Adam \<br>Google Inc.<br>{howarda,menglong,bochen,dkalenichenko,weijunw,weyand,anm,hadam}@google.com<br><a id="more"></a></p>
-<p><strong>Abstract</strong><br>&emsp; We present a class of efficient models called MobileNets for mobile and embedded vision applications. MobileNets are based on a streamlined architecture that uses <code>depthwise separable convolutions</code> to build light weight deep neural networks. </p>
+        <p>MobileNets: Efficient Convolutional Neural Networks for Mobile Vision<br>Applications \<br>Andrew G. Howard Menglong Zhu Bo Chen Dmitry Kalenichenko<br>Weijun Wang Tobias Weyand Marco Andreetto Hartwig Adam \<br>Google Inc.<br>{howarda,menglong,bochen,dkalenichenko,weijunw,weyand,anm,hadam}@google.com \<br>2017年发表<br><a id="more"></a></p>
+<p>MobileNets网络是由google团队在2017年提出的,专注于移动端或者嵌入式设备中的轻量级CNN网络。相比传统卷积神经网络,在准确率小幅降低的前提下大大减少模型参数与运算量。（相比VGG16准确率减少了0.9%,参数只有VGG的1/32） [2]</p>
+<p>MobileNets中的亮点：</p>
+<ul>
+<li>Depthwise Convolution(大大减少运算量和参数数量)</li>
+<li>增加超参数 $\alpha、\beta$，其中 $\alpha$ 用于控制卷积层卷积核的个数，而 $\beta$ 适用于控制输入feature map的大小，这两个超参数都是人工手动设定的，不是网络学习出来的。</li>
+</ul>
+<p><strong>传统卷积</strong>：\</p>
+<ul>
+<li>卷积核channel=输入特征矩阵channel</li>
+<li>输出特征矩阵channel=卷积核个数<br><div align=center>
+<img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv1-3.jpg" width = 70% height = 70% />
+</div><br>图片来自 [2]</li>
+</ul>
+<p><strong>Depthwise Conv</strong>(DW卷积/深度卷积): \</p>
+<ul>
+<li>卷积核channel = 1</li>
+<li>输入特征矩阵channel = 卷积核个数=输出特正矩阵channel<div align=center>
+<img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv1-4.jpg" width = 70% height = 70% />
+</div>
+
+</li>
+</ul>
+<p><strong>Pointwise Conv</strong>(PW卷积/逐点卷积): \</p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv1-5.jpg" width = 70% height = 70% />
+</div>
+
+<p><strong>Depthwise Separable Conv</strong>(深度可分离卷积): \<br>将 DW 卷积和 PW 卷积连在一起就组成了深度可分离卷积。</p>
+<blockquote>
+<p>depthwise 部分的卷积核容易废掉，即卷积核参数大部分为零 [2]。</p>
+</blockquote>
+<h2 id="2-进度：-gt-12-27"><a href="#2-进度：-gt-12-27" class="headerlink" title="[2] 进度：&gt; 12:27"></a>[2] 进度：&gt; 12:27</h2><p><strong>Abstract</strong><br>&emsp; We present a class of efficient models called MobileNets for mobile and embedded vision applications. MobileNets are based on a streamlined architecture that uses <code>depthwise separable convolutions</code> to build light weight deep neural networks. </p>
 <blockquote>
 <p>depthwise separable convolutions, 深度可分离卷积<br>wise：明智的;聪明的;博学的，</p>
 </blockquote>
 <p>We introduce two simple global hyperparameters that efficiently <code>trade off(权衡)</code> between latency(n. 潜伏;潜在因素;延迟,时延) and accuracy. These hyper-parameters allow the model builder to choose the right sized model for their application based on the constraints of the problem. We present extensive experiments on resource and accuracy tradeoffs and show strong performance compared to other popular models on ImageNet classification. We then demonstrate the effectiveness of MobileNets across(穿过;向) a wide range of applications and use cases including object detection, finegrain(n. 细晶粒,细致纹理) classification, face attributes and large scale geo-localization(地理定位).</p>
 <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>&emsp; Convolutional neural networks have become ubiquitous in computer vision ever since AlexNet [19] popularized deep convolutional neural networks by winning the ImageNet Challenge: ILSVRC 2012 [24]. The general(n. 一般;将军;常规; adj. 一般的，普通的；综合的；大体的) trend(n.v. 趋势;倾向;走向) has been to make deeper and more complicated networks in order to achieve higher accuracy [27, 31, 29, 8]. However, these advances(advance n. 前进;预付款;求爱;v. 提出;使前进;提前 to improve accuracy are not necessarily making networks more efficient with respect to size and speed. In many real world applications such as robotics, self-driving car and augmented reality, the recognition tasks need to <code>be carried out(被执行;得到实现;进行;贯彻;开展)</code> in a timely(adj.及时的;适时的; adv. 及时地;早) fashion(n. 时尚;样式;方式; vt. 使用;改变) on a computationally limited platform.</p>
 <p>&emsp; This paper describes an efficient network architecture and a set of two hyper-parameters <code>in order to(为了)</code> build very small, low latency models that can be easily matched to the design requirements for mobile and embedded vision applications. Section 2 reviews prior work in building small models. Section 3 describes the MobileNet architecture and two hyper-parameters width multiplier(n. [数]乘数;[电子]倍增器;增加者;倍频器) and resolution multiplier to define smaller and more efficient MobileNets. Section 4 describes experiments on ImageNet as well a variety of different applications and use cases. Section 5 closes with a summary and conclusion.</p>
-<h1 id="Prior-Work"><a href="#Prior-Work" class="headerlink" title="Prior Work"></a>Prior Work</h1><p>&emsp; There has been rising interest in building small and efficient neural networks in the recent literature, e.g. [16, 34, 12, 36, 22].<br>Many different approaches can be generally categorized into either compressing pretrained networks or training small networks directly.<br>许多不同的方法可以大致分为压缩预训练网络和直接训练小型网络。<br><code>This pape(本文)</code>r proposes a class of network architectures that allows a model developer to specifically choose a small network that matches the resource restrictions (latency, size) for their application. MobileNets primarily focus on optimizing for latency but also yield small networks. Many papers on small networks focus only on size but do not consider speed.</p>
+<h1 id="Prior-Work"><a href="#Prior-Work" class="headerlink" title="Prior Work"></a>Prior Work</h1><p>&emsp; There has been rising interest in building small and efficient neural networks in the recent literature, e.g. [16, 34, 12, 36, 22].<br>Many different approaches can be generally categorized into either compressing pretrained networks or training small networks directly.<br>许多不同的方法可以大致分为压缩预训练网络和直接训练小型网络。<br><code>This paper(本文)</code> proposes a class of network architectures that allows a model developer to specifically choose a small network that matches the resource restrictions (latency, size) for their application. MobileNets primarily focus on optimizing for latency but also yield small networks. Many papers on small networks focus only on size but do not consider speed.</p>
 <p>&emsp; MobileNets are built primarily from depthwise separable convolutions initially introduced in [26] and subsequently used in Inception models [13] to reduce the computation in the first few layers.<br>Flattened networks [16] build a network out of fully factorized(factorize vt. 因式分解;把复杂计算分解为基本运算) convolutions and showed the potential of extremely factorized networks.<br>扁平网络[16]构建了一个完全因数分解卷积的网络，并展示了高度因数分解网络的潜力。<br>Independent of this current paper, Factorized Networks[34] introduces a similar factorized convolution as well as the use of topological connections. Subsequently, the Xception network [3] demonstrated how to <code>scale up(向上扩展)</code> depthwise separable filters to out perform Inception V3 networks. Another small network is Squeezenet [12] which uses a bottleneck approach to design a very small network. Other reduced computation networks include structured transform networks [28] and deep fried convnets [37].</p>
 <blockquote>
 <p>fried &ensp; adj. 油炸的，油煎的；喝醉了的;  v. 油炸（fry的过去分词）</p>
@@ -298,6 +332,7 @@ D_K \cdot D_K \cdot \alpha M \cdot D_F \cdot D_F + \alpha M \cdot \alpha N \cdot
 <script type="math/tex; mode=display">
 D_K \cdot D_K \cdot \alpha M \cdot \rho D_F \cdot \rho D_F + \alpha M \cdot \alpha N \cdot \rho D_F \cdot \rho D_F  \tag{7}</script><p>where $\rho \in (0, 1]$ which is typically set implicitly so that the input resolution of the network is 224, 192, 160 or 128. $\rho = 1$ is the baseline MobileNet and $\rho &lt; 1$ are reduced computation MobileNets. Resolution multiplier has the effect of reducing computational cost by $\rho^2$.</p>
 <p>&emsp; As an example we can look at a typical layer in MobileNet and see how depthwise separable convolutions, width multiplier and resolution multiplier reduce the cost and parameters. Table 3 shows the computation and number of parameters for a layer as architecture shrinking methods are sequentially(adv. 从而;继续地;循序地) applied to the layer. The first row shows the Mult-Adds and parameters for a full convolutional layer with an input feature map of size $14 \times 14 \times 512$ with a kernel $K$ of size $3 \times 3 \times 512 \times 512$. We will look in detail in the next section at the trade offs between resources and accuracy.</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] MobileNets: Efficient Convolutional Neural Networks for Mobile Vision<br>Applications \<br>[2] <a href="https://www.bilibili.com/video/BV1yE411p7L7?from=search&amp;seid=12436550085054920783" target="_blank" rel="noopener">7.1 MobileNet网络详解</a></p>
 
     </div>
 
@@ -379,7 +414,7 @@ D_K \cdot D_K \cdot \alpha M \cdot \rho D_F \cdot \rho D_F + \alpha M \cdot \alp
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Prior-Work"><span class="nav-number">2.</span> <span class="nav-text">Prior Work</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MobileNet-Architecture"><span class="nav-number">3.</span> <span class="nav-text">MobileNet Architecture</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Depthwise-Separable-Convolution"><span class="nav-number">3.1.</span> <span class="nav-text">Depthwise Separable Convolution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Network-Structure-and-Training"><span class="nav-number">3.2.</span> <span class="nav-text">Network Structure and Training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Width-Multiplier-Thinner-Models"><span class="nav-number">3.3.</span> <span class="nav-text">Width Multiplier: Thinner Models</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Resolution-Multiplier-Reduced-Representation"><span class="nav-number">3.4.</span> <span class="nav-text">Resolution Multiplier: Reduced Representation</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-进度：-gt-12-27"><span class="nav-number">1.</span> <span class="nav-text">[2] 进度：&gt; 12:27</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number"></span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Prior-Work"><span class="nav-number"></span> <span class="nav-text">Prior Work</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MobileNet-Architecture"><span class="nav-number"></span> <span class="nav-text">MobileNet Architecture</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Depthwise-Separable-Convolution"><span class="nav-number">1.</span> <span class="nav-text">Depthwise Separable Convolution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Network-Structure-and-Training"><span class="nav-number">2.</span> <span class="nav-text">Network Structure and Training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Width-Multiplier-Thinner-Models"><span class="nav-number">3.</span> <span class="nav-text">Width Multiplier: Thinner Models</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Resolution-Multiplier-Reduced-Representation"><span class="nav-number">4.</span> <span class="nav-text">Resolution Multiplier: Reduced Representation</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number"></span> <span class="nav-text">参考文献</span></a></div>
       </div>
       <!--/noindex-->
 
@@ -393,7 +428,7 @@ D_K \cdot D_K \cdot \alpha M \cdot \rho D_F \cdot \rho D_F + \alpha M \cdot \alp
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

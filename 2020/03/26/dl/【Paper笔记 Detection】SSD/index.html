@@ -59,7 +59,7 @@
 <meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/SSD4.jpg">
 <meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/SSD5.jpg">
 <meta property="article:published_time" content="2020-03-25T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-04-03T09:01:19.466Z">
+<meta property="article:modified_time" content="2020-04-13T00:52:53.226Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/SSD1.jpg">
 
@@ -209,7 +209,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-03 17:01:19" itemprop="dateModified" datetime="2020-04-03T17:01:19+08:00">2020-04-03</time>
+                <time title="Modified: 2020-04-13 08:52:53" itemprop="dateModified" datetime="2020-04-13T08:52:53+08:00">2020-04-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -341,9 +341,11 @@ The overall objective loss function is a weighted sum of the localization loss (
 <p>那么怎么来衡量这个偏移量呢？<br>对于中心点($cx, cy$)偏移量的衡量，$cx$ 是通过公式 $(g^{cx}_j - d^{cx}_i) / d^w_i$ 来衡量的，$cy$ 类似；<br>而对于宽$w$和高$h$的偏移量，$w$ 是通过公式 $\text{log}(\frac{g^w_j}{d^w_i})$ 来进行衡量的，$h$ 类似。<br>为什么这样做，可参考文献 [m1]</p>
 </blockquote>
 <p>The confidence loss is the softmax loss over multiple classes confidences ($c$)</p>
-<p><div align=center>
+<div align=center>
   <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/SSD5.jpg" width = 60% height = 60% />
-</div><br>and the weight term $\alpha$ is set to 1 by cross validation.</p>
+</div>
+
+<p>and the weight term $\alpha$ is set to 1 by cross validation.</p>
 <p><strong>Choosing scales and aspect ratios for default boxes</strong> To handle different object scales, some methods [4,9] suggest processing the image at different sizes and combining the results afterwards(adv. 后来;然后). However, by utilizing feature maps from several different layers in a single network for prediction we can mimic(vt. 模仿,摹拟. adj. 模仿的,模拟的;假装的) the same effect, while also sharing parameters across all object scales. Previous works [10,11] have shown that using feature maps from the lower layers can improve semantic segmentation quality because the lower layers capture more fine details of the input objects. Similarly, [12] showed that adding global context pooled from a feature map can help smooth the segmentation results.</p>
 <p><code>motivate</code>: v. 刺激，使有动机，激发…的积极性；成为……的动机；给出理由；申请 \<br><code>Motivated</code> by these methods, we use both the lower and upper feature maps for detection. Figure 1 shows two exemplar feature maps (8×8 and 4×4) which are used in the framework.<br>In practice, we can use many more with small computational <code>overhead(n. 经常性支出，运营费用（常用复数 overheads）；（飞机的）顶舱；adj. 在头上方的，在空中的；地面以上的，高架的；（费用、开支等）经常的，日常的；adv. 在头顶上方，在空中；在高处).</code><br>在实践中，我们可以用较小的计算开销使用更多的feature maps。</p>
 <p>&emsp; Feature maps from different levels within a network are known to have different ( empirical(经验主义的) ) receptive field sizes [13]. Fortunately(幸运地), within the SSD framework, the default boxes do not necessary need to correspond to the actual receptive fields of each layer.<br>We design the tiling of default boxes so that specific feature maps learn to be responsive to particular(adj. 特定的,特别的;详细的;独有的;挑剔的) scales of the objects.<br>我将default boxes设计成平铺形式，以至于指定的feature maps能够学习到特定目标尺度的响应。<br>Suppose we want to use $m$ feature maps for prediction. The scale of the default boxes for each feature map is computed as:</p>
@@ -470,7 +472,7 @@ The overall objective loss function is a weighted sum of the localization loss (
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
