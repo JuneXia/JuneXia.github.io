@@ -38,6 +38,34 @@ Section 5 describes novel architecture design improving on the efficiency of the
 &emsp; Designing deep neural network architecture for the optimal trade-off between accuracy and efficiency has been an active research area in recent years. Both novel handcrafted structures and algorithmic neural architecture search have played important roles in advancing this field.
 
 &emsp; SqueezeNet[22] extensively(广泛地) uses 1x1 convolutions with squeeze(挤,压榨) and expand modules primarily focusing on reducing the number of parameters. 
+More recent works shifts the focus from reducing parameters to reducing the number of operations (MAdds) and the actual measured latency. 
+MobileNetV1[19] employs depthwise separable convolution to substantially(adv.实质上;充分地;大幅度) improve computation efficiency. 
+MobileNetV2[39] expands on this by introducing a **resource-efficient block with inverted residuals and linear bottlenecks**. 
+ShuffleNet[49] utilizes **group convolution** and **channel shuffle** operations to further reduce the MAdds. 
+CondenseNet[21] learns **group convolutions at the training stage to keep useful dense connections between layers for feature re-use**. 
+ShiftNet[46] proposes the shift operation interleaved(interleave v. 交替;交错) with point-wise convolutions to replace expensive spatial convolutions.
 
->>>>>
-More recent works shifts the focus from reducing parameters to reducing the number of operations (MAdds) and the actual measured latency. MobileNetV1[19] employs depthwise separable convolution to substantially improve computation ef- ficiency. MobileNetV2[39] expands on this by introducing a resource-efficient block with inverted residuals and linear bottlenecks. ShuffleNet[49] utilizes group convolution and channel shuffle operations to further reduce the MAdds. CondenseNet[21] learns group convolutions at the training stage to keep useful dense connections between layers for feature re-use. ShiftNet[46] proposes the shift operation interleaved with point-wise convolutions to replace expensive spatial convolutions.
+&emsp; To automate the architecture design process, reinforcement learning (RL) was first introduced to search efficient architectures with competitive accuracy [53, 54, 3, 27, 35]. A fully configurable search space can grow exponentially large and intractable(棘手的;难处理的). 
+强化学习被应用于architecture search，但由于其指数级的搜索空间而变得非常棘手。
+So early works of architecture search focus on the **cell level structure search**, and **the same cell is reused in all layers**. 
+Recently, [43] explored a block-level hierarchical(adj. 分层的;等级体系的;层次) search space allowing different layer structures at different resolution blocks of a network. 
+To reduce the computational cost of search, differentiable architecture search framework is used in [28, 5, 45] with gradient-based optimization. 
+Focusing on adapting existing networks to constrained mobile platforms, [48, 15, 12] proposed more efficient **automated network simplification algorithms**.
+
+&emsp; **Quantization**(量化) [23, 25, 47, 41, 51, 52, 37] is another important complementary effort to improve the network efficiency through reduced precision arithmetic. 
+Finally, **knowledge distillation**(蒸馏;净化;精华) [4, 17] offers an additional complementary method to generate small accurate student networks with the guidance of a large teacher network.
+
+## Efficient Mobile Building Blocks
+
+&emsp; Mobile models have been built on increasingly more efficient building blocks. MobileNetV1 [19] introduced depthwise separable convolutions as an efficient replacement for traditional convolution layers. Depthwise separable convolutions effectively factorize traditional convolution by **separating spatial filtering from the feature generation mechanism(将空间滤波与特征生成机制分离)**. Depthwise separable convolutions are defined by two separate layers: light weight **depthwise convolution for spatial filtering** and heavier(沉重的,巨大的) **1x1 pointwise convolutions for feature generation**.
+
+&emsp; **MobileNetV2** [39] introduced the **linear bottleneck** and **inverted residual structure** `in order to(以便,目的,为了)` make even more efficient layer structures by leveraging(leverage n.利用;手段;杠杆作用) the low rank nature(n.自然;性质;本性;种类) of the problem. \
+MobileNetV2 引入了线性bottleneck和倒残差结构，以便利用问题的低秩性质来实现更高效的层结构。\
+This structure is shown on Figure 3 and is defined by a 1x1 expansion convolution followed by depthwise convolutions and a 1x1 projection layer. The input and output are connected with a residual connection if and only if they have the same number of channels. This structure maintains a compact representation at the input and the output while expanding to a higher-dimensional feature space internally to **increase the expressiveness of nonlinear perchannel transformations**.
+
+&emsp; **MnasNet** [43] **built upon the MobileNetV2 structure by introducing **lightweight attention modules based on squeeze and excitation into the bottleneck structure**. 
+MnasNet建立在MobileNetV2结构上，通过在瓶颈结构中引入基于挤压和激励的轻量级注意模块。
+Note that the squeeze and excitation module are integrated in a different location than ResNet based modules proposed in [20]. The module is placed after the depthwise filters in the expansion in order for attention to be applied on the largest representation as shown on Figure 4.
+
+未完待续。。。
+
