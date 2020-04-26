@@ -98,10 +98,87 @@ This is in contrast with traditional convolutional blocks, both regular and sepa
 <br>
 
 
+This structure maintains a compact representation at the input and the output **while** expanding to a higher-dimensional feature space internally to increase the expressiveness of nonlinear perchannel transformations.
+
+&emsp; &emsp; From `Searching for MobileNetV3`
+
+> Translate: \
+> 这种结构在输入和输出处保持了一种紧凑的表示，**同时**在内部扩展到高维特征空间，以增加每个通道的非线性转换的表达能力。
+
+--------
+<br>
+
+MnasNet built upon the MobileNetV2 structure **by introducing** lightweight attention modules **based on** squeeze and excitation **into** the bottleneck structure. \
+&emsp; &emsp; From `Searching for MobileNetV3`
+
+> TIPS: \
+> excitation  n. 激发，刺激；激励；激动
+> 
+> Translate: \
+> MnasNet建立在MobileNetV2结构上，通过在瓶颈结构中引入基于挤压和激励的轻量级注意模块。
+
+--------
+<br>
+
+It outperforms other detection methods, including DPM and R-CNN, when **generalizing from** natural images **to** other domains like artwork. \
+&emsp; &emsp; From `You Only Look Once:Unified, Real-Time Object Detection`
+
+> TIPS: \
+> generalizing : 归纳阶段,归纳,形成概念
+> generalizing from ...: 从...归纳出
+> generalizing from ... to ...: 从...推广到...
+> 
+> Translate: \
+> 当从自然图像推广到艺术作品等其他领域时，它的性能优于其他检测方法，包括 DPM 和 R-CNN。
+
+--------
+<br>
+
+Fast, accurate algorithms for object detection would allow computers to drive cars without specialized sensors, **enable** `assistive` devices **to** `convey` real-time scene information to human users, and unlock the potential for `general purpose`, `responsive` robotic systems. \
+&emsp; &emsp; From `You Only Look Once:Unified, Real-Time Object Detection`
+
+> TIPS: \
+> general n. 一般；将军，上将；常规; 
+        adj. 一般的，普通的；综合的；大体的
+> purpose n. 目的；用途；意志;
+         vt. 决心；企图；打算
+> general purpose: 通用的
+> responsive: adj.响应的;应答的;响应灵敏的
+> assistive: 辅助的
+> devices to convey: vt.传达;运输
+> 
+> 快速、准确的目标检测算法将允许计算机在没有专门传感器的情况下驾驶汽车，**使**辅助设备**能够向**人类用户传递实时的场景信息，并为通用、响应灵敏的机器人系统释放潜力。
+
+--------
+<br>
+
+Our network uses features from the entire image to predict each bounding box. It also predicts all bounding boxes **across** all classes for an image simultaneously(adv.同时地). \
+&emsp; &emsp; From `You Only Look Once:Unified, Real-Time Object Detection`
+> TIPS: \
+> across &emsp; adv. 从……的一边到另一边，穿过，越过；在对面，横过；宽；向；（纵横填字游戏）横向字谜答案 \
+> prep. 从……的一边到另一边，穿过；在……对面，另一边；在……上；在各处，遍及；在……里
+> 
+> Translate: \
+> 我们的网络使用整个图像的特征来预测每个边界框。它还可以同时预测一个图像在所有类**中的**所有边界框。
+
+--------
+<br>
 
 
 
+--------
+<br>
 
 
 
+--------
+<br>
 
+
+
+--------
+<br>
+
+
+--------
+<br>

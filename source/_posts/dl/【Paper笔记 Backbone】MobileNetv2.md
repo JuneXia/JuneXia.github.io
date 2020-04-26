@@ -108,8 +108,6 @@ For example, ReLU applied to a line in 1D space produces a 'ray', where as in $R
 In other words, deep networks only have the power of a linear classifier on the non-zero volume part of the output domain. We refer to supplemental material for a more formal statement.
 换句话说，深度网络只在输出域的非零volume部分具有线性分类器的能力。
 
-👆？
-
 <div align=center>
   <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/mobilenetv2-1.jpg" width = 80% height = 80% />
 </div>
