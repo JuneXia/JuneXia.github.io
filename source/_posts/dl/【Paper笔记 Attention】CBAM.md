@@ -60,7 +60,7 @@ where $\otimes$ denotes **element-wise multiplication**. During multiplication, 
 **Channel attention module.** We produce a channel attention map by exploiting the inter-channel relationship of features. As each channel of a feature map is considered as a feature detector [31], channel attention focuses on what is meaningful given an input image. **To compute the channel attention efficiently, we squeeze the spatial dimension of the input feature map.** For aggregating(v.聚集;合计) spatial information, average-pooling has been commonly(adv.一般地;通常地;普通地) adopted `so far(迄今为止)`. Zhou et al. [32] suggest to use it to learn `the extent of(在…的范围内;到…的程度)` the target object effectively and Hu et al. [28] adopt it in their attention module to compute spatial statistics. Beyond the previous works, we argue that **max-pooling gathers another important clue about distinctive(adj.独特的,有特色的) object features to infer finer(adj.更好的;更优质的) channel-wise attention**. Thus, **we use both average-pooled and max-pooled features simultaneously.** We empirically(adv.以经验为主地) confirmed that exploiting both features greatly improves representation power of networks rather than using each independently (see Sec. 4.1), showing the effectiveness of our design choice. We describe the detailed operation below.
 
 <div align=center>
-  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/CMAB1.jpg" width = 70% height = 70% />
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/CBAM1.jpg" width = 70% height = 70% />
 </div>
 
 &emsp; We first aggregate spatial information of a feature map by using both averagepooling and max-pooling operations, generating two different spatial context descriptors: $\mathbf{F^c_{avg}}$ and $\mathbf{F^c_{max}}$, which denote average-pooled features and max-pooled features respectively. Both descriptors are then forwarded to a shared network to produce our channel attention map $\mathbf{M_c} \in \mathbb{R}^{C \times 1 \times 1}$. \
@@ -73,7 +73,7 @@ The shared network is composed of multi-layer perceptron (MLP) with one hidden l
 
 After the shared network is applied to each descriptor, we merge the output feature vectors using element-wise summation. In short, the channel attention is computed as:
 <div align=center>
-  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/CMAB2.jpg" width = 70% height = 70% />
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/CBAM2.jpg" width = 70% height = 70% />
 </div>
 
 where σ denotes the sigmoid function, $\mathbf{W_0} \in \mathbb{R}^{C/r \times C}$, and $\mathbb{R}^{C \times C / r}$. Note that the MLP weights, $\mathbf{W_0}$ and $\mathbf{W_1}$, are shared for both inputs and the ReLU activation function is followed by $\mathbf{W_0}$.
