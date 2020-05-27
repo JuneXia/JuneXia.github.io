@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="&amp;emsp; 非极大值抑制(Non-Maximum Suppression, NMS), 顾名思义就是抑制那些不是极大值的元素, 可以理解为局部最大值搜索. 对于目标检测来说, 非极大值抑制的含义就是对于重叠度较高的一部分同类候选框来说, 去掉那些置信度较低的框, 只保留置信度最大的那一个进行后面的流程, 这里的重叠度高低与否是通过 NMS 阈值来判断的[1].">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dl&#x2F;【Entries】Non-Maximum Suppression">
+<meta property="og:url" content="http://yoursite.com/2020/05/19/dl/%E3%80%90Entries%E3%80%91Non-Maximum%20Suppression/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="&amp;emsp; 非极大值抑制(Non-Maximum Suppression, NMS), 顾名思义就是抑制那些不是极大值的元素, 可以理解为局部最大值搜索. 对于目标检测来说, 非极大值抑制的含义就是对于重叠度较高的一部分同类候选框来说, 去掉那些置信度较低的框, 只保留置信度最大的那一个进行后面的流程, 这里的重叠度高低与否是通过 NMS 阈值来判断的[1].">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/proposal_bboxes.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nms_bboxes.jpg">
+<meta property="article:published_time" content="2020-05-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-19T09:14:54.263Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/proposal_bboxes.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/05/19/dl/%E3%80%90Entries%E3%80%91Non-Maximum%20Suppression/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>dl/【Entries】Non-Maximum Suppression | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/19/dl/%E3%80%90Entries%E3%80%91Non-Maximum%20Suppression/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          dl/【Entries】Non-Maximum Suppression
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-05-19 00:00:00 / Modified: 17:14:54" itemprop="dateCreated datePublished" datetime="2020-05-19T00:00:00+08:00">2020-05-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>&emsp; 非极大值抑制(Non-Maximum Suppression, NMS), 顾名思义就是抑制那些不是极大值的元素, 可以理解为局部最大值搜索. 对于目标检测来说, 非极大值抑制的含义就是对于重叠度较高的一部分同类候选框来说, 去掉那些置信度较低的框, 只保留置信度最大的那一个进行后面的流程, 这里的重叠度高低与否是通过 NMS 阈值来判断的[1].<br><a id="more"></a></p>
+<p>计算两个边框 IoU 的公式如下所示:</p>
+<script type="math/tex; mode=display">
+x_1 = max( \text{box1}_{x_1}, \text{box2}_{x_1} ), \qquad y_1 = max( \text{box1}_{y_1}, \text{box2}_{y_1}) \\
+
+x_2 = min( \text{box1}_{x_2}, \text{box2}_{x_2} ), \qquad y_2 = max( \text{box1}_{y_2}, \text{box2}_{y_2} ) \\
+
+\text{intersection} = ( x_2 - x_1 + 1 ) \times ( y_2 - y_1 + 1 ) \\
+
+\text{IoU} = \frac{\text{intersection}}{\text{area1 + area2 - intersection}}</script><p><strong>算法逻辑:</strong></p>
+<ul>
+<li><strong>输入:</strong> n 行 4 列的候选框数组, 以及对应的 n 行 1 列的置信度数组.</li>
+<li><strong>输出:</strong> m 行 4 列的候选框数组, 以及对应的 m 行 1 列的置信度数组, m 对应的是去重后的候选框数量</li>
+<li><strong>算法流程:</strong></li>
+<li><ol>
+<li>计算 n 个候选框的面积大小</li>
+</ol>
+</li>
+<li><ol>
+<li>对置信度进行排序, 获取排序后的下标序号, 即采用argsort</li>
+</ol>
+</li>
+<li><ol>
+<li>将当前置信度最大的框加入返回值列表中</li>
+</ol>
+</li>
+<li><ol>
+<li>获取当前置信度最大的候选框与其他任意候选框的相交面积</li>
+</ol>
+</li>
+<li><ol>
+<li>利用相交的面积和两个框自身的面积计算框的交并比, 将交并比大于阈值的框删除</li>
+</ol>
+</li>
+<li><ol>
+<li>对剩余的框重复以上过程</li>
+</ol>
+</li>
+</ul>
+<p>Python 代码实现 [1]：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> libml.utils.config <span class="keyword">import</span> SysConfig</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">non_max_suppression</span><span class="params">(bounding_boxes, confidence_score, threshold)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    reference: https://hellozhaozheng.github.io/z_post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89-NMS-Implementation/</span></span><br><span class="line"><span class="string">    :param bounding_boxes:</span></span><br><span class="line"><span class="string">    :param confidence_score:</span></span><br><span class="line"><span class="string">    :param threshold:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> len(bounding_boxes) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> [], []</span><br><span class="line">    bboxes = np.array(bounding_boxes)</span><br><span class="line">    score = np.array(confidence_score)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算 n 个候选框的面积大小</span></span><br><span class="line">    x1 = bboxes[:, <span class="number">0</span>]</span><br><span class="line">    y1 = bboxes[:, <span class="number">1</span>]</span><br><span class="line">    x2 = bboxes[:, <span class="number">2</span>]</span><br><span class="line">    y2 = bboxes[:, <span class="number">3</span>]</span><br><span class="line">    areas =(x2 - x1 + <span class="number">1</span>) * (y2 - y1 + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对置信度进行排序, 获取排序后的下标序号, argsort 默认从小到大排序</span></span><br><span class="line">    order = np.argsort(score)</span><br><span class="line"></span><br><span class="line">    picked_index = [] <span class="comment"># 返回值</span></span><br><span class="line">    <span class="keyword">while</span> order.size &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="comment"># 将当前置信度最大的框加入返回值列表中</span></span><br><span class="line">        index = order[<span class="number">-1</span>]</span><br><span class="line">        picked_index.append(index)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 获取当前置信度最大的候选框与其他任意候选框的相交面积</span></span><br><span class="line">        x11 = np.maximum(x1[index], x1[order[:<span class="number">-1</span>]])</span><br><span class="line">        y11 = np.maximum(y1[index], y1[order[:<span class="number">-1</span>]])</span><br><span class="line">        x22 = np.minimum(x2[index], x2[order[:<span class="number">-1</span>]])</span><br><span class="line">        y22 = np.minimum(y2[index], y2[order[:<span class="number">-1</span>]])</span><br><span class="line">        w = np.maximum(<span class="number">0.0</span>, x22 - x11 + <span class="number">1</span>)</span><br><span class="line">        h = np.maximum(<span class="number">0.0</span>, y22 - y11 + <span class="number">1</span>)</span><br><span class="line">        intersection = w * h</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 利用相交的面积和两个框自身的面积计算框的交并比, 将交并比大于阈值的框删除</span></span><br><span class="line">        ratio = intersection / (areas[index] + areas[order[:<span class="number">-1</span>]] - intersection)</span><br><span class="line">        left = np.where(ratio &lt; threshold)</span><br><span class="line">        order = order[left]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> picked_index</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># testing</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    img = cv2.imread(SysConfig[<span class="string">'home_path'</span>] + <span class="string">"/dev/proml/tutorial/lena.png"</span>)</span><br><span class="line"></span><br><span class="line">    boxes = [[<span class="number">50</span>, <span class="number">150</span>, <span class="number">200</span>, <span class="number">400</span>], [<span class="number">80</span>, <span class="number">200</span>, <span class="number">260</span>, <span class="number">420</span>], [<span class="number">300</span>, <span class="number">50</span>, <span class="number">460</span>, <span class="number">240</span>], [<span class="number">320</span>, <span class="number">150</span>, <span class="number">480</span>, <span class="number">350</span>]]</span><br><span class="line">    scores = [<span class="number">0.3</span>, <span class="number">0.6</span>, <span class="number">0.8</span>, <span class="number">0.2</span>]</span><br><span class="line">    colors = [(<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>), (<span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>), (<span class="number">0</span>, <span class="number">100</span>, <span class="number">0</span>), (<span class="number">0</span>, <span class="number">200</span>, <span class="number">0</span>)]</span><br><span class="line">    normalized_boxes = np.array(boxes) / <span class="number">512</span></span><br><span class="line">    proposal_count = len(normalized_boxes)</span><br><span class="line">    nms_thresh = <span class="number">0.1</span></span><br><span class="line"></span><br><span class="line">    img_copy = img.copy()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(boxes)):</span><br><span class="line">        box = boxes[i]</span><br><span class="line">        color = colors[i]</span><br><span class="line">        cv2.rectangle(img_copy, (box[<span class="number">0</span>], box[<span class="number">1</span>]), (box[<span class="number">2</span>], box[<span class="number">3</span>]), color, thickness=<span class="number">2</span>)</span><br><span class="line">    cv2.imwrite(<span class="string">'proposal_bboxes.jpg'</span>, img_copy)</span><br><span class="line">    cv2.imshow(<span class="string">'proposal_bboxes'</span>, img_copy)</span><br><span class="line">    cv2.waitKey()</span><br><span class="line"></span><br><span class="line">    pick_index = non_max_suppression(boxes, scores, nms_thresh)</span><br><span class="line"></span><br><span class="line">    idxs = tf.image.non_max_suppression(normalized_boxes, scores, proposal_count, nms_thresh)</span><br><span class="line">    sess = tf.Session()</span><br><span class="line">    rslt = sess.run(idxs)</span><br><span class="line"></span><br><span class="line">    img_copy = img.copy()</span><br><span class="line">    <span class="keyword">for</span> i, idx <span class="keyword">in</span> enumerate(rslt):</span><br><span class="line">        box = boxes[idx]</span><br><span class="line">        color = colors[idx]</span><br><span class="line">        cv2.rectangle(img_copy, (box[<span class="number">0</span>], box[<span class="number">1</span>]), (box[<span class="number">2</span>], box[<span class="number">3</span>]), color, thickness=<span class="number">2</span>)</span><br><span class="line">    cv2.imwrite(<span class="string">'nms_bboxes.jpg'</span>, img_copy)</span><br><span class="line">    cv2.imshow(<span class="string">'nms_bboxes'</span>, img_copy)</span><br><span class="line">    cv2.waitKey()</span><br></pre></td></tr></table></figure></p>
+<p><strong>proposal bboxes:</strong></p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/proposal_bboxes.jpg" width = 70% height = 70% />
+</div>
+
+<p><strong>bboxes after nms:</strong></p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/nms_bboxes.jpg" width = 70% height = 70% />
+</div>
+
+
+<hr>
+<p>以下参考文献[1]，待整理：</p>
+<p>c++代码实现：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Bbox</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> x1;</span><br><span class="line">    <span class="keyword">int</span> y1;</span><br><span class="line">    <span class="keyword">int</span> x2;</span><br><span class="line">    <span class="keyword">int</span> y2;</span><br><span class="line">    <span class="keyword">float</span> score;</span><br><span class="line">    Bbox(<span class="keyword">int</span> x1_, <span class="keyword">int</span> y1_, <span class="keyword">int</span> x2_, <span class="keyword">int</span> y2_, <span class="keyword">float</span> s):</span><br><span class="line">	x1(x1_), y1(y1_), x2(x2_), y2(y2_), score(s) &#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">iou</span><span class="params">(Bbox box1, Bbox box2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">float</span> area1 = (box1.x2 - box1.x1 + <span class="number">1</span>) * (box1.y2 - box1.y1 + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">float</span> area2 = (box2.x2 - box2.x1 + <span class="number">1</span>) * (box2.y2 - box2.y1 + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">int</span> x11 = <span class="built_in">std</span>::max(box1.x1, box2.x1);</span><br><span class="line">    <span class="keyword">int</span> y11 = <span class="built_in">std</span>::max(box1.y1, box2.y1);</span><br><span class="line">    <span class="keyword">int</span> x22 = <span class="built_in">std</span>::min(box1.x2, box2.x2);</span><br><span class="line">    <span class="keyword">int</span> y22 = <span class="built_in">std</span>::min(box1.y2, box2.y2);</span><br><span class="line">    <span class="keyword">float</span> intersection = (x22 - x11 + <span class="number">1</span>) * (y22 - y11 + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> intersection / (area1 + area2 - intersection);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Bbox&gt; nms(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Bbox&gt; &amp;vecBbox, <span class="keyword">float</span> threshold) &#123;</span><br><span class="line">    <span class="keyword">auto</span> cmpScore = [](Bbox box1, Bbox box2) &#123;</span><br><span class="line">	<span class="keyword">return</span> box1.score &lt; box2.score; <span class="comment">// 升序排列, 令score最大的box在vector末端</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">std</span>::sort(vecBbox.begin(), vecBbox.end(), cmpScore);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Bbox&gt; pickedBbox;</span><br><span class="line">    <span class="keyword">while</span> (vecBbox.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        pickedBbox.emplace_back(vecBbox.back());</span><br><span class="line">        vecBbox.pop_back();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; vecBbox.size(); i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (iou(pickedBbox.back(), vecBbox[i]) &gt;= threshold) &#123;</span><br><span class="line">                vecBbox.erase(vecBbox.begin() + i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pickedBbox;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="简述-Soft-NMS-的原理"><a href="#简述-Soft-NMS-的原理" class="headerlink" title="简述 Soft-NMS 的原理"></a>简述 Soft-NMS 的原理</h1><p>&emsp; 在 Soft-NMS 中, 对于那些重叠度大于一定阈值的 box, 作者并不将其删除, 而仅仅只是根据重叠程度来降低那些 box 的 socre, 这样一来, 这些 box 仍旧处于 box 列表中, 只是 socre 的值变低了. 具体来说, 如果 box 的重叠程度高, 那么 score 的值就会变得很低, 如果重叠程度小, 那么 box 的 score 值就只会降低一点, Soft-NMS 算法伪代码如下图所示:</p>
+<p><a href="https://hellozhaozheng.github.io/z_post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89-SoftNMS-ICCV2017/" target="_blank" rel="noopener">Soft-NMS(ICCV, 2017) 论文解读</a><br>作者: Navaneeth Bodla, Bharat Singh, Rama Chellappa, Larry S.Davis<br>发表: ICCV2017<br>机构: Center For Automation Research</p>
+<h1 id="Soft-NMS-算法源码实现"><a href="#Soft-NMS-算法源码实现" class="headerlink" title="Soft-NMS 算法源码实现"></a>Soft-NMS 算法源码实现</h1><p><strong>输入:</strong></p>
+<ul>
+<li>bboxes: 坐标矩阵, 每个边框表示为 [x1, y1, x2, y2]</li>
+<li>scores: 每个 box 对应的分数, 在 Soft-NMS 中, scores 会发生变化(<strong>对外部变量也有影响</strong>)</li>
+<li>iou_thresh: 交并比的最低阈值</li>
+<li>sigma2: 使用 gaussian 函数的方差, sigma2 代表 $\sigma^2$</li>
+<li>score_thresh: 最终分数的最低阈值</li>
+<li>method: 使用的惩罚方法, 1 代表线性惩罚, 2 代表高斯惩罚, 其他情况代表默认的 NMS</li>
+</ul>
+<p><strong>返回值:</strong> 最终留下的 boxes 的 index, 同时, scores 值也已经被改变.</p>
+<p><strong>算法流程:</strong></p>
+<ol>
+<li>在 bboxes 之后添加对于的下标[0, 1, 2…], 最终 bboxes 的 shape 为 [n, 5], 前四个为坐标, 后一个为下标</li>
+<li>计算每个 box 自身的面积</li>
+<li><strong>对于每一个下标 i</strong>, 找出 i 后面的最大 score 及其下标, 如果当前 i 的得分小于后面的最大 score, 则与之交换, 确保 i 上的 score 最大.</li>
+<li>计算 IoU</li>
+<li>根据用户选定的方法更新 scores 的值</li>
+<li>以上过程循环 N 次后(N 为总边框的数量), 将最终得分大于最低阈值的下标返回, 根据下标获取最终存留的 Boxes, <strong>注意, 此时, 外部 scores 的值已经完成更新, 无需借助下标来获取.</strong></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">soft_nms</span><span class="params">(bboxes, scores, iou_thresh=<span class="number">0.3</span>, sigma2=<span class="number">0.5</span>, score_thresh=<span class="number">0.001</span>, method=<span class="number">2</span>)</span>:</span></span><br><span class="line">    <span class="comment"># 在 bboxes 之后添加对于的下标[0, 1, 2...], 最终 bboxes 的 shape 为 [n, 5], 前四个为坐标, 后一个为下标</span></span><br><span class="line">    N = bboxes.shape[<span class="number">0</span>] <span class="comment"># 总的 box 的数量</span></span><br><span class="line">    indexes = np.array([np.arange(N)])  <span class="comment"># 下标: 0, 1, 2, ..., n-1</span></span><br><span class="line">    bboxes = np.concatenate((bboxes, indexes.T), axis=<span class="number">1</span>) <span class="comment"># concatenate 之后, bboxes 的操作不会对外部变量产生影响</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算每个 box 的面积</span></span><br><span class="line">    x1 = bboxes[:, <span class="number">0</span>]</span><br><span class="line">    y1 = bboxes[:, <span class="number">1</span>]</span><br><span class="line">    x2 = bboxes[:, <span class="number">2</span>]</span><br><span class="line">    y2 = bboxes[:, <span class="number">3</span>]</span><br><span class="line">    areas = (x2 - x1 + <span class="number">1</span>) * (y2 - y1 + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">        <span class="comment"># 找出 i 后面的最大 score 及其下标</span></span><br><span class="line">        pos = i + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> i != N<span class="number">-1</span>:</span><br><span class="line">            maxscore = np.max(scores[pos:], axis=<span class="number">0</span>)</span><br><span class="line">            maxpos = np.argmax(scores[pos:], axis=<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            maxscore = scores[<span class="number">-1</span>]</span><br><span class="line">            maxpos = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如果当前 i 的得分小于后面的最大 score, 则与之交换, 确保 i 上的 score 最大</span></span><br><span class="line">        <span class="keyword">if</span> scores[i] &lt; maxscore:</span><br><span class="line">            bboxes[[i, maxpos + i + <span class="number">1</span>]] = bboxes[[maxpos + i + <span class="number">1</span>, i]]</span><br><span class="line">            scores[[i, maxpos + i + <span class="number">1</span>]] = scores[[maxpos + i + <span class="number">1</span>, i]]</span><br><span class="line">            areas[[i, maxpos + i + <span class="number">1</span>]] = areas[[maxpos + i + <span class="number">1</span>, i]]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># IoU calculate</span></span><br><span class="line">        xx1 = np.maximum(bboxes[i, <span class="number">0</span>], bboxes[pos:, <span class="number">0</span>])</span><br><span class="line">        yy1 = np.maximum(bboxes[i, <span class="number">1</span>], bboxes[pos:, <span class="number">1</span>])</span><br><span class="line">        xx2 = np.minimum(bboxes[i, <span class="number">2</span>], bboxes[pos:, <span class="number">2</span>])</span><br><span class="line">        yy2 = np.minimum(bboxes[i, <span class="number">3</span>], bboxes[pos:, <span class="number">3</span>])</span><br><span class="line">        w = np.maximum(<span class="number">0.0</span>, xx2 - xx1 + <span class="number">1</span>)</span><br><span class="line">        h = np.maximum(<span class="number">0.0</span>, yy2 - yy1 + <span class="number">1</span>)</span><br><span class="line">        intersection = w * h</span><br><span class="line">        iou = intersection / (areas[i] + areas[pos:] - intersection)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Three methods: 1.linear 2.gaussian 3.original NMS</span></span><br><span class="line">        <span class="keyword">if</span> method == <span class="number">1</span>:  <span class="comment"># linear</span></span><br><span class="line">            weight = np.ones(iou.shape)</span><br><span class="line">            weight[iou &gt; iou_thresh] = weight[iou &gt; iou_thresh] - iou[iou &gt; iou_thresh]</span><br><span class="line">        <span class="keyword">elif</span> method == <span class="number">2</span>:  <span class="comment"># gaussian</span></span><br><span class="line">            weight = np.exp(-(iou * iou) / sigma2)</span><br><span class="line">        <span class="keyword">else</span>:  <span class="comment"># original NMS</span></span><br><span class="line">            weight = np.ones(iou.shape)</span><br><span class="line">            weight[iou &gt; iou_thresh] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        scores[pos:] = weight * scores[pos:]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># select the boxes and keep the corresponding indexes</span></span><br><span class="line">    inds = bboxes[:, <span class="number">4</span>][scores &gt; score_thresh]</span><br><span class="line">    keep = inds.astype(int)</span><br><span class="line">    <span class="keyword">return</span> keep</span><br><span class="line"></span><br><span class="line"><span class="comment"># boxes and scores</span></span><br><span class="line">boxes = np.array([[<span class="number">200</span>, <span class="number">200</span>, <span class="number">400</span>, <span class="number">400</span>], [<span class="number">220</span>, <span class="number">220</span>, <span class="number">420</span>, <span class="number">420</span>],</span><br><span class="line">                  [<span class="number">240</span>, <span class="number">200</span>, <span class="number">440</span>, <span class="number">400</span>], [<span class="number">200</span>, <span class="number">240</span>, <span class="number">400</span>, <span class="number">440</span>],</span><br><span class="line">                  [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>]], dtype=np.float32)</span><br><span class="line">boxscores = np.array([<span class="number">0.9</span>, <span class="number">0.8</span>, <span class="number">0.7</span>, <span class="number">0.6</span>, <span class="number">0.5</span>], dtype=np.float32)</span><br><span class="line">index = soft_nms(boxes, boxscores, method=<span class="number">2</span>)</span><br><span class="line">print(index) <span class="comment"># 按照 scores 的排序指明了对应的 box 的下标</span></span><br><span class="line">print(boxes[index])</span><br><span class="line">print(boxscores) <span class="comment"># 注意, scores 不需要用 index 获取, scores 已经是更新过的排序 scores</span></span><br></pre></td></tr></table></figure>
+<h1 id="介绍一下其他的-NMS-算法"><a href="#介绍一下其他的-NMS-算法" class="headerlink" title="介绍一下其他的 NMS 算法"></a>介绍一下其他的 NMS 算法</h1><p><a href="https://hellozhaozheng.github.io/z_post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89-SofterNMS-Arxiv2018/" target="_blank" rel="noopener">Face++论文：Softer-NMS-Arvix 2018</a><br>作者: Yihui He, Xiangyu Zhang, Kris Kitani, Marios Savvides<br>发表:<br>机构: CMU &amp; Face++</p>
+<p>python代码实现：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">nms</span><span class="params">(bounding_boxes, confidence_score, threshold)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(bounding_boxes) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> [], []</span><br><span class="line"></span><br><span class="line">    bboxes = np.array(bounding_boxes)</span><br><span class="line"></span><br><span class="line">    x1 = bboxes[:, <span class="number">0</span>]</span><br><span class="line">    y1 = bboxes[:, <span class="number">1</span>]</span><br><span class="line">    x2 = bboxes[:, <span class="number">2</span>]</span><br><span class="line">    y2 = bboxes[:, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">    score = np.array(confidence_score)</span><br><span class="line"></span><br><span class="line">    picked_boxes = []</span><br><span class="line">    picked_score = []</span><br><span class="line"></span><br><span class="line">    areas =(x2 - x1 + <span class="number">1</span>) * (y2 - y1 + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    order = np.argsort(score)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> order.size &gt; <span class="number">0</span>:</span><br><span class="line">        index = order[<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line">        picked_boxes.append(bounding_boxes[index])</span><br><span class="line">        picked_score.append(confidence_score[index])</span><br><span class="line"></span><br><span class="line">        x11 = np.maximum(x1[index], x1[order[:<span class="number">-1</span>]])</span><br><span class="line">        y11 = np.maximum(y1[index], y1[order[:<span class="number">-1</span>]])</span><br><span class="line">        x22 = np.minimum(x2[index], x2[order[:<span class="number">-1</span>]])</span><br><span class="line">        y22 = np.minimum(y2[index], y2[order[:<span class="number">-1</span>]])</span><br><span class="line"></span><br><span class="line">        w = np.maximum(<span class="number">0.0</span>, x22 - x11 + <span class="number">1</span>)</span><br><span class="line">        h = np.maximum(<span class="number">0.0</span>, y22 - y11 + <span class="number">1</span>)</span><br><span class="line">        intersection = w * h</span><br><span class="line"></span><br><span class="line">        ratio = intersection / (areas[index] + areas[order[:<span class="number">-1</span>]] - intersection)</span><br><span class="line"></span><br><span class="line">        left = np.where(ratio &lt; threshold)</span><br><span class="line">        order = order[left]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> picked_boxes, picked_score</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    img_path = <span class="string">"/home/zerozone/Pictures/testimg/face.jpg"</span></span><br><span class="line">    bounding_boxes = [(<span class="number">187</span>, <span class="number">82</span>, <span class="number">337</span>, <span class="number">317</span>), (<span class="number">150</span>, <span class="number">67</span>, <span class="number">305</span>, <span class="number">282</span>),</span><br><span class="line">            (<span class="number">246</span>, <span class="number">121</span>, <span class="number">368</span>, <span class="number">304</span>)]</span><br><span class="line">    confidence_score = [<span class="number">0.9</span>, <span class="number">0.75</span>, <span class="number">0.8</span>]</span><br><span class="line">    image = cv2.imread(img_path)</span><br><span class="line">    orig = image.copy()</span><br><span class="line"></span><br><span class="line">    font = cv2.FONT_HERSHEY_SIMPLEX</span><br><span class="line">    font_scale = <span class="number">0.7</span></span><br><span class="line">    thickness = <span class="number">2</span></span><br><span class="line">    threshold = <span class="number">0.5</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Draw bboxes and score</span></span><br><span class="line">    <span class="keyword">for</span> (x1, y1, x2, y2), confidence <span class="keyword">in</span> zip(bounding_boxes, confidence_score):</span><br><span class="line">        (w, h), baseline = cv2.getTextSize(</span><br><span class="line">                str(confidence), font, font_scale, thickness)</span><br><span class="line">        cv2.rectangle(orig, (x1, y1 - (<span class="number">2</span> * baseline + <span class="number">5</span>)),</span><br><span class="line">                (x1 + w, y1), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">-1</span>)</span><br><span class="line">        cv2.rectangle(orig, (x1, y1), (x2, y2), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line">        cv2.putText(orig, str(confidence), (x1, y1),</span><br><span class="line">                font, font_scale, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, thickness))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Draw bboxes and score after NMS</span></span><br><span class="line">    picked_boxes, picked_score = nms(bounding_boxes, confidence_score, threshold)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (x1, y1, x2, y2), confidence <span class="keyword">in</span> zip(picked_boxes, picked_score):</span><br><span class="line">        (w, h), baseline = cv2.getTextSize(</span><br><span class="line">                str(confidence), font, font_scale, thickness)</span><br><span class="line">        cv2.rectangle(image, (x1, y1 - (<span class="number">2</span> * baseline + <span class="number">5</span>)),</span><br><span class="line">                (x1 + w, y1), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">-1</span>)</span><br><span class="line">        cv2.rectangle(image, (x1, y1), (x2, y2), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line">        cv2.putText(image, str(confidence), (x1, y1),</span><br><span class="line">                font, font_scale, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, thickness))</span><br><span class="line">    cv2.imshow(<span class="string">"origin"</span>, orig)</span><br><span class="line">    cv2.imshow(<span class="string">"NMS"</span>, image)</span><br><span class="line">    cv2.waitKey(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></p>
+<p>c++代码实现：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Bbox</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> x1;</span><br><span class="line">    <span class="keyword">int</span> y1;</span><br><span class="line">    <span class="keyword">int</span> x2;</span><br><span class="line">    <span class="keyword">int</span> y2;</span><br><span class="line">    <span class="keyword">float</span> score;</span><br><span class="line">    Bbox(<span class="keyword">int</span> x1_, <span class="keyword">int</span> y1_, <span class="keyword">int</span> x2_, <span class="keyword">int</span> y2_, <span class="keyword">float</span> s):</span><br><span class="line">	x1(x1_), y1(y1_), x2(x2_), y2(y2_), score(s) &#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">iou</span><span class="params">(Bbox box1, Bbox box2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">float</span> area1 = (box1.x2 - box1.x1 + <span class="number">1</span>) * (box1.y2 - box1.y1 + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">float</span> area2 = (box2.x2 - box2.x1 + <span class="number">1</span>) * (box2.y2 - box2.y1 + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> x11 = <span class="built_in">std</span>::max(box1.x1, box2.x1);</span><br><span class="line">    <span class="keyword">int</span> y11 = <span class="built_in">std</span>::max(box1.y1, box2.y1);</span><br><span class="line">    <span class="keyword">int</span> x22 = <span class="built_in">std</span>::min(box1.x2, box2.x2);</span><br><span class="line">    <span class="keyword">int</span> y22 = <span class="built_in">std</span>::min(box1.y2, box2.y2);</span><br><span class="line">    <span class="keyword">float</span> intersection = (x22 - x11 + <span class="number">1</span>) * (y22 - y11 + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> intersection / (area1 + area2 - intersection);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Bbox&gt; nms(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Bbox&gt; &amp;vecBbox, <span class="keyword">float</span> threshold) &#123;</span><br><span class="line">    <span class="keyword">auto</span> cmpScore = [](Bbox box1, Bbox box2) &#123;</span><br><span class="line">	<span class="keyword">return</span> box1.score &lt; box2.score; <span class="comment">// 升序排列, 令score最大的box在vector末端</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">std</span>::sort(vecBbox.begin(), vecBbox.end(), cmpScore);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Bbox&gt; pickedBbox;</span><br><span class="line">    <span class="keyword">while</span> (vecBbox.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        pickedBbox.emplace_back(vecBbox.back());</span><br><span class="line">        vecBbox.pop_back();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; vecBbox.size(); i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (iou(pickedBbox.back(), vecBbox[i]) &gt;= threshold) &#123;</span><br><span class="line">                vecBbox.erase(vecBbox.begin() + i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pickedBbox;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Bbox&gt; vecBbox;</span><br><span class="line">    vecBbox.emplace_back(Bbox(<span class="number">187</span>, <span class="number">82</span>, <span class="number">337</span>, <span class="number">317</span>, <span class="number">0.9</span>));</span><br><span class="line">    vecBbox.emplace_back(Bbox(<span class="number">150</span>, <span class="number">67</span>, <span class="number">305</span>, <span class="number">282</span>, <span class="number">0.75</span>));</span><br><span class="line">    vecBbox.emplace_back(Bbox(<span class="number">246</span>, <span class="number">121</span>, <span class="number">368</span>, <span class="number">304</span>, <span class="number">0.8</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> pickedBbox = nms(vecBbox, <span class="number">0.5</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> box : pickedBbox) &#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; box.x1 &lt;&lt; <span class="string">", "</span> &lt;&lt;</span><br><span class="line">		box.y1 &lt;&lt; <span class="string">", "</span> &lt;&lt;</span><br><span class="line">		box.x2 &lt;&lt; <span class="string">", "</span> &lt;&lt;</span><br><span class="line">		box.y2 &lt;&lt; <span class="string">", "</span> &lt;&lt;</span><br><span class="line">		box.score &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://hellozhaozheng.github.io/z_post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89-NMS-Implementation/" target="_blank" rel="noopener">NMS 算法源码实现</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/08/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91PyTorch%20Compile%20from%20source%20code/" rel="prev" title="PyTorch笔记/【Entries】PyTorch Compile from source code">
+      <i class="fa fa-chevron-left"></i> PyTorch笔记/【Entries】PyTorch Compile from source code
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/26/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Entries%E3%80%91virtual%20environment/" rel="next" title="开发环境与工具/【Entries】virtual environment">
+      开发环境与工具/【Entries】virtual environment <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简述-Soft-NMS-的原理"><span class="nav-number">1.</span> <span class="nav-text">简述 Soft-NMS 的原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Soft-NMS-算法源码实现"><span class="nav-number">2.</span> <span class="nav-text">Soft-NMS 算法源码实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#介绍一下其他的-NMS-算法"><span class="nav-number">3.</span> <span class="nav-text">介绍一下其他的 NMS 算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

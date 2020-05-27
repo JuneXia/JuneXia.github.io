@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="父类 Sampler首先需要知道的是所有的采样器都继承自Sampler这个类，如下： 可以看到主要有三种方法：分别是：  __init__: 这个很好理解，就是初始化 __iter__: 这个是用来产生迭代索引值的，也就是指定每个step需要读取哪些数据 __len__: 这个是用来返回每次迭代器的长度  123456789101112131415161718192021222324252627">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch笔记&#x2F;【Tutorials】torch.utils.data Sampler">
+<meta property="og:url" content="http://yoursite.com/2020/04/16/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.utils.data%20Sampler/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="父类 Sampler首先需要知道的是所有的采样器都继承自Sampler这个类，如下： 可以看到主要有三种方法：分别是：  __init__: 这个很好理解，就是初始化 __iter__: 这个是用来产生迭代索引值的，也就是指定每个step需要读取哪些数据 __len__: 这个是用来返回每次迭代器的长度  123456789101112131415161718192021222324252627">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-27T02:25:46.726Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/04/16/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.utils.data%20Sampler/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>PyTorch笔记/【Tutorials】torch.utils.data Sampler | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.utils.data%20Sampler/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch笔记/【Tutorials】torch.utils.data Sampler
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-04-16 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-16T00:00:00+08:00">2020-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-27 10:25:46" itemprop="dateModified" datetime="2020-05-27T10:25:46+08:00">2020-05-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyTorch%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">PyTorch笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+<h1 id="父类-Sampler"><a href="#父类-Sampler" class="headerlink" title="父类 Sampler"></a>父类 Sampler</h1><p>首先需要知道的是所有的采样器都继承自Sampler这个类，如下：</p>
+<p>可以看到主要有三种方法：分别是：</p>
+<ul>
+<li><strong>__init__</strong>: 这个很好理解，就是初始化</li>
+<li><strong>__iter__</strong>: 这个是用来产生迭代索引值的，也就是指定每个step需要读取哪些数据</li>
+<li><strong>__len__</strong>: 这个是用来返回每次迭代器的长度</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sampler</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">r"""Base class for all Samplers.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Every Sampler subclass has to provide an :meth:`__iter__` method, providing a</span></span><br><span class="line"><span class="string">    way to iterate over indices of dataset elements, and a :meth:`__len__` method</span></span><br><span class="line"><span class="string">    that returns the length of the returned iterators.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. note:: The :meth:`__len__` method isn't strictly required by</span></span><br><span class="line"><span class="string">              :class:`~torch.utils.data.DataLoader`, but is expected in any</span></span><br><span class="line"><span class="string">              calculation involving the length of a :class:`~torch.utils.data.DataLoader`.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data_source)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">raise</span> NotImplementedError</span><br><span class="line"></span><br><span class="line">    <span class="comment"># NOTE [ Lack of Default `__len__` in Python Abstract Base Classes ]</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment"># Many times we have an abstract class representing a collection/iterable of</span></span><br><span class="line">    <span class="comment"># data, e.g., `torch.utils.data.Sampler`, with its subclasses optionally</span></span><br><span class="line">    <span class="comment"># implementing a `__len__` method. In such cases, we must make sure to not</span></span><br><span class="line">    <span class="comment"># provide a default implementation, because both straightforward default</span></span><br><span class="line">    <span class="comment"># implementations have their issues:</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment">#   + `return NotImplemented`:</span></span><br><span class="line">    <span class="comment">#     Calling `len(subclass_instance)` raises:</span></span><br><span class="line">    <span class="comment">#       TypeError: 'NotImplementedType' object cannot be interpreted as an integer</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment">#   + `raise NotImplementedError()`:</span></span><br><span class="line">    <span class="comment">#     This prevents triggering some fallback behavior. E.g., the built-in</span></span><br><span class="line">    <span class="comment">#     `list(X)` tries to call `len(X)` first, and executes a different code</span></span><br><span class="line">    <span class="comment">#     path if the method is not found or `NotImplemented` is returned, while</span></span><br><span class="line">    <span class="comment">#     raising an `NotImplementedError` will propagate and and make the call</span></span><br><span class="line">    <span class="comment">#     fail where it could have use `__iter__` to complete the call.</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment"># Thus, the only two sensible things to do are</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment">#   + **not** provide a default `__len__`.</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment">#   + raise a `TypeError` instead, which is what Python uses when users call</span></span><br><span class="line">    <span class="comment">#     a method that is not defined on an object.</span></span><br><span class="line">    <span class="comment">#     (@ssnl verifies that this works on at least Python 3.7.)</span></span><br></pre></td></tr></table></figure>
+<h1 id="Sampler-的子类"><a href="#Sampler-的子类" class="headerlink" title="Sampler 的子类"></a>Sampler 的子类</h1><h2 id="顺序采样-SequentialSampler"><a href="#顺序采样-SequentialSampler" class="headerlink" title="顺序采样 SequentialSampler"></a>顺序采样 SequentialSampler</h2><p>这个看名字就很好理解，其实就是按顺序对数据集采样。</p>
+<p>其原理是首先在初始化的时候拿到数据集data_source，之后在<strong>iter</strong>方法中首先得到一个和data_source一样长度的range可迭代器。每次只会返回一个索引值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SequentialSampler</span><span class="params">(Sampler)</span>:</span></span><br><span class="line">    <span class="string">r"""Samples elements sequentially, always in the same order.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Arguments:</span></span><br><span class="line"><span class="string">        data_source (Dataset): dataset to sample from</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data_source)</span>:</span></span><br><span class="line">        self.data_source = data_source</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> iter(range(len(self.data_source)))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.data_source)</span><br></pre></td></tr></table></figure>
+<p>代码示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">max_epoches = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">index_list = [<span class="number">1</span>, <span class="number">5</span>, <span class="number">78</span>, <span class="number">9</span>, <span class="number">68</span>]</span><br><span class="line">sampler = torch.utils.data.SequentialSampler(index_list)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(max_epoches):</span><br><span class="line">    print(<span class="string">'epoch'</span>, epoch, end=<span class="string">':\t'</span>)</span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> sampler:</span><br><span class="line">        print(idx, end=<span class="string">' '</span>)</span><br><span class="line">    print(<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># output: </span></span><br><span class="line">epoch <span class="number">0</span>:	<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> </span><br><span class="line">epoch <span class="number">1</span>:	<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> </span><br><span class="line">epoch <span class="number">2</span>:	<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="随机采样-RandomSampler"><a href="#随机采样-RandomSampler" class="headerlink" title="随机采样 RandomSampler"></a>随机采样 RandomSampler</h2><p>参数说明：</p>
+<ul>
+<li><strong>data_source</strong>: 同上</li>
+<li><strong>num_samples</strong>: 指定采样的数量，默认是所有。</li>
+<li><strong>replacement</strong>: 若为True，则表示可以重复采样，即同一个样本可以重复采样，这样可能导致有的样本采样不到。所以此时我们可以设置num_samples来增加采样数量使得每个样本都可能被采样到。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RandomSampler</span><span class="params">(Sampler)</span>:</span></span><br><span class="line">    <span class="string">r"""Samples elements randomly. If without replacement, then sample from a shuffled dataset.</span></span><br><span class="line"><span class="string">    If with replacement, then user can specify :attr:`num_samples` to draw.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Arguments:</span></span><br><span class="line"><span class="string">        data_source (Dataset): dataset to sample from</span></span><br><span class="line"><span class="string">        replacement (bool): samples are drawn with replacement if ``True``, default=``False``</span></span><br><span class="line"><span class="string">        num_samples (int): number of samples to draw, default=`len(dataset)`. This argument</span></span><br><span class="line"><span class="string">            is supposed to be specified only when `replacement` is ``True``.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data_source, replacement=False, num_samples=None)</span>:</span></span><br><span class="line">        self.data_source = data_source</span><br><span class="line">        self.replacement = replacement</span><br><span class="line">        self._num_samples = num_samples</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(self.replacement, bool):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"replacement should be a boolean value, but got "</span></span><br><span class="line">                             <span class="string">"replacement=&#123;&#125;"</span>.format(self.replacement))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self._num_samples <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> <span class="keyword">not</span> replacement:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"With replacement=False, num_samples should not be specified, "</span></span><br><span class="line">                             <span class="string">"since a random permute will be performed."</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(self.num_samples, int) <span class="keyword">or</span> self.num_samples &lt;= <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"num_samples should be a positive integer "</span></span><br><span class="line">                             <span class="string">"value, but got num_samples=&#123;&#125;"</span>.format(self.num_samples))</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">num_samples</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># dataset size might change at runtime</span></span><br><span class="line">        <span class="keyword">if</span> self._num_samples <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> len(self.data_source)</span><br><span class="line">        <span class="keyword">return</span> self._num_samples</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        n = len(self.data_source)</span><br><span class="line">        <span class="keyword">if</span> self.replacement:</span><br><span class="line">            <span class="keyword">return</span> iter(torch.randint(high=n, size=(self.num_samples,), dtype=torch.int64).tolist())</span><br><span class="line">        <span class="keyword">return</span> iter(torch.randperm(n).tolist())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.num_samples</span><br></pre></td></tr></table></figure>
+<p>代码示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">max_epoches = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">index_list = [<span class="number">1</span>, <span class="number">5</span>, <span class="number">78</span>, <span class="number">9</span>, <span class="number">68</span>]</span><br><span class="line">sampler = torch.utils.data.RandomSampler(index_list, replacement=<span class="literal">True</span>, num_samples=<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(max_epoches):</span><br><span class="line">    print(<span class="string">'epoch'</span>, epoch, end=<span class="string">':\t'</span>)</span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> sampler:</span><br><span class="line">        print(idx, end=<span class="string">' '</span>)</span><br><span class="line">    print(<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 改变 torch.utils.data.RandomSampler 的参数，会有以下输出结果：</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sampler = torch.utils.data.RandomSampler(index_list, replacement=False, num_samples=None)</span></span><br><span class="line">epoch <span class="number">0</span>:	<span class="number">2</span> <span class="number">0</span> <span class="number">4</span> <span class="number">1</span> <span class="number">3</span> </span><br><span class="line">epoch <span class="number">1</span>:	<span class="number">3</span> <span class="number">4</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> </span><br><span class="line">epoch <span class="number">2</span>:	<span class="number">2</span> <span class="number">3</span> <span class="number">1</span> <span class="number">0</span> <span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sampler = torch.utils.data.RandomSampler(index_list, replacement=False, num_samples=None)</span></span><br><span class="line">不允许的操作，会崩溃</span><br><span class="line"></span><br><span class="line"><span class="comment"># sampler = torch.utils.data.RandomSampler(index_list, replacement=True, num_samples=None)</span></span><br><span class="line">epoch <span class="number">0</span>:	<span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> </span><br><span class="line">epoch <span class="number">1</span>:	<span class="number">2</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> </span><br><span class="line">epoch <span class="number">2</span>:	<span class="number">4</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">2</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># sampler = torch.utils.data.RandomSampler(index_list, replacement=True, num_samples=4)</span></span><br><span class="line">epoch <span class="number">0</span>:	<span class="number">3</span> <span class="number">3</span> <span class="number">0</span> <span class="number">4</span> </span><br><span class="line">epoch <span class="number">1</span>:	<span class="number">3</span> <span class="number">2</span> <span class="number">0</span> <span class="number">3</span> </span><br><span class="line">epoch <span class="number">2</span>:	<span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sampler = torch.utils.data.RandomSampler(index_list, replacement=True, num_samples=7)</span></span><br><span class="line">epoch <span class="number">0</span>:	<span class="number">4</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">3</span> <span class="number">4</span> </span><br><span class="line">epoch <span class="number">1</span>:	<span class="number">1</span> <span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">4</span> <span class="number">0</span> <span class="number">0</span> </span><br><span class="line">epoch <span class="number">2</span>:	<span class="number">1</span> <span class="number">4</span> <span class="number">0</span> <span class="number">2</span> <span class="number">2</span> <span class="number">4</span> <span class="number">3</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="从子集采样-SubsetRandomSampler"><a href="#从子集采样-SubsetRandomSampler" class="headerlink" title="从子集采样 SubsetRandomSampler"></a>从子集采样 SubsetRandomSampler</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubsetRandomSampler</span><span class="params">(Sampler)</span>:</span></span><br><span class="line">    <span class="string">r"""Samples elements randomly from a given list of indices, without replacement.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Arguments:</span></span><br><span class="line"><span class="string">        indices (sequence): a sequence of indices</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, indices)</span>:</span></span><br><span class="line">        self.indices = indices</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> (self.indices[i] <span class="keyword">for</span> i <span class="keyword">in</span> torch.randperm(len(self.indices)))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.indices)</span><br></pre></td></tr></table></figure>
+<p>这个采样器常见的使用场景是将训练集划分成训练集和验证集，示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"><span class="keyword">from</span> tools.my_dataset <span class="keyword">import</span> RMBDataset</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> libml.utils.config <span class="keyword">import</span> SysConfig</span><br><span class="line"></span><br><span class="line">norm_mean = [<span class="number">0.485</span>, <span class="number">0.456</span>, <span class="number">0.406</span>]</span><br><span class="line">norm_std = [<span class="number">0.229</span>, <span class="number">0.224</span>, <span class="number">0.225</span>]</span><br><span class="line"></span><br><span class="line">train_transform = transforms.Compose([</span><br><span class="line">    transforms.Resize((<span class="number">32</span>, <span class="number">32</span>)),</span><br><span class="line">    transforms.RandomCrop(<span class="number">32</span>, padding=<span class="number">4</span>),</span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">    transforms.Normalize(norm_mean, norm_std),</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">flag = <span class="literal">True</span></span><br><span class="line"><span class="comment"># flag = False</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    max_epoches = <span class="number">3</span></span><br><span class="line">    batch_size = <span class="number">10</span></span><br><span class="line">    split_dir = os.path.join(SysConfig[<span class="string">'home_path'</span>], <span class="string">'res'</span>, <span class="string">'RMB_data/rmb_split'</span>)</span><br><span class="line">    train_dir = os.path.join(split_dir, <span class="string">"train"</span>)</span><br><span class="line">    train_data = RMBDataset(data_dir=train_dir, transform=train_transform)</span><br><span class="line">    n_train = len(train_data)</span><br><span class="line">    split = n_train // <span class="number">3</span></span><br><span class="line">    indices = list(range(n_train))</span><br><span class="line">    random.shuffle(indices)</span><br><span class="line">    train_sampler = torch.utils.data.sampler.SubsetRandomSampler(indices[split:])</span><br><span class="line">    valid_sampler = torch.utils.data.sampler.SubsetRandomSampler(indices[:split])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 注意：DataLoader如果使用sampler的话，是不能设置shuffle为True的</span></span><br><span class="line">    train_loader = DataLoader(dataset=train_data, batch_size=batch_size, shuffle=<span class="literal">False</span>, sampler=train_sampler)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> range(max_epoches):</span><br><span class="line">        print(<span class="string">'epoch'</span>, epoch, end=<span class="string">':\t'</span>)</span><br><span class="line">        <span class="keyword">for</span> data <span class="keyword">in</span> train_loader:</span><br><span class="line">            print(data)</span><br><span class="line">        print(<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="带权重的随机采样-WeightedRandomSampler"><a href="#带权重的随机采样-WeightedRandomSampler" class="headerlink" title="带权重的随机采样 WeightedRandomSampler"></a>带权重的随机采样 WeightedRandomSampler</h2><p>参数说明：</p>
+<ul>
+<li><strong>weights</strong>: 为每张图片赋予一个权重，且权重和数值大小无关，只与权重相互之间的比值有关</li>
+<li><strong>num_samples</strong>: 同前</li>
+<li><strong>replacement</strong>: 同前</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WeightedRandomSampler</span><span class="params">(Sampler)</span>:</span></span><br><span class="line">    <span class="string">r"""Samples elements from ``[0,..,len(weights)-1]`` with given probabilities (weights).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        weights (sequence)   : a sequence of weights, not necessary summing up to one</span></span><br><span class="line"><span class="string">        num_samples (int): number of samples to draw</span></span><br><span class="line"><span class="string">        replacement (bool): if ``True``, samples are drawn with replacement.</span></span><br><span class="line"><span class="string">            If not, they are drawn without replacement, which means that when a</span></span><br><span class="line"><span class="string">            sample index is drawn for a row, it cannot be drawn again for that row.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Example:</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; list(WeightedRandomSampler([0.1, 0.9, 0.4, 0.7, 3.0, 0.6], 5, replacement=True))</span></span><br><span class="line"><span class="string">        [0, 0, 0, 1, 0]</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; list(WeightedRandomSampler([0.9, 0.4, 0.05, 0.2, 0.3, 0.1], 5, replacement=False))</span></span><br><span class="line"><span class="string">        [0, 1, 4, 3, 2]</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, weights, num_samples, replacement=True)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(num_samples, _int_classes) <span class="keyword">or</span> isinstance(num_samples, bool) <span class="keyword">or</span> \</span><br><span class="line">                num_samples &lt;= <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"num_samples should be a positive integer "</span></span><br><span class="line">                             <span class="string">"value, but got num_samples=&#123;&#125;"</span>.format(num_samples))</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(replacement, bool):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"replacement should be a boolean value, but got "</span></span><br><span class="line">                             <span class="string">"replacement=&#123;&#125;"</span>.format(replacement))</span><br><span class="line">        self.weights = torch.as_tensor(weights, dtype=torch.double)</span><br><span class="line">        self.num_samples = num_samples</span><br><span class="line">        self.replacement = replacement</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> iter(torch.multinomial(self.weights, self.num_samples, self.replacement).tolist())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.num_samples</span><br></pre></td></tr></table></figure>
+<p>使用示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="literal">True</span></span><br><span class="line"><span class="comment"># flag = False</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    max_epoches = <span class="number">3</span></span><br><span class="line">    batch_size = <span class="number">10</span></span><br><span class="line">    split_dir = os.path.join(SysConfig[<span class="string">'home_path'</span>], <span class="string">'res'</span>, <span class="string">'RMB_data/rmb_split'</span>)</span><br><span class="line">    train_dir = os.path.join(split_dir, <span class="string">"train"</span>)</span><br><span class="line">    train_data = RMBDataset(data_dir=train_dir, transform=train_transform)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># ============================ 为每张图片赋予一个权重 ============================</span></span><br><span class="line">    <span class="comment"># 这里的权重与实际大小无关，只与相互之间的比值有关</span></span><br><span class="line">    weights = []</span><br><span class="line">    <span class="keyword">for</span> _, label <span class="keyword">in</span> train_data:</span><br><span class="line">        <span class="keyword">if</span> label == <span class="number">0</span>:</span><br><span class="line">            weights.append(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            weights.append(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    n_train = len(train_data)</span><br><span class="line">    train_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, n_train + <span class="number">2</span>, replacement=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    train_loader = DataLoader(dataset=train_data, batch_size=batch_size, shuffle=<span class="literal">False</span>, sampler=train_sampler)</span><br><span class="line"></span><br><span class="line">    actual_labels = []</span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> range(max_epoches):</span><br><span class="line">        print(<span class="string">'epoch'</span>, epoch)</span><br><span class="line">        <span class="keyword">for</span> i, data <span class="keyword">in</span> enumerate(train_loader):</span><br><span class="line">            print(i, data[<span class="number">1</span>])</span><br><span class="line">            actual_labels.extend(data[<span class="number">1</span>].numpy().tolist())</span><br><span class="line">        print(<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'0/1: &#123;&#125;'</span>.format(actual_labels.count(<span class="number">0</span>) / actual_labels.count(<span class="number">1</span>)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output: </span></span><br><span class="line">epoch <span class="number">0</span></span><br><span class="line"><span class="number">0</span> tensor([<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>])</span><br><span class="line">...</span><br><span class="line"><span class="number">15</span> tensor([<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>])</span><br><span class="line"><span class="number">16</span> tensor([<span class="number">1</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">epoch <span class="number">1</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">epoch <span class="number">2</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3个epoch所取出的样本中标签为0和1的样本比例为0.5，符合我们设定的权重比值</span></span><br><span class="line"><span class="number">0</span>/<span class="number">1</span>: <span class="number">0.5046439628482973</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="批量采样器-BatchSampler"><a href="#批量采样器-BatchSampler" class="headerlink" title="批量采样器 BatchSampler"></a>批量采样器 BatchSampler</h2><p>上面讲的采样器每次都只能采样一个样本(当然sampler通过DataLoader的封装后可以实现批量采样)，下面这个采样器可以每次产生一个批量的样本。</p>
+<ul>
+<li><strong>sampler</strong>: 一个单输出采样器，可以用上面的采样器实例，BatchSampler通过这个sampler产生一个batch的样本索引</li>
+<li><strong>batch_size</strong>: 使用BatchSampler需要设置batch_size，注意这时候在DataLoader中就不需要设置batch_size了</li>
+<li><strong>drop_last</strong>: </li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BatchSampler</span><span class="params">(Sampler)</span>:</span></span><br><span class="line">    <span class="string">r"""Wraps another sampler to yield a mini-batch of indices.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        sampler (Sampler): Base sampler.</span></span><br><span class="line"><span class="string">        batch_size (int): Size of mini-batch.</span></span><br><span class="line"><span class="string">        drop_last (bool): If ``True``, the sampler will drop the last batch if</span></span><br><span class="line"><span class="string">            its size would be less than ``batch_size``</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Example:</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; list(BatchSampler(SequentialSampler(range(10)), batch_size=3, drop_last=False))</span></span><br><span class="line"><span class="string">        [[0, 1, 2], [3, 4, 5], [6, 7, 8], [9]]</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; list(BatchSampler(SequentialSampler(range(10)), batch_size=3, drop_last=True))</span></span><br><span class="line"><span class="string">        [[0, 1, 2], [3, 4, 5], [6, 7, 8]]</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, sampler, batch_size, drop_last)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(sampler, Sampler):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"sampler should be an instance of "</span></span><br><span class="line">                             <span class="string">"torch.utils.data.Sampler, but got sampler=&#123;&#125;"</span></span><br><span class="line">                             .format(sampler))</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(batch_size, _int_classes) <span class="keyword">or</span> isinstance(batch_size, bool) <span class="keyword">or</span> \</span><br><span class="line">                batch_size &lt;= <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"batch_size should be a positive integer value, "</span></span><br><span class="line">                             <span class="string">"but got batch_size=&#123;&#125;"</span>.format(batch_size))</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(drop_last, bool):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"drop_last should be a boolean value, but got "</span></span><br><span class="line">                             <span class="string">"drop_last=&#123;&#125;"</span>.format(drop_last))</span><br><span class="line">        self.sampler = sampler</span><br><span class="line">        self.batch_size = batch_size</span><br><span class="line">        self.drop_last = drop_last</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        batch = []</span><br><span class="line">        <span class="keyword">for</span> idx <span class="keyword">in</span> self.sampler:</span><br><span class="line">            batch.append(idx)</span><br><span class="line">            <span class="keyword">if</span> len(batch) == self.batch_size:</span><br><span class="line">                <span class="keyword">yield</span> batch</span><br><span class="line">                batch = []</span><br><span class="line">        <span class="keyword">if</span> len(batch) &gt; <span class="number">0</span> <span class="keyword">and</span> <span class="keyword">not</span> self.drop_last:</span><br><span class="line">            <span class="keyword">yield</span> batch</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.drop_last:</span><br><span class="line">            <span class="keyword">return</span> len(self.sampler) // self.batch_size</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> (len(self.sampler) + self.batch_size - <span class="number">1</span>) // self.batch_size</span><br></pre></td></tr></table></figure>
+<p>使用示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="literal">True</span></span><br><span class="line"><span class="comment"># flag = False</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    max_epoches = <span class="number">3</span></span><br><span class="line">    batch_size = <span class="number">10</span></span><br><span class="line">    split_dir = os.path.join(SysConfig[<span class="string">'home_path'</span>], <span class="string">'res'</span>, <span class="string">'RMB_data/rmb_split'</span>)</span><br><span class="line">    train_dir = os.path.join(split_dir, <span class="string">"train"</span>)</span><br><span class="line">    train_data = RMBDataset(data_dir=train_dir, transform=train_transform)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># ============================ 为每张图片赋予一个权重 ============================</span></span><br><span class="line">    <span class="comment"># 这里的权重与实际大小无关，只与相互之间的比值有关</span></span><br><span class="line">    weights = []</span><br><span class="line">    <span class="keyword">for</span> _, label <span class="keyword">in</span> train_data:</span><br><span class="line">        <span class="keyword">if</span> label == <span class="number">0</span>:</span><br><span class="line">            weights.append(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            weights.append(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    n_train = len(train_data)</span><br><span class="line"></span><br><span class="line">    index_list = [<span class="number">1</span>, <span class="number">5</span>, <span class="number">78</span>, <span class="number">9</span>, <span class="number">68</span>]</span><br><span class="line">    <span class="comment"># sampler = torch.utils.data.SequentialSampler(list(range(len(train_data))))</span></span><br><span class="line">    sampler = torch.utils.data.RandomSampler(list(range(len(train_data))), replacement=<span class="literal">False</span>, num_samples=<span class="literal">None</span>)</span><br><span class="line">    train_sampler = torch.utils.data.sampler.BatchSampler(sampler, batch_size=<span class="number">3</span>, drop_last=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 如果使用batch_sampler，则DataLoader的batch_size需要设置为1，shuffle需设置为False</span></span><br><span class="line">    train_loader = DataLoader(dataset=train_data, batch_size=<span class="number">1</span>, shuffle=<span class="literal">False</span>, batch_sampler=train_sampler)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 直接迭代train_sampler采样器，得到的是一个个索引值</span></span><br><span class="line">    <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line">    <span class="keyword">for</span> data <span class="keyword">in</span> train_sampler:</span><br><span class="line">        print(data)</span><br><span class="line">    print(<span class="string">''</span>)</span><br><span class="line">    <span class="comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span><br><span class="line"></span><br><span class="line">    actual_labels = []</span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> range(max_epoches):</span><br><span class="line">        print(<span class="string">'epoch'</span>, epoch)</span><br><span class="line">        <span class="keyword">for</span> i, data <span class="keyword">in</span> enumerate(train_loader):</span><br><span class="line">            print(i, data[<span class="number">1</span>])</span><br><span class="line">        print(<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'0/1: &#123;&#125;'</span>.format(actual_labels.count(<span class="number">0</span>) / actual_labels.count(<span class="number">1</span>)))</span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/11/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20OCR%E3%80%91PSENet/" rel="prev" title="dl/【Paper笔记 OCR】PSENet">
+      <i class="fa fa-chevron-left"></i> dl/【Paper笔记 OCR】PSENet
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/22/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Detection%E3%80%91YOLO-v1/" rel="next" title="dl/【Paper笔记 Detection】YOLO-v1">
+      dl/【Paper笔记 Detection】YOLO-v1 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#父类-Sampler"><span class="nav-number">1.</span> <span class="nav-text">父类 Sampler</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sampler-的子类"><span class="nav-number">2.</span> <span class="nav-text">Sampler 的子类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#顺序采样-SequentialSampler"><span class="nav-number">2.1.</span> <span class="nav-text">顺序采样 SequentialSampler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机采样-RandomSampler"><span class="nav-number">2.2.</span> <span class="nav-text">随机采样 RandomSampler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从子集采样-SubsetRandomSampler"><span class="nav-number">2.3.</span> <span class="nav-text">从子集采样 SubsetRandomSampler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带权重的随机采样-WeightedRandomSampler"><span class="nav-number">2.4.</span> <span class="nav-text">带权重的随机采样 WeightedRandomSampler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#批量采样器-BatchSampler"><span class="nav-number">2.5.</span> <span class="nav-text">批量采样器 BatchSampler</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

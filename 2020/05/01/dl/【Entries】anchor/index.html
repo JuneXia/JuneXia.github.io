@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="什么是anchor?anchor最初是在Faster R-CNN中提出来，后来在YOLO、SSD中得到了广泛的应用。 feature-map 中的一个点在原图中的映射框就是anchor框(anchor-box)，而该anchor-box的中心点就是anchor，有些时候anchor和anchor-box是一个意思，具体可根据文章语境理解。（注意：anchor-box不是feature-map中的框">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dl&#x2F;【Entries】anchor">
+<meta property="og:url" content="http://yoursite.com/2020/05/01/dl/%E3%80%90Entries%E3%80%91anchor/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="什么是anchor?anchor最初是在Faster R-CNN中提出来，后来在YOLO、SSD中得到了广泛的应用。 feature-map 中的一个点在原图中的映射框就是anchor框(anchor-box)，而该anchor-box的中心点就是anchor，有些时候anchor和anchor-box是一个意思，具体可根据文章语境理解。（注意：anchor-box不是feature-map中的框">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/anchor_example.gif">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/pos-anchor.gif">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/fasterrcnn_anchor1.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/fasterrcnn_anchor2.jpg">
+<meta property="article:published_time" content="2020-04-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-26T09:25:19.854Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/anchor_example.gif">
+
+<link rel="canonical" href="http://yoursite.com/2020/05/01/dl/%E3%80%90Entries%E3%80%91anchor/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>dl/【Entries】anchor | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/01/dl/%E3%80%90Entries%E3%80%91anchor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          dl/【Entries】anchor
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-01T00:00:00+08:00">2020-05-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-26 17:25:19" itemprop="dateModified" datetime="2020-05-26T17:25:19+08:00">2020-05-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="什么是anchor"><a href="#什么是anchor" class="headerlink" title="什么是anchor?"></a>什么是anchor?</h1><p>anchor最初是在Faster R-CNN中提出来，后来在YOLO、SSD中得到了广泛的应用。</p>
+<p>feature-map 中的一个点在原图中的映射框就是anchor框(anchor-box)，而该anchor-box的中心点就是anchor，有些时候anchor和anchor-box是一个意思，具体可根据文章语境理解。（注意：anchor-box不是feature-map中的框，而是feature-map中的一个点对应原图中的映射框）<br><a id="more"></a></p>
+<p>下面是我封装好的anchor框实现代码：<br>参考文献[2]<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bbox2loc</span><span class="params">(src_bbox, dst_bbox)</span>:</span></span><br><span class="line">    width = src_bbox[:, <span class="number">2</span>] - src_bbox[:, <span class="number">0</span>]</span><br><span class="line">    height = src_bbox[:, <span class="number">3</span>] - src_bbox[:, <span class="number">1</span>]</span><br><span class="line">    ctr_x = src_bbox[:, <span class="number">0</span>] + <span class="number">0.5</span> * width</span><br><span class="line">    ctr_y = src_bbox[:, <span class="number">1</span>] + <span class="number">0.5</span> * height</span><br><span class="line"></span><br><span class="line">    base_width = dst_bbox[:, <span class="number">2</span>] - dst_bbox[:, <span class="number">0</span>]</span><br><span class="line">    base_height = dst_bbox[:, <span class="number">3</span>] - dst_bbox[:, <span class="number">1</span>]</span><br><span class="line">    base_ctr_x = dst_bbox[:, <span class="number">0</span>] + <span class="number">0.5</span> * base_width</span><br><span class="line">    base_ctr_y = dst_bbox[:, <span class="number">1</span>] + <span class="number">0.5</span> * base_height</span><br><span class="line"></span><br><span class="line">    eps = np.finfo(height.dtype).eps</span><br><span class="line">    width = np.maximum(width, eps)</span><br><span class="line">    height = np.maximum(height, eps)</span><br><span class="line"></span><br><span class="line">    dx = (base_ctr_x - ctr_x) / width</span><br><span class="line">    dy = (base_ctr_y - ctr_y) / height</span><br><span class="line">    dw = np.log(base_width / width)</span><br><span class="line">    dh = np.log(base_height / height)</span><br><span class="line"></span><br><span class="line">    loc = np.vstack((dx, dy, dw, dh)).transpose()</span><br><span class="line">    <span class="keyword">return</span> loc</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loc2bbox</span><span class="params">(src_bbox, loc)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> src_bbox.shape[<span class="number">0</span>] == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> np.zeros((<span class="number">0</span>, <span class="number">4</span>), dtype=loc.dtype)</span><br><span class="line"></span><br><span class="line">    src_bbox = src_bbox.astype(src_bbox.dtype, copy=<span class="literal">False</span>)</span><br><span class="line">    src_width = src_bbox[:, <span class="number">2</span>] - src_bbox[:, <span class="number">0</span>]</span><br><span class="line">    src_height = src_bbox[:, <span class="number">3</span>] - src_bbox[:, <span class="number">1</span>]</span><br><span class="line">    src_ctr_x = src_bbox[:, <span class="number">0</span>] + <span class="number">0.5</span> * src_width</span><br><span class="line">    src_ctr_y = src_bbox[:, <span class="number">1</span>] + <span class="number">0.5</span> * src_height</span><br><span class="line"></span><br><span class="line">    dx = loc[:, <span class="number">0</span>::<span class="number">4</span>]</span><br><span class="line">    dy = loc[:, <span class="number">1</span>::<span class="number">4</span>]</span><br><span class="line">    dw = loc[:, <span class="number">2</span>::<span class="number">4</span>]</span><br><span class="line">    dh = loc[:, <span class="number">3</span>::<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">    ctr_x = dx * src_width[:, np.newaxis] + src_ctr_x[:, np.newaxis]</span><br><span class="line">    ctr_y = dy * src_height[:, np.newaxis] + src_ctr_y[:, np.newaxis]</span><br><span class="line">    w = np.exp(dw) * src_width[:, np.newaxis]</span><br><span class="line">    h = np.exp(dh) * src_height[:, np.newaxis]</span><br><span class="line"></span><br><span class="line">    dst_bbox = np.zeros(loc.shape, dtype=loc.dtype)</span><br><span class="line">    dst_bbox[:, <span class="number">0</span>::<span class="number">4</span>] = ctr_x - <span class="number">0.5</span> * w</span><br><span class="line">    dst_bbox[:, <span class="number">1</span>::<span class="number">4</span>] = ctr_y - <span class="number">0.5</span> * h</span><br><span class="line">    dst_bbox[:, <span class="number">2</span>::<span class="number">4</span>] = ctr_x + <span class="number">0.5</span> * w</span><br><span class="line">    dst_bbox[:, <span class="number">3</span>::<span class="number">4</span>] = ctr_y + <span class="number">0.5</span> * h</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dst_bbox</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bbox_iou</span><span class="params">(bbox_a, bbox_b)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> bbox_a.shape[<span class="number">1</span>] != <span class="number">4</span> <span class="keyword">or</span> bbox_b.shape[<span class="number">1</span>] != <span class="number">4</span>:</span><br><span class="line">        print(bbox_a, bbox_b)</span><br><span class="line">        <span class="keyword">raise</span> IndexError</span><br><span class="line">    <span class="comment"># top left</span></span><br><span class="line">    tl = np.maximum(bbox_a[:, <span class="literal">None</span>, :<span class="number">2</span>], bbox_b[:, :<span class="number">2</span>])</span><br><span class="line">    <span class="comment"># bottom right</span></span><br><span class="line">    br = np.minimum(bbox_a[:, <span class="literal">None</span>, <span class="number">2</span>:], bbox_b[:, <span class="number">2</span>:])</span><br><span class="line">    area_i = np.prod(br - tl, axis=<span class="number">2</span>) * (tl &lt; br).all(axis=<span class="number">2</span>)</span><br><span class="line">    area_a = np.prod(bbox_a[:, <span class="number">2</span>:] - bbox_a[:, :<span class="number">2</span>], axis=<span class="number">1</span>)</span><br><span class="line">    area_b = np.prod(bbox_b[:, <span class="number">2</span>:] - bbox_b[:, :<span class="number">2</span>], axis=<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> area_i / (area_a[:, <span class="literal">None</span>] + area_b - area_i)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_anchor_base</span><span class="params">(base_size=<span class="number">16</span>, ratios=[<span class="number">0.5</span>, <span class="number">1</span>, <span class="number">2</span>], anchor_scales=[<span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>])</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    生成k个基础anchor框(在faster-rcnn中k等于9)</span></span><br><span class="line"><span class="string">    :param base_size:</span></span><br><span class="line"><span class="string">    :param ratios:</span></span><br><span class="line"><span class="string">    :param anchor_scales:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    anchor_base = np.zeros((len(ratios) * len(anchor_scales), <span class="number">4</span>),</span><br><span class="line">                           dtype=np.float32)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(ratios)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(anchor_scales)):</span><br><span class="line">            h = base_size * anchor_scales[j] * np.sqrt(ratios[i])</span><br><span class="line">            w = base_size * anchor_scales[j] * np.sqrt(<span class="number">1.</span> / ratios[i])</span><br><span class="line"></span><br><span class="line">            index = i * len(anchor_scales) + j</span><br><span class="line">            anchor_base[index, <span class="number">0</span>] = - h / <span class="number">2.</span></span><br><span class="line">            anchor_base[index, <span class="number">1</span>] = - w / <span class="number">2.</span></span><br><span class="line">            anchor_base[index, <span class="number">2</span>] = h / <span class="number">2.</span></span><br><span class="line">            anchor_base[index, <span class="number">3</span>] = w / <span class="number">2.</span></span><br><span class="line">    <span class="keyword">return</span> anchor_base</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">enumerate_shifted_anchor</span><span class="params">(anchor_base, feat_stride, height, width)</span>:</span></span><br><span class="line">    <span class="comment"># 计算网格中心点</span></span><br><span class="line">    shift_x = np.arange(<span class="number">0</span>, width * feat_stride, feat_stride)</span><br><span class="line">    shift_y = np.arange(<span class="number">0</span>, height * feat_stride, feat_stride)</span><br><span class="line">    shift_x, shift_y = np.meshgrid(shift_x, shift_y)</span><br><span class="line">    shift = np.stack((shift_x.ravel(),shift_y.ravel(),</span><br><span class="line">                      shift_x.ravel(),shift_y.ravel(),), axis=<span class="number">1</span>)</span><br><span class="line">    <span class="comment"># shift 是一个 (N × 4) 的数组，而实际上(:, 0:2)和(:, 2:4)是相等的，这样做是为了下面计算的方便。</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 每个网格点上的9个先验框</span></span><br><span class="line">    A = anchor_base.shape[<span class="number">0</span>]</span><br><span class="line">    K = shift.shape[<span class="number">0</span>]</span><br><span class="line">    anchor = anchor_base.reshape((<span class="number">1</span>, A, <span class="number">4</span>)) + \</span><br><span class="line">             shift.reshape((K, <span class="number">1</span>, <span class="number">4</span>))</span><br><span class="line">    <span class="comment"># 所有的先验框</span></span><br><span class="line">    anchor = anchor.reshape((K * A, <span class="number">4</span>)).astype(np.float32)</span><br><span class="line">    <span class="keyword">return</span> anchor</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnchorTargetCreator</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,</span></span></span><br><span class="line"><span class="function"><span class="params">                 n_sample=<span class="number">256</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 pos_iou_thresh=<span class="number">0.7</span>, neg_iou_thresh=<span class="number">0.3</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 pos_ratio=<span class="number">0.5</span>)</span>:</span></span><br><span class="line">        self.n_sample = n_sample</span><br><span class="line">        self.pos_iou_thresh = pos_iou_thresh</span><br><span class="line">        self.neg_iou_thresh = neg_iou_thresh</span><br><span class="line">        self.pos_ratio = pos_ratio</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, bbox, anchor, img_size)</span>:</span></span><br><span class="line">        argmax_ious, label = self._create_label(anchor, bbox)</span><br><span class="line">        <span class="comment"># 利用先验框和其对应的真实框进行编码</span></span><br><span class="line">        loc = bbox2loc(anchor, bbox[argmax_ious])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> loc, label</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_create_label</span><span class="params">(self, anchor, bbox)</span>:</span></span><br><span class="line">        <span class="comment"># 1是正样本，0是负样本，-1忽略</span></span><br><span class="line">        label = np.empty((len(anchor),), dtype=np.int32)</span><br><span class="line">        label.fill(<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># argmax_ious为每个先验框对应的最大的真实框的序号</span></span><br><span class="line">        <span class="comment"># max_ious为每个真实框对应的最大的真实框的iou</span></span><br><span class="line">        <span class="comment"># gt_argmax_ious为每一个真实框对应的最大的先验框的序号</span></span><br><span class="line">        argmax_ious, max_ious, gt_argmax_ious = \</span><br><span class="line">            self._calc_ious(anchor, bbox)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如果小于门限函数则设置为负样本</span></span><br><span class="line">        label[max_ious &lt; self.neg_iou_thresh] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 每个真实框至少对应一个先验框</span></span><br><span class="line">        label[gt_argmax_ious] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如果大于门限函数则设置为正样本</span></span><br><span class="line">        label[max_ious &gt;= self.pos_iou_thresh] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 判断正样本数量是否大于128，如果大于的话则去掉一些</span></span><br><span class="line">        n_pos = int(self.pos_ratio * self.n_sample)</span><br><span class="line">        pos_index = np.where(label == <span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> len(pos_index) &gt; n_pos:</span><br><span class="line">            disable_index = np.random.choice(</span><br><span class="line">                pos_index, size=(len(pos_index) - n_pos), replace=<span class="literal">False</span>)</span><br><span class="line">            label[disable_index] = <span class="number">-1</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 平衡正负样本，保持总数量为256</span></span><br><span class="line">        n_neg = self.n_sample - np.sum(label == <span class="number">1</span>)</span><br><span class="line">        neg_index = np.where(label == <span class="number">0</span>)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> len(neg_index) &gt; n_neg:</span><br><span class="line">            disable_index = np.random.choice(</span><br><span class="line">                neg_index, size=(len(neg_index) - n_neg), replace=<span class="literal">False</span>)</span><br><span class="line">            label[disable_index] = <span class="number">-1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> argmax_ious, label</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_calc_ious</span><span class="params">(self, anchor, bbox)</span>:</span></span><br><span class="line">        <span class="comment"># 计算所有</span></span><br><span class="line">        ious = bbox_iou(anchor, bbox)</span><br><span class="line">        <span class="comment"># 行是先验框，列是真实框</span></span><br><span class="line">        argmax_ious = ious.argmax(axis=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 找出每一个先验框对应真实框最大的iou</span></span><br><span class="line">        max_ious = ious[np.arange(len(anchor)), argmax_ious]</span><br><span class="line">        <span class="comment"># 行是先验框，列是真实框</span></span><br><span class="line">        gt_argmax_ious = ious.argmax(axis=<span class="number">0</span>)</span><br><span class="line">        <span class="comment"># 找到每一个真实框对应的先验框最大的iou</span></span><br><span class="line">        gt_max_ious = ious[gt_argmax_ious, np.arange(ious.shape[<span class="number">1</span>])]</span><br><span class="line">        <span class="comment"># 每一个真实框对应的最大的先验框的序号</span></span><br><span class="line">        gt_argmax_ious = np.where(ious == gt_max_ious)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> argmax_ious, max_ious, gt_argmax_ious</span><br></pre></td></tr></table></figure></p>
+<p><strong>代码示例1</strong>: 下面代码演示一组anchors中的9个anchor框在输入图片中的尺度：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> imageio</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> torchvision.models.mobilenet <span class="keyword">import</span> mobilenet_v2</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> anchors <span class="keyword">as</span> Anchors</span><br><span class="line"><span class="keyword">from</span> libml.utils.config <span class="keyword">import</span> SysConfig</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  <span class="comment"># 演示一组anchors中的9个anchor框在输入图片中的尺度</span></span><br><span class="line">    net = mobilenet_v2()</span><br><span class="line"></span><br><span class="line">    base_size = <span class="number">16</span>  <span class="comment"># anchor基础尺寸，当base_size=16时，anchor最小长或宽可低至 16*8*sqrt(0.5), 即16*8/sqrt(2)</span></span><br><span class="line">                    <span class="comment"># 如果希望对检测小尺寸目标有利，则应该要设置更小的 base_size，或者调低anchor_scales中的尺度。</span></span><br><span class="line">    ratios = [<span class="number">0.5</span>, <span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">    anchor_scales = [<span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 生成一组anchor基，这组anchor基此时还没有中心点，它们只是对应着9种尺度。</span></span><br><span class="line">    anchor_base = Anchors.generate_anchor_base(base_size=base_size, anchor_scales=anchor_scales, ratios=ratios)</span><br><span class="line">    image_path = os.path.join(SysConfig[<span class="string">"home_path"</span>], SysConfig[<span class="string">"proml_path"</span>], <span class="string">"data/voc2007-train-000030.jpg"</span>)</span><br><span class="line">    bboxes = np.array([[<span class="number">51</span>, <span class="number">225</span>, <span class="number">241</span>, <span class="number">474</span>], [<span class="number">382</span>, <span class="number">335</span>, <span class="number">558</span>, <span class="number">472</span>], [<span class="number">419</span>, <span class="number">261</span>, <span class="number">540</span>, <span class="number">477</span>], [<span class="number">280</span>, <span class="number">220</span>, <span class="number">360</span>, <span class="number">300</span>]])</span><br><span class="line"></span><br><span class="line">    image = cv2.imread(image_path)</span><br><span class="line">    image_size = (image.shape[<span class="number">0</span>], image.shape[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> box <span class="keyword">in</span> bboxes:</span><br><span class="line">        cv2.rectangle(image, (box[<span class="number">0</span>], box[<span class="number">1</span>]), (box[<span class="number">2</span>], box[<span class="number">3</span>]), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br><span class="line">    cv2.imshow(<span class="string">'ground_truth'</span>, image)</span><br><span class="line">    cv2.waitKey()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 作为示例，这里选择原图像的中心点作为anchor基的中心点，并画出一组anchor作为示例：</span></span><br><span class="line">    anchor_center = np.array([image_size[<span class="number">0</span>] / <span class="number">2</span>, image_size[<span class="number">1</span>] / <span class="number">2</span>, image_size[<span class="number">0</span>] / <span class="number">2</span>, image_size[<span class="number">1</span>] / <span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># anchor_base + anchor_center 后就得到了这组anchor的坐标了</span></span><br><span class="line">    anchors = (anchor_base + anchor_center).astype(np.int32)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 显示画框示例</span></span><br><span class="line">    images = []</span><br><span class="line">    <span class="keyword">for</span> ach <span class="keyword">in</span> anchors:</span><br><span class="line">        cv2.rectangle(image, (ach[<span class="number">0</span>], ach[<span class="number">1</span>]), (ach[<span class="number">2</span>], ach[<span class="number">3</span>]), (<span class="number">180</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br><span class="line">        images.append(cv2.cvtColor(image.copy(), cv2.COLOR_BGR2RGB))</span><br><span class="line">        cv2.imshow(<span class="string">'anchor_example'</span>, image)</span><br><span class="line">        cv2.waitKey()</span><br><span class="line"></span><br><span class="line">    imageio.mimsave(<span class="string">'./anchor_example.gif'</span>, images, <span class="string">'GIF'</span>, duration=<span class="number">0.6</span>)</span><br><span class="line">    print(<span class="string">'finish'</span>)</span><br></pre></td></tr></table></figure></p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/anchor_example.gif" width = 70% height = 70% />
+</div>
+<center>图2 &nbsp;  一组简单的anchor框示例</center>
+
+上图展示了一组anchor框在原图中的尺度，而实际应用中这样的anchor组会依次铺满整副图像的。
+
+
+**代码示例2：** 演示如何从整副图中的所有anchor框中提取与ground-truth有关的anchor框
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  <span class="comment"># 演示如何从整张图片中的所有anchor框中提取与ground-truth有关的anchor框</span></span><br><span class="line">    net = mobilenet_v2()</span><br><span class="line"></span><br><span class="line">    base_size = <span class="number">16</span>  <span class="comment"># anchor基础尺寸，当base_size=16时，anchor最小长或宽可低至 16*8*sqrt(0.5), 即16*8/sqrt(2)</span></span><br><span class="line">                    <span class="comment"># 如果希望对检测小尺寸目标有利，则应该要设置更小的 base_size，或者调低anchor_scales中的尺度。</span></span><br><span class="line">    ratios = [<span class="number">0.5</span>, <span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">    anchor_scales = [<span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># step1: 生成anchor_base</span></span><br><span class="line">    <span class="comment"># ===========================================================</span></span><br><span class="line">    <span class="comment"># 生成一组anchor基，这组anchor基此时还没有中心点，它们只是对应着9种尺度。</span></span><br><span class="line">    anchor_base = Anchors.generate_anchor_base(base_size=base_size, anchor_scales=anchor_scales, ratios=ratios)</span><br><span class="line">    image_path = os.path.join(SysConfig[<span class="string">"home_path"</span>], SysConfig[<span class="string">"proml_path"</span>], <span class="string">"data/voc2007-train-000030.jpg"</span>)</span><br><span class="line">    bboxes = np.array([[ <span class="number">51</span>, <span class="number">225</span>, <span class="number">241</span>, <span class="number">474</span>], [<span class="number">382</span>, <span class="number">335</span>, <span class="number">558</span>, <span class="number">472</span>], [<span class="number">419</span>, <span class="number">261</span>, <span class="number">540</span>, <span class="number">477</span>], [<span class="number">280</span>, <span class="number">220</span>, <span class="number">360</span>, <span class="number">300</span>]])</span><br><span class="line"></span><br><span class="line">    image = cv2.imread(image_path)</span><br><span class="line">    image_size = (image.shape[<span class="number">0</span>], image.shape[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># step2: 计算backbone得到的特征图</span></span><br><span class="line">    <span class="comment"># ===========================================================</span></span><br><span class="line">    <span class="comment"># 由输入图片计算特征图</span></span><br><span class="line">    t = np.expand_dims(image, axis=<span class="number">0</span>).astype(np.float32)</span><br><span class="line">    t = torch.tensor(t)</span><br><span class="line">    t = t.permute((<span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">    features = net.features(t)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 提取特征图宽高</span></span><br><span class="line">    feature_width = features.shape[<span class="number">2</span>]</span><br><span class="line">    feature_height = features.shape[<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算在特征图上滑动anchor_base时的跨度</span></span><br><span class="line">    <span class="comment"># 一副图片经过backbone后得到的是多次下采样后的特征图，anchor框是指在输入图片上的anchor框.</span></span><br><span class="line">    <span class="comment"># 而要想在输入图片上均匀生成等间距的anchor_base，则需要有一个合理的anchor_base间隔，也就是下面即将要计算的feature_stride</span></span><br><span class="line">    remainder = <span class="number">1</span> <span class="keyword">if</span> image_size[<span class="number">0</span>] % feature_width &gt; <span class="number">0</span> <span class="keyword">else</span> <span class="number">0</span>  <span class="comment"># 有余数则为1，没有余数则为0</span></span><br><span class="line">    feature_stride = image_size[<span class="number">0</span>] // feature_width + remainder</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># step3: 根据特征图尺寸以及anchor_base生成正张输入图片上的anchors</span></span><br><span class="line">    <span class="comment"># ===========================================================</span></span><br><span class="line">    <span class="comment"># 生成所有的先验框：根据特征图宽、高和跨度对 anchor_base 进行平移，使其铺满至整副图片</span></span><br><span class="line">    anchor = Anchors.enumerate_shifted_anchor(np.array(anchor_base), feature_stride, feature_height, feature_width)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># step4: 通过nms从所有的anchor框提取和ground-truth有关的anchor框标签</span></span><br><span class="line">    <span class="comment"># ===========================================================</span></span><br><span class="line">    <span class="comment"># 上面得到的是输入图片上的所有anchor框，但实际上这些anchor框中大部分都不是我们想要的，</span></span><br><span class="line">    <span class="comment"># 我们想要的只是这些anchor框中和ground-truth有关的部分。</span></span><br><span class="line">    <span class="comment"># 通过nms从所有的anchor框提取和ground-truth有关的anchor框标签</span></span><br><span class="line">    anchor_target_creator = Anchors.AnchorTargetCreator()</span><br><span class="line">    argmax_ious, label = anchor_target_creator._create_label(anchor, bboxes)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 至此，所有的anchor框已经生成完毕，下面是可视化部分</span></span><br><span class="line">    <span class="comment"># ===========================================================</span></span><br><span class="line">    <span class="comment"># 画出ground-truth框</span></span><br><span class="line">    <span class="keyword">for</span> box <span class="keyword">in</span> bboxes:</span><br><span class="line">        cv2.rectangle(image, (box[<span class="number">0</span>], box[<span class="number">1</span>]), (box[<span class="number">2</span>], box[<span class="number">3</span>]), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br><span class="line">    cv2.imshow(<span class="string">'ground-truth'</span>, image)</span><br><span class="line">    cv2.waitKey()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 画出最终的anchor框(由于负样本太多，这里只画出了和正样本相关的anchor框)</span></span><br><span class="line">    images = []</span><br><span class="line">    anchor = anchor[np.where(label == <span class="number">1</span>)]</span><br><span class="line">    <span class="keyword">for</span> ach <span class="keyword">in</span> anchor:</span><br><span class="line">        cv2.rectangle(image, (ach[<span class="number">0</span>], ach[<span class="number">1</span>]), (ach[<span class="number">2</span>], ach[<span class="number">3</span>]), (<span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>), <span class="number">2</span>)</span><br><span class="line">        images.append(cv2.cvtColor(image.copy(), cv2.COLOR_BGR2RGB))</span><br><span class="line">        cv2.imshow(<span class="string">'pos-anchor'</span>, image)</span><br><span class="line">        cv2.waitKey()</span><br><span class="line"></span><br><span class="line">    imageio.mimsave(<span class="string">'./pos-anchor.gif'</span>, images, <span class="string">'GIF'</span>, duration=<span class="number">0.6</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'finish'</span>)</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/pos-anchor.gif" width = 70% height = 70% />
+</div>
+<center>图2 &nbsp;  与ground-truth有关的anchor框</center>
+
+
+> 关于anchor框的一些值得注意的地方：
+> 1. 无论ground-truth尺寸是大还是小，anchor_base中的9种尺寸都是固定的，这会导致像 图2 中间的小目标拥有较大的anchor框；\
+> （这可以通过调节anchor_base的尺寸大小还适当匹配目标大小，也就是改变上述代码中的base_size或者anchor_scales）
+> 2. 上述代码中计算feature_stride时的代码为：\
+>    remainder = 1 if image_size[0] % feature_width > 0 else 0 \
+>    feature_stride = image_size[0] // feature_width + remainder \
+> 这里的feature_stride是anchor_base中心点在输入图片上滑动时每次移动的像素个数，而上述计算方式只是为了让生成的所有anchor框能够均匀分布在输入图片上。\
+> （如果想要设计更加密集的anchor框，则可以适当减小feature_stride，但这应该是没有必要的，因为观察generate_anchor_base的计算代码可知，生成的anchor框的最小尺寸应该是$base_size \times feature_stride$，也就是说当base_size>1时，这个最小尺寸都比feature_stride大）
+
+
+
+---------------------------------------------------------------
+下面参考文献[1]，讲的并不是很好，记录一下，供参考吧。
+
+
+# anchor-box 的生成
+
+**定义输入及anchor框相关参数**
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.patches <span class="keyword">as</span> patches</span><br><span class="line"></span><br><span class="line">input_shape = (<span class="number">24</span>, <span class="number">24</span>, <span class="number">3</span>)  <span class="comment"># 输入图片尺寸</span></span><br><span class="line">size_X = <span class="number">3</span>  <span class="comment"># 每行生成多少个anchor框</span></span><br><span class="line">size_Y = <span class="number">3</span>  <span class="comment"># 每列生成多少个anchor框</span></span><br><span class="line">rpn_stride = <span class="number">8</span>  <span class="comment"># 相邻两个anchor框之间的跨度</span></span><br><span class="line"></span><br><span class="line">scales = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>]  <span class="comment"># anchor框的缩放比例</span></span><br><span class="line">ratios = [<span class="number">0.5</span>, <span class="number">1</span>, <span class="number">2</span>]  <span class="comment"># anchor框的长宽比</span></span><br></pre></td></tr></table></figure>
+
+**根据 缩放比(scales) 和 长宽比(ratios) 生成 meshgrid 坐标点**
+
+3种缩放比和3种长宽比一共可以生成9种坐标点，其实就是对应这anchor框的9种尺寸。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">scales, ratios = np.meshgrid(scales, ratios)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">scales.shape = (3, 3)</span></span><br><span class="line"><span class="string">scales:</span></span><br><span class="line"><span class="string">array([[1, 2, 4],</span></span><br><span class="line"><span class="string">       [1, 2, 4],</span></span><br><span class="line"><span class="string">       [1, 2, 4]])</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">ratios.shape = (3, 3)</span></span><br><span class="line"><span class="string">ratios: </span></span><br><span class="line"><span class="string">array([[0.5, 0.5, 0.5],</span></span><br><span class="line"><span class="string">       [1. , 1. , 1. ],</span></span><br><span class="line"><span class="string">       [2. , 2. , 2. ]])</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">scales, ratios = scales.flatten(), ratios.flatten()</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">scales.shape = (9,)</span></span><br><span class="line"><span class="string">scales:</span></span><br><span class="line"><span class="string">array([1, 2, 4, 1, 2, 4, 1, 2, 4])</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">scales.shape = (9,)</span></span><br><span class="line"><span class="string">ratios:</span></span><br><span class="line"><span class="string">array([0.5, 0.5, 0.5, 1. , 1. , 1. , 2. , 2. , 2. ])</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+上面的scales可看成：
+$
+\text{scales} = (\frac{1}{2}, \frac{1}{2}, \frac{1}{2}, 1, 1, 1, 2, 2, 2)
+$
+
+
+**根据定义的scales和ratios计算anchor框实际的长和宽**
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">scalesY = scales * np.sqrt(ratios)</span><br><span class="line">scalesX = scales / np.sqrt(ratios)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">scalesY.shape = (9,)</span></span><br><span class="line"><span class="string">scalesY: </span></span><br><span class="line"><span class="string">array([0.70710678, 1.41421356, 2.82842712, 1.        , 2.        ,</span></span><br><span class="line"><span class="string">       4.        , 1.41421356, 2.82842712, 5.65685425])</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">scalesX.shape = (9,)</span></span><br><span class="line"><span class="string">scalesX: </span></span><br><span class="line"><span class="string">array([1.41421356, 2.82842712, 5.65685425, 1.        , 2.        ,</span></span><br><span class="line"><span class="string">       4.        , 0.70710678, 1.41421356, 2.82842712])</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+上面 scalesY 的计算过程：
+$$
+\text{scalesY} = (1 \cdot \frac{1}{\sqrt{2}}, 2 \cdot \frac{1}{\sqrt{2}}, 4 \cdot \frac{1}{\sqrt{2}}, 1, 2, 4, 1 \cdot \sqrt{2}, 2 \cdot \sqrt{2}, 4 \cdot \sqrt{2})
+$$
+
+上面 scalesX 的计算过程：
+$$
+\text{scalesX} = (1 \cdot \sqrt{2}, 2 \cdot \sqrt{2}, 4 \cdot \sqrt{2}, 1, 2, 4, 1 \cdot \frac{1}{\sqrt{2}}, 2 \cdot \frac{1}{\sqrt{2}}, 4 \cdot \frac{1}{\sqrt{2}})
+$$
+可以发现 scalesX 和 scalesY 在一定程度上对称的。
+
+
+**计算每个anchor框的中心偏移量**
+
+这里 anchor 框的中心偏移量是指 anchor 框的中心相对图像原点(0, 0)的偏移量。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">shiftX = np.arange(<span class="number">0</span>, size_X) * rpn_stride  <span class="comment"># 乘rpn_stride表示将anchor映射回原图</span></span><br><span class="line">shiftY = np.arange(<span class="number">0</span>, size_Y) * rpn_stride</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">shiftX.shape = (3,)</span></span><br><span class="line"><span class="string">shiftX:</span></span><br><span class="line"><span class="string">array([ 0,  8, 16])</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">shiftY.shape = (3,)</span></span><br><span class="line"><span class="string">shiftY:</span></span><br><span class="line"><span class="string">array([ 0,  8, 16])</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">shiftX, shiftY = np.meshgrid(shiftX, shiftY)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">shiftX.shape = (3, 3)</span></span><br><span class="line"><span class="string">shiftX:</span></span><br><span class="line"><span class="string">array([[ 0,  8, 16],</span></span><br><span class="line"><span class="string">       [ 0,  8, 16],</span></span><br><span class="line"><span class="string">       [ 0,  8, 16]])</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">shiftY.shape = (3, 3)</span></span><br><span class="line"><span class="string">shiftY:</span></span><br><span class="line"><span class="string">array([[ 0,  0,  0],</span></span><br><span class="line"><span class="string">       [ 8,  8,  8],</span></span><br><span class="line"><span class="string">       [16, 16, 16]])</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+
+
+**将所有anchor中心偏移量和anchor长宽组合成meshgrid坐标**
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">centerX, scalesX = np.meshgrid(shiftX, scalesX)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">centerX.shape = (9, 9)</span></span><br><span class="line"><span class="string">centerX：</span></span><br><span class="line"><span class="string">array([[ 0,  8, 16,  0,  8, 16,  0,  8, 16],</span></span><br><span class="line"><span class="string">       [ 0,  8, 16,  0,  8, 16,  0,  8, 16],</span></span><br><span class="line"><span class="string">       [ 0,  8, 16,  0,  8, 16,  0,  8, 16],</span></span><br><span class="line"><span class="string">       [ 0,  8, 16,  0,  8, 16,  0,  8, 16],</span></span><br><span class="line"><span class="string">       [ 0,  8, 16,  0,  8, 16,  0,  8, 16],</span></span><br><span class="line"><span class="string">       [ 0,  8, 16,  0,  8, 16,  0,  8, 16],</span></span><br><span class="line"><span class="string">       [ 0,  8, 16,  0,  8, 16,  0,  8, 16],</span></span><br><span class="line"><span class="string">       [ 0,  8, 16,  0,  8, 16,  0,  8, 16],</span></span><br><span class="line"><span class="string">       [ 0,  8, 16,  0,  8, 16,  0,  8, 16]])</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">scalesX.shape = (9, 9)</span></span><br><span class="line"><span class="string">scalesX：</span></span><br><span class="line"><span class="string">array([[1.41421356, 1.41421356, 1.41421356, 1.41421356, 1.41421356,</span></span><br><span class="line"><span class="string">        1.41421356, 1.41421356, 1.41421356, 1.41421356],</span></span><br><span class="line"><span class="string">        ...</span></span><br><span class="line"><span class="string">       [2.82842712, 2.82842712, 2.82842712, 2.82842712, 2.82842712,</span></span><br><span class="line"><span class="string">        2.82842712, 2.82842712, 2.82842712, 2.82842712]])</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">centerY, scalesY = np.meshgrid(shiftY, scalesY)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">centerY.shape = (9, 9)</span></span><br><span class="line"><span class="string">centerY: </span></span><br><span class="line"><span class="string">array([[ 0,  0,  0,  8,  8,  8, 16, 16, 16],</span></span><br><span class="line"><span class="string">       [ 0,  0,  0,  8,  8,  8, 16, 16, 16],</span></span><br><span class="line"><span class="string">       [ 0,  0,  0,  8,  8,  8, 16, 16, 16],</span></span><br><span class="line"><span class="string">       [ 0,  0,  0,  8,  8,  8, 16, 16, 16],</span></span><br><span class="line"><span class="string">       [ 0,  0,  0,  8,  8,  8, 16, 16, 16],</span></span><br><span class="line"><span class="string">       [ 0,  0,  0,  8,  8,  8, 16, 16, 16],</span></span><br><span class="line"><span class="string">       [ 0,  0,  0,  8,  8,  8, 16, 16, 16],</span></span><br><span class="line"><span class="string">       [ 0,  0,  0,  8,  8,  8, 16, 16, 16],</span></span><br><span class="line"><span class="string">       [ 0,  0,  0,  8,  8,  8, 16, 16, 16]])</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">scalesY.shape = (9, 9)</span></span><br><span class="line"><span class="string">scalesY:</span></span><br><span class="line"><span class="string">array([[0.70710678, 0.70710678, 0.70710678, 0.70710678, 0.70710678,</span></span><br><span class="line"><span class="string">        0.70710678, 0.70710678, 0.70710678, 0.70710678],</span></span><br><span class="line"><span class="string">       ...</span></span><br><span class="line"><span class="string">       [5.65685425, 5.65685425, 5.65685425, 5.65685425, 5.65685425,</span></span><br><span class="line"><span class="string">        5.65685425, 5.65685425, 5.65685425, 5.65685425]])</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+如果 `np.meshgrid(X, Y)` 中的 X 或者 Y 是二维矩阵的话，则 np.meshgrid 内部会先将它们做 flatten 操作，然后再进行 meshgrid 操作。
+
+
+**组合anchor中心坐标和anchor尺寸**
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">anchor_center = np.stack([centerY, centerX], axis=<span class="number">2</span>).reshape(<span class="number">-1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">anchor_center.shape</span></span><br><span class="line"><span class="string">Out[7]: (9, 9, 2)</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">anchor_size = np.stack([anchorY, anchorX], axis=<span class="number">2</span>).reshape(<span class="number">-1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">anchor_center.shape = (81, 2)</span></span><br><span class="line"><span class="string">anchor_center:</span></span><br><span class="line"><span class="string">array([[ 0,  0],</span></span><br><span class="line"><span class="string">       [ 0,  8],</span></span><br><span class="line"><span class="string">       [ 0, 16],</span></span><br><span class="line"><span class="string">       [ 8,  0],</span></span><br><span class="line"><span class="string">       [ 8,  8],</span></span><br><span class="line"><span class="string">       [ 8, 16],</span></span><br><span class="line"><span class="string">       [16,  0],</span></span><br><span class="line"><span class="string">       [16,  8],</span></span><br><span class="line"><span class="string">       [16, 16],</span></span><br><span class="line"><span class="string">       ...</span></span><br><span class="line"><span class="string">       [ 0,  0],</span></span><br><span class="line"><span class="string">       [ 0,  8],</span></span><br><span class="line"><span class="string">       [ 0, 16],</span></span><br><span class="line"><span class="string">       [ 8,  0],</span></span><br><span class="line"><span class="string">       [ 8,  8],</span></span><br><span class="line"><span class="string">       [ 8, 16],</span></span><br><span class="line"><span class="string">       [16,  0],</span></span><br><span class="line"><span class="string">       [16,  8],</span></span><br><span class="line"><span class="string">       [16, 16]])</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+
+
+**根据anchor中心坐标和anchor尺寸计算anchor bounding-box**
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">boxes = np.concatenate([anchor_center - <span class="number">0.5</span> * anchor_size, anchor_center + <span class="number">0.5</span> * anchor_size], axis=<span class="number">1</span>)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">anchor_size.shape = (9, 9, 2)</span></span><br><span class="line"><span class="string">anchor_size:</span></span><br><span class="line"><span class="string">array([[0.70710678, 1.41421356],</span></span><br><span class="line"><span class="string">       [0.70710678, 1.41421356],</span></span><br><span class="line"><span class="string">       [0.70710678, 1.41421356],</span></span><br><span class="line"><span class="string">       ...</span></span><br><span class="line"><span class="string">       [2.82842712, 5.65685425],</span></span><br><span class="line"><span class="string">       [2.82842712, 5.65685425],</span></span><br><span class="line"><span class="string">       [2.82842712, 5.65685425],</span></span><br><span class="line"><span class="string">       ...</span></span><br><span class="line"><span class="string">       [4.        , 4.        ],</span></span><br><span class="line"><span class="string">       [4.        , 4.        ],</span></span><br><span class="line"><span class="string">       [4.        , 4.        ],</span></span><br><span class="line"><span class="string">       [1.41421356, 0.70710678],</span></span><br><span class="line"><span class="string">       [1.41421356, 0.70710678],</span></span><br><span class="line"><span class="string">       [1.41421356, 0.70710678],</span></span><br><span class="line"><span class="string">       ...</span></span><br><span class="line"><span class="string">       [5.65685425, 2.82842712],</span></span><br><span class="line"><span class="string">       [5.65685425, 2.82842712],</span></span><br><span class="line"><span class="string">       [5.65685425, 2.82842712]])</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+
+
+**上述思想封装成完整的代码如下**：
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.patches <span class="keyword">as</span> patches</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 常规输入以及anchor框参数</span></span><br><span class="line"><span class="comment"># *************************************</span></span><br><span class="line"><span class="comment"># input_shape = (128, 128, 3)</span></span><br><span class="line"><span class="comment"># size_X = 16  # 每行生成多少个anchor框</span></span><br><span class="line"><span class="comment"># size_Y = 16  # 每列生成多少个anchor框</span></span><br><span class="line"><span class="comment"># rpn_stride = 8  # 相邻两个anchor框之间的跨度</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># scales = [2, 4, 8]  # anchor框的缩放比例</span></span><br><span class="line"><span class="comment"># ratios = [0.5, 1, 2]  # anchor框的长宽比</span></span><br><span class="line"><span class="comment"># *************************************</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 为了方便了解anchor框的生成机理，这里使用较小的参数来生成anchor框，方便理解</span></span><br><span class="line"><span class="comment"># *************************************</span></span><br><span class="line">input_shape = (<span class="number">24</span>, <span class="number">24</span>, <span class="number">3</span>)</span><br><span class="line">size_X = <span class="number">3</span>  <span class="comment"># 每行生成多少个anchor框</span></span><br><span class="line">size_Y = <span class="number">3</span>  <span class="comment"># 每列生成多少个anchor框</span></span><br><span class="line">rpn_stride = <span class="number">8</span>  <span class="comment"># 相邻两个anchor框之间的跨度</span></span><br><span class="line"></span><br><span class="line">scales = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>]  <span class="comment"># anchor框的缩放比例</span></span><br><span class="line">ratios = [<span class="number">0.5</span>, <span class="number">1</span>, <span class="number">2</span>]  <span class="comment"># anchor框的长宽比</span></span><br><span class="line"><span class="comment"># *************************************</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">anchor_gen</span><span class="params">(size_X, size_Y, rpn_stride, scales, ratios)</span>:</span></span><br><span class="line">    scales, ratios = np.meshgrid(scales, ratios)</span><br><span class="line">    scales, ratios = scales.flatten(), ratios.flatten()</span><br><span class="line">    scalesY = scales * np.sqrt(ratios)</span><br><span class="line">    scalesX = scales / np.sqrt(ratios)</span><br><span class="line"></span><br><span class="line">    shiftX = np.arange(<span class="number">0</span>, size_X) * rpn_stride</span><br><span class="line">    shiftY = np.arange(<span class="number">0</span>, size_Y) * rpn_stride</span><br><span class="line">    shiftX, shiftY = np.meshgrid(shiftX, shiftY)</span><br><span class="line"></span><br><span class="line">    centerX, anchorX = np.meshgrid(shiftX, scalesX)</span><br><span class="line">    centerY, anchorY = np.meshgrid(shiftY, scalesY)</span><br><span class="line"></span><br><span class="line">    anchor_center = np.stack([centerY, centerX], axis=<span class="number">2</span>).reshape(<span class="number">-1</span>, <span class="number">2</span>)</span><br><span class="line">    anchor_size = np.stack([anchorY, anchorX], axis=<span class="number">2</span>).reshape(<span class="number">-1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    boxes = np.concatenate([anchor_center - <span class="number">0.5</span> * anchor_size, anchor_center + <span class="number">0.5</span> * anchor_size], axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> boxes</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    anchors = anchor_gen(size_X, size_Y, rpn_stride, scales, ratios)</span><br><span class="line"></span><br><span class="line">    plt.figure(figsize=(<span class="number">10</span>, <span class="number">10</span>))</span><br><span class="line">    img = np.ones(input_shape)</span><br><span class="line">    plt.imshow(img)</span><br><span class="line"></span><br><span class="line">    axs = plt.gca()  <span class="comment"># get current axs</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(anchors.shape[<span class="number">0</span>]):</span><br><span class="line">        box = anchors[i]</span><br><span class="line">        rec = patches.Rectangle((box[<span class="number">0</span>], box[<span class="number">1</span>]), box[<span class="number">2</span>] - box[<span class="number">0</span>], box[<span class="number">3</span>] - box[<span class="number">1</span>], edgecolor=<span class="string">"r"</span>, facecolor=<span class="string">"none"</span>)</span><br><span class="line">        axs.add_patch(rec)</span><br><span class="line"></span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'debug'</span>)</span><br></pre></td></tr></table></figure>
+
+上面代码生成的anchor框：
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/fasterrcnn_anchor1.jpg" width = 70% height = 70% />
+</div>
+
+
+<p>由于上述代码中anchor框的中心是从(0, 0)开始计算的，所以有部分超出边界外了。</p>
+<p>下面代码稍作修改：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">anchor_gen</span><span class="params">(size_X, size_Y, rpn_stride, scales, ratios)</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    shiftX = np.arange(<span class="number">0</span>, size_X) * rpn_stride</span><br><span class="line">    shiftY = np.arange(<span class="number">0</span>, size_Y) * rpn_stride</span><br><span class="line">    shiftX = shiftX + rpn_stride/<span class="number">2</span></span><br><span class="line">    shiftY = shiftY + rpn_stride/<span class="number">2</span></span><br><span class="line">    shiftX, shiftY = np.meshgrid(shiftX, shiftY)</span><br><span class="line"></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/fasterrcnn_anchor2.jpg" width = 70% height = 70% />
+</div>
+
+
+
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] 网易云课堂 &gt; 利用keras从头实现faster rcnn<br>[2] <a href="https://github.com/bubbliiiing/faster-rcnn-pytorch" target="_blank" rel="noopener">bubbliiiing/faster-rcnn-pytorch</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/30/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Attention%E3%80%91SENet/" rel="prev" title="dl/【Paper笔记 Attention】SENet">
+      <i class="fa fa-chevron-left"></i> dl/【Paper笔记 Attention】SENet
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/01/Python%E7%AC%94%E8%AE%B0/%E3%80%90numpy%E3%80%91np.meshgrid/" rel="next" title="Python笔记/【numpy】np.meshgrid">
+      Python笔记/【numpy】np.meshgrid <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是anchor"><span class="nav-number">1.</span> <span class="nav-text">什么是anchor?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">2.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

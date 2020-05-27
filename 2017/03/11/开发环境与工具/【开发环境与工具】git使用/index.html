@@ -54,7 +54,7 @@
 <meta property="og:description" content="git 版本管理本地更新而远程未更新，选择提交本地文件1234567891011&#x2F;&#x2F; 查看当前本地文件和远程文件的变化状态git status&#x2F;&#x2F; 选择你想要提交的文件修改或添加git add file1 file2 file3&#x2F;&#x2F; 此时再用git status命令就看不到刚刚已经add过的文件状态了git commit -m &#39;提交说明信息&#39;git push 比较本地仓库与远程仓库的区别123">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2017-03-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-04-10T07:11:47.110Z">
+<meta property="article:modified_time" content="2020-04-27T02:46:27.058Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2017/03/11/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91git%E4%BD%BF%E7%94%A8/">
@@ -203,7 +203,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-10 15:11:47" itemprop="dateModified" datetime="2020-04-10T15:11:47+08:00">2020-04-10</time>
+                <time title="Modified: 2020-04-27 10:46:27" itemprop="dateModified" datetime="2020-04-27T10:46:27+08:00">2020-04-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -242,7 +242,19 @@
 </ul>
 <p>git bash 终端输入命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="解决-git-bash-终端显示中文乱码"><a href="#解决-git-bash-终端显示中文乱码" class="headerlink" title="解决 git bash 终端显示中文乱码"></a>解决 git bash 终端显示中文乱码</h2><p>参考文献[1]</p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://blog.csdn.net/u012145252/article/details/81775362" target="_blank" rel="noopener">git status 显示中文和解决中文乱码</a></p>
+<h2 id="git撤销已经push的提交"><a href="#git撤销已经push的提交" class="headerlink" title="git撤销已经push的提交"></a>git撤销已经push的提交</h2><p>参考文献[2]</p>
+<p><strong>step1</strong>:<br>使用 git log 命令查看提交记录，如：<br><code>xj@win$ git log</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">commit 6c251cca5f6cdb1aa8850737009f132894deab5e</span><br><span class="line">Author: 名字 &lt;name@a.com.cn&gt;</span><br><span class="line">Date: Thu Dec 13 14:29:21 2018 +0800</span><br><span class="line"> </span><br><span class="line">mobilenet</span><br><span class="line"> </span><br><span class="line">commit 43dc0de914173a1a8793a7eac31dbb26057bbee4</span><br><span class="line">Author: 名字 &lt;name@a.com.cn&gt;</span><br><span class="line">Date: Thu Dec 13 13:54:32 2018 +0800</span><br><span class="line"> </span><br><span class="line">yolov1</span><br></pre></td></tr></table></figure>
+<p><strong>step2</strong>：<br>我们要撤销“mobilenet”这个提交，即回退到“yolov1”这个提交的版本，也就是回退到commit为“43dc0de914173a1a8793a7eac31dbb26057bbee4”的版本。</p>
+<p>使用命令：git reset —soft 43dc0de914173a1a8793a7eac31dbb26057bbee4</p>
+<p>最后再次使用git log查看是否成功撤销了本地提交。</p>
+<blockquote>
+<p>其中： \<br>参数soft指的是：保留当前工作区，以便重新提交 。<br>还可以选择参数hard，会撤销相应工作区的修改，一定要谨慎使用。</p>
+</blockquote>
+<p><strong>step3</strong>: 最后，使用git push origin master —force 强制推送版本</p>
+<p>其中：master表示远端分支。</p>
+<p>如果不加—force会报错，因为版本低于远端，无法直接提交。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://blog.csdn.net/u012145252/article/details/81775362" target="_blank" rel="noopener">git status 显示中文和解决中文乱码</a><br>[2] <a href="https://blog.csdn.net/wodeshouji6/article/details/84988617" target="_blank" rel="noopener">git撤销已经push的提交</a></p>
 
     </div>
 
@@ -324,7 +336,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#git-版本管理"><span class="nav-number">1.</span> <span class="nav-text">git 版本管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-杂记"><span class="nav-number">2.</span> <span class="nav-text">git 杂记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解决git-status不能显示中文"><span class="nav-number">2.1.</span> <span class="nav-text">解决git status不能显示中文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决-git-bash-终端显示中文乱码"><span class="nav-number">2.2.</span> <span class="nav-text">解决 git bash 终端显示中文乱码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#git-版本管理"><span class="nav-number">1.</span> <span class="nav-text">git 版本管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-杂记"><span class="nav-number">2.</span> <span class="nav-text">git 杂记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解决git-status不能显示中文"><span class="nav-number">2.1.</span> <span class="nav-text">解决git status不能显示中文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决-git-bash-终端显示中文乱码"><span class="nav-number">2.2.</span> <span class="nav-text">解决 git bash 终端显示中文乱码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git撤销已经push的提交"><span class="nav-number">2.3.</span> <span class="nav-text">git撤销已经push的提交</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -338,7 +350,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">140</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

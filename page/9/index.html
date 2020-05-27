@@ -171,7 +171,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Markdown%E3%80%91letax/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/25/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91Ubuntu16.04+RTX750+CUDA10.0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -185,7 +185,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2018/05/12/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90Markdown%E3%80%91letax/" class="post-title-link" itemprop="url">开发环境与工具/【Markdown】letax</a>
+            <a href="/2018/08/25/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91Ubuntu16.04+RTX750+CUDA10.0/" class="post-title-link" itemprop="url">【开发环境与工具】Ubuntu16.04+RTX750+CUDA10.0</a>
         </h1>
 
         <div class="post-meta">
@@ -195,14 +195,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-05-12 00:00:00" itemprop="dateCreated datePublished" datetime="2018-05-12T00:00:00+08:00">2018-05-12</time>
+              <time title="Created: 2018-08-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-08-25T00:00:00+08:00">2018-08-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-19 18:56:38" itemprop="dateModified" datetime="2020-03-19T18:56:38+08:00">2020-03-19</time>
+                <time title="Modified: 2020-02-15 15:35:35" itemprop="dateModified" datetime="2020-02-15T15:35:35+08:00">2020-02-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -228,822 +228,90 @@
 
       
           <a id="more"></a>
-<h1 id="数学字体"><a href="#数学字体" class="headerlink" title="数学字体"></a>数学字体</h1><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>需求</th>
-<th>latex语法</th>
-<th>显示效果</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>正体加粗</td>
-<td>\bold{A}</td>
-<td>$\bold{A}$</td>
-<td>该方法在vscode中可显示，但发布到hexo后不能正确显示</td>
-</tr>
-<tr>
-<td>正体加粗</td>
-<td>\textbf{x}</td>
-<td>$\textbf{x}$</td>
-<td>支持对数字英文字母加粗，但不支持对希腊字母加粗</td>
-</tr>
-<tr>
-<td>正体加粗</td>
-<td>\mathbf{x}</td>
-<td>$\mathbf{x}$</td>
-<td>支持对数字英文字母加粗，但不支持对希腊字母加粗</td>
-</tr>
-<tr>
-<td>斜体加粗</td>
-<td>\boldsymbol{A}</td>
-<td>$\boldsymbol{A}$</td>
-<td>将正体变为斜体加粗，支持对希腊字母加粗</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="数学符号"><a href="#数学符号" class="headerlink" title="数学符号"></a>数学符号</h1><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>需求</th>
-<th>latex语法</th>
-<th>显示效果</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>点乘</td>
-<td>a \cdot b</td>
-<td>$a \cdot b$</td>
-<td></td>
-</tr>
-<tr>
-<td>叉乘</td>
-<td>a \times b</td>
-<td>$a \times b$</td>
-<td></td>
-</tr>
-<tr>
-<td>点除</td>
-<td>a \div b</td>
-<td>$a \div b$</td>
-<td></td>
-</tr>
-<tr>
-<td>分数</td>
-<td>\frac {a} {b}</td>
-<td>$\frac{a}{b}$</td>
-<td></td>
-</tr>
-<tr>
-<td>绝对值号</td>
-<td></td>
-<td>或者 \vert</td>
-<td>$\vert$</td>
-<td></td>
-</tr>
-<tr>
-<td>范数符号</td>
-<td>\</td>
-<td>或者 \Vert</td>
-<td>$\Vert$</td>
-<td></td>
-</tr>
-<tr>
-<td>大于等于号</td>
-<td>\geq</td>
-<td>$\geq$</td>
-<td>后面记得加空格，不然识别出错</td>
-</tr>
-<tr>
-<td>小于等于号</td>
-<td>\leq</td>
-<td>$\leq$</td>
-<td></td>
-</tr>
-<tr>
-<td>等于号</td>
-<td>\not =</td>
-<td>$\not =$</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td>\land</td>
-<td>$\land$</td>
-<td></td>
-</tr>
-<tr>
-<td>指示函数符号</td>
-<td>\mathbb I</td>
-<td>$\mathbb I$</td>
-<td>周志华机器学习书本中出现过</td>
-</tr>
-<tr>
-<td>一阶偏导</td>
-<td>\frac{\partial f}{\partial x}</td>
-<td>$\frac{\partial f}{\partial x}$</td>
-<td></td>
-</tr>
-<tr>
-<td>n阶偏导</td>
-<td>\frac{\partial^{n} f}{\partial x^{n}}</td>
-<td>$\frac{\partial^{n} f}{\partial x^{n}}$</td>
-<td></td>
-</tr>
-<tr>
-<td>一阶导数</td>
-<td>\frac{\mathrm{d} y }{\mathrm{d} x}</td>
-<td>$\frac{\mathrm{d} y }{\mathrm{d} x}$</td>
-<td></td>
-</tr>
-<tr>
-<td>n阶导数</td>
-<td>\frac{\mathrm{d}^{n} y }{\mathrm{d} x^{n}}</td>
-<td>$\frac{\mathrm{d}^{n} y }{\mathrm{d} x^{n}}$</td>
-<td></td>
-</tr>
-<tr>
-<td>点形式的求导符号</td>
-<td>\frac{ \dot y }{ \dot x }</td>
-<td>$\frac{ \dot y }{ \dot x }$</td>
-<td>一个点</td>
-</tr>
-<tr>
-<td>点形式的求导符号</td>
-<td>\frac{ \ddot y }{ \ddot x }</td>
-<td>$\frac{ \ddot y }{ \ddot x }$</td>
-<td>两个点</td>
-</tr>
-<tr>
-<td>波浪号</td>
-<td>\sim</td>
-<td>$\sim$</td>
-<td></td>
-</tr>
-<tr>
-<td>斜体</td>
-<td>log (x)</td>
-<td>$log (x)$</td>
-<td></td>
-</tr>
-<tr>
-<td>正体</td>
-<td>\text{log } (x)</td>
-<td>$\text{log} (x)$</td>
-<td></td>
-</tr>
-<tr>
-<td>正体</td>
-<td>\text{log } x</td>
-<td>$\text{log } x$</td>
-<td>text中可以写空格</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="数学公式中的空格"><a href="#数学公式中的空格" class="headerlink" title="数学公式中的空格"></a>数学公式中的空格</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>两个quad空格</td>
-<td>a \qquad b</td>
-<td>$a \qquad b$</td>
-<td>两个m的宽度</td>
-</tr>
-<tr>
-<td>quad空格</td>
-<td>a \quad b</td>
-<td>$a \quad b$</td>
-<td>一个m的宽度</td>
-</tr>
-<tr>
-<td>大空格</td>
-<td>a\ b</td>
-<td>$a\ b$</td>
-<td>1/3m宽度</td>
-</tr>
-<tr>
-<td>中等空格</td>
-<td>a\\;b</td>
-<td>$a\;b$</td>
-<td>2/7m宽度</td>
-</tr>
-<tr>
-<td>小空格</td>
-<td>a\\,b</td>
-<td>$a\,b$</td>
-<td>1/6m宽度</td>
-</tr>
-<tr>
-<td>没有空格</td>
-<td>ab</td>
-<td>$ab$</td>
-<td></td>
-</tr>
-<tr>
-<td>紧贴</td>
-<td>a\!b</td>
-<td>$a!b$</td>
-<td>缩进1/6m宽度 (<strong>注意</strong>: 这种写法在vscode中没问题，但发布到hexo后显示不正确。再hexo中正确的做法是: 1. 对于换行公式可以使用 \! 紧贴; 2. 而对于行内公式要使用 \\! 紧贴)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>\quad、1em、em、m代表当前字体下接近字符‘M’的宽度。</p>
-<h1 id="方程组"><a href="#方程组" class="headerlink" title="方程组"></a>方程组</h1><p><strong>注意事项</strong>：</p>
+<h2 id="0-基本环境配置"><a href="#0-基本环境配置" class="headerlink" title="0. 基本环境配置"></a>0. 基本环境配置</h2><ol>
+<li>检查gcc版本<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc --version</span><br></pre></td></tr></table></figure>
+对于Ubuntu 16.04来说，gcc版本需要&gt;5.4.0。</li>
+</ol>
+<p>如果没有gcc命令，则需要安装gcc<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update  <span class="comment"># 一定要记得先update，不然找不到gcc</span></span><br><span class="line">sudo apt install gcc</span><br></pre></td></tr></table></figure></p>
 <ol>
-<li>以\begin和\end包裹的公式，如果要加 tag 标签，则应该加在 \end{…}之后</li>
-<li>在公式中显示星号(*)在vscode中直接输入就可以了，但是在发布到hexo则不行。\<br>如果要发布到hexo，则行内公式如果要显示星号(*)，则需要加反斜杠(\)对其进行转义；而换行公式则不必如此</li>
+<li>检查Kernel版本<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -r</span><br></pre></td></tr></table></figure>
+对于Ubuntu 16.04来说，内核版本需要&gt;4.4.0</li>
 </ol>
-<p>1</p>
-<script type="math/tex; mode=display">
-\begin{pmatrix}
-    min \ f(x_1, x_2, ..., x_n) \\
-s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
-\end{pmatrix}</script><p>2</p>
-<script type="math/tex; mode=display">
-\begin{gathered}
-    min \ f(x_1, x_2, ..., x_n) \\
-s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
-\end{gathered}</script><p>3</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-    min \ f(x_1, x_2, ..., x_n) \\
-s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
-\end{aligned}</script><p>4</p>
-<script type="math/tex; mode=display">
-\begin{alignedat}
-    min \ f(x_1, x_2, ..., x_n) \\
-s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
-\end{alignedat}</script><p>5</p>
-<script type="math/tex; mode=display">
-\begin{bmatrix}
-    min \ f(x_1, x_2, ..., x_n) \\
-s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
-\end{bmatrix}</script><p>6</p>
-<script type="math/tex; mode=display">
-\begin{Bmatrix}
-    min \ f(x_1, x_2, ..., x_n) \\
-s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
-\end{Bmatrix}</script><p>7</p>
-<script type="math/tex; mode=display">
-\begin{cases}
-    min \ f(x_1, x_2, ..., x_n) \\
-s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
-\end{cases}</script><p>8</p>
-<script type="math/tex; mode=display">
-\begin{dcases}
-    min \ f(x_1, x_2, ..., x_n) \\
-s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
-\end{dcases}</script><p>9</p>
-<script type="math/tex; mode=display">
-\begin{Vmatrix}
-    min \ f(x_1, x_2, ..., x_n) \\
-s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
-\end{Vmatrix}</script><p>10</p>
-<blockquote>
-<p>&amp;表示以等号为对齐标记</p>
-<script type="math/tex; mode=display">
-\begin{aligned}  
-f(x) &= (m+n)^2 \\  
-&= m^2+2mn+n^2 \\  
-\end{aligned}</script></blockquote>
-<p>11</p>
-<blockquote>
-<p>这里没有等号，要想实现左对齐，可以在左侧直接加一个 &amp;</p>
-<script type="math/tex; mode=display">
-\begin{aligned}  
-& min \ f(x_1, x_2, ..., x_n) \\
-& s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
-\end{aligned}</script></blockquote>
-<p>12<br>$<br>\begin{aligned}<br>f(x) &amp;= (m+n)^2 \\<br>&amp;= m^2+2mn+n^2 \\<br>\end{aligned}<br>$</p>
-<h1 id="异常问题处理"><a href="#异常问题处理" class="headerlink" title="异常问题处理"></a>异常问题处理</h1><h2 id="异常1：-hexo无法发布双大括号的问题"><a href="#异常1：-hexo无法发布双大括号的问题" class="headerlink" title="异常1： hexo无法发布双大括号的问题"></a>异常1： hexo无法发布双大括号的问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">\dfrac&#123;\partial f&#125;&#123;\partial x&#125; + \mu_1 \dfrac&#123;&#123;\rm d&#125;g_1&#125;&#123;&#123;\rm d&#125;x&#125; + \mu_2 \dfrac&#123;&#123;\rm d&#125;g_2&#125;&#123;&#123;\rm d&#125;x&#125;&#x3D; 0,</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
-<p>上述latex在vscode下是正常显示的，但是hexo无法发布</p>
-<p>解决办法：双大括号间加入空格即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在&#123;&#123;之间加入空格，&#125;&#123;这种双大括号无碍</span><br></pre></td></tr></table></figure></p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="https://blog.csdn.net/thither_shore/article/details/52260742" target="_blank" rel="noopener">CSDN-markdown 之 LaTeX 特殊公式格式笔记</a></p>
-<p><a href="https://blog.csdn.net/deepinC/article/details/81103326" target="_blank" rel="noopener">markdown数学公式符号记录</a></p>
-<p><a href="http://www.mohu.org/info/symbols/symbols.htm" target="_blank" rel="noopener">常用数学符号的 LaTeX 表示方法</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91Inception-ResNet/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.4%E3%80%91Inception-ResNet/" class="post-title-link" itemprop="url">【深度学习笔记2.4】Inception-ResNet</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-04-19 17:28:05" itemprop="dateCreated datePublished" datetime="2018-04-19T17:28:05+08:00">2018-04-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:25:39" itemprop="dateModified" datetime="2020-01-22T13:25:39+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <a id="more"></a>
-<p>[1] <a href="https://www.jiqizhixin.com/articles/2018-05-30-7" target="_blank" rel="noopener">从Inception v1到Inception-ResNet，一文概览Inception家族的「奋斗史」</a><br>[2] <a href="https://my.oschina.net/u/876354/blog/1637819" target="_blank" rel="noopener">大话CNN经典模型：GoogLeNet（从Inception v1到v4的演进）</a><br>[3] <a href="https://www.imooc.com/article/69476" target="_blank" rel="noopener">Inception v4与Inception-Resnet v1/v2</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E3%80%91IoU/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E3%80%91IoU/" class="post-title-link" itemprop="url">【深度学习笔记-目标检测】IoU</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-04-05 17:28:05" itemprop="dateCreated datePublished" datetime="2018-04-05T17:28:05+08:00">2018-04-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-20 15:52:21" itemprop="dateModified" datetime="2020-02-20T15:52:21+08:00">2020-02-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="IoU"><a href="#IoU" class="headerlink" title="IoU"></a>IoU</h2><p>&emsp; Intersection over Union(简写：IoU)是一个评价指标，用于评价目标检测模型在特定数据集上的准确性，简单来讲就是模型产生的目标窗口和原来标记窗口(Ground Truth)的交叠率。一般的，IoU越大，表示准确性越高。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/04/05/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E3%80%91IoU/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/16/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91Ubuntu16.04%20Server+RTX2080Ti+CUDA10.0+Tensorflow1.13/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/03/16/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/%E3%80%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7%E3%80%91Ubuntu16.04%20Server+RTX2080Ti+CUDA10.0+Tensorflow1.13/" class="post-title-link" itemprop="url">【开发环境与工具】Ubuntu16.04 Server+RTX2080Ti+CUDA10.0+Tensorflow1.13</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-03-16 00:00:00" itemprop="dateCreated datePublished" datetime="2018-03-16T00:00:00+08:00">2018-03-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:27:53" itemprop="dateModified" datetime="2020-01-22T13:27:53+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
-                    <span itemprop="name">开发环境与工具</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <a id="more"></a>
-<p>[1] <a href="https://www.cyprestar.com/2018/08/15/Install-CUDA-on-Ubuntu-Server/" target="_blank" rel="noopener">在Ubuntu Server上配置CUDA环境</a><br>[2] <a href="https://www.robinjin.com/tech/?p=576" target="_blank" rel="noopener">Ubuntu18.04和2080ti环境安装 CUDA10.0和cuDNN</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/06/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.3%E3%80%91VGG%EF%BC%88no%20weight-decay%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/02/06/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.3%E3%80%91VGG%EF%BC%88no%20weight-decay%EF%BC%89/" class="post-title-link" itemprop="url">【深度学习笔记2.3】VGG（no weight-decay）</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-02-06 17:28:05" itemprop="dateCreated datePublished" datetime="2018-02-06T17:28:05+08:00">2018-02-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 14:06:52" itemprop="dateModified" datetime="2020-01-22T14:06:52+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <a id="more"></a>
-<h2 id="vgg16-1"><a href="#vgg16-1" class="headerlink" title="vgg16_1"></a>vgg16_1</h2><p>代码示例如下(详见文献[2]vgg16_1.py)：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</span><br><span class="line"></span><br><span class="line">datapath = <span class="string">'/home/***/res/MNIST_data'</span></span><br><span class="line">mnist_data_set = input_data.read_data_sets(datapath, validation_size=<span class="number">0</span>, one_hot=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">num_classes = <span class="number">10</span></span><br><span class="line">learning_rate = <span class="number">1e-4</span></span><br><span class="line">training_epoch = <span class="number">50</span></span><br><span class="line">batch_size = <span class="number">16</span></span><br><span class="line">input_image_shape = (<span class="number">224</span>, <span class="number">224</span>, <span class="number">1</span>)</span><br><span class="line">conv_layer_trainable = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">image_shape_scale</span><span class="params">(batch_xs, input_image_shape)</span>:</span></span><br><span class="line">    images = np.reshape(batch_xs, [batch_xs.shape[<span class="number">0</span>], <span class="number">28</span>, <span class="number">28</span>])</span><br><span class="line">    imlist = []</span><br><span class="line">    [imlist.append(cv2.resize(img, input_image_shape[<span class="number">0</span>:<span class="number">2</span>])) <span class="keyword">for</span> img <span class="keyword">in</span> images]</span><br><span class="line">    images = np.array(imlist)</span><br><span class="line">    <span class="comment"># cv2.imwrite('scale1.jpg', images[0]*200)</span></span><br><span class="line">    <span class="comment"># cv2.imwrite('scale2.jpg', images[1]*200)</span></span><br><span class="line">    <span class="comment"># batch_xs = np.reshape(images, [batch_xs.shape[0], 227 * 227 * input_image_channel])</span></span><br><span class="line">    batch_xs = np.reshape(images, [batch_xs.shape[<span class="number">0</span>], input_image_shape[<span class="number">0</span>], input_image_shape[<span class="number">1</span>], input_image_shape[<span class="number">2</span>]])</span><br><span class="line">    <span class="keyword">return</span> batch_xs</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vgg16</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, imgs)</span>:</span></span><br><span class="line">        self.parameters = []</span><br><span class="line">        self.imgs = imgs</span><br><span class="line">        self.convlayers()</span><br><span class="line">        self.fc_layers()</span><br><span class="line">        self.probs = self.fc8</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">saver</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> tf.train.Saver()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxpool</span><span class="params">(self, name, input_data)</span>:</span></span><br><span class="line">        out = tf.nn.max_pool(input_data, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>, name=name)</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">conv</span><span class="params">(self, name, input_data, out_channel)</span>:</span></span><br><span class="line">        in_channel = input_data.get_shape()[<span class="number">-1</span>]</span><br><span class="line">        <span class="keyword">with</span> tf.variable_scope(name):</span><br><span class="line">            kernel = tf.get_variable(<span class="string">'weights'</span>, [<span class="number">3</span>, <span class="number">3</span>, in_channel, out_channel], dtype=tf.float32, trainable=conv_layer_trainable)</span><br><span class="line">            biases = tf.get_variable(<span class="string">'biases'</span>, [out_channel], dtype=tf.float32, trainable=conv_layer_trainable)</span><br><span class="line">            conv_res = tf.nn.conv2d(input_data, kernel, [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line">            res = tf.nn.bias_add(conv_res, biases)</span><br><span class="line">            out = tf.nn.relu(res, name=name)</span><br><span class="line"></span><br><span class="line">        self.parameters += [kernel, biases]</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fc</span><span class="params">(self, name, input_data, out_channel, is_output=False)</span>:</span></span><br><span class="line">        shape = input_data.get_shape().as_list()</span><br><span class="line">        <span class="keyword">if</span> len(shape) == <span class="number">4</span>:</span><br><span class="line">            size = shape[<span class="number">-1</span>] * shape[<span class="number">-2</span>] * shape[<span class="number">-3</span>]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            size = shape[<span class="number">1</span>]</span><br><span class="line">        input_data_flat = tf.reshape(input_data, [<span class="number">-1</span>, size])</span><br><span class="line">        <span class="keyword">with</span> tf.variable_scope(name):</span><br><span class="line">            weights = tf.get_variable(name=<span class="string">"weights"</span>, shape=[size, out_channel], dtype=tf.float32)</span><br><span class="line">            biases = tf.get_variable(name=<span class="string">"biases"</span>, shape=[out_channel], dtype=tf.float32)</span><br><span class="line">            res = tf.matmul(input_data_flat, weights)</span><br><span class="line">            out = tf.nn.bias_add(res, biases)</span><br><span class="line">            <span class="keyword">if</span> is_output <span class="keyword">is</span> <span class="literal">False</span>:</span><br><span class="line">                out = tf.nn.relu(out, name=name)</span><br><span class="line"></span><br><span class="line">        self.parameters += [weights, biases]</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">convlayers</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># zero-mean input</span></span><br><span class="line">        <span class="comment"># conv1</span></span><br><span class="line">        self.conv1_1 = self.conv(<span class="string">"conv1_1"</span>, self.imgs, <span class="number">64</span>)</span><br><span class="line">        self.conv1_2 = self.conv(<span class="string">"conv1_2"</span>, self.conv1_1, <span class="number">64</span>)</span><br><span class="line">        self.pool1 = self.maxpool(<span class="string">"pool1"</span>, self.conv1_2)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># conv2</span></span><br><span class="line">        self.conv2_1 = self.conv(<span class="string">"conv2_1"</span>, self.pool1, <span class="number">128</span>)</span><br><span class="line">        self.conv2_2 = self.conv(<span class="string">"conv2_2"</span>, self.conv2_1, <span class="number">128</span>)</span><br><span class="line">        self.pool2 = self.maxpool(<span class="string">"pool2"</span>, self.conv2_2)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># conv3</span></span><br><span class="line">        self.conv3_1 = self.conv(<span class="string">"conv3_1"</span>, self.pool2, <span class="number">256</span>)</span><br><span class="line">        self.conv3_2 = self.conv(<span class="string">"conv3_2"</span>, self.conv3_1, <span class="number">256</span>)</span><br><span class="line">        self.conv3_3 = self.conv(<span class="string">"conv3_3"</span>, self.conv3_2, <span class="number">256</span>)</span><br><span class="line">        self.pool3 = self.maxpool(<span class="string">"pool3"</span>, self.conv3_3)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># conv4</span></span><br><span class="line">        self.conv4_1 = self.conv(<span class="string">"conv4_1"</span>, self.pool3, <span class="number">512</span>)</span><br><span class="line">        self.conv4_2 = self.conv(<span class="string">"conv4_2"</span>, self.conv4_1, <span class="number">512</span>)</span><br><span class="line">        self.conv4_3 = self.conv(<span class="string">"conv4_3"</span>, self.conv4_2, <span class="number">512</span>)</span><br><span class="line">        self.pool4 = self.maxpool(<span class="string">"pool4"</span>, self.conv4_3)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># conv5</span></span><br><span class="line">        self.conv5_1 = self.conv(<span class="string">"conv5_1"</span>, self.pool4, <span class="number">512</span>)</span><br><span class="line">        self.conv5_2 = self.conv(<span class="string">"conv5_2"</span>, self.conv5_1, <span class="number">512</span>)</span><br><span class="line">        self.conv5_3 = self.conv(<span class="string">"conv5_3"</span>, self.conv5_2, <span class="number">512</span>)</span><br><span class="line">        self.pool5 = self.maxpool(<span class="string">"pool5"</span>, self.conv5_3)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fc_layers</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.fc6 = self.fc(<span class="string">"fc1"</span>, self.pool5, <span class="number">4096</span>)</span><br><span class="line">        <span class="comment"># self.fc6 = tf.nn.dropout(self.fc6, 0.5)</span></span><br><span class="line"></span><br><span class="line">        self.fc7 = self.fc(<span class="string">"fc2"</span>, self.fc6, <span class="number">4096</span>)</span><br><span class="line">        <span class="comment"># self.fc7 = tf.nn.dropout(self.fc7, 0.5)</span></span><br><span class="line"></span><br><span class="line">        self.fc8 = self.fc(<span class="string">"fc3"</span>, self.fc7, num_classes, is_output=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">load_weights</span><span class="params">(self, weight_file, sess)</span>:</span></span><br><span class="line">        weights = np.load(weight_file)</span><br><span class="line">        keys = sorted(weights.keys())</span><br><span class="line">        <span class="keyword">for</span> i, k <span class="keyword">in</span> enumerate(keys):</span><br><span class="line">            sess.run(self.parameters[i].assign(weights[k]))</span><br><span class="line">        print(<span class="string">"-----------all done---------------"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    X = tf.placeholder(tf.float32, [<span class="literal">None</span>, input_image_shape[<span class="number">0</span>], input_image_shape[<span class="number">1</span>], input_image_shape[<span class="number">2</span>]])</span><br><span class="line">    y = tf.placeholder(tf.float32, [<span class="literal">None</span>, num_classes])</span><br><span class="line">    learning_rate_holder = tf.placeholder(tf.float32)</span><br><span class="line"></span><br><span class="line">    vgg = vgg16(X)</span><br><span class="line">    prob = vgg.probs</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">"cross_ent"</span>):</span><br><span class="line">        y_output = tf.nn.softmax(prob)</span><br><span class="line">        cross_entropy = -tf.reduce_sum(y * tf.log(y_output))</span><br><span class="line">        loss = tf.reduce_mean(cross_entropy)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Train op</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">"train"</span>):</span><br><span class="line">        optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate_holder)</span><br><span class="line">        train_op = optimizer.minimize(loss)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Evaluation op: Accuracy of the model</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">"accuracy"</span>):</span><br><span class="line">        correct_pred = tf.equal(tf.argmax(y_output, <span class="number">1</span>), tf.argmax(y, <span class="number">1</span>))</span><br><span class="line">        accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))</span><br><span class="line"></span><br><span class="line">    init = tf.global_variables_initializer()</span><br><span class="line">    <span class="comment"># init = tf.glorot_normal_initializer()  # failed, 也称之为 Xavier normal initializer. 参考文献[A]</span></span><br><span class="line"></span><br><span class="line">    loss_buf = []</span><br><span class="line">    accuracy_buf = []</span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">        sess.run(init)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Load the pretrained weights into the non-trainable layer</span></span><br><span class="line">        <span class="comment"># model.load_initial_weights(sess)</span></span><br><span class="line"></span><br><span class="line">        total_batch = mnist_data_set.train.num_examples // batch_size</span><br><span class="line">        <span class="keyword">for</span> step <span class="keyword">in</span> range(training_epoch):</span><br><span class="line">            print(<span class="string">"&#123;&#125; Epoch number: &#123;&#125;"</span>.format(datetime.now(), step + <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">            tmp_loss = []</span><br><span class="line">            <span class="keyword">for</span> iteration <span class="keyword">in</span> range(total_batch):</span><br><span class="line">                batch_xs, batch_ys = mnist_data_set.train.next_batch(batch_size)</span><br><span class="line">                batch_xs = image_shape_scale(batch_xs, input_image_shape)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> step &lt; <span class="number">10</span>:</span><br><span class="line">                    sess.run(train_op, feed_dict=&#123;X: batch_xs, y: batch_ys, learning_rate_holder: learning_rate&#125;)</span><br><span class="line">                <span class="keyword">elif</span> step &lt; <span class="number">20</span>:</span><br><span class="line">                    sess.run(train_op, feed_dict=&#123;X: batch_xs, y: batch_ys, learning_rate_holder: learning_rate/<span class="number">10.0</span>&#125;)</span><br><span class="line">                <span class="keyword">elif</span> step &lt; <span class="number">30</span>:</span><br><span class="line">                    sess.run(train_op, feed_dict=&#123;X: batch_xs, y: batch_ys, learning_rate_holder: learning_rate/<span class="number">100.0</span>&#125;)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    sess.run(train_op, feed_dict=&#123;X: batch_xs, y: batch_ys, learning_rate_holder: learning_rate/<span class="number">1000.0</span>&#125;)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> iteration % <span class="number">50</span> == <span class="number">0</span>:</span><br><span class="line">                    loss_val = sess.run(loss, feed_dict=&#123;X: batch_xs, y: batch_ys&#125;)</span><br><span class="line">                    train_accuracy = sess.run(accuracy, feed_dict=&#123;X: batch_xs, y: batch_ys&#125;)</span><br><span class="line">                    print(<span class="string">"step &#123;&#125;, iteration &#123;&#125;, loss &#123;&#125;, training accuracy &#123;&#125;"</span>.format(step, iteration, loss_val, train_accuracy))</span><br><span class="line"></span><br><span class="line">            _loss_buf = []</span><br><span class="line">            _accuracy_buf = []</span><br><span class="line">            test_total_batch = mnist_data_set.test.num_examples // batch_size</span><br><span class="line">            <span class="keyword">for</span> iteration <span class="keyword">in</span> range(test_total_batch):</span><br><span class="line">                batch_xs, batch_ys = mnist_data_set.test.next_batch(batch_size)  <span class="comment"># GPU内存不足，只好分批测试准确率</span></span><br><span class="line">                batch_xs = image_shape_scale(batch_xs, input_image_shape)</span><br><span class="line"></span><br><span class="line">                loss_val = sess.run(loss, feed_dict=&#123;X: batch_xs, y: batch_ys&#125;)</span><br><span class="line">                test_accuracy = sess.run(accuracy, feed_dict=&#123;X: batch_xs, y: batch_ys&#125;)</span><br><span class="line"></span><br><span class="line">                _loss_buf.append(loss_val)</span><br><span class="line">                _accuracy_buf.append(test_accuracy)</span><br><span class="line">            loss_val = np.array(_loss_buf).mean()</span><br><span class="line">            test_accuracy = np.array(_accuracy_buf).mean()</span><br><span class="line">            print(<span class="string">"step &#123;&#125;, loss &#123;&#125;, testing accuracy &#123;&#125;"</span>.format(step, loss_val, test_accuracy))</span><br><span class="line">            loss_buf.append(loss_val)</span><br><span class="line">            accuracy_buf.append(test_accuracy)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 画出准确率曲线</span></span><br><span class="line">accuracy_ndarray = np.array(accuracy_buf)</span><br><span class="line">accuracy_size = np.arange(len(accuracy_ndarray))</span><br><span class="line">plt.plot(accuracy_size, accuracy_ndarray, <span class="string">'b+'</span>, label=<span class="string">'accuracy'</span>)</span><br><span class="line"></span><br><span class="line">loss_ndarray = np.array(loss_buf)</span><br><span class="line">loss_size = np.arange(len(loss_ndarray))</span><br><span class="line">plt.plot(loss_size, loss_ndarray, <span class="string">'r*'</span>, label=<span class="string">'loss'</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存loss和测试准确率到csv文件</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'VGGNet16.csv'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> fid:</span><br><span class="line">    <span class="keyword">for</span> loss, acc <span class="keyword">in</span> zip(loss_buf, accuracy_buf):</span><br><span class="line">        strText = str(loss) + <span class="string">','</span> + str(acc) + <span class="string">'\n'</span></span><br><span class="line">        fid.write(strText)</span><br><span class="line">fid.close()</span><br><span class="line"></span><br><span class="line">print(<span class="string">'end'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 参考文献</span></span><br><span class="line"><span class="comment"># [A]：tensorflow参数初始化, https://blog.csdn.net/m0_37167788/article/details/79073070</span></span><br></pre></td></tr></table></figure><br>训练测试结果打印如下：<br>step 1, loss 8.525571823120117, testing accuracy 0.9576321840286255<br>step 2, loss 3.323066234588623, testing accuracy 0.9828726053237915<br>… …<br>step 12, loss 2.2948389053344727, testing accuracy 0.9907852411270142<br>step 13, loss 2.297200918197632, testing accuracy 0.9905849099159241<br>step 14, loss nan, testing accuracy 0.09865785390138626<br>… …</p>
-<h2 id="使用dropout优化"><a href="#使用dropout优化" class="headerlink" title="使用dropout优化"></a>使用dropout优化</h2><p>关于dropout的理解与总结请参考文献[5].</p>
-<p>&emsp; vgg16共有3个fc-layer，这里在前两个fc-layer后面都使用dropout，即对vgg16_1.py中的fc_layers做如下改进（此部分完整代码详见文献[2]vgg16_2.py）：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fc_layers</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.fc6 = self.fc(<span class="string">"fc1"</span>, self.pool5, <span class="number">4096</span>)</span><br><span class="line">    self.fc6 = tf.nn.dropout(self.fc6, <span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">    self.fc7 = self.fc(<span class="string">"fc2"</span>, self.fc6, <span class="number">4096</span>)</span><br><span class="line">    self.fc7 = tf.nn.dropout(self.fc7, <span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">    self.fc8 = self.fc(<span class="string">"fc3"</span>, self.fc7, num_classes, is_output=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure><br>其他代码不变，训练测试结果打印如下：<br>step 1, loss 146.34462, testing accuracy 0.1280048<br>step 2, loss 7.3694496, testing accuracy 0.9635417<br>step 3, loss 3.3861883, testing accuracy 0.9823718<br>… …<br>step 17, loss 2.1597393, testing accuracy 0.9910857<br>step 18, loss 2.096352, testing accuracy 0.99138623<br>step 19, loss nan, testing accuracy 0.098958336<br>… …</p>
-<h2 id="使用Batch-Normalization优化"><a href="#使用Batch-Normalization优化" class="headerlink" title="使用Batch Normalization优化"></a>使用Batch Normalization优化</h2><p>在vgg16_1.py的基础上做如下改动：（此部分代码详见vgg16_3.py）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># batch_norm定义同文献[3]</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">batch_norm</span><span class="params">(inputs, is_training, is_conv_out=True, decay=<span class="number">0.999</span>)</span>:</span></span><br><span class="line">    scale = tf.Variable(tf.ones([inputs.get_shape()[<span class="number">-1</span>]]))</span><br><span class="line">    beta = tf.Variable(tf.zeros([inputs.get_shape()[<span class="number">-1</span>]]))</span><br><span class="line">    pop_mean = tf.Variable(tf.zeros([inputs.get_shape()[<span class="number">-1</span>]]), trainable=<span class="literal">False</span>)</span><br><span class="line">    pop_var = tf.Variable(tf.ones([inputs.get_shape()[<span class="number">-1</span>]]), trainable=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> is_training:</span><br><span class="line">        <span class="keyword">if</span> is_conv_out:</span><br><span class="line">            batch_mean, batch_var = tf.nn.moments(inputs, [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            batch_mean, batch_var = tf.nn.moments(inputs, [<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">        train_mean = tf.assign(pop_mean, pop_mean*decay+batch_mean*(<span class="number">1</span>-decay))</span><br><span class="line">        train_var = tf.assign(pop_var, pop_var*decay+batch_var*(<span class="number">1</span>-decay))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">with</span> tf.control_dependencies([train_mean, train_var]):</span><br><span class="line">            <span class="keyword">return</span> tf.nn.batch_normalization(inputs, batch_mean, batch_var, beta, scale, <span class="number">0.001</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> tf.nn.batch_normalization(inputs, pop_mean, pop_var, beta, scale, <span class="number">0.001</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vgg16</span>:</span></span><br><span class="line">    ... ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">conv</span><span class="params">(self, name, input_data, out_channel)</span>:</span></span><br><span class="line">        ... ...</span><br><span class="line">        <span class="keyword">with</span> tf.variable_scope(name):</span><br><span class="line">            ... ...</span><br><span class="line">            res = tf.nn.bias_add(conv_res, biases)</span><br><span class="line">            res = batch_norm(res, <span class="literal">True</span>)</span><br><span class="line">            out = tf.nn.relu(res, name=name)</span><br><span class="line"></span><br><span class="line">        self.parameters += [kernel, biases]</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fc</span><span class="params">(self, name, input_data, out_channel, is_output=False)</span>:</span></span><br><span class="line">        ... ...</span><br><span class="line">        <span class="keyword">with</span> tf.variable_scope(name):</span><br><span class="line">            ... ...</span><br><span class="line">            out = tf.nn.bias_add(res, biases)</span><br><span class="line">            <span class="keyword">if</span> is_output <span class="keyword">is</span> <span class="literal">False</span>:</span><br><span class="line">                out = batch_norm(out, <span class="literal">True</span>, <span class="literal">False</span>)</span><br><span class="line">                out = tf.nn.relu(out, name=name)</span><br><span class="line"></span><br><span class="line">        self.parameters += [weights, biases]</span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure><br>其他代码不变，训练测试结果打印如下：<br>step 1, loss 2.2608318, testing accuracy 0.9890825<br>step 2, loss 1.5252224, testing accuracy 0.9931891<br>… …<br>step 49, loss 1.1548673, testing accuracy 0.99348956<br>step 50, loss 1.1780967, testing accuracy 0.9938902<br>end<br>可以看到，相比之前不适用BN，使用BN可以有效避免梯度爆炸。</p>
-<h2 id="使用权重衰减-Weight-Decay-优化"><a href="#使用权重衰减-Weight-Decay-优化" class="headerlink" title="使用权重衰减(Weight Decay)优化"></a>使用权重衰减(Weight Decay)优化</h2><p>权重衰减是什么？参考文献[4]<br>在VGG中如何使用权重衰减？待解决。</p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] 王晓华. TensorFlow深度学习应用实践<br>[2] <a href="https://github.com/JuneXia/handml" target="_blank" rel="noopener">我的handml仓库</a><br>[3]【深度学习笔记2.2】AlexNet<br>[4]【深度学习笔记3.1】权重衰减(weight decay)<br>[5]【深度学习笔记3.2】Dropout</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/26/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2.3%E3%80%91AlexNet%E8%AE%AD%E7%BB%8317flowers/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/01/26/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2.3%E3%80%91AlexNet%E8%AE%AD%E7%BB%8317flowers/" class="post-title-link" itemprop="url">【深度学习笔记2.2.3】AlexNet训练17flowers</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-01-26 17:28:05" itemprop="dateCreated datePublished" datetime="2018-01-26T17:28:05+08:00">2018-01-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 14:06:45" itemprop="dateModified" datetime="2020-01-22T14:06:45+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文介绍使用AlexNet做17flowers的分类任务，代码参考文献[1]，数据集17flowers来自文献[2]，预训练模型bvlc_alexnet.npy来自文献[4]。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/01/26/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2.3%E3%80%91AlexNet%E8%AE%AD%E7%BB%8317flowers/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/09/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2.2%E3%80%91AlexNet%E8%AE%AD%E7%BB%83mnist%EF%BC%88LRN%E3%80%81BN%E7%AD%89%E5%8E%9F%E7%90%86%E5%BA%94%E5%BD%93%E6%80%BB%E7%BB%93%E5%87%BA%E6%9D%A5%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/01/09/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.2.2%E3%80%91AlexNet%E8%AE%AD%E7%BB%83mnist%EF%BC%88LRN%E3%80%81BN%E7%AD%89%E5%8E%9F%E7%90%86%E5%BA%94%E5%BD%93%E6%80%BB%E7%BB%93%E5%87%BA%E6%9D%A5%EF%BC%89/" class="post-title-link" itemprop="url">【深度学习笔记2.2.2】AlexNet训练mnist（LRN、BN等原理应当总结出来）</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-01-09 17:28:05" itemprop="dateCreated datePublished" datetime="2018-01-09T17:28:05+08:00">2018-01-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:25:27" itemprop="dateModified" datetime="2020-01-22T13:25:27+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <a id="more"></a>
-<h2 id="实验1：AlexNet-Tensorflow-实现"><a href="#实验1：AlexNet-Tensorflow-实现" class="headerlink" title="实验1：AlexNet Tensorflow 实现"></a>实验1：AlexNet Tensorflow 实现</h2><p>代码示例如下(详见文献[2]AlexNet1.py)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">import cv2</span><br><span class="line">import tensorflow as tf</span><br><span class="line">from tensorflow.examples.tutorials.mnist import input_data</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line"></span><br><span class="line">datapath &#x3D; &#39;&#x2F;home&#x2F;pathto&#x2F;res&#x2F;MNIST_data&#39;</span><br><span class="line">mnist_data_set &#x3D; input_data.read_data_sets(datapath, validation_size&#x3D;0, one_hot&#x3D;True)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def image_shape_scale(batch_xs):</span><br><span class="line">    images &#x3D; np.reshape(batch_xs, [batch_xs.shape[0], 28, 28])</span><br><span class="line">    imlist &#x3D; []</span><br><span class="line">    [imlist.append(cv2.resize(img, (227, 227))) for img in images]</span><br><span class="line">    images &#x3D; np.array(imlist)</span><br><span class="line">    # cv2.imwrite(&#39;scale1.jpg&#39;, images[0]*200)</span><br><span class="line">    # cv2.imwrite(&#39;scale2.jpg&#39;, images[1]*200)</span><br><span class="line">    # batch_xs &#x3D; np.reshape(images, [batch_xs.shape[0], 227 * 227 * input_image_channel])</span><br><span class="line">    batch_xs &#x3D; np.reshape(images, [batch_xs.shape[0], 227, 227, input_image_channel])</span><br><span class="line">    return batch_xs</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">input_image_channel &#x3D; 1</span><br><span class="line">learning_rate &#x3D; 1e-4</span><br><span class="line">training_epoch &#x3D; 50</span><br><span class="line">batch_size &#x3D; 200</span><br><span class="line">n_classes &#x3D; 10</span><br><span class="line">n_fc1 &#x3D; 6*6*256</span><br><span class="line">n_fc2 &#x3D; 4096</span><br><span class="line">n_fc3 &#x3D; 4096</span><br><span class="line">dropout_rate &#x3D; 0.5</span><br><span class="line"></span><br><span class="line">X &#x3D; tf.placeholder(tf.float32, [None, 227, 227, input_image_channel])</span><br><span class="line">y &#x3D; tf.placeholder(tf.float32, [None, n_classes])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">W_conv &#x3D; &#123;</span><br><span class="line">    &#39;conv1&#39;: tf.Variable(tf.truncated_normal([11, 11, input_image_channel, 96])),</span><br><span class="line">    &#39;conv2&#39;: tf.Variable(tf.truncated_normal([5, 5, 96, 256])),</span><br><span class="line">    &#39;conv3&#39;: tf.Variable(tf.truncated_normal([3, 3, 256, 384])),</span><br><span class="line">    &#39;conv4&#39;: tf.Variable(tf.truncated_normal([3, 3, 384, 384])),</span><br><span class="line">    &#39;conv5&#39;: tf.Variable(tf.truncated_normal([3, 3, 384, 256])),</span><br><span class="line">    &#39;fc1&#39;: tf.Variable(tf.truncated_normal([n_fc1, n_fc2])),</span><br><span class="line">    &#39;fc2&#39;: tf.Variable(tf.truncated_normal([n_fc2, n_fc3])),</span><br><span class="line">    &#39;output&#39;: tf.Variable(tf.truncated_normal([n_fc3, n_classes]))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">b_conv &#x3D; &#123;</span><br><span class="line">    &#39;conv1&#39;: tf.Variable(tf.constant(0.1, dtype&#x3D;tf.float32, shape&#x3D;[96])),</span><br><span class="line">    &#39;conv2&#39;: tf.Variable(tf.constant(0.1, dtype&#x3D;tf.float32, shape&#x3D;[256])),</span><br><span class="line">    &#39;conv3&#39;: tf.Variable(tf.constant(0.1, dtype&#x3D;tf.float32, shape&#x3D;[384])),</span><br><span class="line">    &#39;conv4&#39;: tf.Variable(tf.constant(0.1, dtype&#x3D;tf.float32, shape&#x3D;[384])),</span><br><span class="line">    &#39;conv5&#39;: tf.Variable(tf.constant(0.1, dtype&#x3D;tf.float32, shape&#x3D;[256])),</span><br><span class="line">    &#39;fc1&#39;: tf.Variable(tf.constant(0.1, dtype&#x3D;tf.float32, shape&#x3D;[n_fc2])),</span><br><span class="line">    &#39;fc2&#39;: tf.Variable(tf.constant(0.1, dtype&#x3D;tf.float32, shape&#x3D;[n_fc3])),</span><br><span class="line">    &#39;output&#39;: tf.Variable(tf.constant(0.1, dtype&#x3D;tf.float32, shape&#x3D;[n_classes]))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">X_image &#x3D; tf.reshape(X, [-1, 227, 227, input_image_channel])</span><br><span class="line"></span><br><span class="line"># 卷积层1</span><br><span class="line">conv1 &#x3D; tf.nn.conv2d(X_image, W_conv[&#39;conv1&#39;], strides&#x3D;[1, 4, 4, 1], padding&#x3D;&#39;VALID&#39;)</span><br><span class="line">conv1 &#x3D; tf.nn.bias_add(conv1, b_conv[&#39;conv1&#39;])</span><br><span class="line">conv1 &#x3D; tf.nn.relu(conv1)</span><br><span class="line">conv1 &#x3D; tf.nn.local_response_normalization(conv1, depth_radius&#x3D;2, alpha&#x3D;2e-05, beta&#x3D;0.75, bias&#x3D;1.0)</span><br><span class="line"># 此时 conv1.shape &#x3D; [-1, 55, 55, 96]</span><br><span class="line"></span><br><span class="line"># 池化层1</span><br><span class="line">pool1 &#x3D; tf.nn.max_pool(conv1, ksize&#x3D;[1, 3, 3, 1], strides&#x3D;[1, 2, 2, 1], padding&#x3D;&#39;VALID&#39;)</span><br><span class="line"># pool1.shape &#x3D; [-1, 27, 27, 96]</span><br><span class="line"></span><br><span class="line"># 卷积层2</span><br><span class="line">conv2 &#x3D; tf.nn.conv2d(pool1, W_conv[&#39;conv2&#39;], strides&#x3D;[1, 1, 1, 1], padding&#x3D;&#39;SAME&#39;)</span><br><span class="line">conv2 &#x3D; tf.nn.bias_add(conv2, b_conv[&#39;conv2&#39;])</span><br><span class="line">conv2 &#x3D; tf.nn.relu(conv2)</span><br><span class="line">conv2 &#x3D; tf.nn.local_response_normalization(conv2, depth_radius&#x3D;2, alpha&#x3D;2e-05, beta&#x3D;0.75, bias&#x3D;1.0)</span><br><span class="line"># 此时 conv2.shape &#x3D; [-1, 27, 27, 256]</span><br><span class="line"></span><br><span class="line"># 池化层2</span><br><span class="line">pool2 &#x3D; tf.nn.max_pool(conv2, ksize&#x3D;[1, 3, 3, 1], strides&#x3D;[1, 2, 2, 1], padding&#x3D;&#39;VALID&#39;)</span><br><span class="line"># 此时 pool2.shape &#x3D; [-1, 13, 13, 256]</span><br><span class="line"></span><br><span class="line"># 卷积层3</span><br><span class="line">conv3 &#x3D; tf.nn.conv2d(pool2, W_conv[&#39;conv3&#39;], strides&#x3D;[1, 1, 1, 1], padding&#x3D;&#39;SAME&#39;)</span><br><span class="line">conv3 &#x3D; tf.nn.bias_add(conv3, b_conv[&#39;conv3&#39;])</span><br><span class="line">conv3 &#x3D; tf.nn.relu(conv3)</span><br><span class="line"># 此时 conv3.shape &#x3D; [-1, 13, 13, 384]</span><br><span class="line"></span><br><span class="line"># 卷积层4</span><br><span class="line">conv4 &#x3D; tf.nn.conv2d(conv3, W_conv[&#39;conv4&#39;], strides&#x3D;[1, 1, 1, 1], padding&#x3D;&#39;SAME&#39;)</span><br><span class="line">conv4 &#x3D; tf.nn.bias_add(conv4, b_conv[&#39;conv4&#39;])</span><br><span class="line">conv4 &#x3D; tf.nn.relu(conv4)</span><br><span class="line"># 此时 conv4.shape &#x3D; [-1, 13, 13, 384]</span><br><span class="line"></span><br><span class="line"># 卷积层5</span><br><span class="line">conv5 &#x3D; tf.nn.conv2d(conv4, W_conv[&#39;conv5&#39;], strides&#x3D;[1, 1, 1, 1], padding&#x3D;&#39;SAME&#39;)</span><br><span class="line">conv5 &#x3D; tf.nn.bias_add(conv5, b_conv[&#39;conv5&#39;])</span><br><span class="line">conv5 &#x3D; tf.nn.relu(conv5)</span><br><span class="line"># 此时 conv5.shape &#x3D; [-1, 13, 13, 256]</span><br><span class="line"></span><br><span class="line"># 池化层5</span><br><span class="line">pool5 &#x3D; tf.nn.max_pool(conv5, ksize&#x3D;[1, 3, 3, 1], strides&#x3D;[1, 2, 2, 1], padding&#x3D;&#39;VALID&#39;)</span><br><span class="line"># 此时pool5.shape &#x3D; [-1, 6, 6, 256]</span><br><span class="line"></span><br><span class="line"># 全连接层1</span><br><span class="line">reshape &#x3D; tf.reshape(pool5, [-1, n_fc1])</span><br><span class="line"># 此时reshape.shape &#x3D; [-1, 9216]</span><br><span class="line">fc1 &#x3D; tf.add(tf.matmul(reshape, W_conv[&#39;fc1&#39;]), b_conv[&#39;fc1&#39;])</span><br><span class="line">fc1 &#x3D; tf.nn.relu(fc1)</span><br><span class="line">fc1 &#x3D; tf.nn.dropout(fc1, dropout_rate)</span><br><span class="line"># 此时fc1.shape &#x3D; [-1, 4096]</span><br><span class="line"></span><br><span class="line"># 全连接层2</span><br><span class="line">fc2 &#x3D; tf.add(tf.matmul(fc1, W_conv[&#39;fc2&#39;]), b_conv[&#39;fc2&#39;])</span><br><span class="line">fc2 &#x3D; tf.nn.relu(fc2)</span><br><span class="line">fc2 &#x3D; tf.nn.dropout(fc2, dropout_rate)</span><br><span class="line"># 此时fc2.shape &#x3D; [-1, 4096]</span><br><span class="line"></span><br><span class="line"># 输出层</span><br><span class="line">output &#x3D; tf.add(tf.matmul(fc2, W_conv[&#39;output&#39;]), b_conv[&#39;output&#39;])</span><br><span class="line"># 此时output.shape &#x3D; [-1. 10]</span><br><span class="line"></span><br><span class="line"># 定义交叉熵损失函数（有两种方法）：</span><br><span class="line"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"># 方法1： 自己实现交叉熵</span><br><span class="line">y_output &#x3D; tf.nn.softmax(output)  # 对网络最后一层的输出做softmax, 这通常是求取输出属于某一类的概率</span><br><span class="line">cross_entropy &#x3D; -tf.reduce_sum(y * tf.log(y_output))  # 用softmax的输出向量和样本的实际标签做一个交叉熵.</span><br><span class="line">loss &#x3D; tf.reduce_mean(cross_entropy)  # 对交叉熵求均值就是loss</span><br><span class="line"># loss &#x3D; -tf.reduce_mean(y * tf.log(y_output))  # 交叉熵本应是一个向量，但tf.reduce_mean可以直接求取tensor所有维度的和，所以这里可以用tf.reduce_mean一句代替上述三步。</span><br><span class="line"></span><br><span class="line"># 方法2：使用tensorflow自带的tf.nn.softmax_cross_entropy_with_logits函数实现交叉熵</span><br><span class="line"># loss &#x3D; tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits&#x3D;output, labels&#x3D;y))</span><br><span class="line"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">train_step &#x3D; tf.train.GradientDescentOptimizer(learning_rate&#x3D;learning_rate).minimize(loss)</span><br><span class="line"></span><br><span class="line"># 评估模型</span><br><span class="line">correct_pred &#x3D; tf.equal(tf.argmax(y_output, 1), tf.argmax(y, 1))</span><br><span class="line">accuracy &#x3D; tf.reduce_mean(tf.cast(correct_pred, tf.float32))</span><br><span class="line"></span><br><span class="line">init &#x3D; tf.global_variables_initializer()</span><br><span class="line"></span><br><span class="line">loss_buf &#x3D; []</span><br><span class="line">accuracy_buf &#x3D; []</span><br><span class="line">with tf.device(&quot;&#x2F;gpu:0&quot;):</span><br><span class="line">    # with tf.Graph().as_default():</span><br><span class="line">    gpu_options &#x3D; tf.GPUOptions(per_process_gpu_memory_fraction&#x3D;1.0)</span><br><span class="line">    config &#x3D; tf.ConfigProto(gpu_options&#x3D;gpu_options, allow_soft_placement&#x3D;True, log_device_placement&#x3D;True)</span><br><span class="line">    # config &#x3D; tf.ConfigProto(allow_soft_placement&#x3D;True, log_device_placement&#x3D;False)</span><br><span class="line">    with tf.Session(config&#x3D;config) as sess:</span><br><span class="line">        sess.run(init)</span><br><span class="line"></span><br><span class="line">        total_batch &#x3D; mnist_data_set.train.num_examples &#x2F;&#x2F; batch_size</span><br><span class="line">        for i in range(training_epoch):</span><br><span class="line">            for iteration in range(total_batch):</span><br><span class="line">                batch_xs, batch_ys &#x3D; mnist_data_set.train.next_batch(batch_size)</span><br><span class="line">                batch_xs &#x3D; image_shape_scale(batch_xs)</span><br><span class="line"></span><br><span class="line">                sess.run(train_step, feed_dict&#x3D;&#123;X: batch_xs, y: batch_ys&#125;)</span><br><span class="line">                test_accuracy &#x3D; sess.run(accuracy, feed_dict&#x3D;&#123;X: batch_xs, y: batch_ys&#125;)</span><br><span class="line">                print(&quot;step &#123;&#125;, iteration &#123;&#125;, training accuracy &#123;&#125;&quot;.format(i, iteration, test_accuracy))</span><br><span class="line"></span><br><span class="line">            batch_xs, batch_ys &#x3D; mnist_data_set.test.images[0:1000, :], mnist_data_set.test.labels[0:1000, :]</span><br><span class="line">            batch_xs &#x3D; image_shape_scale(batch_xs)</span><br><span class="line"></span><br><span class="line">            loss_val &#x3D; sess.run(loss, feed_dict&#x3D;&#123;X: batch_xs, y: batch_ys&#125;)</span><br><span class="line">            test_accuracy &#x3D; sess.run(accuracy, feed_dict&#x3D;&#123;X: batch_xs, y: batch_ys&#125;)</span><br><span class="line"></span><br><span class="line">            loss_buf.append(loss_val)</span><br><span class="line">            accuracy_buf.append(test_accuracy)</span><br><span class="line">            print(&quot;step &#123;&#125;, loss &#123;&#125;, testing accuracy &#123;&#125;&quot;.format(i, loss_val, test_accuracy))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 画出准确率曲线</span><br><span class="line">accuracy_ndarray &#x3D; np.array(accuracy_buf)</span><br><span class="line">accuracy_size &#x3D; np.arange(len(accuracy_ndarray))</span><br><span class="line">plt.plot(accuracy_size, accuracy_ndarray, &#39;b+&#39;, label&#x3D;&#39;accuracy&#39;)</span><br><span class="line"></span><br><span class="line">loss_ndarray &#x3D; np.array(loss_buf)</span><br><span class="line">loss_size &#x3D; np.arange(len(loss_ndarray))</span><br><span class="line">plt.plot(loss_size, loss_ndarray, &#39;r*&#39;, label&#x3D;&#39;loss&#39;)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"># 保存loss和测试准确率到csv文件</span><br><span class="line">with open(&#39;AlexNet.csv&#39;, &#39;w&#39;) as fid:</span><br><span class="line">    for loss, acc in zip(loss_buf, accuracy_buf):</span><br><span class="line">        strText &#x3D; str(loss) + &#39;,&#39; + str(acc) + &#39;\n&#39;</span><br><span class="line">        fid.write(strText)</span><br><span class="line">fid.close()</span><br><span class="line"></span><br><span class="line">print(&#39;end&#39;)</span><br></pre></td></tr></table></figure></p>
-<p>训练步骤打印结果如下：<br>step 0, loss nan, testing accuracy 0.08500000089406967<br>step 1, loss nan, testing accuracy 0.08500000089406967<br>step 2, loss nan, testing accuracy 0.08500000089406967<br>step 3, loss nan, testing accuracy 0.08500000089406967<br>… …<br>可以看到，模型无法收敛。</p>
-<h2 id="实验2：通过改变权重初始化方法进行优化"><a href="#实验2：通过改变权重初始化方法进行优化" class="headerlink" title="实验2：通过改变权重初始化方法进行优化"></a>实验2：通过改变权重初始化方法进行优化</h2><p>后参考文献[1]代码，排查到模型无法收敛的原因可能是weights、biases的初始化不当。上述代码中，tf.truncated_normal默认使用均值mean为0、标准差stddev为1的截断正态分布来初始化W_conv和b_conv。<br>这里我们可以对上述代码AlexNet1.py做如下修改(其他不变，此部分完整代码详见文献[2]AlexNet2.py)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">W_conv &#x3D; &#123;</span><br><span class="line">    &#39;conv1&#39;: tf.Variable(tf.truncated_normal([11, 11, input_image_channel, 96], mean&#x3D;0, stddev&#x3D;0.01)),</span><br><span class="line">    &#39;conv2&#39;: tf.Variable(tf.truncated_normal([5, 5, 96, 256], mean&#x3D;0, stddev&#x3D;0.01)),</span><br><span class="line">    &#39;conv3&#39;: tf.Variable(tf.truncated_normal([3, 3, 256, 384], mean&#x3D;0, stddev&#x3D;0.01)),</span><br><span class="line">    &#39;conv4&#39;: tf.Variable(tf.truncated_normal([3, 3, 384, 384], mean&#x3D;0, stddev&#x3D;0.01)),</span><br><span class="line">    &#39;conv5&#39;: tf.Variable(tf.truncated_normal([3, 3, 384, 256], mean&#x3D;0, stddev&#x3D;0.01)),</span><br><span class="line">    &#39;fc1&#39;: tf.Variable(tf.truncated_normal([n_fc1, n_fc2], mean&#x3D;0, stddev&#x3D;0.01)),</span><br><span class="line">    &#39;fc2&#39;: tf.Variable(tf.truncated_normal([n_fc2, n_fc3], mean&#x3D;0, stddev&#x3D;0.01)),</span><br><span class="line">    &#39;output&#39;: tf.Variable(tf.truncated_normal([n_fc3, n_classes], mean&#x3D;0, stddev&#x3D;0.01))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">b_conv &#x3D; &#123;</span><br><span class="line">    &#39;conv1&#39;: tf.Variable(tf.truncated_normal([96], mean&#x3D;0.005, stddev&#x3D;0.1)),</span><br><span class="line">    &#39;conv2&#39;: tf.Variable(tf.truncated_normal([256], mean&#x3D;0.005, stddev&#x3D;0.1)),</span><br><span class="line">    &#39;conv3&#39;: tf.Variable(tf.truncated_normal([384], mean&#x3D;0.005, stddev&#x3D;0.1)),</span><br><span class="line">    &#39;conv4&#39;: tf.Variable(tf.truncated_normal([384], mean&#x3D;0.005, stddev&#x3D;0.1)),</span><br><span class="line">    &#39;conv5&#39;: tf.Variable(tf.truncated_normal([256], mean&#x3D;0.005, stddev&#x3D;0.1)),</span><br><span class="line">    &#39;fc1&#39;: tf.Variable(tf.truncated_normal([n_fc2], mean&#x3D;0.005, stddev&#x3D;0.1)),</span><br><span class="line">    &#39;fc2&#39;: tf.Variable(tf.truncated_normal([n_fc3], mean&#x3D;0.005, stddev&#x3D;0.1)),</span><br><span class="line">    &#39;output&#39;: tf.Variable(tf.truncated_normal([n_classes], mean&#x3D;0.005, stddev&#x3D;0.1))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>训练步骤打印结果如下：<br>step 1, loss 2299.4792, testing accuracy 0.122<br>step 2, loss 2299.8113, testing accuracy 0.117<br>… …<br>step 11, loss 2293.2812, testing accuracy 0.125<br>step 12, loss 1955.1497, testing accuracy 0.391<br>step 13, loss 353.29596, testing accuracy 0.866<br>step 14, loss 146.65419, testing accuracy 0.954<br>… …<br>step 44, loss 36.49175, testing accuracy 0.99<br>step 45, loss 22.933325, testing accuracy 0.986<br>step 46, loss 35.3011, testing accuracy 0.99<br>step 47, loss nan, testing accuracy 0.085<br>step 48, loss nan, testing accuracy 0.085<br>step 49, loss nan, testing accuracy 0.085<br>step 50, loss nan, testing accuracy 0.085<br>可以看到，此时算法模型可以正常收敛，但在中途会突然梯度爆炸。</p>
-<h2 id="实验3：中途调低学习率避免梯度爆炸"><a href="#实验3：中途调低学习率避免梯度爆炸" class="headerlink" title="实验3：中途调低学习率避免梯度爆炸"></a>实验3：中途调低学习率避免梯度爆炸</h2><p>为了解决梯度爆炸，我们可以在梯度下降接近低谷附近时调低学习率。这里需要继续在上述代码AlexNet2.py的基础上做些改进，主要是将学习率设为占位符变量，在训练的过程中动态设置学习率。主要改进如下(此部分完整代码详见文献[2]AlexNet3.py)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">learning_rate_holder &#x3D; tf.placeholder(tf.float32)</span><br><span class="line">train_step &#x3D; tf.train.GradientDescentOptimizer(learning_rate&#x3D;learning_rate_holder).minimize(loss)</span><br><span class="line"></span><br><span class="line">... ...</span><br><span class="line"></span><br><span class="line">with tf.Session(config&#x3D;config) as sess:</span><br><span class="line">    sess.run(init)</span><br><span class="line">    total_batch &#x3D; mnist_data_set.train.num_examples &#x2F;&#x2F; batch_size</span><br><span class="line">    for i in range(training_epoch):</span><br><span class="line">        for iteration in range(total_batch):</span><br><span class="line">            ... ...</span><br><span class="line"></span><br><span class="line">            if i &lt; 30:</span><br><span class="line">                sess.run(train_step, feed_dict&#x3D;&#123;X: batch_xs, y: batch_ys, learning_rate_holder: learning_rate&#125;)</span><br><span class="line">            elif i &lt; 50:</span><br><span class="line">                sess.run(train_step, feed_dict&#x3D;&#123;X: batch_xs, y: batch_ys, learning_rate_holder: learning_rate &#x2F; 10.0&#125;)</span><br><span class="line">            elif i &lt; 70:</span><br><span class="line">                sess.run(train_step, feed_dict&#x3D;&#123;X: batch_xs, y: batch_ys, learning_rate_holder: learning_rate &#x2F; 100.0&#125;)</span><br><span class="line">            else:</span><br><span class="line">                sess.run(train_step, feed_dict&#x3D;&#123;X: batch_xs, y: batch_ys, learning_rate_holder: learning_rate &#x2F; 1000.0&#125;)</span><br></pre></td></tr></table></figure>
-<p>训练步骤打印结果如下：<br>step 1, loss 2300.436, testing accuracy 0.117<br>step 2, loss 2299.375, testing accuracy 0.13<br>… …<br>step 10, loss 2290.4155, testing accuracy 0.154<br>step 11, loss 678.09644, testing accuracy 0.788<br>step 12, loss 178.35306, testing accuracy 0.948<br>… …<br>step 49, loss 35.42096, testing accuracy 0.988<br>step 50, loss 34.458153, testing accuracy 0.988<br>梯度爆炸问题得以解决。</p>
-<h2 id="实验4：使用tf-get-variable创建变量，使用tf-global-variables-initializer初始化"><a href="#实验4：使用tf-get-variable创建变量，使用tf-global-variables-initializer初始化" class="headerlink" title="实验4：使用tf.get_variable创建变量，使用tf.global_variables_initializer初始化"></a>实验4：使用tf.get_variable创建变量，使用tf.global_variables_initializer初始化</h2><p>上面代码都是使用 tf.Variable(tf.truncated_normal(…)) 来创建权重矩阵的，我们现在尝试使用 tf.get_variable() 来创建权重矩阵。tf.Variable 和 tf.get_variable的区别是前者每次调用都会创建新的对象；而对于后者来说，如果变量已经存在则直接将该变量返回，否则它才会创建一个新的变量 [3]。</p>
-<p>在AlexNet1.py的基础上做如下改进，其他不变：(此部分完整代码参见文献[2]AlexNet4.py)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">W_conv &#x3D; &#123;</span><br><span class="line">    &#39;conv1&#39;: tf.get_variable(&#39;conv1&#x2F;weights&#39;, shape&#x3D;[11, 11, input_image_channel, 96]),</span><br><span class="line">    &#39;conv2&#39;: tf.get_variable(&#39;conv2&#x2F;weights&#39;, shape&#x3D;[5, 5, 96, 256]),</span><br><span class="line">    &#39;conv3&#39;: tf.get_variable(&#39;conv3&#x2F;weights&#39;, shape&#x3D;[3, 3, 256, 384]),</span><br><span class="line">    &#39;conv4&#39;: tf.get_variable(&#39;conv4&#x2F;weights&#39;, shape&#x3D;[3, 3, 384, 384]),</span><br><span class="line">    &#39;conv5&#39;: tf.get_variable(&#39;conv5&#x2F;weights&#39;, shape&#x3D;[3, 3, 384, 256]),</span><br><span class="line">    &#39;fc1&#39;: tf.get_variable(&#39;fc1&#x2F;weights&#39;, shape&#x3D;[n_fc1, n_fc2], trainable&#x3D;True),</span><br><span class="line">    &#39;fc2&#39;: tf.get_variable(&#39;fc2&#x2F;weights&#39;, shape&#x3D;[n_fc2, n_fc3], trainable&#x3D;True),</span><br><span class="line">    &#39;output&#39;: tf.get_variable(&#39;output&#x2F;weights&#39;, shape&#x3D;[n_fc3, n_classes], trainable&#x3D;True)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">b_conv &#x3D; &#123;</span><br><span class="line">    &#39;conv1&#39;: tf.get_variable(&#39;conv1&#x2F;biases&#39;, shape&#x3D;[96]),</span><br><span class="line">    &#39;conv2&#39;: tf.get_variable(&#39;conv2&#x2F;biases&#39;, shape&#x3D;[256]),</span><br><span class="line">    &#39;conv3&#39;: tf.get_variable(&#39;conv3&#x2F;biases&#39;, shape&#x3D;[384]),</span><br><span class="line">    &#39;conv4&#39;: tf.get_variable(&#39;conv4&#x2F;biases&#39;, shape&#x3D;[384]),</span><br><span class="line">    &#39;conv5&#39;: tf.get_variable(&#39;conv5&#x2F;biases&#39;, shape&#x3D;[256]),</span><br><span class="line">    &#39;fc1&#39;: tf.get_variable(&#39;fc1&#x2F;biases&#39;, shape&#x3D;[n_fc2], trainable&#x3D;True),</span><br><span class="line">    &#39;fc2&#39;: tf.get_variable(&#39;fc2&#x2F;biases&#39;, shape&#x3D;[n_fc3], trainable&#x3D;True),</span><br><span class="line">    &#39;output&#39;: tf.get_variable(&#39;output&#x2F;biases&#39;, shape&#x3D;[n_classes], trainable&#x3D;True)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>训练步骤打印结果如下：<br>step 1, loss 170.07048, testing accuracy 0.936<br>step 2, loss 86.70665, testing accuracy 0.972<br>… …<br>step 50, loss 26.004112, testing accuracy 0.99<br>可以看到，算法模型step1时测试准确率就达到93.6%了，且后面没有梯度爆炸。</p>
-<p>&emsp; 在这里，由于我们并没有事先为权重创建变量，所以tf.get_variable会自己创建变量，然后使用tf.global_variables_initializer()初始化所有的变量，可见tf.get_variable和tf.global_variables_initializer()使用了一种较好的初始化策略。</p>
-<p>本实验说明了良好的权重初始化对算法模型的训练是非常重要的。</p>
-<h2 id="实验5：对卷积层分组"><a href="#实验5：对卷积层分组" class="headerlink" title="实验5：对卷积层分组"></a>实验5：对卷积层分组</h2><p>在AlexNet2.py的基础上进行改进，将 W_conv 中的conv4、conv5分成两组，具体改进如下：（代码详见文献[2]AlexNet5.py）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">W_conv &#x3D; &#123;</span><br><span class="line">    ... ...</span><br><span class="line">    &#39;conv4_1&#39;: tf.Variable(tf.truncated_normal([3, 3, 384&#x2F;&#x2F;2, 384&#x2F;&#x2F;2], mean&#x3D;0, stddev&#x3D;0.01)),</span><br><span class="line">    &#39;conv4_2&#39;: tf.Variable(tf.truncated_normal([3, 3, 384&#x2F;&#x2F;2, 384&#x2F;&#x2F;2], mean&#x3D;0, stddev&#x3D;0.01)),</span><br><span class="line">    &#39;conv5_1&#39;: tf.Variable(tf.truncated_normal([3, 3, 384&#x2F;&#x2F;2, 256&#x2F;&#x2F;2], mean&#x3D;0, stddev&#x3D;0.01)),</span><br><span class="line">    &#39;conv5_2&#39;: tf.Variable(tf.truncated_normal([3, 3, 384&#x2F;&#x2F;2, 256&#x2F;&#x2F;2], mean&#x3D;0, stddev&#x3D;0.01)),</span><br><span class="line">    ... ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对卷积层4、卷积层5的具体改进如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 卷积层4</span><br><span class="line">conv3groups &#x3D; tf.split(axis&#x3D;3, num_or_size_splits&#x3D;2, value&#x3D;conv3)</span><br><span class="line">conv4_1 &#x3D; tf.nn.conv2d(conv3groups[0], W_conv[&#39;conv4_1&#39;], strides&#x3D;[1, 1, 1, 1], padding&#x3D;&#39;SAME&#39;)</span><br><span class="line">conv4_2 &#x3D; tf.nn.conv2d(conv3groups[1], W_conv[&#39;conv4_2&#39;], strides&#x3D;[1, 1, 1, 1], padding&#x3D;&#39;SAME&#39;)</span><br><span class="line">conv4 &#x3D; tf.concat(axis&#x3D;3, values&#x3D;[conv4_1, conv4_2])</span><br><span class="line">conv4 &#x3D; tf.nn.bias_add(conv4, b_conv[&#39;conv4&#39;])</span><br><span class="line">conv4 &#x3D; tf.nn.relu(conv4)</span><br><span class="line"></span><br><span class="line"># 卷积层5</span><br><span class="line">conv4groups &#x3D; tf.split(axis&#x3D;3, num_or_size_splits&#x3D;2, value&#x3D;conv4)</span><br><span class="line">conv5_1 &#x3D; tf.nn.conv2d(conv4groups[0], W_conv[&#39;conv5_1&#39;], strides&#x3D;[1, 1, 1, 1], padding&#x3D;&#39;SAME&#39;)</span><br><span class="line">conv5_2 &#x3D; tf.nn.conv2d(conv4groups[1], W_conv[&#39;conv5_2&#39;], strides&#x3D;[1, 1, 1, 1], padding&#x3D;&#39;SAME&#39;)</span><br><span class="line">conv5 &#x3D; tf.concat(axis&#x3D;3, values&#x3D;[conv5_1, conv5_2])</span><br><span class="line">conv5 &#x3D; tf.nn.bias_add(conv5, b_conv[&#39;conv5&#39;])</span><br><span class="line">conv5 &#x3D; tf.nn.relu(conv5)</span><br></pre></td></tr></table></figure><br>其他代码不变，训练测试结果打印如下：<br>step 1, loss 2297.4663, testing accuracy 0.104<br>step 2, loss 2299.2734, testing accuracy 0.124<br>… …<br>step 3, loss 2114.1978, testing accuracy 0.301<br>step 4, loss 366.07996, testing accuracy 0.872<br>… …<br>step 5, loss 44.795494, testing accuracy 0.992<br>step 6, loss 37.983482, testing accuracy 0.988<br>和AlexNet2.py相比，此时算法梯度下降速度更快，且不会出现梯度爆炸。</p>
-<h2 id="实验6：使用Batch-Normalization优化"><a href="#实验6：使用Batch-Normalization优化" class="headerlink" title="实验6：使用Batch Normalization优化"></a>实验6：使用Batch Normalization优化</h2><p>在AlexNet2.py的基础上，使用Batch Normalization算法优化模型，并且去掉lrn，主要改进如下：（代码详见文献[2]AlexNet6.py）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">def batch_norm(inputs, is_training, is_conv_out&#x3D;True, decay&#x3D;0.999):</span><br><span class="line">    scale &#x3D; tf.Variable(tf.ones([inputs.get_shape()[-1]]))</span><br><span class="line">    beta &#x3D; tf.Variable(tf.zeros([inputs.get_shape()[-1]]))</span><br><span class="line">    pop_mean &#x3D; tf.Variable(tf.zeros([inputs.get_shape()[-1]]), trainable&#x3D;False)</span><br><span class="line">    pop_var &#x3D; tf.Variable(tf.ones([inputs.get_shape()[-1]]), trainable&#x3D;False)</span><br><span class="line"></span><br><span class="line">    if is_training:</span><br><span class="line">        if is_conv_out:</span><br><span class="line">            batch_mean, batch_var &#x3D; tf.nn.moments(inputs, [0, 1, 2])</span><br><span class="line">        else:</span><br><span class="line">            batch_mean, batch_var &#x3D; tf.nn.moments(inputs, [0])</span><br><span class="line"></span><br><span class="line">        train_mean &#x3D; tf.assign(pop_mean, pop_mean*decay+batch_mean*(1-decay))</span><br><span class="line">        train_var &#x3D; tf.assign(pop_var, pop_var*decay+batch_var*(1-decay))</span><br><span class="line"></span><br><span class="line">        with tf.control_dependencies([train_mean, train_var]):</span><br><span class="line">            return tf.nn.batch_normalization(inputs, batch_mean, batch_var, beta, scale, 0.001)</span><br><span class="line">    else:</span><br><span class="line">        return tf.nn.batch_normalization(inputs, pop_mean, pop_var, beta, scale, 0.001)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">... ...</span><br><span class="line">... ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">conv1 &#x3D; tf.nn.bias_add(...)</span><br><span class="line">conv1 &#x3D; batch_norm(conv1, True)</span><br><span class="line">... ...</span><br><span class="line"></span><br><span class="line">conv2 &#x3D; tf.nn.bias_add(...)</span><br><span class="line">conv2 &#x3D; batch_norm(conv2, True)</span><br><span class="line">... ...</span><br><span class="line"></span><br><span class="line">conv3 &#x3D; tf.nn.bias_add(...)</span><br><span class="line">conv3 &#x3D; batch_norm(conv3, True)</span><br><span class="line">... ...</span><br><span class="line"></span><br><span class="line">conv4 &#x3D; tf.nn.bias_add(...)</span><br><span class="line">conv4 &#x3D; batch_norm(conv4, True)</span><br><span class="line">... ...</span><br><span class="line"></span><br><span class="line">conv5 &#x3D; tf.nn.bias_add(...)</span><br><span class="line">conv5 &#x3D; batch_norm(conv5, True)</span><br><span class="line">... ...</span><br><span class="line"></span><br><span class="line">fc1 &#x3D; tf.add(...)</span><br><span class="line">fc1 &#x3D; batch_norm(fc1, True, False)</span><br><span class="line">... ...</span><br><span class="line"></span><br><span class="line">fc2 &#x3D; tf.add(...)</span><br><span class="line">fc2 &#x3D; batch_norm(fc2, True, False)</span><br><span class="line">... ...</span><br></pre></td></tr></table></figure></p>
-<p>训练测试结果打印如下：<br>step 1, loss 44.443394, testing accuracy 0.979<br>step 1, loss 34.873466, testing accuracy 0.988<br>… …<br>step 1, loss 13.521537, testing accuracy 0.992<br>step 1, loss 10.757448, testing accuracy 0.991<br>很明显，使用BN算法优化效果非常显著。</p>
-<blockquote>
-<p>AlexNet6.py优化中，我们使用了tf.truncated_normal并且指定mean、stddev来创建参数矩阵，后来我实验发现，如果使用AlexNet1.py中创建参数矩阵的方法的话(即使用tf.truncated_normal创建参数矩阵但mean和stddev却使用默认的0和1，详见文献[2]AlexNet7.py)，则模型仍然是无法收敛的，这说明即使是使用BN优化，但不恰当的参数初始化仍然无法使模型收敛。</p>
-</blockquote>
-<p>最后附上上述实验的loss和accuracy曲线图：<br><img src="https://lh3.googleusercontent.com/-98qN8utSMAg/XEWv_k-p4lI/AAAAAAAAALQ/HTcnPrenuwwPshaBiZ1aaFLFsNRVMilTQCLcBGAs/s0/AlexNet_loss.png" alt="enter image description here" title="AlexNet_loss.png"></p>
-<p><img src="https://lh3.googleusercontent.com/-CxzJjCxrvqk/XEWwGoMl0XI/AAAAAAAAALc/bHJcAVHnR-AhuoYRmr_OsjRTezLCcumfQCLcBGAs/s0/AlexNet_accuracy.png" alt="enter image description here" title="AlexNet_accuracy.png"></p>
-<h2 id="实验总结"><a href="#实验总结" class="headerlink" title="实验总结"></a>实验总结</h2><ol>
-<li>合适的参数初始化是非常重要的；</li>
-<li>动态调整学习率；</li>
-<li>当我们不确定如何手动初始化参数矩阵时，可以使用 tf.get_variable + tf.global_variables_initializer 默认的初始化策略；</li>
-<li>对卷积层分组是一个很好优化思路；</li>
-<li>Batch Normalization算法优化效果非常显著。</li>
+<p>然后需要安装对应版本的Kernel Header：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install linux-headers-$(uname -r)</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>安装对应的库<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev \</span><br><span class="line">libboost-all-dev libhdf5-serial-dev libgflags-dev libgoogle-glog-dev liblmdb-dev \</span><br><span class="line">protobuf-compiler g++ freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev \</span><br><span class="line">libgl1-mesa-glx libglu1-mesa libglu1-mesa-dev</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://github.com/kratzert/finetune_alexnet_with_tensorflow" target="_blank" rel="noopener">finetune_alexnet_with_tensorflow</a><br>[2] <a href="https://github.com/JuneXia/handml" target="_blank" rel="noopener">我的handml仓库</a><br>[3] <a href="https://blog.csdn.net/u012436149/article/details/53696970" target="_blank" rel="noopener">tensorflow学习笔记（二十三）：variable与get_variable</a></p>
+<h2 id="1-卸载旧的显卡驱动"><a href="#1-卸载旧的显卡驱动" class="headerlink" title="1. 卸载旧的显卡驱动"></a>1. 卸载旧的显卡驱动</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># for case1: original driver installed by apt-get:</span></span><br><span class="line">sudo apt-get remove --purge nvidia*</span><br><span class="line"><span class="comment"># 亲测上述命令执行不成功，改如下面这条命令便ok了：</span></span><br><span class="line">sudo apt-get remove nvidia*</span><br><span class="line"></span><br><span class="line"><span class="comment"># for case2: original driver installed by runfile:</span></span><br><span class="line">sudo chmod +x *.run</span><br><span class="line">sudo ./NVIDIA-Linux-x86_64-384.59.run --uninstall</span><br></pre></td></tr></table></figure>
+<p> NVIDIA Software Installer for Unix/Linux</p>
+<p>  If you plan to no longer use the NVIDIA driver, you should make sure that no X screens are<br>  configured to use the NVIDIA X driver in your X configuration file. If you used nvidia-xconfig to<br>  configure X, it may have created a backup of your original configuration. Would you like to run<br>  <code>nvidia-xconfig --restore-original-backup</code> to attempt restoration of the original X configuration<br>  file?</p>
+<pre><code>                             Yes                              No   
+</code></pre><p>  WARNING: Your driver installation has been altered since it was initially installed; this may<br>           happen, for example, if you have since installed the NVIDIA driver through a mechanism<br>           other than nvidia-installer (such as your distribution’s native package management<br>           system).  nvidia-installer will attempt to uninstall as best it can.  Please see the<br>           file ‘/var/log/nvidia-uninstall.log’ for details.                                        </p>
+<pre><code>                                             OK  
+</code></pre><p>  WARNING: Failed to delete some directories. See /var/log/nvidia-uninstall.log for details.        </p>
+<pre><code>                                             OK       
+</code></pre><p>如果原驱动是用apt-get安装的，就用第1种方法卸载。如果原驱动是用runfile安装的，就用–uninstall命令卸载。其实，用runfile安装的时候也会卸载掉之前的驱动，所以不手动卸载亦可。</p>
+<blockquote>
+<p>卸载完成后，注意此时千万不能重启，重启电脑可能会导致无法进入系统。(亲测：其实重启也没事，笔者后面在禁用X-Window服务后遇到疑似“死机”现象，于是便强制关机重启后再继续其他步骤的。)</p>
+</blockquote>
+<h2 id="2-禁用nouveau驱动"><a href="#2-禁用nouveau驱动" class="headerlink" title="2. 禁用nouveau驱动"></a>2. 禁用nouveau驱动</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打开blacklist.conf文件：</span></span><br><span class="line">sudo vim /etc/modprobe.d/blacklist.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在文本最后添加：</span></span><br><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后执行：</span></span><br><span class="line">sudo update-initramfs -u</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启后，执行以下命令，如果没有屏幕输出，说明禁用nouveau成功：</span></span><br><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
+<h2 id="3-禁用X-Window服务"><a href="#3-禁用X-Window服务" class="headerlink" title="3. 禁用X-Window服务"></a>3. 禁用X-Window服务</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop <span class="comment">#这会关闭图形界面，但不用紧张</span></span><br></pre></td></tr></table></figure>
+<p>按Ctrl-Alt+F1进入命令行界面，输入用户名和密码登录即可。</p>
+<blockquote>
+<p>小提示：在命令行输入：sudo service lightdm start ，然后按Ctrl-Alt+F7即可恢复到图形界面。</p>
+</blockquote>
+<h2 id="4-命令行安装显卡驱动"><a href="#4-命令行安装显卡驱动" class="headerlink" title="4. 命令行安装显卡驱动"></a>4. 命令行安装显卡驱动</h2><p><a href="https://www.nvidia.cn/Download/index.aspx" target="_blank" rel="noopener">点此下载显卡驱动</a><br><img src="https://lh3.googleusercontent.com/-o6jQ09C2HfM/XYhRwKi2jeI/AAAAAAAAAO4/GcwJPgUtw4kwfM94ML3fo4BmdzdjtGzwQCLcBGAsYHQ/s0/nvidia-driver-download.png" alt="enter image description here" title="nvidia-driver-download.png"><br>笔者亲测：对于我的ubuntu16.04 server系统，Language如若选Chinese(Simplified)则安装不成功。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#给驱动run文件赋予执行权限：</span></span><br><span class="line">sudo chmod +x NVIDIA-Linux-x86_64-384.59.run</span><br><span class="line"><span class="comment">#后面的参数非常重要，不可省略：</span></span><br><span class="line">sudo ./NVIDIA-Linux-x86_64-384.59.run -–no-x-check -no-nouveau-check -no-opengl-files</span><br></pre></td></tr></table></figure>
+<ul>
+<li>no-opengl-files：表示只安装驱动文件，不安装OpenGL文件。这个参数不可省略，否则会导致登陆界面死循环，英语一般称为”login loop”或者”stuck in login”。</li>
+<li>no-x-check：表示安装驱动时不检查X服务，非必需。</li>
+<li>no-nouveau-check：表示安装驱动时不检查nouveau，非必需。</li>
+<li>Z, —disable-nouveau：禁用nouveau。此参数非必需，因为之前已经手动禁用了nouveau。</li>
+<li>A：查看更多高级选项。</li>
+</ul>
+<blockquote>
+<p>必选参数解释：因为NVIDIA的驱动默认会安装OpenGL，而Ubuntu的内核本身也有OpenGL、且与GUI显示息息相关，一旦NVIDIA的驱动覆写了OpenGL，在GUI需要动态链接OpenGL库的时候就引起问题。</p>
+</blockquote>
+<p><strong>安装选项：</strong></p>
+<blockquote>
+<ol>
+<li>There appears to already be a driver installed on your system (version:<br>390.42).  As part of installing this driver (version: 390.42), the existing<br>driver will be uninstalled.  Are you sure you want to continue?<br>Continue installation      Abort installation<br>（选择 Coninue，如果是重装的话）  </li>
+<li>The distribution-provided pre-install script failed!  Are you sure you want<br>to continue?<br>Continue installation      Abort installation<br>（选择 Cotinue)  </li>
+<li>Would you like to register the kernel module sources with DKMS? This will<br>allow DKMS to automatically build a new module, if you install a different<br>kernel later.<br>Yes                       No<br>（这里选 No）  </li>
+<li>Install NVIDIA’s 32-bit compatibility libraries?<br>Yes                       No<br>（这里选 No）  </li>
+<li>Installation of the kernel module for the NVIDIA Accelerated Graphics Driver<br>for Linux-x86_64 (version 390.42) is now complete.<br>  OK</li>
+</ol>
+</blockquote>
+<p>之后，按照提示安装，成功后重启即可。<br>如果提示安装失败，不要急着重启电脑，重复以上步骤，多安装几次即可。</p>
+<p><strong>Driver测试：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi #若列出GPU的信息列表，表示驱动安装成功</span><br><span class="line">nvidia-settings #若弹出设置对话框，亦表示驱动安装成功</span><br></pre></td></tr></table></figure></p>
+<h2 id="5-安装CUDA"><a href="#5-安装CUDA" class="headerlink" title="5. 安装CUDA"></a>5. 安装CUDA</h2><p><strong>卸载旧的CUDA</strong><br>（也可以不卸载试试，据说显卡驱动可以向下兼容多个CUDA版本共存）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/<span class="built_in">local</span>/cuda-8.0/bin/uninstall_cuda_8.0.pl</span><br><span class="line"></span><br><span class="line">卸载之后，还有一些残留的文件夹，之前安装的是CUDA 8.0。可以一并删除：</span><br><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/cuda-8.0/</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="noopener">点此下载CUDA</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./cuda_8.0.61_375.26_linux.run --no-opengl-libs</span><br></pre></td></tr></table></figure>
+<ul>
+<li>no-opengl-libs：表示只安装驱动文件，不安装OpenGL文件。必需参数，原因同上。注意：不是-no-opengl-files。</li>
+<li>uninstall (deprecated)：用于卸载CUDA Driver（已废弃）。</li>
+<li>toolkit：表示只安装CUDA Toolkit，不安装Driver和Samples。</li>
+<li>help：查看更多高级选项。<br>之后，按照提示安装即可。我依次选择了：</li>
+</ul>
+<blockquote>
+<p>accept #同意安装<br>n #不安装Driver，因为已安装最新驱动<br>y #安装CUDA Toolkit</p>
+<p><Enter> #安装到默认目录<br>y #创建安装目录的软链接<br>n #不复制Samples，因为在安装目录下有/samples</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">导出CUDA的bin和lib路径： </span><br><span class="line">方法1：终端直接执行以下命令</span><br><span class="line"><span class="built_in">export</span> CUDA_HOME=/usr/<span class="built_in">local</span>/cuda</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$CUDA_HOME</span>/bin</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="variable">$LD_LIBRARY_PATH</span>:<span class="variable">$CUDA_HOME</span>/lib64:<span class="variable">$CUDA_HOME</span>/extras/CUPTI/lib64</span><br><span class="line"></span><br><span class="line">方法2：如果这台电脑只有自己一个用户，则可以在主目录下的.bashrc文件最后加入上述命令并保存，然后回到终端执行下面的命令即可</span><br><span class="line">```bash</span><br><span class="line"><span class="built_in">source</span> .bashrc</span><br><span class="line"></span><br><span class="line">方法3：如果电脑有多个用户使用，则方法2对其他用户无效，此时要将方法1中的命令加到 /etc/profile 文件的最后，然后执行下面的命令</span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
+<p>安装及路径测试：输入nvcc -V 查看CUDA版本。</p>
+<p>CUDA Sample测试：</p>
+<h1 id="编译并测试设备-deviceQuery："><a href="#编译并测试设备-deviceQuery：" class="headerlink" title="编译并测试设备 deviceQuery："></a>编译并测试设备 deviceQuery：</h1><p>cd /usr/local/cuda-8.0/samples/1_Utilities/deviceQuery<br>sudo make<br>./deviceQuery</p>
+<h1 id="编译并测试带宽-bandwidthTest："><a href="#编译并测试带宽-bandwidthTest：" class="headerlink" title="编译并测试带宽 bandwidthTest："></a>编译并测试带宽 bandwidthTest：</h1><p>cd ../bandwidthTest<br>sudo make<br>./bandwidthTest</p>
+<p>如果这两个测试的最后结果都是Result = PASS，说明CUDA安装成功啦。</p>
+<h3 id="笔者这一步没有安装补丁"><a href="#笔者这一步没有安装补丁" class="headerlink" title="笔者这一步没有安装补丁"></a>笔者这一步没有安装补丁</h3><p>sudo ./cuda_8.0.61.2_linux.run #最后安装补丁CUDA官方补丁</p>
+<h2 id="6-安装cuDNN"><a href="#6-安装cuDNN" class="headerlink" title="6. 安装cuDNN"></a>6. 安装cuDNN</h2><p><a href="https://developer.nvidia.com/cudnn" target="_blank" rel="noopener">下载</a>与CUDA版本匹配的cuDNN库，解压后执行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo cp cuda/include/cudnn.h /usr/<span class="built_in">local</span>/cuda/include</span><br><span class="line">sudo cp cuda/lib64/libcudnn* /usr/<span class="built_in">local</span>/cuda/lib64</span><br></pre></td></tr></table></figure></p>
+<h2 id="7-安装TensorFlow"><a href="#7-安装TensorFlow" class="headerlink" title="7. 安装TensorFlow"></a>7. 安装TensorFlow</h2><p>如果没有pip，则需要先安装pip<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python3-pip python3-dev</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install tensorflow-gpu==1.14.0 -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+<h2 id="8-其他python库的安装"><a href="#8-其他python库的安装" class="headerlink" title="8. 其他python库的安装"></a>8. 其他python库的安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install opencv-python -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">sudo pip3 install opencv-contrib-python -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">sudo pip3 install matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+<h2 id="9-安装PyTorch"><a href="#9-安装PyTorch" class="headerlink" title="9. 安装PyTorch"></a>9. 安装PyTorch</h2><p>参考<a href="https://pytorch.org/get-started/locally/" target="_blank" rel="noopener">官方安装指导</a>，我是使用pip方式安装的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方式1：下面默认安装的是cpu版本</span></span><br><span class="line">sudo pip3 install torch==1.1.0 torchvision==0.3.0</span><br><span class="line">sudo pip3 install torch==1.1.0 torchvision==0.3.0 -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式2：下面会安装pytorch gpu版本，torchvision也是gpu版本，但是我的cuda环境是cuda10.0，</span></span><br><span class="line"><span class="comment">#       这里的pytorch-1.1.0可以支持cuda10，但是torchvision只能支持cuda9</span></span><br><span class="line">sudo pip3 install https://download.pytorch.org/whl/cu100/torch-1.1.0-cp35-cp35m-linux_x86_64.whl</span><br><span class="line">sudo pip3 install torchvision==0.3.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式3：安装更高版本的 pytorch 和 torchvision，成功</span></span><br><span class="line">sudo pip3 install torch==1.2.0 torchvision==0.4.0 -f https://download.pytorch.org/whl/torch_stable.html</span><br></pre></td></tr></table></figure>
+<h2 id="10-安装Paddle"><a href="#10-安装Paddle" class="headerlink" title="10. 安装Paddle"></a>10. 安装Paddle</h2><p>背景：2020年春节新冠肺炎期间，公司紧急使用百度开源的戴口罩识别算法。<br>使用下面的安装方法会与服务器上的tensorboard、tensorlayer环境依赖有所冲突。为此，可尝试用conda环境安装paddle。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install --upgrade paddlehub -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">sudo pip3 install paddlepaddle</span><br><span class="line"><span class="comment"># 安装完成后，此时得到的是paddlehub是1.5.1版本，paddle是1.6.3版本。</span></span><br></pre></td></tr></table></figure></p>
+<p>[1] <a href="https://blog.csdn.net/CosmosHua/article/details/76644029" target="_blank" rel="noopener">Ubuntu 16.04安装NVIDIA驱动</a><br>[2] <a href="https://onlycaptain.github.io/2018/08/18/Ubuntu%E4%B8%8BNvidia%E9%A9%B1%E5%8A%A8%E5%AE%89%E8%A3%85/" target="_blank" rel="noopener">Ubuntu下Nvidia驱动安装</a><br>[3] <a href="https://bluesmilery.github.io/blogs/a687003b/" target="_blank" rel="noopener">多版本CUDA和TensorFlow共存</a></p>
 
       
     </div>
@@ -1063,7 +331,7 @@ f(x) &= (m+n)^2 \\
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.4%E3%80%91%E6%9B%B4%E5%BF%AB%E7%9A%84%E4%BC%98%E5%8C%96%E5%99%A8/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/12/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1.2%E3%80%91%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD(Back%20Propagation)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1077,7 +345,7 @@ f(x) &= (m+n)^2 \\
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/11/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.4%E3%80%91%E6%9B%B4%E5%BF%AB%E7%9A%84%E4%BC%98%E5%8C%96%E5%99%A8/" class="post-title-link" itemprop="url">【深度学习笔记1.4】更快的优化器</a>
+            <a href="/2018/08/12/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.1.2%E3%80%91%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD(Back%20Propagation)/" class="post-title-link" itemprop="url">【深度学习笔记】反向传播(Back Propagation)</a>
         </h1>
 
         <div class="post-meta">
@@ -1087,14 +355,14 @@ f(x) &= (m+n)^2 \\
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2017-11-22 17:28:05" itemprop="dateCreated datePublished" datetime="2017-11-22T17:28:05+08:00">2017-11-22</time>
+              <time title="Created: 2018-08-12 17:28:05" itemprop="dateCreated datePublished" datetime="2018-08-12T17:28:05+08:00">2018-08-12</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 14:06:21" itemprop="dateModified" datetime="2020-01-22T14:06:21+08:00">2020-01-22</time>
+                <time title="Modified: 2020-02-20 15:51:47" itemprop="dateModified" datetime="2020-02-20T15:51:47+08:00">2020-02-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1119,10 +387,87 @@ f(x) &= (m+n)^2 \\
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp; 训练一个非常大的深度神经网络可能会非常缓慢。 到目前为止，我们已经看到了四种加速训练的方法：对连接权重应用良好的初始化策略，使用良好的激活函数，使用批量规范化以及重用预训练网络的部分。另一个巨大的速度提升来自使用比普通渐变下降优化器更快的优化器。 在本节中，我们将介绍最流行的：动量优化，Nesterov 加速梯度，AdaGrad，RMSProp，最后是 Adam 优化。<br>
+          <p>&emsp; 实际使用的神经网络的结构多种多样,不可能一一分析其梯度表达式。我们将以全连接层网<br>络、激活函数采用 Sigmoid 函数、误差函数为 Softmax+MSE 损失函数的神经网络为例,推<br>导其梯度传播规律。</p>
+<p>… 未完待续</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(performance%20measure)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(performance%20measure)/" class="post-title-link" itemprop="url">【机器学习基础】性能度量(performance measure)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-07-25T00:00:00+08:00">2018-07-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-27 14:31:49" itemprop="dateModified" datetime="2020-02-27T14:31:49+08:00">2020-02-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>&emsp; 性能度量(performance measure)是衡量模型泛化能力的评价标准。在对比不同模型的performance时，使用不同的 performance measure 往往会导致不同的评判结果，这意味着模型的“好坏”是相对的，什么样的模型是好的，不仅取决于算法和数据，还取决于任务需求 [1]。<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/11/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.4%E3%80%91%E6%9B%B4%E5%BF%AB%E7%9A%84%E4%BC%98%E5%8C%96%E5%99%A8/#more" rel="contents">
+              <a class="btn" href="/2018/07/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F(performance%20measure)/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1146,7 +491,7 @@ f(x) &= (m+n)^2 \\
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1.1%E3%80%91LeNet-5/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/English%20Zha/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1160,7 +505,7 @@ f(x) &= (m+n)^2 \\
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/11/22/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02.1.1%E3%80%91LeNet-5/" class="post-title-link" itemprop="url">【深度学习笔记2.1.1】LeNet-5</a>
+            <a href="/2018/06/25/English%20Zha/" class="post-title-link" itemprop="url">English Zha</a>
         </h1>
 
         <div class="post-meta">
@@ -1170,14 +515,14 @@ f(x) &= (m+n)^2 \\
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2017-11-22 17:28:05" itemprop="dateCreated datePublished" datetime="2017-11-22T17:28:05+08:00">2017-11-22</time>
+              <time title="Created: 2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:25:14" itemprop="dateModified" datetime="2020-01-22T13:25:14+08:00">2020-01-22</time>
+                <time title="Modified: 2020-05-27 10:26:15" itemprop="dateModified" datetime="2020-05-27T10:26:15+08:00">2020-05-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1203,22 +548,101 @@ f(x) &= (m+n)^2 \\
 
       
           <a id="more"></a>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>LeNet-5中的-5是个啥？</p>
-<p><a href="http://www.dengfanxin.cn/wp-content/uploads/2016/03/1998Lecun.pdf" target="_blank" rel="noopener">Gradient-Based Learning Applied to Document Recognition</a></p>
-<p><img src="https://lh3.googleusercontent.com/-2xYixX9xPnU/W2rYZSwne7I/AAAAAAAAAFM/cpvrI_zQ3h05HQWrxtA3K3sdP5ziStYpgCLcBGAs/s0/lenet5_1.png" alt="enter image description here" title="lenet5_1.png"></p>
-<center>图1 [3]</center>
-![enter image description here](https://lh3.googleusercontent.com/-KPfsR5nep9A/W2rbZF4xk-I/AAAAAAAAAFc/PtinL8z9rCA0Pzf_GiovJ7kS8zRkm7nrACLcBGAs/s0/lenet5_2.png "lenet5_2.png")
-<center>图2 [2]</center>
-
-<p>Input：shape=[-1, 28, 28, 1]<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;  filter.shape = [5, 5, 1, 6]<br>&emsp;  |&emsp;  C1 = tf.nn.conv2d(Input, filter, strides=[1,1,1,1], padding=’SAME’)<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;  conv2d后C1层feature maps的shape为[-1, 28, 28, 6]<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;  参数个数：6x(5x5+1)=156<br>&emsp;  |&emsp;  &emsp;  &emsp;  一个卷积核的大小为5x5，每个卷积核有5x5个参数，每个卷积核做完所有卷积后还要与一个bias相加，故每个卷积核对应有5x5+1个参数；从Input到C1一共有6个卷积核，所以从Input到C1共有6x(5x5+1)个参数需要训练；（疑问：能否一个卷积核做完一次卷积后就和一个bias相加？）<br>&emsp;  |&emsp;  连接个数：6x(5x5+1)x28x28=122304<br>&emsp;  |&emsp;  &emsp;  &emsp;  一个卷积核每做完一次卷积后都会在C1层生成一个像素，该像素对应着(5x5+1)个连接，又C1层每个通道有28x28个像素，故C1层每个通道有(5x5+1)x28x28个连接；又C1层有6个通道，故从Input到C1层一共有6x(5x5+1)x28x28个连接；<br>&emsp;  |&emsp;  &emsp;  &emsp;  疑问：根据图2可知(从文献[1]以及网上的很多示例代码也能看出)，这里的一个卷积核是和整个Input做完卷积后再和一个bias相加的，那么连接的个数不应该是6x(5x5x28x28+1)吗？<br>&emsp;  |&emsp;  &emsp;  &emsp;  答：一个卷积核是和整个Input做完卷积后得到的是一个28x28的feature map，该feature map加上一个数值bias可以等价于feature map的每个像素都加上一个bias，所以一个大小为28x28的feature map的每个像素都会和bias相加。<br>&emsp;  |&emsp;<br>C1 Layer：shape=[-1, 28, 28, 6]<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;  ksize=[1,2,2,1]<br>&emsp;  |&emsp;  bias1 = tf.Variable( tf.truncated_normal( [6] ) )<br>&emsp;  |&emsp;  S2 = tf.nn.max_pool(tf.nn.sigmoid(C1 + bias1), ksize, strides=[1, 2, 2, 1], padding=’SAME’)<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;  参数个数：6x(1+1)=12; 1个训练参数w，一个偏置b<br>&emsp;  |&emsp;  &emsp;  &emsp;  C1层的2x2感受野的四个输入相加，然后乘以一个可训练参数，再加上一个可训练偏置。结果通过 sigmoid 函数计算。可训练系数和偏置控制着 sigmoid 函数的非线性程度。如果系数比较小，那么运算近似于线性运算，亚采样相当于模糊图像。如果系数比较大，根据偏置的大小亚采样可以被看成是有噪声的“或”运算或者有噪声的“与”运算。<br>&emsp;  |&emsp;  连接个数：6x(4+1)x14x14=5880<br>&emsp;  |&emsp;  &emsp;  &emsp;  从一个平面到下一个平面的映射可以看作是作卷积运算，S-层可看作是模糊滤波器，起到二次特征提取的作用。隐层与隐层之间空间分辨率递减，而每层所含的平面数递增，这样可用于检测更多的特征信息[2]。<br>&emsp;  |&emsp;  &emsp;  &emsp;  问：按照很多文章介绍说的，那么程序应该是下面这样的吧：<br>&emsp;  |&emsp;  &emsp;  &emsp;  &emsp;  c1 = conv2d( input, filter, … ) + bias;<br>&emsp;  |&emsp;  &emsp;  &emsp;  &emsp;  s2 = sigmoid( pooling( c1, pool_filter, … ) + bias );<br>&emsp;  |&emsp;  &emsp;  &emsp;  但是实际上在很多程序具体实现的过程中却是下面这样的：<br>&emsp;  |&emsp;  &emsp;  &emsp;  &emsp;  c1 = conv2d( input, filter, … );<br>&emsp;  |&emsp;  &emsp;  &emsp;  &emsp;  s2 = pooling( sigmoid( c1 + bias ) );<br>&emsp;  |&emsp;  &emsp;  &emsp;  这是为什么？<br>&emsp;  |&emsp;<br>S2 Layer：shape=[-1, 14, 14, 6]<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;  filter.shape = [5, 5, 6, 16]<br>&emsp;  |&emsp;  C3 = tf.nn.conv2d(S2, filter, strides=[1, 1, 1, 1], padding=’VALID’)<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;  参数个数：6x(3x5x5+1)+6x(4x5x5+1)+3x(4x5x5+1)+1x(6x5x5+1)=1516<br>&emsp;  |&emsp;  连接个数：由于C3 Layer图像大小为10x10，所以共有151600个参数；<br>&emsp;  |&emsp;<br>C3 Layer：shape=[-1, 10, 10, 16]<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;  ksize=[1,2,2,1]<br>&emsp;  |&emsp;  bias2 = tf.Variable(tf.truncated_normal([16]))<br>&emsp;  |&emsp;  S4 = tf.nn.max_pool(tf.nn.sigmoid(C3 + bias2), ksize, strides=[1, 2, 2, 1], padding=’SAME’)<br>&emsp;  |&emsp;<br>S4 Layer：shape=[-1, 5, 5, 16]<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;  filter.shape=[5, 5, 16, 120]<br>&emsp;  |&emsp;  C5 = tf.nn.conv2d(S4, filter, strides=[1, 1, 1, 1], padding=’SAME’)<br>&emsp;  |&emsp;<br>C5 Layer：shape=[-1, 5, 5, 120]<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;  C5_flat = tf.reshape( C5, [-1, 5 <em> 5 </em> 120] )<br>&emsp;  |&emsp;  W_fc1 = tf.Variable( tf.truncated_normal( [5 <em> 5 </em> 120, 84]) )<br>&emsp;  |&emsp;  b_fc1 = tf.Variable( tf.truncated_normal( [84] ) )<br>&emsp;  |&emsp;  h_fc1 = tf.nn.sigmoid( tf.matmul( C5_flat, W_fc1 ) + b_fc1)<br>&emsp;  |&emsp;  参数个数：84x120+84=10164<br>&emsp;  |&emsp;<br>F6 Layer：全连接层<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;  W_fc2 = tf.Variable( tf.truncated_normal( [80, 10] ) )<br>&emsp;  |&emsp;  b_fc2 = tf.Variable( tf.truncated_normal( [10] ) )<br>&emsp;  |&emsp;  y_conv = tf.nn.softmax( tf.matmul( h_fc1, W_fc2 ) + b_fc2 )<br>&emsp;  |&emsp;<br>Output Layer<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;<br>&emsp;  |&emsp;  未完待续……</p>
-<p>&emsp;  </p>
-<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><p>代码参考文献[1] 程序13.10<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">datapath = <span class="string">'/home/xiajun/res/MNIST_data'</span></span><br><span class="line">mnist_data_set = input_data.read_data_sets(datapath, validation_size=<span class="number">0</span>, one_hot=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">x = tf.placeholder(<span class="string">'float'</span>, [<span class="literal">None</span>, <span class="number">784</span>])</span><br><span class="line">y_ = tf.placeholder(<span class="string">'float'</span>, [<span class="literal">None</span>, <span class="number">10</span>])</span><br><span class="line">x_image = tf.reshape(x, [<span class="number">-1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">#第一层卷积层，初始化卷积核参数、偏置值，该卷积层5*5大小，1个通道，共有6个不同卷积核</span></span><br><span class="line">filter1 = tf.Variable(tf.truncated_normal([<span class="number">5</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">6</span>]))</span><br><span class="line">bias1 = tf.Variable(tf.truncated_normal([<span class="number">6</span>]))</span><br><span class="line">conv1 = tf.nn.conv2d(x_image, filter1, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line"><span class="comment"># 此时conv1.shape = [-1, 28, 28, 6]</span></span><br><span class="line">h_conv1 = tf.nn.sigmoid(conv1 + bias1)</span><br><span class="line"><span class="comment"># h_conv1 = tf.nn.relu(conv1 + bias1)</span></span><br><span class="line"></span><br><span class="line">maxPool2 = tf.nn.max_pool(h_conv1, ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line"><span class="comment"># 此时maxPool2.shape = [-1, 14, 14, 6]</span></span><br><span class="line"></span><br><span class="line">filter2 = tf.Variable(tf.truncated_normal([<span class="number">5</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">16</span>]))</span><br><span class="line">bias2 = tf.Variable(tf.truncated_normal([<span class="number">16</span>]))</span><br><span class="line">conv2 = tf.nn.conv2d(maxPool2, filter2, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line"><span class="comment"># 此时conv2.shape = [-1, 14, 14, 16]</span></span><br><span class="line">h_conv2 = tf.nn.sigmoid(conv2 + bias2)</span><br><span class="line"><span class="comment"># h_conv2 = tf.nn.relu(conv2 + bias2)</span></span><br><span class="line"></span><br><span class="line">maxPool3 = tf.nn.max_pool(h_conv2, ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line"><span class="comment"># 此时maxPool3.shape = [-1, 7, 7, 16]</span></span><br><span class="line"></span><br><span class="line">filter3 = tf.Variable(tf.truncated_normal([<span class="number">5</span>, <span class="number">5</span>, <span class="number">16</span>, <span class="number">120</span>]))</span><br><span class="line">bias3 = tf.Variable(tf.truncated_normal([<span class="number">120</span>]))</span><br><span class="line">conv3 = tf.nn.conv2d(maxPool3, filter3, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line"><span class="comment"># 此时conv3.shape = [-1, 7, 7, 120]</span></span><br><span class="line">h_conv3 = tf.nn.sigmoid(conv3 + bias3)</span><br><span class="line"><span class="comment"># h_conv3 = tf.nn.relu(conv3 + bias3)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 全连接层</span></span><br><span class="line"><span class="comment"># 权值参数</span></span><br><span class="line">W_fc1 = tf.Variable(tf.truncated_normal([<span class="number">7</span> * <span class="number">7</span> * <span class="number">120</span>, <span class="number">80</span>]))</span><br><span class="line"><span class="comment"># 偏置值</span></span><br><span class="line">b_fc1 = tf.Variable(tf.truncated_normal([<span class="number">80</span>]))</span><br><span class="line"><span class="comment"># 将卷积的产出展开</span></span><br><span class="line">h_pool2_flat = tf.reshape(h_conv3, [<span class="number">-1</span>, <span class="number">7</span> * <span class="number">7</span> * <span class="number">120</span>])</span><br><span class="line"><span class="comment"># 神经网络计算，并添加sigmoid激活函数</span></span><br><span class="line">h_fc1 = tf.nn.sigmoid(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)</span><br><span class="line"><span class="comment"># h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)</span></span><br><span class="line"><span class="comment"># 此时h_fc1.shape = [-1, 80]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出层，使用softmax进行多分类</span></span><br><span class="line">W_fc2 = tf.Variable(tf.truncated_normal([<span class="number">80</span>, <span class="number">10</span>]))</span><br><span class="line">b_fc2 = tf.Variable(tf.truncated_normal([<span class="number">10</span>]))</span><br><span class="line">y_output = tf.nn.softmax(tf.matmul(h_fc1, W_fc2) + b_fc2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 损失函数</span></span><br><span class="line">cross_entropy = -tf.reduce_sum(y_ * tf.log(y_output))</span><br><span class="line"><span class="comment"># 使用GD优化算法来调整参数</span></span><br><span class="line">train_step = tf.train.GradientDescentOptimizer(<span class="number">0.001</span>).minimize(cross_entropy)</span><br><span class="line"></span><br><span class="line">sess = tf.InteractiveSession()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试正确率</span></span><br><span class="line">correct_prediction = tf.equal(tf.argmax(y_output, <span class="number">1</span>), tf.argmax(y_, <span class="number">1</span>))</span><br><span class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, <span class="string">"float"</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 所有变量进行初始化</span></span><br><span class="line">sess.run(tf.initialize_all_variables())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"># Debug</span></span><br><span class="line"><span class="string">batch_xs, batch_ys = mnist_data_set.train.next_batch(5)</span></span><br><span class="line"><span class="string">x = tf.Variable(tf.truncated_normal([5, 5, 1, 6]))</span></span><br><span class="line"><span class="string">init = tf.global_variables_initializer()</span></span><br><span class="line"><span class="string">with tf.Session() as sess:</span></span><br><span class="line"><span class="string">    sess.run(init)</span></span><br><span class="line"><span class="string">    print(conv1.eval(feed_dict=&#123;x: batch_xs&#125;).shape)</span></span><br><span class="line"><span class="string">    print(h_conv1.eval(feed_dict=&#123;x: batch_xs&#125;).shape)</span></span><br><span class="line"><span class="string">    print(maxPool2.eval(feed_dict=&#123;x: batch_xs&#125;).shape)</span></span><br><span class="line"><span class="string">    print(conv2.eval(feed_dict=&#123;x: batch_xs&#125;).shape)</span></span><br><span class="line"><span class="string">    print(h_conv2.eval(feed_dict=&#123;x: batch_xs&#125;).shape)</span></span><br><span class="line"><span class="string">    print(maxPool3.eval(feed_dict=&#123;x: batch_xs&#125;).shape)</span></span><br><span class="line"><span class="string">    print(h_conv3.eval(feed_dict=&#123;x: batch_xs&#125;).shape)</span></span><br><span class="line"><span class="string">    print(h_fc1.eval(feed_dict=&#123;x: batch_xs&#125;).shape)</span></span><br><span class="line"><span class="string">    print('debug')</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 进行训练</span></span><br><span class="line">batch_size = <span class="number">200</span></span><br><span class="line">start_time = time.time()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20000</span>):</span><br><span class="line">    <span class="keyword">for</span> iteration <span class="keyword">in</span> range(mnist_data_set.train.num_examples//batch_size):</span><br><span class="line">        <span class="comment"># 获取训练数据</span></span><br><span class="line">        batch_xs, batch_ys = mnist_data_set.train.next_batch(batch_size)</span><br><span class="line">        train_step.run(feed_dict=&#123;x: batch_xs, y_: batch_ys&#125;)</span><br><span class="line"></span><br><span class="line">    batch_xs, batch_ys = mnist_data_set.test.images, mnist_data_set.test.labels</span><br><span class="line">    train_accuracy = accuracy.eval(feed_dict=&#123;x: batch_xs, y_: batch_ys&#125;)</span><br><span class="line">    print(<span class="string">"step %d, training accuracy %g"</span> % (i, train_accuracy))</span><br><span class="line"></span><br><span class="line">    end_time = time.time()</span><br><span class="line">    print(<span class="string">'time: '</span>, (end_time - start_time))</span><br><span class="line">    start_time = end_time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭会话</span></span><br><span class="line">sess.close()</span><br></pre></td></tr></table></figure></p>
+<p>In a convolutional fashion, we evaluate a small set (e.g. 4) <strong>of</strong> default boxes <strong>of</strong> different aspect ratios at each location in several feature maps with different scales.<br>&emsp; &emsp; From <code>SSD:Single Shot MultiBox Detector</code></p>
 <blockquote>
-<p>注意事项：将sigmoid激活函数改为relu激活函数后，好像效果更差了（在我的笔记本上训练前3步后准确率都在0.09以下，我的笔记本速度太慢，不知继续训练下去会怎样，留待高级服务器上试试）。</p>
+<p>TIPS:<br>v. &ensp;n1 of n2 of n3  → v. &ensp;n1 n3 的 n2 \<br><code>in several feature maps with different scales.</code> 在几个不同尺度的feature map中</p>
+<p>Translate:<br>使用卷积的方法，我们在几个不同尺度的feature map中的每个位置  评估一小组(e.g. 4)不同长宽比的default boxes.</p>
 </blockquote>
-<h2 id="各种优化后的loss和accuracy曲线图"><a href="#各种优化后的loss和accuracy曲线图" class="headerlink" title="各种优化后的loss和accuracy曲线图"></a>各种优化后的loss和accuracy曲线图</h2><p><img src="https://lh3.googleusercontent.com/-MLR3zMESskE/XEWvKjIDo_I/AAAAAAAAAK4/omsZPom_aAwAXWv_TaMGNAQGl1wuw38nwCLcBGAs/s0/LeNet_loss.png" alt="enter image description here" title="LeNet_loss.png"></p>
-<p><img src="https://lh3.googleusercontent.com/-BJ1s0wWY_4o/XEWvdSL7hgI/AAAAAAAAALE/C571-MK_BNsTd-GOcn_6twLvk9LX1i-BQCLcBGAs/s0/LeNet_accuracy.png" alt="enter image description here" title="LeNet_accuracy.png"></p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] 王晓华. TensorFlow深度学习应用实践<br>[2] <a href="https://blog.csdn.net/qiaofangjie/article/details/16826849" target="_blank" rel="noopener">Deep Learning（深度学习）学习笔记整理系列之LeNet-5卷积参数个人理解</a><br>[3] <a href="http://www.dengfanxin.cn/wp-content/uploads/2016/03/1998Lecun.pdf" target="_blank" rel="noopener">Gradient-Based Learning Applied to Document Recognition</a></p>
+<hr>
+<p><br></p>
+<p>To achieve high detection accuracy we <strong>produce</strong> predictions <strong>of</strong> different scales <strong>from</strong> feature maps <strong>of</strong> different scales, and explicitly separate predictions by aspect ratio.<br>&emsp; &emsp; From <code>SSD:Single Shot MultiBox Detector</code></p>
+<blockquote>
+<p>TIPS:<br>v. &ensp;n1 of n2 from n3 of n4  →  n4 的 n3 &ensp;v. &ensp;n2 的 n1</p>
+<p>Translate:<br>为了实现较高的检测精度，我们从不同尺度的特征图中生成不同尺度的预测，并通过纵横比明确地分离预测。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<p>Down sampling <strong>is handled with</strong> strided convolution <strong>in</strong> the depthwise convolutions <strong>as well as in</strong> the first layer.<br>&emsp; &emsp; From <code>MobileNets: Efficient Convolutional Neural Networks for Mobile Vision</code></p>
+<blockquote>
+<p>TIPS: \<br>n1 <strong>be v.ed with</strong> n2 <strong>in</strong> n3 <strong>as well as in</strong> n4. → n1 <strong>在</strong> n3 <strong>和</strong> n4 <strong>中都 v.ed with</strong> n2.</p>
+<p>Translate:<br>下行采样在深度卷积和第一层卷积中都使用了strided convolution.</p>
+</blockquote>
+<hr>
+<p><br></p>
+<p>When training MobileNets we <strong>do not use</strong> side heads or label smoothing <strong>and</strong> additionally reduce the amount image <strong>of</strong> distortions <strong>by</strong> limiting the size <strong>of</strong> small crops <strong>that</strong> are used in large Inception training.<br>&emsp; &emsp; From <code>MobileNets: Efficient Convolutional Neural Networks for Mobile Vision</code></p>
+<blockquote>
+<p>TIPS:<br>additionally &ensp; adv. 此外；又，加之</p>
+<p>Translate<br>当训练MobileNet的时候，我们不使用side heads或者标签平滑，并且通过限制small crops的尺寸来减少失真图片数量，这个small crops在大型 Inception 训练中会被用到。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<p>To summarize, we have highlighted two properties <strong>that</strong> are indicative of the requirement <strong>that</strong> the manifold of interest should lie in a low-dimensional subspace of the higher-dimensional activation space.</p>
+<p>&emsp; &emsp; From <code>MobileNetV2: Inverted Residuals and Linear Bottlenecks</code></p>
+<blockquote>
+<p>TIPS: \<br>indicative(adj.象征的;指示的;表示…的) \<br>be indicative of, 表明</p>
+<p>Translate:\<br>综上所述，我们强调了两个性质，这两个性质表明了我们所关心的流形应该位于高维激活空间的低维子空间中</p>
+</blockquote>
+<hr>
+<p><br></p>
+<p>We <strong>note that</strong> similar reports <strong>where</strong> non-linearity was helped were reported in [29] <strong>where</strong> non-linearity was removed from the input of the traditional residual block and that lead to improved performance on CIFAR dataset.</p>
+<p>&emsp; &emsp; From <code>MobileNetV2: Inverted Residuals and Linear Bottlenecks</code></p>
+<blockquote>
+<p>蹩脚直译：\<br>我们注意到，在[29]中也有关于非线性层是有帮助的这样类似的报道，而non-linearity被从传统残差块中的输入中移除，从而提高了CIFAR数据集的性能。</p>
+<p>理解翻译：\<br>我们注意到，也有类似的报道，在[29]中报告说非线性是有帮助的，然而却将传统残差块输入中的非线性移除，从而提高了CIFAR数据集的性能。(言外之意就是说：非线性确实有帮助，但在[29]中还是将其移除了，而移除了效果会更好)</p>
+</blockquote>
+<hr>
+<p><br></p>
+<p>This is in contrast with traditional convolutional blocks, both regular and separable, where both expressiveness and capacity are tangled together and are functions of the output layer depth.</p>
+<p>&emsp; &emsp; From <code>MobileNetV2: Inverted Residuals and Linear Bottlenecks</code></p>
+<blockquote>
+<p>TIPS: \<br>expressiveness  n. 表达能力;善于表现;表情丰富</p>
+<p>Translate: \<br>这与传统的卷积块形成对比，无论是规则块还是可分块，在传统卷积块中，表达性和容量都是纠缠在一起的，是输出层深度的函数。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<p>This structure maintains a compact representation at the input and the output <strong>while</strong> expanding to a higher-dimensional feature space internally to increase the expressiveness of nonlinear perchannel transformations.</p>
+<p>&emsp; &emsp; From <code>Searching for MobileNetV3</code></p>
+<blockquote>
+<p>Translate: \<br>这种结构在输入和输出处保持了一种紧凑的表示，<strong>同时</strong>在内部扩展到高维特征空间，以增加每个通道的非线性转换的表达能力。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<p>MnasNet built upon the MobileNetV2 structure <strong>by introducing</strong> lightweight attention modules <strong>based on</strong> squeeze and excitation <strong>into</strong> the bottleneck structure. \<br>&emsp; &emsp; From <code>Searching for MobileNetV3</code></p>
+<blockquote>
+<p>TIPS: \<br>excitation  n. 激发，刺激；激励；激动</p>
+<p>Translate: \<br>MnasNet建立在MobileNetV2结构上，通过在瓶颈结构中引入基于挤压和激励的轻量级注意模块。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<p>It outperforms other detection methods, including DPM and R-CNN, when <strong>generalizing from</strong> natural images <strong>to</strong> other domains like artwork. \<br>&emsp; &emsp; From <code>You Only Look Once:Unified, Real-Time Object Detection</code></p>
+<blockquote>
+<p>TIPS: \<br>generalizing : 归纳阶段,归纳,形成概念<br>generalizing from …: 从…归纳出<br>generalizing from … to …: 从…推广到…</p>
+<p>Translate: \<br>当从自然图像推广到艺术作品等其他领域时，它的性能优于其他检测方法，包括 DPM 和 R-CNN。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<p>Fast, accurate algorithms for object detection would allow computers to drive cars without specialized sensors, <strong>enable</strong> <code>assistive</code> devices <strong>to</strong> <code>convey</code> real-time scene information to human users, and unlock the potential for <code>general purpose</code>, <code>responsive</code> robotic systems. \<br>&emsp; &emsp; From <code>You Only Look Once:Unified, Real-Time Object Detection</code></p>
+<blockquote>
+<p>TIPS: \<br>general n. 一般；将军，上将；常规;<br>        adj. 一般的，普通的；综合的；大体的<br>purpose n. 目的；用途；意志;<br>         vt. 决心；企图；打算<br>general purpose: 通用的<br>responsive: adj.响应的;应答的;响应灵敏的<br>assistive: 辅助的<br>devices to convey: vt.传达;运输</p>
+<p>快速、准确的目标检测算法将允许计算机在没有专门传感器的情况下驾驶汽车，<strong>使</strong>辅助设备<strong>能够向</strong>人类用户传递实时的场景信息，并为通用、响应灵敏的机器人系统释放潜力。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<p>Our network uses features from the entire image to predict each bounding box. It also predicts all bounding boxes <strong>across</strong> all classes for an image simultaneously(adv.同时地). \<br>&emsp; &emsp; From <code>You Only Look Once:Unified, Real-Time Object Detection</code></p>
+<blockquote>
+<p>TIPS: \<br>across &emsp; adv. 从……的一边到另一边，穿过，越过；在对面，横过；宽；向；（纵横填字游戏）横向字谜答案 \<br>prep. 从……的一边到另一边，穿过；在……对面，另一边；在……上；在各处，遍及；在……里</p>
+<p>Translate: \<br>我们的网络使用整个图像的特征来预测每个边界框。它还可以同时预测一个图像在所有类<strong>中的</strong>所有边界框。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<hr>
+<p><br></p>
+<hr>
+<p><br></p>
+<hr>
+<p><br></p>
+<hr>
+<p><br></p>
 
       
     </div>
@@ -1238,7 +662,7 @@ f(x) &= (m+n)^2 \\
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/19/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B03.1%E3%80%91Tensorflow%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%94%A8%E6%80%BB%E7%BB%93/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20[%E8%BD%AC]%E3%80%91%E8%BF%AD%E4%BB%A3%E5%99%A8(Iterator)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1252,7 +676,7 @@ f(x) &= (m+n)^2 \\
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2017/11/19/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B03.1%E3%80%91Tensorflow%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%94%A8%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记3.1】Tensorflow模型复用总结</a>
+            <a href="/2018/06/25/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20%5B%E8%BD%AC%5D%E3%80%91%E8%BF%AD%E4%BB%A3%E5%99%A8(Iterator)/" class="post-title-link" itemprop="url">【Python笔记 [转]】迭代器(Iterator)</a>
         </h1>
 
         <div class="post-meta">
@@ -1262,14 +686,14 @@ f(x) &= (m+n)^2 \\
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2017-11-19 00:00:00" itemprop="dateCreated datePublished" datetime="2017-11-19T00:00:00+08:00">2017-11-19</time>
+              <time title="Created: 2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 13:22:45" itemprop="dateModified" datetime="2020-01-22T13:22:45+08:00">2020-01-22</time>
+                <time title="Modified: 2020-01-22 13:19:52" itemprop="dateModified" datetime="2020-01-22T13:19:52+08:00">2020-01-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1277,8 +701,8 @@ f(x) &= (m+n)^2 \\
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">TensorFlow笔记</span>
+                  <a href="/categories/Python%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">Python笔记</span>
                   </a>
                 </span>
             </span>
@@ -1294,11 +718,422 @@ f(x) &= (m+n)^2 \\
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="方法1：导入整张Graph"><a href="#方法1：导入整张Graph" class="headerlink" title="方法1：导入整张Graph"></a>方法1：导入整张Graph</h2><p>当模型graph和预训练模型graph是一样的时候，我们通常可以import整张graph来恢复模型(即复用预训练模型)。</p>
-<p>这种情况是：通常是预训练模型是我们自己训练的，再次微调时可以使用这种方法。文献[1]中对该方法也有所介绍。<br>
+          <p>本文转自文献[1]</p>
+<h1 id="迭代和可迭代"><a href="#迭代和可迭代" class="headerlink" title="迭代和可迭代"></a>迭代和可迭代</h1><p>迭代器这个概念在很多语言中（比如 C++，Java）都是存在的，但是不同语言实现迭代器的方式各不相同。<strong>在 Python 中，迭代器是指遵循迭代器协议（iterator protocol）的对象</strong>。至于什么是迭代器协议，稍后自然会说明。为了更好地理解迭代器，我先介绍和迭代器相关的两个概念：<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/11/19/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B03.1%E3%80%91Tensorflow%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%94%A8%E6%80%BB%E7%BB%93/#more" rel="contents">
+              <a class="btn" href="/2018/06/25/Python%E7%AC%94%E8%AE%B0/%E3%80%90Python%E7%AC%94%E8%AE%B0%20%5B%E8%BD%AC%5D%E3%80%91%E8%BF%AD%E4%BB%A3%E5%99%A8(Iterator)/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/" class="post-title-link" itemprop="url">【深度学习笔记 face】基于Inception-Resnet的FaceID</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-21 17:58:59" itemprop="dateModified" datetime="2020-01-21T17:58:59+08:00">2020-01-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Inception-Resnet-V2网络结构"><a href="#Inception-Resnet-V2网络结构" class="headerlink" title="Inception-Resnet-V2网络结构"></a>Inception-Resnet-V2网络结构</h1><blockquote>
+<p>因markdown 语法绘制表格不能实现单元格合并，故这里将部分Inception和Residual结构统一放到一个表格中，仅为个人记录学习所用。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/06/25/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20face%E3%80%91%E5%9F%BA%E4%BA%8EInception-Resnet%E7%9A%84FaceID/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/" class="post-title-link" itemprop="url">【机器学习基础】范数与正则化</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 14:05:35" itemprop="dateModified" datetime="2020-01-22T14:05:35+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本篇主要介绍范数以及使用范数的正则化策略。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/06/25/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E3%80%91%E8%8C%83%E6%95%B0%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/20/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Detection%E3%80%91SPP-net/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/20/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Detection%E3%80%91SPP-net/" class="post-title-link" itemprop="url">dl/【Paper笔记 Detection】SPP-net</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-20 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-20T00:00:00+08:00">2018-06-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-29 22:14:45" itemprop="dateModified" datetime="2020-03-29T22:14:45+08:00">2020-03-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>论文：<a href="https://arxiv.org/pdf/1406.4729.pdf" target="_blank" rel="noopener">Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition</a><br>Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun<br><em>(Submitted on 18 Jun 2014 (<a href="https://arxiv.org/abs/1406.4729v1" target="_blank" rel="noopener">v1</a>), last revised 23 Apr 2015 (this version, v4))</em>，2015年发表于IEEE.<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/06/20/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Detection%E3%80%91SPP-net/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91weight%20decay/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/19/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03.1%20%E6%AD%A3%E5%88%99%E5%8C%96%E3%80%91weight%20decay/" class="post-title-link" itemprop="url">【深度学习笔记3.1 正则化】weight decay</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-19 17:28:05" itemprop="dateCreated datePublished" datetime="2018-06-19T17:28:05+08:00">2018-06-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:25:49" itemprop="dateModified" datetime="2020-01-22T13:25:49+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://zh.gluon.ai/chapter_deep-learning-basics/weight-decay.html" target="_blank" rel="noopener">动手学深度学习-&gt;3.12 权重衰减</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%20[%E8%BD%AC]%E3%80%91Softmax%E5%87%BD%E6%95%B0%E4%B8%8E%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%20%5B%E8%BD%AC%5D%E3%80%91Softmax%E5%87%BD%E6%95%B0%E4%B8%8E%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7/" class="post-title-link" itemprop="url">【机器学习基础 [转]】Softmax函数与数值稳定性</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-19 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-19T00:00:00+08:00">2018-06-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:18:43" itemprop="dateModified" datetime="2020-01-22T13:18:43+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Softmax函数"><a href="#Softmax函数" class="headerlink" title="Softmax函数"></a>Softmax函数</h2><p>本文参考文献[1].</p>
+<p>&emsp; 在Logistic regression二分类问题中，我们可以使用sigmoid函数将输入$\boldsymbol Wx + \boldsymbol b$映射到(0, 1)区间中，从而得到属于某个类别的概率。将这个问题进行泛化，推广到多分类问题中，我们可以使用softmax函数，对输出的值归一化为概率值。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/06/19/ml/%E3%80%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%20%5B%E8%BD%AC%5D%E3%80%91Softmax%E5%87%BD%E6%95%B0%E4%B8%8E%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1322,7 +1157,7 @@ f(x) &= (m+n)^2 \\
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1388,7 +1223,7 @@ f(x) &= (m+n)^2 \\
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">140</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

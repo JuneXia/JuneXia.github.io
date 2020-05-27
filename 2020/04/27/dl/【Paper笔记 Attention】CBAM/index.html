@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="CBAM: Convolutional Block Attention Module Sanghyun Woo, Jongchan Park, Joon-Young Lee, and In So Kweon Korea Advanced Institute of Science and Technology, Daejeon, Korea{shwoo93, iskweon77}@kaist.ac.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dl&#x2F;【Paper笔记 Attention】CBAM">
+<meta property="og:url" content="http://yoursite.com/2020/04/27/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Attention%E3%80%91CBAM/index.html">
+<meta property="og:site_name" content="Paper搬运菌">
+<meta property="og:description" content="CBAM: Convolutional Block Attention Module Sanghyun Woo, Jongchan Park, Joon-Young Lee, and In So Kweon Korea Advanced Institute of Science and Technology, Daejeon, Korea{shwoo93, iskweon77}@kaist.ac.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/CBAM1.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/CBAM2.jpg">
+<meta property="article:published_time" content="2020-04-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-04-30T09:55:36.964Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/CBAM1.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/04/27/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Attention%E3%80%91CBAM/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>dl/【Paper笔记 Attention】CBAM | Paper搬运菌</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paper搬运菌</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/27/dl/%E3%80%90Paper%E7%AC%94%E8%AE%B0%20Attention%E3%80%91CBAM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          dl/【Paper笔记 Attention】CBAM
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-04-27 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-27T00:00:00+08:00">2020-04-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-30 17:55:36" itemprop="dateModified" datetime="2020-04-30T17:55:36+08:00">2020-04-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>CBAM: Convolutional Block Attention Module</p>
+<p>Sanghyun Woo, Jongchan Park, Joon-Young Lee, and In So Kweon</p>
+<p>Korea Advanced Institute of Science and Technology, Daejeon, Korea<br>{shwoo93, iskweon77}@kaist.ac.kr</p>
+<p>Lunit Inc., Seoul, Korea<br>jcpark@lunit.io</p>
+<p>Adobe Research, San Jose, CA, USA<br>jolee@adobe.com</p>
+<a id="more"></a>
+<p><strong>Abstract</strong><br>We propose Convolutional Block Attention Module (CBAM), a simple yet effective attention module for feed-forward convolutional neural networks. <strong>Given an intermediate feature map, our module sequentially(adv.从而;继续地;循序地) infers attention maps along two separate dimensions, channel and spatial, then the attention maps are multiplied to the input feature map for adaptive feature refinement(n.改进,改善;精炼;细化)</strong>.<br>如Fig.1所示</p>
+<p>Because CBAM is a <strong>lightweight and general module</strong>, it can be integrated into any CNN architectures seamlessly(adv.无缝地) with negligible(adj.微不足道的,可以忽略的) overheads(日常开支;一般费用) and is end-to-end trainable along with base CNNs. We validate our CBAM through extensive experiments on ImageNet-1K, MS COCO detection, and VOC 2007 detection datasets. Our experiments show consistent improvements in classification and detection performances with various models, demonstrating the wide applicability of CBAM. The code and models will be publicly available.</p>
+<p><strong>Keywords</strong>: Object recognition, attention mechanism, gated convolution</p>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Convolutional neural networks (CNNs) have significantly pushed the performance of vision tasks [1-3] based on their rich representation power. To enhance performance of CNNs, <strong>recent researches</strong> have mainly investigated three important factors of networks: <strong>depth, width, and cardinality</strong>([数]基数,(集的)势).</p>
+<p>&emsp; From the LeNet architecture [4] to Residual-style Networks [5-8] so far, the network has become deeper for rich representation. VGGNet [9] shows that stacking blocks with the same shape gives fair results. Following the same spirit, <strong>ResNet</strong> [5] stacks the same topology of residual blocks along with skip connection to build an extremely <strong>deep</strong> architecture. <strong>GoogLeNet</strong> [10] shows that <strong>width</strong> is another important factor to improve the performance of a model. Zagoruyko and Komodakis [6] propose to increase the width of a network based on the ResNet architecture. They have shown that a 28-layer ResNet with increased width can outperform an extremely deep ResNet with 1001 layers on the CIFAR benchmarks. <strong>Xception</strong> [11] and <strong>ResNeXt</strong> [7] come up with to increase the <strong>cardinality</strong> of a network. They empirically(adv.以经验为主地;经验主义地) show that cardinality not only saves the total number of parameters but also results in stronger representation power than the other two factors: depth and width.</p>
+<p>&emsp; <code>Apart from(远离,除…之外;且不说)</code> these factors, we investigate a different aspect of the architecture design, attention. The significance of attention has been studied extensively in the previous literature [12-17]. Attention not only tells where to focus, it also improves the representation of interests. <strong>Our goal is to increase representation power by using attention mechanism: focusing on important features and suppressing unnecessary ones</strong>. In this paper, we propose a new network module, named “Convolutional Block Attention Module”. Since convolution operations extract informative features <strong>by blending(n.混合;调配;混和物;v.混合;协调) cross-channel and spatial information together, we adopt our module to emphasize meaningful features along those two principal dimensions: channel and spatial axes</strong>. To achieve this, we sequentially apply channel and spatial attention modules (as shown in Fig. 1), so that each of the branches can learn what and where to attend in the channel and spatial axes respectively. As a result, our module efficiently helps the information flow within the network by learning which information to emphasize or suppress.</p>
+<p>&emsp; In the ImageNet-1K dataset, we obtain accuracy improvement from various baseline networks by plugging(plug n.插头;塞子;栓;v.插入;塞住) our tiny module, revealing the efficacy of CBAM. We visualize trained models using the grad-CAM [18] and observe that CBAM-enhanced networks focus on target objects more properly than their baseline networks. Taking this into account, we conjecture(n/v.推测;猜想) that the performance boost comes from accurate attention and noise reduction of irrelevant clutters(clutter n/v.杂乱,混乱). Finally, we validate performance improvement of object detection on the MS COCO and the VOC 2007 datasets, demonstrating a wide applicability of CBAM. Since we have carefully designed our module to be light-weight, the overhead(n.日常开支,运营费用;adj.在头上方的,在空中的) of parameters and computation is negligible(adj.微不足道的,可以忽略的) in most cases.</p>
+<p><strong>Contribution.</strong> Our main contribution is three-fold. </p>
+<ol>
+<li>We propose a simple yet effective attention module (CBAM) that can be widely applied to boost representation power of CNNs.</li>
+<li>We validate the effectiveness of our attention module through extensive ablation(n.[水文]消融;切除) studies. </li>
+<li>We verify that performance of various networks is greatly improved on the multiple benchmarks (ImageNet-1K, MS COCO, and VOC 2007) by plugging our light-weight module.</li>
+</ol>
+<h1 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h1><p>待续。。。</p>
+<h1 id="Convolutional-Block-Attention-Module"><a href="#Convolutional-Block-Attention-Module" class="headerlink" title="Convolutional Block Attention Module"></a>Convolutional Block Attention Module</h1><p>Given an intermediate feature map $\mathbf{F} \in \mathbb{R}^{C \times H \times W}$ as input, CBAM sequentially infers a 1D channel attention map $\mathbf{M_c} \in \mathbb{R}^{C \times 1 \times 1}$ and a 2D spatial attention map $\mathbf{M_s} \in \mathbb{R}^{1 \times H \times W}$ as illustrated in Fig. 1. The overall attention process can be summarized as:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \mathbf{F' = M_c(F) \otimes F}, \\
+    \mathbf{F'' = M_c(F') \otimes F'}, 
+\end{aligned} \tag{1}</script><p>where $\otimes$ denotes <strong>element-wise multiplication</strong>. During multiplication, the attention values are broadcasted (copied) accordingly: channel attention values are broadcasted along the spatial dimension, and <code>vice versa(反之亦然)</code>. $F’’$ is the final refined output. Fig. 2 depicts the computation process of each attention map. The following describes the details of each attention module.</p>
+<p><strong>Channel attention module.</strong> We produce a channel attention map by exploiting the inter-channel relationship of features. As each channel of a feature map is considered as a feature detector [31], channel attention focuses on what is meaningful given an input image. <strong>To compute the channel attention efficiently, we squeeze the spatial dimension of the input feature map.</strong> For aggregating(v.聚集;合计) spatial information, average-pooling has been commonly(adv.一般地;通常地;普通地) adopted <code>so far(迄今为止)</code>. Zhou et al. [32] suggest to use it to learn <code>the extent of(在…的范围内;到…的程度)</code> the target object effectively and Hu et al. [28] adopt it in their attention module to compute spatial statistics. Beyond the previous works, we argue that <strong>max-pooling gathers another important clue about distinctive(adj.独特的,有特色的) object features to infer finer(adj.更好的;更优质的) channel-wise attention</strong>. Thus, <strong>we use both average-pooled and max-pooled features simultaneously.</strong> We empirically(adv.以经验为主地) confirmed that exploiting both features greatly improves representation power of networks rather than using each independently (see Sec. 4.1), showing the effectiveness of our design choice. We describe the detailed operation below.</p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/CBAM1.jpg" width = 70% height = 70% />
+</div>
+
+<p>&emsp; We first aggregate spatial information of a feature map by using both averagepooling and max-pooling operations, generating two different spatial context descriptors: $\mathbf{F^c_{avg}}$ and $\mathbf{F^c_{max}}$, which denote average-pooled features and max-pooled features respectively. Both descriptors are then forwarded to a shared network to produce our channel attention map $\mathbf{M_c} \in \mathbb{R}^{C \times 1 \times 1}$. \<br>对$\mathbf{M_c} \in \mathbb{R}^{C \times 1 \times 1}$的理解：<br>如图Fig.2右侧的 $\mathbb{M_c}$，其参数属于实数空间$\mathbb{R}$，$C$ 是其channle数量，$1 \times 1$ 是空间尺寸。</p>
+<p>The shared network is composed of multi-layer perceptron (MLP) with one hidden layer. To reduce parameter overhead, the hidden activation size is set to $\mathbb{R}^{C / r \times 1 \times 1}$, where $r$ is the reduction ratio. \<br>对$\mathbb{R}^{C / r \times 1 \times 1}$的理解： \<br>应看成 $\mathbb{R}^{(C / r) \times 1 \times 1}$，即$C/r$ 是一个整体，表示对 C 衰减 r 倍，如图Fig.2中间的 Shared MLP，对于 MLP 的 hidden-layer，其输入channel数量是 $C$，输出通道数量是 $C/r$，$1 \times 1$ 是空间尺寸（将其看成是一个 $1 \times 1$ 的 feature-map）.</p>
+<p>After the shared network is applied to each descriptor, we merge the output feature vectors using element-wise summation. In short, the channel attention is computed as:</p>
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/CBAM2.jpg" width = 70% height = 70% />
+</div>
+
+<p>where σ denotes the sigmoid function, $\mathbf{W_0} \in \mathbb{R}^{C/r \times C}$, and $\mathbb{R}^{C \times C / r}$. Note that the MLP weights, $\mathbf{W_0}$ and $\mathbf{W_1}$, are shared for both inputs and the ReLU activation function is followed by $\mathbf{W_0}$.</p>
+<p>对公式(2)的理解： \<br>假设 $\mathbf{F}$ 表示是一个已经pooling过尺寸为$C \times 1$的特征，$\mathbf{W_0 \times F}$ 就得到一个尺寸为 $(C/r) \times 1$ 的特征 $\mathbf{F_1}$，然后 $\mathbf{W_1 \times F_1}$ 就得到一个尺寸为 $C \times 1$ 的特征 $\mathbf{F_2}$.</p>
+<p>主要思想已经讲完，其他待续。。。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/26/dl/%E3%80%90Entries%E3%80%91Receptive%20Field/" rel="prev" title="dl/【Entries】Receptive Field">
+      <i class="fa fa-chevron-left"></i> dl/【Entries】Receptive Field
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/27/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91C++%20Production-4%20libtorch%20&%20opencv%20in%20ubuntu%20with%20vscode/" rel="next" title="PyTorch笔记/【Entries】C++ Production-4 libtorch & opencv in ubuntu with vscode">
+      PyTorch笔记/【Entries】C++ Production-4 libtorch & opencv in ubuntu with vscode <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Related-Work"><span class="nav-number">2.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Convolutional-Block-Attention-Module"><span class="nav-number">3.</span> <span class="nav-text">Convolutional Block Attention Module</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description">其实，我是一个搬运工！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'default',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

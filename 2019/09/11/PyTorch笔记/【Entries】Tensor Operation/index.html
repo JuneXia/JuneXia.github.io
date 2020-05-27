@@ -46,15 +46,15 @@
   };
 </script>
 
-  <meta name="description" content="123456789101112131415161718192021torch.cross(input, other, dim&#x3D;-1, out&#x3D;None)  #叉乘(外积)torch.dot(tensor1, tensor2)  #返回tensor1和tensor2的点乘torch.mm(mat1, mat2, out&#x3D;None) #返回矩阵mat1和mat2的乘积torch.matmul(mat1">
+  <meta name="description" content="123456789101112131415161718192021torch.cross(input, other, dim&#x3D;-1, out&#x3D;None)  #叉乘(外积)torch.dot(tensor1, tensor2)  #返回tensor1和tensor2的点乘torch.mm(mat1, mat2, out&#x3D;None) #返回矩阵mat1和mat2的乘积torch.matmul(mat">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PyTorch笔记&#x2F;【Entries】Tensor Operation">
 <meta property="og:url" content="http://yoursite.com/2019/09/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91Tensor%20Operation/index.html">
 <meta property="og:site_name" content="Paper搬运菌">
-<meta property="og:description" content="123456789101112131415161718192021torch.cross(input, other, dim&#x3D;-1, out&#x3D;None)  #叉乘(外积)torch.dot(tensor1, tensor2)  #返回tensor1和tensor2的点乘torch.mm(mat1, mat2, out&#x3D;None) #返回矩阵mat1和mat2的乘积torch.matmul(mat1">
+<meta property="og:description" content="123456789101112131415161718192021torch.cross(input, other, dim&#x3D;-1, out&#x3D;None)  #叉乘(外积)torch.dot(tensor1, tensor2)  #返回tensor1和tensor2的点乘torch.mm(mat1, mat2, out&#x3D;None) #返回矩阵mat1和mat2的乘积torch.matmul(mat">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-09-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-07T05:00:42.071Z">
+<meta property="article:modified_time" content="2020-05-27T02:25:02.126Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2019/09/11/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91Tensor%20Operation/">
@@ -203,7 +203,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-03-07 13:00:42" itemprop="dateModified" datetime="2020-03-07T13:00:42+08:00">2020-03-07</time>
+                <time title="Modified: 2020-05-27 10:25:02" itemprop="dateModified" datetime="2020-05-27T10:25:02+08:00">2020-05-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -228,7 +228,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">torch.cross(input, other, dim=<span class="number">-1</span>, out=<span class="literal">None</span>)  <span class="comment">#叉乘(外积)</span></span><br><span class="line"></span><br><span class="line">torch.dot(tensor1, tensor2)  <span class="comment">#返回tensor1和tensor2的点乘</span></span><br><span class="line"></span><br><span class="line">torch.mm(mat1, mat2, out=<span class="literal">None</span>) <span class="comment">#返回矩阵mat1和mat2的乘积</span></span><br><span class="line">torch.matmul(mat1, mat2, out=<span class="literal">None</span>)  <span class="comment"># 同torch.mm</span></span><br><span class="line"><span class="comment"># 对矩阵`mat1`和`mat2`进行相乘。 如果`mat1` 是一个n×m张量，`mat2` 是一个 m×p 张量，将会输出一个 n×p 张量`out`。</span></span><br><span class="line"></span><br><span class="line">torch.eig(a, eigenvectors=<span class="literal">False</span>, out=<span class="literal">None</span>) <span class="comment">#返回矩阵a的特征值/特征向量 </span></span><br><span class="line"></span><br><span class="line">torch.det(A)  <span class="comment">#返回矩阵A的行列式</span></span><br><span class="line"></span><br><span class="line">torch.trace(input) <span class="comment">#返回2-d 矩阵的迹(对对角元素求和)</span></span><br><span class="line"></span><br><span class="line">torch.diag(input, diagonal=<span class="number">0</span>, out=<span class="literal">None</span>) <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">torch.histc(input, bins=<span class="number">100</span>, min=<span class="number">0</span>, max=<span class="number">0</span>, out=<span class="literal">None</span>) <span class="comment">#计算input的直方图</span></span><br><span class="line"></span><br><span class="line">torch.tril(input, diagonal=<span class="number">0</span>, out=<span class="literal">None</span>)  <span class="comment">#返回矩阵的下三角矩阵，其他为0</span></span><br><span class="line"></span><br><span class="line">torch.triu(input, diagonal=<span class="number">0</span>, out=<span class="literal">None</span>) <span class="comment">#返回矩阵的上三角矩阵，其他为0</span></span><br></pre></td></tr></table></figure>
+        <a id="more"></a>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">torch.cross(input, other, dim=<span class="number">-1</span>, out=<span class="literal">None</span>)  <span class="comment">#叉乘(外积)</span></span><br><span class="line"></span><br><span class="line">torch.dot(tensor1, tensor2)  <span class="comment">#返回tensor1和tensor2的点乘</span></span><br><span class="line"></span><br><span class="line">torch.mm(mat1, mat2, out=<span class="literal">None</span>) <span class="comment">#返回矩阵mat1和mat2的乘积</span></span><br><span class="line">torch.matmul(mat1, mat2, out=<span class="literal">None</span>)  <span class="comment"># 同torch.mm</span></span><br><span class="line"><span class="comment"># 对矩阵`mat1`和`mat2`进行相乘。 如果`mat1` 是一个n×m张量，`mat2` 是一个 m×p 张量，将会输出一个 n×p 张量`out`。</span></span><br><span class="line"></span><br><span class="line">torch.eig(a, eigenvectors=<span class="literal">False</span>, out=<span class="literal">None</span>) <span class="comment">#返回矩阵a的特征值/特征向量 </span></span><br><span class="line"></span><br><span class="line">torch.det(A)  <span class="comment">#返回矩阵A的行列式</span></span><br><span class="line"></span><br><span class="line">torch.trace(input) <span class="comment">#返回2-d 矩阵的迹(对对角元素求和)</span></span><br><span class="line"></span><br><span class="line">torch.diag(input, diagonal=<span class="number">0</span>, out=<span class="literal">None</span>) <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">torch.histc(input, bins=<span class="number">100</span>, min=<span class="number">0</span>, max=<span class="number">0</span>, out=<span class="literal">None</span>) <span class="comment">#计算input的直方图</span></span><br><span class="line"></span><br><span class="line">torch.tril(input, diagonal=<span class="number">0</span>, out=<span class="literal">None</span>)  <span class="comment">#返回矩阵的下三角矩阵，其他为0</span></span><br><span class="line"></span><br><span class="line">torch.triu(input, diagonal=<span class="number">0</span>, out=<span class="literal">None</span>) <span class="comment">#返回矩阵的上三角矩阵，其他为0</span></span><br></pre></td></tr></table></figure>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1] <a href="https://zhuanlan.zhihu.com/p/36233589" target="_blank" rel="noopener">pytorch入坑一 | Tensor及其基本操作</a></p>
 
     </div>
@@ -325,7 +326,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">140</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

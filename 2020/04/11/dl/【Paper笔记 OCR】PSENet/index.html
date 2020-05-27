@@ -57,8 +57,11 @@
 <meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PSENet2.jpg">
 <meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PSENet3.jpg">
 <meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PSENet4.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PSENet5.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PSENet6.jpg">
+<meta property="og:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PSENet7.jpg">
 <meta property="article:published_time" content="2020-04-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-04-13T00:52:53.226Z">
+<meta property="article:modified_time" content="2020-04-27T02:42:40.493Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PSENet1.jpg">
 
@@ -208,7 +211,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-13 08:52:53" itemprop="dateModified" datetime="2020-04-13T08:52:53+08:00">2020-04-13</time>
+                <time title="Modified: 2020-04-27 10:42:40" itemprop="dateModified" datetime="2020-04-27T10:42:40+08:00">2020-04-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -257,8 +260,90 @@
   <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PSENet4.jpg" width = 80% height = 80% />
 </div>
 
+<h1 id="PSENet整体结构"><a href="#PSENet整体结构" class="headerlink" title="PSENet整体结构"></a>PSENet整体结构</h1><p>先级联，再将级联的特征进行融合，然后将F投影到n个分支中</p>
+<p><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PSENet5.jpg" width = 80% height = 80% />
+</div></p>
+<center>Figure 2: Illustration of our overall pipeline. The left part is implemented from FPN [16]. The right part denotes the `feature fusion(特征融合)` and the `progressive scale expansion algorithm(渐进尺度扩展算法)`.</center>
+
+
+<h1 id="渐进尺度扩展-Progressive-Scale-Expansion-Algorithm"><a href="#渐进尺度扩展-Progressive-Scale-Expansion-Algorithm" class="headerlink" title="渐进尺度扩展(Progressive Scale Expansion Algorithm)"></a>渐进尺度扩展(Progressive Scale Expansion Algorithm)</h1><p><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PSENet6.jpg" width = 80% height = 80% />
+</div></p>
+<center>Figure 3: The procedure of progressive scale expansion algorithm. CC refers to the function of finding connected components. EX represents the scale expansion algorithm. (a), (e) and (f) refer to S1, S2 and S3, respectively. (b) is the initial connected components. (c) and (d) is the results of expansion. (g) shows the illustration of expansion. The red box in (g) refers to the conflicted pixel.</center>
+
+<blockquote>
+<p><strong>PSE算法细节</strong>:<br>基于BFS(广度优先搜索):<br>从具有最小尺度的核s1开始(在此步骤中可以区分实例,不同实例有不同的连通域);通过逐步在较大的核中加入更多的像素来扩展它们的区域;完成直到发现最大的核。</p>
+</blockquote>
+<h1 id="标签生成-Label-Generation"><a href="#标签生成-Label-Generation" class="headerlink" title="标签生成(Label Generation)"></a>标签生成(Label Generation)</h1><p>使用Vatti clipping algorithm,该算法用于计算机图形学。它允许任意数量任意形状的主体多边形裁剪成任意数量任意形状的剪辑多边形,该算法不限制可用作主体或剪辑的多边形类型,即使是复杂的(自交)多边形和有孔的多边形也可以被处理。该算法一般只适用于二维空间</p>
+<p><div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/PSENet7.jpg" width = 80% height = 80% />
+</div></p>
+<center>Figure 4: The illustration of label generation. (a) contains the annotations for d, pi and pn. (b) shows the original text instances. (c) shows the segmentation masks with different kernel scales.</center>
+
+
+<p>Mathematically, if we consider the scale ratio as $r_i$, the margin $d_i$ between $p_n$ and $p_i$ can be calculated as:</p>
+<script type="math/tex; mode=display">
+d_i = \frac{\text{Area}(p_n) \times (1 - r_i^2)}{\text{Perimeter}(p_n)},  \tag{1}</script><p>where Area(·) is the function of computing the polygon area, Perimeter(·) is the function of computing the polygon perimeter(周长). Further, we define the scale ratio $r_i$ for ground truth map $G_i$ as:</p>
+<script type="math/tex; mode=display">
+r_i = 1 - \frac{(1 - m) \times (n - i)}{n - 1}, \tag{2}</script><p>where $m$ is the minimal scale ratio, which is a value in (0, 1]. Based on the definition in Eqn. (2), the values of scale ratios (i.e., $r_1, r_2, …, r_n$) are decided by two hyper-parameters $n$ and $m$, and they increase linearly from $m$ to 1.</p>
+<blockquote>
+<p>m表示最小的缩放比例,是一个超参数,取值范围为(0, 1],本文取m=0.5, n为最终输出多少个尺度的分割结果,文章设为6</p>
+</blockquote>
+<h1 id="Loss"><a href="#Loss" class="headerlink" title="Loss"></a>Loss</h1><p>网络的整体损失函数可以表示为：</p>
+<script type="math/tex; mode=display">
+L = \lambda L_c + (1 - \lambda) L_s \tag{3}</script><p>因为文字区域一般占图像中的很小一部分,如果直接做像素级的分类,网络趋向于将预测,为非文字类别,交叉熵损失会导致由负样本主导,训练难以收敛,因此训练采用dicecoefficient所以文中引用一种类别均衡方式dice coefficent来解决这一问题:</p>
+<script type="math/tex; mode=display">
+D(S_i, G_i) = \frac{2\sum_{x, y}(S_{i, x, y} \cdot G_{i, x, y})}{\sum_{x, y} S_{i, x, y}^2 + \sum_{x, y} G_{i, x, y}^2}, \tag{4}</script><p>where $S_{i,x,y}$ and $G_{i,x,y}$ refer to the value of pixel $(x, y)$ in segmentation result $S_i$ and ground truth $G_i$, respectively.</p>
+<blockquote>
+<p>Dice coefficint是常见的评价分割效果的方法之一,同样的也可以作为损失函数衡量分割的结果和标签之间的差距。</p>
+</blockquote>
+<p>Furthermore, there are many patterns similar to text strokes, such as fences, lattices, etc. Therefore, we adopt Online Hard Example Mining (OHEM) [24] to Lc during training to better distinguish these patterns.</p>
+<p>$L_c$ focuses on segmenting the text and non-text region. Let us consider the training mask given by OHEM as $M$, and thus $L_c$ can be written as:</p>
+<script type="math/tex; mode=display">
+L_c = 1 - D(S_n \cdot M, G_n \cdot M), \tag{5}</script><blockquote>
+<p>关于这个公式，我是这样理解的：\<br>M是OHEM挑选出来的，Sn是网络预测出来的，这个M和Sn应该是同一个东西吧，即Sn · M = M，而Gn · M就表示ground-truth和预测的交集。所以Lc的定义主要是看Gn · M。我们当然是希望Gn · M越大越好，即Lc越小越好。</p>
+</blockquote>
+<p>$L_s$ is the loss for shrunk text instances. Since they are encircled by the original areas of the complete text instances, we ignore the pixels of non-text region in the segmentation result Sn to avoid a certain redundancy. Therefore, $L_s$ can be formulated as follows:</p>
+<script type="math/tex; mode=display">
+L_s = 1 - \frac{ \sum^{n-1}_{i=1} D(S_i \cdot W, G_i \cdot W) }{ n - 1}, \qquad W_{x, y} = 
+\begin{cases}
+  1, if S_{n, x, y} \geq 0.5; \\
+  0, otherwise.
+\end{cases} \tag{6}</script><p>Here, $W$ is a mask which ignores the pixels of non-text region in $S_n$, and $S_{n,x,y}$ refers to the value of pixel $(x, y)$ in $S_n$.</p>
+<p>Ls主要是想计算shrunk的文本实例$S_{n-1} ~ S_{1}$的损失，只不过是为了避免非文本区域的干扰，所有的shrunk实例都要在$S_n$的范围内取。</p>
+<p><strong>关于Loss的定义，还是有点迷惑。有待进一步理解</strong></p>
+<blockquote>
+<p>引入OHEM: \<br>主要为解决文本中存在的一些类似文字笔划的图案,如表格之类。\<br>【补充】在线准例挖掘(online hard example miniting, OHEM) OHEM算法的核心思想是根据输入样本的损失进行筛选,筛选出难例,表示对分类和检测影响较大的样本,然后将筛选得到的这些样本应用在随机梯度下降中训练。</p>
+</blockquote>
+<h1 id="实验细节-Experiment"><a href="#实验细节-Experiment" class="headerlink" title="实验细节(Experiment)"></a>实验细节(Experiment)</h1><p>主干网络采用resnet,网络框架类似于FPN的结构,将低层特征映射与高级特征映射连接起来,利用resnet提取出四层256通道的feature maps: P2, P3, P4, P5, 将得到的四层特征图进行融合得到1024通道的特征图，用F表示，融合公式：</p>
+<script type="math/tex; mode=display">
+F = C(P_2, P_3, P_4, P_5) = P_2 || Up_{\times 2}(P_3) || Up_{\times 4}(P_4) || Up_{\times 8}(P_5)</script><p>“||”表示concatenation，$Up_{\times 2}(P_3)$ 表示对 $P_3$ 进行2倍的上采样，这样就得到了和 $P_2$ 相同尺度的feature map，同理$Up_{\times 4}(P_4)$ 表示要对 $P_4$ 进行4倍的上采样才会得到和 $P_2$ 相同尺度的feature map，而 $P_5$ 要进行8倍上采样。</p>
+<blockquote>
+<p>关于销融实验(Ablation Study)<br>首先进行了模型简化测试(去掉模型中的部分模块,然后看模型的性能是否发生变化根据奥卡姆剃刀法则,简单和复杂的方法能达到一样的效果,那么简单的方法更可靠。)实际上ablation study就是为了研究模型中所提出的一些结构是否有效而设计的实验。</p>
+<p>比如你提出了一种结构,但是要想确定这个结构是否有利于最终的效果,那就要将去掉该结构的网络与加上该结构的网络所得到的结果进行对比,这就是ablation study (多应用在深度习的框架中)</p>
+</blockquote>
+<h1 id="论文总结-Summary-of-Paper"><a href="#论文总结-Summary-of-Paper" class="headerlink" title="论文总结(Summary of Paper)"></a>论文总结(Summary of Paper)</h1><p>在字符检测领域,传统的矩形框方法难以检测到不规则形状的文字,但在自然环境中这种情况广泛存在,因此基于分割的字符检测方法应运而生:</p>
+<ol>
+<li>基于分割的字符检测方法在任意形状文字检测上取得了良好效果,但是在字符间距很小时容易出现粘连问题。本文介绍的方法基于以下贡献点解决该问题。</li>
+<li>设计了多个尺度的特征图卷积核,从最小尺寸的特征图卷积核依次膨胀得到最后结果解决了料连问题。</li>
+<li>使用图像腐蚀方法生成了若干训练数据,不需要单独标注。</li>
+</ol>
+<p><strong>关于PSENet全文思想，我的总结是：</strong></p>
+<ol>
+<li>FPN提取特征，并做特征融合后得到一个特征F；\<br>怎么做特征融合的？请看<strong>3.5节 Implementation Details</strong></li>
+<li><p>标签生成：在分割任务中，标签就是mask，或者叫ground-truth，但是一张图片中的一个实例只会对应一个ground-truth，而PSENet对于每个实例将会得到多个尺度下的分割结果，这些不同尺度下的mask怎么得到呢？<br>这就是论文<strong>3.3节 Label Generation</strong>所讲的内容；<br>看图Figure4左侧，$p_n$是实际标注的ground-truth，这是和输入实例同等尺度的mask，接下来就要计算 $p_{n-1}$ 尺度下的mask。显然，$p_{n-1}$ 尺度下的mask肯定比 $p_{n}$ 尺度下的mask小且前者位于后者内部，所以实际上就是要计算内部mask与外部mask的距离是多少，计算方法如公式(1、2)所示。其他 $p_i$ 尺度下的标签mask计算以此类推。</p>
+<p>这一步我们会得到n个尺度下的mask，记作 $G_i, i \in [1, n]$，其中$G_1$为最小尺度下的mask.</p>
+</li>
+<li>我们将第一步得到F通过渐进尺度扩展(PSE)算法 依次投影到$G_i$尺度下，那么怎么个PSE法呢？(本文核心) \<br>首先F是和$G_1$同等尺度的(为什么？→ 应该是人为设定的吧)，可以直接计算得到分割结果 $S_1$；<br>接下来要把F通过PSE算法投影到$G_2$尺度下，PSE具体做法就是通过广度优先搜索(Breadth-First-Search, BFS)来进行的，如Figure3所示，当两个实例特征争夺一个像素时，BFS采用先到先得的方式来判别该像素的归属，最终得到分割结果$S_2$；<br>其他尺度下的分割结果$S_i$计算类似。</li>
+<li>计算Loss：有了分割结果$S_i$和$G_i$，就可以计算Loss了，本文的Loss由$L_c$和$L_s$这两部分组成，具体看论文吧，我也有点迷惑。详情请看前面的具体介绍。</li>
+</ol>
 <hr>
-<p><strong>Abstract</strong> \<br>&emsp; The challenges of shape robust text detection lie in two aspects: 1) most existing quadrangular bounding box based detectors are difficult to locate texts with arbitrary shapes, which are hard to be enclosed perfectly in a rectangle; 2) most pixel-wise segmentation-based detectors may not separate the text instances that are very close to each other. To address these problems, we propose a novel Progressive Scale Expansion Network (PSENet), designed as a segmentation-based detector with multiple predictions for each text instance. These predictions correspond to different kernels produced by shrinking the original text instance into various scales. Consequently, the final detection can be conducted through our progressive scale expansion algorithm which gradually expands the kernels with minimal scales to the text instances with maximal and complete shapes. Due to the fact that there are large geometrical margins among these minimal kernels, our method is effective to distinguish the adjacent text instances and is robust to arbitrary shapes. The state-of-the-art results on ICDAR 2015 and ICDAR 2017 MLT benchmarks further confirm the great effectiveness of PSENet. Notably, PSENet outperforms the previous best record by absolute 6.37% on the curve text dataset SCUT-CTW1500. Code will be available in <a href="https://github.com/whai362/PSENet" target="_blank" rel="noopener">https://github.com/whai362/PSENet</a>.</p>
+<p>地毯式阅读 ↓↓↓👇👇👇</p>
+<p><strong>Abstract</strong> \<br>&emsp; The challenges of shape robust text detection lie in two aspects: 1) most existing quadrangular bounding box based detectors are difficult to locate texts with arbitrary shapes, which are hard to be enclosed perfectly in a rectangle; 2) most pixel-wise segmentation-based detectors may not separate the text instances that are very close to each other. To address these problems, we propose a novel Progressive Scale Expansion Network (PSENet), <strong>designed as a segmentation-based detector with multiple predictions for each text instance</strong>.<br>基于分割的检测器，为每个文本实例产生多个预测。</p>
+<blockquote>
+<p>纵览全文，这句话的思想是这样的：一张图片中可能有多个文本实例，例如Figure1中的图片中就是有4个文本实例，普通的语义分割算法只能并不能完全将这四个实例全部分割出来，而牛逼的PSENet就可以。那么为什么PSENet这么牛逼呢，看Figure2右侧可知，PSENet会为对输入图片的特征进行多尺度预测(假设这里有n个尺度)，每个尺度都有4个实例，换句话说，每个实例都会被多个不同的尺度所预测，也就是这里所说的<strong>multiple predictions for each text instance</strong>. \<br>These predictions <code>correspond to(对应)</code> different kernels produced by shrinking(收缩) the original text instance into various scales.<br>Consequently(因此,结果,所以), the final detection can be conducted(管理;执行,实施) through our progressive scale expansion algorithm which gradually expands the kernels with minimal scales to the text instances with maximal and complete shapes.<br>因此，最终的检测可以通过我们的渐进尺度扩展算法来进行，该算法将最小尺度的内核逐步扩展为最大、完整形状的文本实例。<br><strong>Due to the fact that there are large geometrical margins among these minimal kernels, our method is effective to distinguish the adjacent text instances and is robust to arbitrary(adj.[数]任意的;武断的;专制的) shapes</strong>.<br>由于这些最小核之间存在较大的几何边距，因此我们的方法能够有效地区分相邻文本实例，并且对任意形状具有很强的鲁棒性。<br>The state-of-the-art results on ICDAR 2015 and ICDAR 2017 MLT benchmarks further confirm the great effectiveness of PSENet. Notably(显著地;尤其), PSENet outperforms(vt.胜过;做得比…好) the previous best record by absolute 6.37% on the curve text dataset SCUT-CTW1500. Code will be available in <a href="https://github.com/whai362/PSENet" target="_blank" rel="noopener">https://github.com/whai362/PSENet</a>.</p>
+</blockquote>
 <p><strong>核心摘要</strong></p>
 <ol>
 <li>基于Bounding Box回归(Regression)的方法被提出了一组方法来成功地定位具有特定方向的矩形或四边形形式的文本目标。</li>
@@ -287,7 +372,10 @@
     <a href="/2020/04/10/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Entries%E3%80%91Data%20Accelerate/" rel="prev" title="PyTorch笔记/【Entries】Data Accelerate">
       <i class="fa fa-chevron-left"></i> PyTorch笔记/【Entries】Data Accelerate
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/16/PyTorch%E7%AC%94%E8%AE%B0/%E3%80%90Tutorials%E3%80%91torch.utils.data%20Sampler/" rel="next" title="PyTorch笔记/【Tutorials】torch.utils.data Sampler">
+      PyTorch笔记/【Tutorials】torch.utils.data Sampler <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -347,7 +435,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">1.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PSENet整体结构"><span class="nav-number">1.</span> <span class="nav-text">PSENet整体结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#渐进尺度扩展-Progressive-Scale-Expansion-Algorithm"><span class="nav-number">2.</span> <span class="nav-text">渐进尺度扩展(Progressive Scale Expansion Algorithm)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#标签生成-Label-Generation"><span class="nav-number">3.</span> <span class="nav-text">标签生成(Label Generation)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Loss"><span class="nav-number">4.</span> <span class="nav-text">Loss</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验细节-Experiment"><span class="nav-number">5.</span> <span class="nav-text">实验细节(Experiment)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#论文总结-Summary-of-Paper"><span class="nav-number">6.</span> <span class="nav-text">论文总结(Summary of Paper)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">7.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -361,7 +449,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">140</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
