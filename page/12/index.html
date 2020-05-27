@@ -171,6 +171,84 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/15/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91tf.image/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="其实，我是一个搬运工！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paper搬运菌">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/15/TensorFlow%E7%AC%94%E8%AE%B0/%E3%80%90TensorFlow%E7%AC%94%E8%AE%B0%E3%80%91tf.image/" class="post-title-link" itemprop="url">TensorFlow笔记/【TensorFlow笔记】tf.image</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-10-15 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-15T00:00:00+08:00">2017-10-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-22 13:21:03" itemprop="dateModified" datetime="2020-01-22T13:21:03+08:00">2020-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TensorFlow%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h1 id="tf-image下的各种resize"><a href="#tf-image下的各种resize" class="headerlink" title="tf.image下的各种resize"></a>tf.image下的各种resize</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf  </span><br><span class="line"><span class="keyword">import</span> cv2  </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    image_size = (<span class="number">300</span>, <span class="number">400</span>)  </span><br><span class="line">    filename = <span class="string">'/home/xiajun/res/face/VGGFace2/Experiment/mtcnn_align182x182_margin44/n000020/0001_01.png'</span>  </span><br><span class="line">  file_contents = tf.read_file(filename)  </span><br><span class="line">    <span class="comment"># image = tf.image.decode_image(file_contents, 3)  </span></span><br><span class="line">  image = tf.image.decode_png(file_contents, <span class="number">3</span>)  </span><br><span class="line">    rawimage = tf.identity(image)  </span><br><span class="line">  </span><br><span class="line">    resize_images = tf.image.resize_images(image, image_size, align_corners=<span class="literal">True</span>, preserve_aspect_ratio=<span class="literal">True</span>)  <span class="comment"># 如果preserve_aspect_ratio为True，则保持宽高比对原图进行缩放，缩放后的图像宽或高等于image_size中的最小值  </span></span><br><span class="line">  resize_images = tf.cast(resize_images, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 双三次插值  </span></span><br><span class="line">  resize_bicubic = tf.image.resize_bicubic(tf.expand_dims(image, axis=<span class="number">0</span>), image_size)  <span class="comment"># 实测如果设置 half_pixel_centers 参数，会报错  </span></span><br><span class="line">  resize_bicubic = tf.cast(resize_bicubic, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 双线性插值  </span></span><br><span class="line">  resize_bilinear = tf.image.resize_bilinear(tf.expand_dims(image, axis=<span class="number">0</span>), image_size)  <span class="comment"># 实测如果设置 half_pixel_centers 参数，会报错  </span></span><br><span class="line">  resize_bilinear = tf.cast(resize_bilinear, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 最近邻插值  </span></span><br><span class="line">  resize_nearest_neighbor = tf.image.resize_nearest_neighbor(tf.expand_dims(image, axis=<span class="number">0</span>), image_size)  <span class="comment"># 实测如果设置 half_pixel_centers 参数，会报错  </span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 区域插值  </span></span><br><span class="line">  resize_area = tf.image.resize_area(tf.expand_dims(image, axis=<span class="number">0</span>), image_size)  <span class="comment"># 基于区域像素关系的一种重采样或者插值方式.该方法是图像抽取的首选方法,它可以产生更少的波纹,但是当图像放大时,它的效果与INTER_NEAREST效果相似.  </span></span><br><span class="line">  resize_area = tf.cast(resize_area, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    init = tf.initialize_all_variables()  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:  </span><br><span class="line">        sess.run(init)  </span><br><span class="line">  </span><br><span class="line">        cv2.imshow(<span class="string">'rawimg'</span>, sess.run(rawimage))  </span><br><span class="line">  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_images'</span>, sess.run(resize_images))  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_bicubic'</span>, sess.run(resize_bicubic)[<span class="number">0</span>])  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_bilinear'</span>, sess.run(resize_bilinear)[<span class="number">0</span>])  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_nearest_neighbor'</span>, sess.run(resize_nearest_neighbor)[<span class="number">0</span>])  </span><br><span class="line">        cv2.imshow(<span class="string">'resize_area'</span>, sess.run(resize_area)[<span class="number">0</span>])  </span><br><span class="line">  </span><br><span class="line">        cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="tf-image下的各种resize、crop、pad"><a href="#tf-image下的各种resize、crop、pad" class="headerlink" title="tf.image下的各种resize、crop、pad"></a>tf.image下的各种resize、crop、pad</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  <span class="comment"># resize_crop_pad  </span></span><br><span class="line">  image_size = (<span class="number">128</span>, <span class="number">128</span>)  </span><br><span class="line">    filename = <span class="string">'/home/xiajun/res/face/VGGFace2/Experiment/mtcnn_align182x182_margin44/n000020/0001_01.png'</span>  </span><br><span class="line">  file_contents = tf.read_file(filename)  </span><br><span class="line">    <span class="comment"># image = tf.image.decode_image(file_contents, 3)  </span></span><br><span class="line">  image = tf.image.decode_png(file_contents, <span class="number">3</span>)  </span><br><span class="line">    rawimage = tf.identity(image)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 随机裁剪  </span></span><br><span class="line">  random_crop = tf.random_crop(image, image_size + (<span class="number">3</span>,))  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 如果图像宽高小于目标宽高，则使用中心裁剪至目标宽高  </span></span><br><span class="line">  <span class="comment"># 如果图像宽高大于目标宽高，则pad 0 至目标宽高  </span></span><br><span class="line">  resize_image_with_crop_or_pad = tf.image.resize_image_with_crop_or_pad(image, image_size[<span class="number">0</span>], image_size[<span class="number">1</span>])  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># failed  </span></span><br><span class="line"> <span class="comment"># resize_with_crop_or_pad = tf.image.resize_with_crop_or_pad(image, image_size[0], image_size[1])  </span></span><br><span class="line"> <span class="comment"># 先对图像缩放到目标尺寸（保持宽高比），然后如果还是和目标尺寸不匹配则用0填充到目标宽高  </span></span><br><span class="line">  resize_image_with_pad = tf.image.resize_image_with_pad(image, image_size[<span class="number">0</span>], image_size[<span class="number">1</span>])  </span><br><span class="line">    resize_image_with_pad = tf.cast(resize_image_with_pad, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 中心裁剪  </span></span><br><span class="line">  central_crop = tf.image.central_crop(image, <span class="number">0.8</span>)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 先从左上角偏移一个offset作为左上角点，然后以offset_height + target_height, offset_width + target_width为右下角点  </span></span><br><span class="line">  crop_to_bounding_box = tf.image.crop_to_bounding_box(image, <span class="number">10</span>, <span class="number">20</span>, image_size[<span class="number">0</span>], image_size[<span class="number">1</span>])  <span class="comment"># target + offset &lt;= image width&amp;height, 目标图像宽高+offset之和一定要&lt;=原始图像宽高。  </span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 先裁剪后缩放，目前感觉这个函数有点不大好用啊。  </span></span><br><span class="line">  <span class="comment"># crop_and_resize = tf.image.crop_and_resize(tf.expand_dims(image, axis=0), [[0.5, 0.6, 0.9, 0.8]], box_ind=[0], crop_size=(300, 400))  # [1]  </span></span><br><span class="line">  crop_and_resize = tf.image.crop_and_resize(tf.expand_dims(image, axis=<span class="number">0</span>), [[<span class="number">0.5</span>, <span class="number">0.6</span>, <span class="number">0.9</span>, <span class="number">0.8</span>], [<span class="number">0.2</span>, <span class="number">0.6</span>, <span class="number">1.3</span>, <span class="number">0.9</span>]], box_ind=[<span class="number">0</span>, <span class="number">0</span>], crop_size=(<span class="number">300</span>, <span class="number">400</span>))  </span><br><span class="line">    crop_and_resize = tf.cast(crop_and_resize, dtype=tf.uint8)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 在图片外围填充0  </span></span><br><span class="line">  pad_to_bounding_box = tf.image.pad_to_bounding_box(image, offset_height=<span class="number">10</span>, offset_width=<span class="number">10</span>, target_height=<span class="number">200</span>, target_width=<span class="number">200</span>)  </span><br><span class="line">  </span><br><span class="line">    init = tf.initialize_all_variables()  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:  </span><br><span class="line">        sess.run(init)  </span><br><span class="line">        cv2.imshow(<span class="string">'rawimg'</span>, sess.run(rawimage))  </span><br><span class="line">        cv2.imshow(<span class="string">'random_crop1'</span>, sess.run(random_crop))  </span><br><span class="line">        <span class="comment">#cv2.imshow('random_crop2', sess.run(random_crop))  </span></span><br><span class="line"> <span class="comment">#cv2.imshow('random_crop3', sess.run(random_crop))  cv2.imshow('resize_image_with_crop_or_pad1', sess.run(resize_image_with_crop_or_pad))  </span></span><br><span class="line">        cv2.imshow(<span class="string">'resize_image_with_pad1'</span>, sess.run(resize_image_with_pad))  </span><br><span class="line">        cv2.imshow(<span class="string">'central_crop'</span>, sess.run(central_crop))  </span><br><span class="line">        cv2.imshow(<span class="string">'crop_to_bounding_box'</span>, sess.run(crop_to_bounding_box))  </span><br><span class="line">        cv2.imshow(<span class="string">'pad_to_bounding_box'</span>, sess.run(pad_to_bounding_box))  </span><br><span class="line">  </span><br><span class="line">        images = sess.run(crop_and_resize)  </span><br><span class="line">        <span class="keyword">for</span> i, image <span class="keyword">in</span> enumerate(images):  </span><br><span class="line">            cv2.imshow(<span class="string">'crop_and_resize'</span> + str(i), image)  </span><br><span class="line">  </span><br><span class="line">        cv2.waitKey(<span class="number">1000000</span>)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/13/dl/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01.3%E3%80%91%E5%A4%8D%E7%94%A8%E9%A2%84%E8%AE%AD%E7%BB%83%E5%B1%82/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -907,172 +985,11 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/16/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.4%E3%80%91%E5%B8%A6%E7%BA%A6%E6%9D%9F%E7%9A%84%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="其实，我是一个搬运工！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Paper搬运菌">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/08/16/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/%E3%80%90%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%961.4%E3%80%91%E5%B8%A6%E7%BA%A6%E6%9D%9F%E7%9A%84%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">【数学基础与最优化1.4】带约束的优化问题</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-08-16 00:00:00" itemprop="dateCreated datePublished" datetime="2017-08-16T00:00:00+08:00">2017-08-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-22 14:32:12" itemprop="dateModified" datetime="2020-01-22T14:32:12+08:00">2020-01-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%9C%80%E4%BC%98%E5%8C%96/" itemprop="url" rel="index">
-                    <span itemprop="name">数学基础与最优化</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <a id="more"></a>
-<h2 id="条件极值-拉格朗日乘数法"><a href="#条件极值-拉格朗日乘数法" class="headerlink" title="条件极值  拉格朗日乘数法"></a>条件极值  拉格朗日乘数法</h2><p>&emsp; 现实问题中，有时会遇到对函数的自变量还有附加条件的极值问题。例如，求表面积为$a^2$而体积为最大的长方体的体积问题。设长方体的三棱长为$x,y,z$，则体积$V=xyz$，又因表面积为$a^2$，所以自变量$x,y,z$还必须满足附加条件$2(xy+yz+xz)=a^2$，像这种对自变量有附加条件的极值称为条件极值。对于有些实际问题，可以把条件极值化为无条件极值。例如上述问题，可由条件$2(xy+yz+xz)=a^2$，将$z$表示成$x,y$的函数</p>
-<script type="math/tex; mode=display">z=\dfrac{a^2-2xy}{2(x+y)}.</script><p>再把它代入$V=xyz$中，于是问题就化为求</p>
-<script type="math/tex; mode=display">V=\dfrac{xy}{2} \left(\dfrac{a^2-2xy}{x+y} \right)</script><p>的无条件极值。<br>&emsp; 但是在很多情况下，将条件极值化为无条件极值并不这样简单。另有一种直接寻求条件极值的方法，可以不必先把问题化到无条件极值的问题，这就是下面要介绍的<strong>朗格朗日乘数法</strong>。（这里只给出拉格朗日乘数法的结论，其具体引入思路可参考文献[2] P113，这里不再赘述。）</p>
-<p>要找函数 </p>
-<script type="math/tex; mode=display">z=f(x,y) \tag{1}</script><p>在附加条件 </p>
-<script type="math/tex; mode=display">\varphi(x,y)=0 \tag{2}</script><p>下的可能极值点，可以先作拉格朗日函数</p>
-<script type="math/tex; mode=display">L(x,y)=f(x,y)+\lambda\varphi(x,y),</script><p>其中参数 $\lambda$ 称为拉格朗日乘子。求其对$x$与$y$的一阶偏导数，并使之为零，然后与方程(2)联立起来：</p>
-<script type="math/tex; mode=display">
-\begin{cases}
-f_x(x, y) + \lambda \varphi_x(x, y) = 0, \\
-f_y(x, y) + \lambda \varphi_y(x, y) = 0, \\
-\varphi(x, y) = 0.
-\end{cases} \tag{3}</script><p>由这个方程组解出 $x,y$ 及 $\lambda$，这样得到的 $(x,y)$ 就是函数 $f(x,y)$ 在附加条件 $\varphi(x,y)=0$ 下的可能极值点。<br>&emsp; 方程组(3)是函数(1)在条件(2)下在$(x_0, y_0)$取得极值的必要条件。至于如何确定所求得的点是否极值点，在实际问题中往往可根据问题本身的性质来判定。</p>
-<p>&emsp; 该方法可以推广到自变量多于两个而条件多于一个的情形[2]，这在下面的等式约束优化问题中也会提到。</p>
-<h2 id="等式约束优化"><a href="#等式约束优化" class="headerlink" title="等式约束优化"></a>等式约束优化</h2><p>所谓的等式约束优化是指 [3]</p>
-<script type="math/tex; mode=display">
-\begin{aligned}  
-& min \ f(x_1, x_2, ..., x_n) \\
-& s.t. \ h_k(x_1, x_2, ..., x_n) = 0 ,\quad  (k=1,2,...,l)
-\end{aligned}</script><p>我们用拉格朗日乘数法求解，令 $L(\boldsymbol x, \boldsymbol \lambda) = f(\boldsymbol x) + \sum \limits_{k=1}^l{\lambda_k h_k(\boldsymbol x)}$，再联立方程组：</p>
-<script type="math/tex; mode=display">
-\begin{cases}
-\dfrac{\partial L}{\partial x_i} = 0 \quad  (i=1,2,...,n) \\
-\dfrac{\partial L}{\partial \lambda_k} = 0 \quad  (k=1,2,...,l)
-\end{cases}</script><p>得到的解为可能极值点，由于我们用的是必要条件，具体是否为极值点需根据问题本身的具体情况检验。这个方程组称为<strong>等式约束的极值必要条件</strong>. （me:上述方程组中的第二个方程实际上就是约束条件 $h_k(x_1, x_2, …, x_n) = 0$）</p>
-<p>&emsp; 等式约束下的Lagrange乘数法引入了$l$个Lagrange乘子，或许我们可以把$\lambda_k$也看作优化变量，这相当于将优化变量个数增加到$(n+l)$个，$x_i$与$\lambda_k$一视同仁，均为优化变量，均对他们求偏导。</p>
-<h2 id="不等式约束优化"><a href="#不等式约束优化" class="headerlink" title="不等式约束优化"></a>不等式约束优化</h2><p>&emsp; 不等式约束优化主要是使用<strong>转化的思想</strong>——将不等式约束条件转化成等式约束条件，具体做法：引入松弛变量。松弛变量也是优化变量，也需要一视同仁求偏导[3]。\<br><img src="https://lh3.googleusercontent.com/-YgG-fmRuqL4/W_ZyhgH-FxI/AAAAAAAAAIo/b8V8vcStVN4hUMWbcfSqM31iFMIXmJc9QCLcBGAs/s0/lagrange_optimizer.jpg" alt="enter image description here" title="lagrange_optimizer.jpg"></p>
-<p>&emsp; 具体而言，我们先看一个一元函数的例子：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-& min \ f(x) \\
-& s.t. \ g_1(x) = a - x \leq 0 \\
-& \quad \quad g_2(x) = x - b \leq 0
-\end{aligned} \tag{1}</script><blockquote>
-<p>注：优化问题中，我们必须求得一个确定的值，因此不妨令所有的不等式均取到等号，即 $\leq$ 的情况[3].</p>
-</blockquote>
-<p>&emsp; 对于约束 $g_{1}$ 和 $g_{2}$，我们分别引入两个松弛变量$a_{1}^{2}$ 和$b_{1}^{2}$，得到$h_{1} (x,a_{1} )=g_{1} +a_{1}^{2} =0$和$h_{2} (x,b_{1} )=g_{2} +b_{1}^{2} =0$. 注意，这里直接加上平方项$a_{1}^{2}$、$b_{1}^{2}$ 而非$a_{1}$、$b_{1}$，是因为$g_{1}$和$g_{2}$这两个不等式的左边必须加上一个正数才能使不等式变为等式。若只加上 $a_{1}$ 和 $b_{1}$，又会引入新的约束$a_{1} \geq 0$和$b_{1} \geq 0$，这不符合我们的意愿。<br><img src="https://lh3.googleusercontent.com/-joqblsuBvY8/W_aGPPYBf5I/AAAAAAAAAI4/2kcFS1DPMnU4P2_kdiEYETa8gwep56FSACLcBGAs/s0/lagrange_optimizer2.jpg" alt="enter image description here" title="lagrange_optimizer2.jpg"></p>
-<p>&emsp; 由此我们将不等式约束转化成了等式约束，此时引入Lagrange函数</p>
-<script type="math/tex; mode=display">L(x, a_1, b_1, \mu_1, \mu_2) = f(x) + \mu_1(a-x+a_1^2) + \mu_2(x-b+b_1^2) \tag{2}</script><p>我们再按照等式约束优化问题（极值必要条件）对其求解，联立方程：</p>
-<script type="math/tex; mode=display">
-\begin{cases}
-\dfrac{\partial L}{\partial x} = \dfrac{\partial f}{\partial x} + \mu_1 \dfrac{ {\rm d}g_1}{ {\rm d}x} + \mu_2 \dfrac{ {\rm d}g_2}{ {\rm d}x} = \dfrac{\partial f}{\partial x} - \mu_1 + \mu_2 = 0, \\
-
-\dfrac{\partial L}{\partial \mu_1} = g_1 + a_1^2 = 0, \quad \dfrac{\partial L}{\partial \mu_2} = g_2 + b_1^2 = 0, \\
-
-\dfrac{\partial L}{\partial a_1} = 2 \mu_1 a_1 = 0, \quad \quad \dfrac{\partial L}{\partial b_1} = 2 \mu_2 b_1 = 0, \\
-
-\mu_1 \geq 0, \quad \mu_2 \geq 0.
-
-\end{cases} \tag{3}</script><p>注：这里的$\mu_1 \geq 0, \mu_2 \geq 0$我们先记住！实际上对于不等式约束前的乘子，我们要求其大于等于0 [3].</p>
-<p>对于方程组(3)中的</p>
-<script type="math/tex; mode=display">
-\begin{cases}
-    \dfrac{\partial L}{\partial \mu_1} = g_1 + a_1^2 = 0, \\
-\dfrac{\partial L}{\partial a_1} = 2 \mu_1 a_1 = 0, \\
-\mu_1 \geq 0.
-\end{cases} \tag{4}</script><p>我们可以做如下讨论：</p>
-<ol>
-<li>当$\mu_1 = 0$时，${a_1 \not = 0}$ （${me:此时a_1等于0不可以吗？}$），在Lagrange函数$L$中，约束$g_1$不起作用；而由 $g_1 + a_1^2 = 0$可知此时$g_1 &lt; 0$.</li>
-<li>当$\mu_1 &gt; 0$时，$a_1 = 0$，由 $g_1 + a_1^2 = 0$可知此时$g_1 = 0$.<br>综上有 $\mu_1 g_1 = 0$.<br>同理也有 $\mu_2 g_2 = 0$.</li>
-</ol>
-<p>由此，方程组(3)转化为</p>
-<script type="math/tex; mode=display">
-\begin{cases}
-    \dfrac{\partial f}{\partial x} + \mu_1 \dfrac{ {\rm d}g_1}{ {\rm d}x} + \mu_2 \dfrac{ {\rm d}g_2}{ {\rm d}x}= 0, \\
-\mu_1 g_1(x) = 0, \quad \mu_2 g_2(x) = 0, \\
-\mu_1 \geq 0, \quad \mu_2 \geq 0.
-\end{cases} \tag{5}</script><p>这是一元一次的情形。类似地，对于多元多次不等式约束问题：</p>
-<script type="math/tex; mode=display">
-\begin{cases}
-    min \ f(\boldsymbol x) \\
-s.t. \ g_j(\boldsymbol x) \leq 0, (j=1,2,...,m)
-\end{cases} \tag{6}</script><p>我们有</p>
-<script type="math/tex; mode=display">
-\begin{cases}
-    \dfrac{\partial f}{\partial x_i} + \sum \limits_{j=1}^m \mu_j \dfrac{\partial g_j}{\partial x_i} = 0, \quad (i=1,2,...,n),\\
-\mu_j g_j(\boldsymbol x) = 0, \quad (j=1,2,...,m), \\
-\mu_j \geq 0, \quad (j=1,2,...,m).
-\end{cases} \tag{7}</script><p>上式便称为不等式约束优化问题(6)的<strong>KKT（Karush-Kuhn-Tucker）条件</strong>. $\mu_j$称为<strong>KKT乘子</strong>，且约束起作用时$\mu_j \geq 0, g_j(\boldsymbol x) = 0$；约束不起作用时$\mu_j = 0, g_j(\boldsymbol x) &lt; 0$ [3].</p>
-<font color=#ff0000 size=3>注意这里的约束起作用时， “$\mu_j \geq 0, g_j(\boldsymbol x) = 0$” 和上面讨论的 “$\mu_j > 0, g_j(\boldsymbol x) = 0$” 的区别，但这里是正确的，也就是说上面的证明还不够严谨，那么具体要怎样更严谨的证明呢？</font>
-
-<p>总结：同时包含等式和不等式约束的一般优化问题[3]</p>
-<p><img src="https://lh3.googleusercontent.com/-4zXfd-_-pRI/W_0YQusR0iI/AAAAAAAAAJU/8clptIaFNKwQUebbHmwVNY50YUo0dxBhACLcBGAs/s0/kkt.png" alt="enter image description here" title="kkt.png"></p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a href="https://zhidao.baidu.com/question/47402574.html" target="_blank" rel="noopener">可导与可微等价吗？有什么区别？</a><br>[2] 高等数学.第六版.下册<br>[3] <a href="https://zhuanlan.zhihu.com/p/26514613" target="_blank" rel="noopener">浅谈最优化问题的KKT条件</a></p>
-<p>凸优化有关书目：<br><a href="https://blog.csdn.net/shengfang05/article/details/78836713" target="_blank" rel="noopener">Numerical Optimization和Convex optimization 两本书的选择?</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1138,7 +1055,7 @@ s.t. \ g_j(\boldsymbol x) \leq 0, (j=1,2,...,m)
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-count">141</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
