@@ -57,10 +57,47 @@ SSD和FasterRCNN在Feature map区域建议采样方式的区别：SSD是在6个f
 
 &emsp; Because of this multi-scale design based on anchors, we can simply use the convolutional features computed on a single-scale image, as is also done by the Fast R-CNN detector [2]. `The design of multiscale anchors is a key component for sharing features without extra cost for addressing scales. (多尺度anchors的设计是实现特征共享的关键环节，而不需要额外的处理尺度成本).`
 
+### Loss Function
+For training RPNs, we assign a binary class label (of being an object or not) to each anchor. We assign a positive label to two kinds of anchors: (i) the anchor/anchors with the highest Intersection-overUnion (IoU) overlap with a ground-truth box, or (ii) an anchor that has an IoU overlap higher than 0.7 with any ground-truth box. Note that a single ground-truth box may assign positive labels to multiple anchors. Usually the second condition is sufficient to determine the positive samples; but we still adopt the first condition for the reason that in some rare cases the second condition may find no positive sample. We assign a negative label to a non-positive anchor if its IoU ratio is lower than 0.3 for all ground-truth boxes. Anchors that are neither positive nor negative do not contribute to the training objective. 
 
+&emsp; With these definitions, we minimize an objective function following the multi-task loss in Fast R-CNN [2]. Our loss function for an image is defined as:
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/FasterRCNN-loss1.jpg" width = 80% height = 80% />
+</div>
 
+Here, $i$ is the index of an anchor in a mini-batch and $p_i$ is the predicted probability of anchor $i$ being an object. The ground-truth label $p_i^*$ is 1 if the anchor is positive, and is 0 if the anchor is negative. $t_i$ is a vector representing the 4 parameterized coordinates of the predicted bounding box, and $t_i^*$ is that of the ground-truth box associated with a positive anchor. The classification loss $L_{cls}$ is log loss over two classes (object $vs$. not object). For the regression loss, we use $L_{reg}(t_i, t_i^*) = R(t_i - t_i^*)$ where $R$ is the robust loss function (smooth L1) defined in [2]. The term $p_i^* L_{reg}$ means the regression loss is activated only for positive anchors ($p_i^* = 1)$ and is disabled otherwise ($p_i^* = 0$). The outputs of the $cls$ and $reg$ layers consist of ${p_i}$ and ${t_i}$ respectively.
 
+&emsp; The two terms are normalized by $N_{cls}$ and $N_{reg}$ and weighted by a balancing parameter $λ$. In our current implementation (as in the released code), the $cls$ term in Eqn.(1) is normalized by the mini-batch size (i.e., $N_{cls} = 256$) and the $reg$ term is normalized by the number of anchor locations (i.e., $N_{reg} \sim 2400$). By default we set $λ = 10$, and thus both $cls$ and $reg$ terms are roughly equally weighted. We show by experiments that the results are insensitive to the values of $λ$ in a wide range (Table 9). We also note that the normalization as above is not required and could be simplified.
 
+&emsp; For bounding box regression, we adopt the parameterizations of the 4 coordinates following [5]:
+<div align=center>
+  <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/FasterRCNN-loss2.jpg" width = 80% height = 80% />
+</div>
+
+where $x, y, w$, and $h$ denote the box's center coordinates and its width and height. Variables $x, x_a$, and $x$ are for the predicted box, anchor box, and groundtruth box respectively (likewise for $y, w, h$). This can be thought of as bounding-box regression from an anchor box to a nearby ground-truth box.
+
+> 关于公示(2)的一些理解可以参考文献 [1]
+
+&emsp; Nevertheless, our method achieves bounding-box regression by a different manner(n.方式;习惯;种类;规矩;风俗) from previous RoIbased (Region of Interest) methods [1], [2]. In [1], [2], bounding-box regression is performed on features pooled from *arbitrarily*(adv.任意地;反复无常地;专横地) sized RoIs, and the regression weights are *shared* by all region sizes. In our formulation, the features used for regression are of the same spatial size (3 × 3) on the feature maps. To account for varying sizes, a set of k bounding-box regressors(n.[数]回归量) are learned. Each regressor is responsible for one scale and one aspect ratio, and the k regressors do not share weights. As such, it is still possible to predict boxes of various sizes even though the features are of a fixed size/scale, thanks to the design of anchors.
+
+### Training RPNs
+The RPN can be trained end-to-end by backpropagation and stochastic gradient descent (SGD) [35]. We follow the image-centric sampling strategy from [2] to train this network. **Each mini-batch `arises from(来自)` a single image that contains many positive and negative example anchors.** It is possible to optimize for the loss functions of all anchors, but this will bias towards negative samples as they are dominate. Instead, we randomly sample 256 anchors in an image to compute the loss function of a mini-batch, where the sampled positive and negative anchors have a ratio of up to 1:1. If there are fewer than 128 positive samples in an image, we pad the mini-batch with negative ones.
+
+&emsp; We randomly initialize all new layers by drawing weights from a zero-mean Gaussian distribution with standard deviation 0.01. All other layers (i.e., the shared convolutional layers) are initialized by pretraining a model for ImageNet classification [36], as is standard practice [5]. We tune all layers of the ZF net, and conv3 1 and up for the VGG net to conserve memory [2]. We use a learning rate of 0.001 for 60k mini-batches, and 0.0001 for the next 20k mini-batches on the PASCAL VOC dataset. We use a momentum of 0.9 and a weight decay of 0.0005 [37]. Our implementation uses Caffe [38].
+
+## Sharing Features for RPN and Fast R-CNN
+`Thus far(迄今为止)` we have described how to train a network for region proposal generation, without considering the region-based object detection CNN that will utilize these proposals. For the detection network, we adopt Fast R-CNN [2]. Next we describe algorithms that learn a unified network composed of RPN and Fast R-CNN with shared convolutional layers (Figure 2).
+
+&emsp; Both RPN and Fast R-CNN, trained independently, will modify their convolutional layers in different ways. We therefore need to develop a technique that **allows for sharing convolutional layers between the two networks, rather than learning two separate networks**. We discuss three ways for training networks with features shared:
+
+(i) *Alternating(adj.交替的;交互的) training*. In this solution, we first train RPN, and use the proposals to train Fast R-CNN. The network tuned by Fast R-CNN is then used to initialize RPN, and this process is iterated(iterate vt.迭代;重复). This is the solution that is used in all experiments in this paper.
+
+(ii) *Approximate(n/adj.近似(的),大概(的)) joint training*. In this solution, the RPN and Fast R-CNN networks are merged into one network during training as in Figure 2. In each SGD iteration, the forward pass generates region proposals which are treated just like fixed, pre-computed proposals when training a Fast R-CNN detector. The backward propagation `takes place as usual(一切如常,照常进行)`, where for the shared layers the backward propagated signals from both the RPN loss and the Fast R-CNN loss are combined. This solution is easy to implement. But this solution ignores the derivative(n.派生物;金融衍生产品;派生词;(化学)衍生物;导数) w.r.t. the proposal boxes coordinates that are also network responses, so is approximate. In our experiments, we have empirically(adv.以经验为主地) found this solver produces close(接近的) results, yet reduces the training time by about 25-50% comparing with alternating training. This solver is included in our released Python code.
+
+未完待续。。。
+
+# 参考文献
+[1] [关于RPN中proposal的坐标回归参数的一点理解及Faster R-CNN的学习资料](https://blog.csdn.net/Blateyang/article/details/84800007)
 
 
 
