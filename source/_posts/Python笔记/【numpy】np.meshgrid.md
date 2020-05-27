@@ -5,6 +5,7 @@ tags:
 categories: ["Python笔记"]
 mathjax: true
 ---
+<!-- more -->
 
 更多内容请参考文献[1]
 

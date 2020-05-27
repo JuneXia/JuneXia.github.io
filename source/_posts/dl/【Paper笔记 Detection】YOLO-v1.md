@@ -11,6 +11,7 @@ University of Washington, Allen Institute for AI, Facebook AI Research \
 http://pjreddie.com/yolo/
 
 2016
+<!-- more -->
 
 **Abstract**
 &emsp; We present YOLO, a new approach to object detection. 

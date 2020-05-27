@@ -6,8 +6,9 @@ categories: ["开发环境与工具"]
 mathjax: true
 ---
 
-
 VSCode + CMake 环境配置
+
+<!-- more -->
 
 # 直接使用 CMake 命令编译
 

@@ -6,7 +6,7 @@ categories: ["PyTorch笔记"]
 mathjax: true
 ---
 本节主要讲述PyTorch中的DataLoader与Dataset的使用，并举代码示例用LeNet做人民币的二分类。
-<!-- mored -->
+<!-- more -->
 
 <div align=center>
   <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/DataLoader_and_Dataset1.jpg" width = 60% height = 60% />

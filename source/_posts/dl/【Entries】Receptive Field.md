@@ -10,6 +10,8 @@ mathjax: true
 
 **什么是感受野**
 在卷积神经网络中,决定某一层输出结果中一个元素所对应的输入层的区域的大小,被称作感受野(receptive field),通俗的解释是,输出feature map上的一个单元对应输入层上的区域大小。
+<!-- more -->
+
 
 <div align=center>
   <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/receptive-field1.jpg" width = 70% height = 70% />

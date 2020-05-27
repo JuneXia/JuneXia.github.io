@@ -5,7 +5,7 @@ tags:
 categories: ["PyTorch笔记"]
 mathjax: true
 ---
-
+<!-- more -->
 
 get pytorch source code
 ```bash

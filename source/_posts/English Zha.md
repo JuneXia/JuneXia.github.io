@@ -5,6 +5,7 @@ tags:
 categories: ["深度学习笔记"]
 mathjax: true
 ---
+<!-- more -->
 
 In a convolutional fashion, we evaluate a small set (e.g. 4) **of** default boxes **of** different aspect ratios at each location in several feature maps with different scales. 
 &emsp; &emsp; From `SSD:Single Shot MultiBox Detector`

@@ -5,7 +5,7 @@ tags:
 categories: ["PyTorch笔记"]
 mathjax: true
 ---
-
+<!-- more -->
 
 ```python
 torch.cross(input, other, dim=-1, out=None)  #叉乘(外积)
