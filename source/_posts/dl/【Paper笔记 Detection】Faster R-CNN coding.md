@@ -1,10 +1,16 @@
 ---
 title: 
-date: 2020-05-06
+date: 2020-02-06
 tags:
 categories: ["深度学习笔记"]
 mathjax: true
 ---
+
+内容较多，整理当中，待总结上传。。。
+
+<!-- more -->
+
+time : 05-06
 
 - label 为 1 的 anchor: 当一个 anchor 与真实 bounding box 的最大 IOU 超过阈值 Vt1(0.7)
 - label 为 -1 的 anchor :当一个 anchor 与真实 bounding box 的最大 I0U 低于阈值 Vt2(0.3)
@@ -16,5 +22,4 @@ mathjax: true
 <div align=center>
   <img src="https://github.com/JuneXia/JuneXia.github.io/raw/hexo/source/images/ml/FasterRCNN-coding-rpn1.jpg" width = 80% height = 80% />
 </div>
-
 
