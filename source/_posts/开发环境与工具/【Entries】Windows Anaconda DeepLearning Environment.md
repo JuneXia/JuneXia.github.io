@@ -70,9 +70,42 @@ conda install -c menpo opencv3
 
 # 从清华镜像源下载：
 conda install opencv -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+
+# 执行以下命令使环境变量生效
+source ~/.bashrc
 ```
 
 
+**需求1：在ubuntu系统上，若新用户想要直接使用别人已经安装好了的anaconda，该怎么办？**
+先查看已经安装好的anaconda的安装路径，
+```bash
+# 打开新用户主目录下的.bashrc文件
+$ vi ~/.bashrc
+
+# 在后面键入如下内容
+export PATH="/path/to/anaconda3/bin:$PATH"
+```
+
+> 如果希望安装好的anaconda让每个用户都能使用，还有一个更直接的办法是在 `/etc/profile` 文件中末尾添加 `export PATH="/path/to/anaconda3/bin:$PATH"`.
+
+
+**conda常用命令：**
+```bash
+# 激活您的conda虚拟环境
+$ source activate your_env_name
+# 或者
+$ conda activate your_env_name
+
+
+# 退出conda虚拟环境
+$ conda deactivate your_env_name
+# 或者
+$ conda deactivate your_env_name
+
+
+# 查看当前conda下已经有哪些conda虚拟环境
+$ conda info --env
+```
 
 
 

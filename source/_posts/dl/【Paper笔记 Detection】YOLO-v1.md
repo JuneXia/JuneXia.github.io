@@ -58,7 +58,7 @@ Fast, accurate algorithms for object detection would allow computers to drive ca
 &emsp; All of our training and testing code is open source. `A variety of(各种各样的)` pretrained models are also available to download.
 
 # Unified Detection
-&emsp; We unify(v.整合,联合;统一) the separate components of object detection into a single neural network. Our network **uses features from the entire image to predict each bounding box**. It also predicts all bounding boxes across all classes for an image simultaneously(adv.同时地). This means our network reasons globally about the full image and all the objects in the image. The YOLO design enables end-to-end training and realtime speeds while maintaining high average precision.
+&emsp; We unify(v.整合,联合;统一) the separate components of object detection into a single neural network. Our network **uses features from the entire image to predict each bounding box**. It also predicts all bounding boxes across all classes for an image simultaneously(adv.同时地). This means our network reasons(n.原因;理由;理智; v.推理;劝说) globally about the full image and all the objects in the image. The YOLO design enables end-to-end training and realtime speeds while maintaining high average precision.
 
 &emsp; **Our system divides the input image into an S × S grid. If the center of an object falls into a grid cell, that grid cell is responsible for detecting that object.**
 
@@ -67,5 +67,17 @@ Formally(adv.正式地;形式上) **we define confidence as Pr(Object) \* $\text
 形式上，我们定义置信度为 Pr(Object) \* $\text{IOU}^{truth}_{pred}$，如果cell中没有目标，则置信度为0. \
 Otherwise we want the confidence score to equal the intersection over union (IOU) between the predicted box and the ground truth.
 否则，我们希望置信度得分等于预测框与地面真实值之间的交并比(IOU)。
+
+&emsp; **Each bounding box consists of 5 predictions: $x, y, w, h$, and confidence. The $(x, y)$ coordinates represent the center of the box relative to the bounds of the grid cell. The width and height are predicted relative to the whole image. Finally the confidence prediction represents the IOU between the predicted box and any ground truth box.**
+
+&emsp; Each grid cell also predicts $C$ conditional class probabilities, $Pr(Class_i|Object)$. `These probabilities are conditioned on the grid cell containing an object.(这些概率以一个网格单元包含一个对象为条件.)`. `We only predict one set of class probabilities per grid cell, regardless of the number of boxes B.(无论box的数量B是多少，我们只会预测每个网格单元格的一组类概率.)`
+
+&emsp; At test time we multiply(adj.多层的;多样的;vt.使增加;使相乘) the conditional class probabilities and the individual box confidence predictions,
+
+$$
+Pr(Class_i|Object) ∗ Pr(Object) ∗ IOU^{truth}_{pred} = Pr(Class_i) ∗ IOU^{truth}_{pred}   \tag{1}
+$$
+
+which gives us class-specific confidence scores for each box. These scores encode both the probability of that class appearing in the box and how well the predicted box fits the object.
 
 未完待续。。。

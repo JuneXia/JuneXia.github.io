@@ -42,6 +42,9 @@ mathjax: true
 | 正体 | \text{log } x | $\text{log } x$ | text中可以写空格 |
 
 
+$\max \limits_{f}$
+
+$f_{\limits_{f}}$
 
 ## 数学公式中的空格
 | | | | |
