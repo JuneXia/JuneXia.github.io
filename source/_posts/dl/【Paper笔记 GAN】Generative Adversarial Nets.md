@@ -6,6 +6,24 @@ categories: ["深度学习笔记"]
 mathjax: true
 ---
 
+Generator 就是要学习一个概率分布，使得该分布和真实的数据分布越接近越好。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 论文地址：[Generative Adversarial Nets]()
 
 Ian J. Goodfellow, Jean Pouget-Abadie ∗ , Mehdi Mirza, Bing Xu, David Warde-Farley, Sherjil Ozair, Aaron Courville, Yoshua Bengio
@@ -37,9 +55,23 @@ $$
 \min \limits_{G} \max \limits_{D} V(D, G) = \mathbb{E}_{\boldsymbol{x} \sim p_{data} (\boldsymbol{x})} [\text{log} D(\boldsymbol{x})] + \mathbb{E}_{\boldsymbol{z} \sim p_{z} (\boldsymbol{z})} [\text{log} (1 - D(G(\boldsymbol{z})))].  \tag{1}
 $$
 
+
 上式中，$\mathbb{E}_{\boldsymbol{x} \sim p_{data} (\boldsymbol{x})} [\text{log} D(\boldsymbol{x})]$ 表示将真实图片输入到 D 时 D 的输出概率，我们当然希望此时D的输出概率越大越好；
 
 $\mathbb{E}_{\boldsymbol{z} \sim p_{z} (\boldsymbol{z})} [\text{log} (1 - D(G(\boldsymbol{z})))]$ 表示将 G 生成的图片输入到 D 时 D 的输出概率，我们当然希望此时D的输出概率越小越好。
+
+
+> 式(1)的意思是希望找到一个D，使得目标函数V(D,G)最大，同时又希望找到一个G使得最大化之后的V(D,G)最小。
+> 
+> ![](../../images/ml/GAN-basic-3.jpg)
+> (图片来自文献[1])
+> 
+> 当G固定在G1时，我们可以找到一个D使得V(G,D)取得最大值，暂记为V1，同理当G固定在G1和G2时，我们也同样能够找到相应的最大值V2、V3，至此便完成了 $\max \limits_D V(D,G)$ 的任务。
+> 
+> 从式(1)可知接下来还需要从V1、V2、V3中获取最小值，即 $\min \limits_G$
+> 为什么 $\min$ 的下标是 $G$？
+> 因为 V1、V2、V3 的这个结果是当G分别固定为G1、G2、G3时计算得到的，所以 $\min$ 的任务显然是要从G1、G2、G3中找到一个合适的G，以使式(1)最小。
+
 
 In the next section, we present a theoretical analysis of adversarial nets, essentially showing that the training criterion(n. （批评判断的）标准；准则；规范；准据) allows one to recover the data generating distribution as G and D are given enough capacity, i.e., in the non-parametric limit. See Figure 1 for a `less formal(非正式的)`, more pedagogical(adj. 教育学的；教学法的) explanation of the approach. In practice, we must implement the game using an iterative(adj.[数]迭代的;重复的), numerical approach. Optimizing D to completion(n. 完成，结束；实现) in the inner loop of training is computationally prohibitive(adj.禁止的,禁止性的;抑制的;(费用,价格)过高的), and on finite(adj. 有限的；限定的) datasets would result in overfitting. **Instead, we alternate(adj.交替的,轮流的;间隔的) between k steps of optimizing D and one step of optimizing G.** `This results in D being maintained near its optimal solution, so long as G changes slowly enough.(这使得D保持在其最优解附近，只要G变化足够慢.)` This strategy is analogous to the way that SML/PCD [31, 29] training maintains samples from a Markov chain from one learning step to the next in order to avoid burning(burn v.燃烧;晒黑;以……作燃料;飞速驾驶) in a Markov chain as part of the inner loop of learning. The procedure is formally presented in Algorithm 1.
 
@@ -57,6 +89,11 @@ G在高密度区域收缩，在低密度区域膨胀。\
 (b) In the inner loop of the algorithm $D$ is trained to discriminate samples from data, converging(converge v.聚合;收敛) to $D^∗ (x) = \frac{p_{data} (x)}{p_{data} (x) + p_g(x)}$. \
 > 这个公式的推导过程论文后面将会证明之，不过这个证明过程有些复杂，目前可以不用掌握。\
 (c) After an update to G, gradient of D has guided G(z) to flow to regions that are more likely to be classified as data. (d) After several steps of training, if G and D have enough capacity, they will reach a point at which both cannot improve because $p_g = p_{data}$ . The discriminator is unable to differentiate(v. 区分;辨别) between the two distributions, i.e. $D(x) = \frac{1}{2}$ .
+
+> (a)图表示初始状态；
+> (b)图表示固定生成器，训练判别器，图(b)中蓝色的线就是训练之后的判别器，它现在已经能够很好的将将生成的数据和真实数据分开了；
+> (c)图表示固定判别器，训练生成器，可以看到绿色的线在经过训练之后已经和真实数据更接近一些了；
+> 如此交替训练判别器和生成器，当判别器无法分辨出生成数据和真实数据时，就表示此时判别器已经无法将他们分开了。
 
 > 乔纳森语：关于图1，我们主要需掌握两点：\
 > 1. Generator 生成的数据分布 是被 Discriminator 拉向 $p_{data}$ 的； \
