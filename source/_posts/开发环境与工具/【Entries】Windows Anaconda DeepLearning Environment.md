@@ -21,10 +21,27 @@ windows 下的 anaconda + pytorch 环境搭建.
 我下载的是最新版：Anaconda3-2020.02-Windows-x86_64，
 该版本默认使用的是python3.7，如果我们后面想使用python3.6做为我们的开发环境，则可以使用 `conda create` 命令创建我们的conda虚拟环境。
 
-> conda 创建虚拟环境：
-> - conda创建环境命令为：conda create -n your_env_name
-> - 创建环境并指定python版本：conda create -n your_env_name python=3.6
-> - 创建Pytorch所需环境，输入命令conda create -n torch python=3.6
+**conda 创建虚拟环境：**
+```bash
+# conda创建环境命令为：
+conda create -n your_env_name
+
+# 创建环境并指定python版本：
+conda create -n your_env_name python=3.6
+
+# 创建Pytorch所需环境，输入命令：
+conda create -n torch python=3.6
+```
+
+
+**conda 删除虚拟环境：**
+```bash
+# 删除虚拟环境
+conda remove -n env_name --all
+
+# 删除指定虚拟环境下的某个包
+conda remove --name env_name package_name 
+```
 
 **step2:** 安装PyCharm
 可参考文献[1], 比较简单，略

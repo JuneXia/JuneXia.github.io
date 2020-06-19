@@ -6,21 +6,10 @@ categories: ["深度学习笔记"]
 mathjax: true
 ---
 
-Generator 就是要学习一个概率分布，使得该分布和真实的数据分布越接近越好。
+Generator 就是要学习一个概率分布，使得该分布和真实的数据分布越接近越好。[a]
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+-----------------------------------------------------
 
 
 
@@ -50,7 +39,7 @@ This framework `corresponds to(相当于…，符合于…)` a minimax two-playe
 # Adversarial nets
 The adversarial modeling framework is most straightforward to apply when the models are both multilayer perceptrons. `To learn the generator’s distribution $p_g$ over data $x$,(为了通过数据 x 来学习生成器的分布 $p_g$),` we define a prior on input noise variables $p_z(z)$, then represent a mapping to data space as $G(z; θ_g)$, where G is a differentiable function represented by a multilayer perceptron with parameters $θ_g$. We also define a second multilayer perceptron $D(x; θ_d)$ that outputs a single scalar. D(x) represents the probability that $x$ came from the data rather than $p_g$. We train D to maximize the probability of assigning the correct label to both training examples and samples from G. We simultaneously train G to minimize log(1 − D(G(z))):
 
-In other words, D and G play the following two-player minimax game with value function V (G, D):
+In other words, D and G play the following two-player minimax game with value function V(G, D):
 $$
 \min \limits_{G} \max \limits_{D} V(D, G) = \mathbb{E}_{\boldsymbol{x} \sim p_{data} (\boldsymbol{x})} [\text{log} D(\boldsymbol{x})] + \mathbb{E}_{\boldsymbol{z} \sim p_{z} (\boldsymbol{z})} [\text{log} (1 - D(G(\boldsymbol{z})))].  \tag{1}
 $$
@@ -64,18 +53,21 @@ $\mathbb{E}_{\boldsymbol{z} \sim p_{z} (\boldsymbol{z})} [\text{log} (1 - D(G(\b
 > 式(1)的意思是希望找到一个D，使得目标函数V(D,G)最大，同时又希望找到一个G使得最大化之后的V(D,G)最小。
 > 
 > ![](../../images/ml/GAN-basic-3.jpg)
-> (图片来自文献[1])
+> (图片来自文献[a])
 > 
 > 当G固定在G1时，我们可以找到一个D使得V(G,D)取得最大值，暂记为V1，同理当G固定在G1和G2时，我们也同样能够找到相应的最大值V2、V3，至此便完成了 $\max \limits_D V(D,G)$ 的任务。
 > 
-> 从式(1)可知接下来还需要从V1、V2、V3中获取最小值，即 $\min \limits_G$
+> 从式(1)可知接下来还需要从V1、V2、V3中获取最小值，即 $\min \limits_G$. \
 > 为什么 $\min$ 的下标是 $G$？
 > 因为 V1、V2、V3 的这个结果是当G分别固定为G1、G2、G3时计算得到的，所以 $\min$ 的任务显然是要从G1、G2、G3中找到一个合适的G，以使式(1)最小。
 
 
 In the next section, we present a theoretical analysis of adversarial nets, essentially showing that the training criterion(n. （批评判断的）标准；准则；规范；准据) allows one to recover the data generating distribution as G and D are given enough capacity, i.e., in the non-parametric limit. See Figure 1 for a `less formal(非正式的)`, more pedagogical(adj. 教育学的；教学法的) explanation of the approach. In practice, we must implement the game using an iterative(adj.[数]迭代的;重复的), numerical approach. Optimizing D to completion(n. 完成，结束；实现) in the inner loop of training is computationally prohibitive(adj.禁止的,禁止性的;抑制的;(费用,价格)过高的), and on finite(adj. 有限的；限定的) datasets would result in overfitting. **Instead, we alternate(adj.交替的,轮流的;间隔的) between k steps of optimizing D and one step of optimizing G.** `This results in D being maintained near its optimal solution, so long as G changes slowly enough.(这使得D保持在其最优解附近，只要G变化足够慢.)` This strategy is analogous to the way that SML/PCD [31, 29] training maintains samples from a Markov chain from one learning step to the next in order to avoid burning(burn v.燃烧;晒黑;以……作燃料;飞速驾驶) in a Markov chain as part of the inner loop of learning. The procedure is formally presented in Algorithm 1.
 
-In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, log(1 − D(G(z))) saturates(saturate v.(使)浸透;使饱和,使充满). Rather than training G to minimize log(1 − D(G(z))) we can train G to maximize log D(G(z)). This objective function results in the same fixed point of the dynamics of G and D but provides much stronger gradients early in learning.
+In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, log(1 − D(G(z))) saturates(saturate v.(使)浸透;使饱和,使充满). \
+Rather than training G to minimize log(1 − D(G(z))) we can train G to maximize log D(G(z)). \
+与其训练G来使log(1 − D(G(z)))最小，我们倒不如训练G来使log D(G(z))
+This objective function results in the same fixed point of the dynamics of G and D but provides much stronger gradients early in learning.
 
 ![](../../images/ml/GAN-basic-1.jpg)
 
@@ -120,6 +112,9 @@ We will show in section 4.1 that this minimax game has a global optimum for $p_g
 
 
 # Experiments
+We trained adversarial nets an a range of datasets including MNIST[23], the Toronto Face Database (TFD) [28], and CIFAR-10 [21]. The generator nets used a mixture of rectifier linear activations [19,9] and sigmoid activations, while the discriminator net used maxout [10] activations. Dropout [17] was applied in training the discriminator net. While our theoretical framework permits the use of dropout and other noise at intermediate layers of the generator, we used noise as the input to only the bottommost layer of the generator network.
+
+We estimate probability of the test set data under $p_g$ by fitting a Gaussian Parzen window to the samples generated with G and reporting the log-likelihood under this distribution. The σ parameter of the Gaussians was obtained by cross validation on the validation set. This procedure was introduced in Breuleux et al. [8] and used for various generative models for which the exact likelihood(n. 可能性，可能) is not tractable(adj. 易于管教的；易驾驭的；易处理的) [25, 3, 5]. Results are reported in Table 1. This method of estimating the likelihood has somewhat(adv. 有点，稍微; pron. 某物；几分) high variance and does not perform well in high dimensional spaces but it is the best method available to our knowledge. Advances in generative models that can sample but not estimate likelihood directly motivate further research into how to evaluate such models.
 
 
 # Advantages and disadvantages
@@ -128,3 +123,6 @@ We will show in section 4.1 that this minimax game has a global optimum for $p_g
 # Conclusions and future work
 
 
+
+# 参考文献
+[a]
