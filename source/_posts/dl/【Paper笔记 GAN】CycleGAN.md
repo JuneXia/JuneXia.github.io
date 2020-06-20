@@ -50,15 +50,84 @@ These issues call for(要求；需要；提倡；邀请；为…叫喊) adding m
 
 # Related work
 &emsp; **Generative Adversarial Networks (GANs)** [16, 63] have achieved impressive results in image generation [6, 39], image editing [66], and representation learning [39, 43, 37]. Recent methods adopt the same idea for conditional image generation applications, such as text2image [41], image inpainting(图像修复;图像修补) [38], and future prediction [36], as well as to other domains like videos [54] and 3D data [57]. `The key to GANs’ success is the idea of an adversarial loss that forces the generated images to be, in principle, indistinguishable(adj.不能辨别的;不易察觉的) from real photos.(GANs成功的关键是对抗性缺失的理念，迫使生成的图像原则上与真实的照片无法区分).` `This loss is particularly(adv. 异乎寻常地；特别是；明确地) powerful for image generation tasks, as this is exactly(adv. 恰好地；正是；精确地；正确地) the objective that much of computer graphics aims to optimize.(这种损失对于图像生成任务尤其强大，因为这正是许多计算机图形优化的目标).` We adopt an adversarial loss to learn the mapping such that the translated images cannot be distinguished from images in the target domain.
-> 近年来GAN在很多方面得到应用，GAN能够起作用的关键就是其“对抗损失”的训练思想。（具体什么对抗损失，本段也没细说）
+> summary: 近年来GAN在很多方面得到应用，GAN能够起作用的关键就是其“对抗损失”的训练思想。（具体什么对抗损失，本段也没细说）
 
 
 &emsp; **Image-to-Image Translation** The idea of image-to-image translation goes back at least to Hertzmann et al.’s Image Analogies [19], who employ a non-parametric texture model [10] on a single input-output training image pair. More recent approaches use a dataset of input-output examples to learn a parametric translation function using CNNs (e.g., [33]). Our approach builds on the “pix2pix” framework of Isola et al. [22], which uses a conditional generative adversarial network [16] to learn a mapping from input to output images. Similar ideas have been applied to various tasks such as generating photographs from sketches(n.[测]草图;示意图;草图法(sketch的复数);v.素描,写生) [44] or from attribute and semantic layouts [25]. However, `unlike the above prior work(与上面的工作不同)`, we learn the mapping without paired training examples. 
-> 简单介绍了下 image-to-image 方法的起源以及more recent进展，我们的方法是基于 pix2pix [22] 的，它使用GAN学习一个从输入到输出的映射，但是我们没有配对的训练样本。
+> summary: 简单介绍了下 image-to-image 方法的起源以及more recent进展，我们的方法是基于 pix2pix [22] 的，它使用GAN学习一个从输入到输出的映射，但是我们这里没有配对的训练样本。
 
 
 **Unpaired Image-to-Image Translation** Several other methods also tackle(v. 应付,处理) the unpaired setting, where **the goal is to relate two data domains: X and Y**. <font face="黑体" color=red size=2>Rosales et al. [42] propose a **Bayesian framework** that includes a prior based on a patch-based **Markov random field** computed from a source image and a likelihood term obtained from multiple style images.</font> More recently, **CoGAN** [32] and cross-modal scene networks [1] use a weight-sharing strategy to learn a common representation across domains. Concurrent(adj. 并发的；一致的；同时发生的；并存的) to our method, Liu et al. [31] extends the above framework with a **combination of variational(adj. 变化的；因变化而产生的；[生物]变异的) autoencoders [27] and generative adversarial networks** [16]. Another line of concurrent work [46, 49, 2] **encourages the input and output to share specific “content” features even though they may differ in “style“**. These methods also use adversarial networks, with additional terms to enforce the output to be close to the input in a predefined metric space, such as class label space [2], image pixel space [46], and image feature space [49].
 > summary: 介绍了几个其他处理非配对数据的方法，他们的目标都是关联X和Y两个域的数据，这些方法也使用对抗网络，只是额外的会强化输出和预定义的输入空间之间的联系。
 
 
-&emsp; Unlike the above approaches, our formulation does not rely on any task-specific, predefined similarity function be-tween the input and output, nor do we assume that the input and output have to lie in the same low-dimensional embedding space. This makes our method a general-purpose solution for many vision and graphics tasks. We directly compare against several prior and contemporary approaches in Section 5.1.
+&emsp; `Unlike the above approaches, our formulation does not rely on any task-specific, predefined similarity function between the input and output, nor do we assume that the input and output have to lie in the same low-dimensional embedding space.(与上述方法不同，我们的公式不依赖于任何特定的任务(预定义的输入和输出之间的相似性函数)，也不假设输入和输出必须位于相同的低维嵌入空间).` This makes our method a `general-purpose(adj. 通用的;多用途的;一般用途的)` solution for many vision and graphics tasks. We directly compare against several prior and contemporary approaches in Section 5.1.
+> summary: 我们不一样、不一样 ……
+
+
+**Cycle Consistency** The idea of using transitivity(n.传递性;转移性) as a way to regularize structured data has a long history. `In visual tracking, enforcing simple forward-backward consistency has been a standard trick for decades [24, 48].(在视觉跟踪中，几十年来 强制简单的forward-backward一致性一直是一个标准技巧[24,48]).` \
+In the language domain, verifying and improving translations via “back translation and reconciliation(n.和解;调和;和谐;甘愿)” is a technique used by human translators [3] (including, humorously(adv.幽默地;滑稽地), by Mark Twain [51]), as well as by machines [17]. \
+在语言领域，人类翻译家 (有趣的是，包括马克·吐温的[51]) 和机器[17]使用的技术是通过反向翻译和核对来验证和改进翻译的。\
+More recently, `higher-order(高阶)` **cycle consistency** has been used in structure from motion(n.动作;移动;手势;请求;意向;议案) [61], 3D shape matching [21], co-segmentation [55], dense semantic alignment [65, 64], and depth estimation [14]. `Of these(其中)`, **Zhou et al. [64] and Godard et al. [14] are most similar to our work, as they use a cycle consistency loss as a way of using transitivity to supervise CNN training.** In this work, we are introducing a similar loss to push G and F to be consistent with each other. Concurrent(adj.并发的;一致的;同时发生的;并存的) with our work, `in these same proceedings, Yi et al. [59] independently use a similar objective for unpaired image-to-image translation, inspired(inspire v.激发,鼓舞) by dual learning in machine translation [17]. (在这些相同的研究中，受机器翻译[17]中的双重学习启发，Yi等人[59]独立地使用了一个类似的目标用于图像到图像的非配对翻译)`
+> summary：介绍了“一致性(Consistency)原则”有史以来的一些应用。我们介绍了一个种类似于[64,14]中的 loss 用于推动 G 和 F 的相互一致性。
+
+**Neural Style Transfer** [13, 23, 52, 12] is another way to perform image-to-image translation, which synthesizes a novel image by combining the content of one image with the style of another image (typically a painting) `based on matching the Gram matrix statistics of pre-trained deep features (通过匹配预先训练好的深度特征的Gram矩阵统计量)`. Our primary focus, on the other hand, is learning the mapping between two image collections, rather than between two specific images, by trying to capture correspondences between higher-level appearance structures. Therefore, our method can be applied to other tasks, such as painting → photo, object transfiguration(n.变形;变容;变貌), etc. where single sample transfer methods do not perform well. We compare these two methods in Section 5.2.
+> summary: 介绍了image-to-image的另一种方法——**Style Transfer**。我们这里重点关注的是要学习两个图片集合（而不是图片）之间的映射。
+
+
+![](../../images/ml/CycleGAN-3.jpg)
+Figure 3: (a) Our model contains two mapping functions $G : X → Y$ and $F : Y → X$, and associated adversarial discriminators $D_Y$ and $D_X$ . $D_Y$ encourages $G$ to translate $X$ into outputs indistinguishable from domain $Y$ , and `vice versa(反之亦然)` for $D_X$ and $F$. To further regularize the mappings, we introduce two cycle consistency losses that capture the intuition that if we translate from one domain to the other and back again we should arrive at where we started: (b) forward cycle-consistency loss: $x → G(x) → F(G(x)) ≈ x$, and (c) backward cycle-consistency loss: $y → F(y) → G(F(y)) ≈ y$
+
+
+# Formulation
+&emsp; Our goal is to learn mapping functions between two domains X and Y given training samples ${x_i}^N_{i=1}$ where $x_i ∈ X$ and ${y_j}^M_{j=1}$ where $y_j ∈ Y$. 
+> We often omit(vt. 省略;遗漏;删除;疏忽) the subscript(n.下标;脚注) $i$ and $j$ for simplicity.
+
+We denote the data distribution as $x ∼ p_{data}(x)$ and $y ∼ p_{data}(y)$. As illustrated in Figure 3 (a), our model includes two mappings $G : X → Y$ and $F : Y → X$. In addition, we introduce two adversarial discriminators $D_X$ and $D_Y$ , where $D_X$ aims to distinguish between images ${x}$ and translated images ${F(y)}$; in the same way, $D_Y$ aims to discriminate between ${y}$ and ${G(x)}$. Our objective contains two types of terms: adversarial losses [16] for matching the distribution of generated images to the data distribution in the target domain; and cycle consistency losses to prevent the learned mappings $G$ and $F$ from contradicting(contradict v.矛盾;反驳;顶触) each other.
+
+
+## Adversarial Loss
+&emsp; We apply adversarial losses [16] to both mapping functions. For the mapping function $G : X → Y$ and its discriminator $D_Y$ , we express the objective as: \
+![](../../images/ml/CycleGAN-4.jpg) \
+where $G$ tries to generate images $G(x)$ that look similar to images from domain $Y$ , while $D_Y$ aims to distinguish between translated samples $G(x)$ and real samples $y$. $G$ aims to minimize this objective against an adversary $D$ that tries to maximize it, i.e., $min_G max_{D_Y} \mathcal{L}_{GAN}(G, D_Y, X, Y )$. We introduce a similar adversarial loss for the mapping function $F : Y → X$ and its discriminator $D_X$ as well: i.e., $min_F max_{D_X} \mathcal{L}_{GAN}(F, D_X, Y, X)$.
+
+
+![](../../images/ml/CycleGAN-6.jpg) \
+Figure 4: The input images x, output images G(x) and the reconstructed images F(G(x)) from various experiments. From top to bottom: photo↔Cezanne, horses↔zebras, winter→summer Yosemite, aerial photos↔Google maps.
+
+
+## Cycle Consistency Loss
+&emsp; Adversarial training can, in theory, learn mappings G and F that produce outputs identically distributed as target domains Y and X respectively (strictly speaking, this requires G and F to be stochastic functions) [15]. However, with large enough capacity, a network can map the same set of input images to any random permutation(n.[数]排列;[数]置换) of images in the target domain, `where any of the learned mappings can induce(vt.诱导;引起;引诱;感应) an output distribution that matches the target distribution. (其中任何一个学习到的映射都可以诱导出匹配目标分布的输出分布).` Thus, adversarial losses alone cannot guarantee that the learned function can map an individual input $x_i$ to a desired output $y_i$ . To further reduce the space of possible mapping functions, we argue that the learned mapping functions should be cycle-consistent: as shown in Figure 3 (b), for each image x from domain X, the image translation cycle should be able to bring x back to the original image, i.e., x → G(x) → F(G(x)) ≈ x. We call this forward cycle consistency. Similarly, as illustrated in Figure 3 (c), for each image y from domain Y , G and F should also satisfy(vt.使满足;说服,使相信;使高兴) backward cycle consistency: y → F(y) → G(F(y)) ≈ y. We incentivize(激励;给予激励) this behavior using a cycle consistency loss: \
+![](../../images/ml/CycleGAN-5.jpg) \
+`In preliminary(adj. 初步的；开始的；预备的) experiments, we also tried replacing the L1 norm in this loss with an adversarial loss between F(G(x)) and x, and between G(F(y)) and y, but did not observe improved performance. (在初步实验中，我们也尝试用F(G(x))与x、G(F(y))与y之间的对抗性损失替换L1范数，但没有观察到性能的改善).`
+
+
+&emsp; The behavior induced by the cycle consistency loss can be observed in Figure 4: the reconstructed images F(G(x)) end up matching closely to the input images x.
+
+
+
+## Full Objective
+Our full objective is: \
+![](../../images/ml/CycleGAN-7.jpg) \
+where $λ$ controls the relative importance of the two objectives. We aim to solve: \
+![](../../images/ml/CycleGAN-8.jpg)
+
+&emsp; Notice that our model can be viewed as training two “autoencoders” [20]: we learn one autoencoder $F ◦ G : X → X$ jointly with another $G◦F : Y → Y$ . However, these autoencoders each have special internal structures: they map an image to itself via an intermediate representation that is a translation of the image into another domain. Such a setup can also be seen as a special case of “adversarial autoencoders” [34], which use an adversarial loss to train the bottleneck layer of an autoencoder to match an arbitrary(adj.[数]任意的;武断的;专制的) target distribution. In our case, `the target distribution for the X → X autoencoder is that of the domain $Y$. (X → X自动编码器的目标分布是域Y的分布).`
+
+&emsp; In Section 5.1.4, we compare our method against ablations of the full objective, including the adversarial loss $\mathcal{L}_{GAN}$ alone and the cycle consistency loss $L_{cyc}$ alone, and `empirically show that both objectives play critical roles in arriving at high-quality results. (经验表明，这两个目标在获得高质量结果方面都发挥了关键作用).` `We also evaluate our method with only cycle loss in one direction and show that a single cycle is not sufficient to regularize the training for this under-constrained problem. (我们也评估了我们的方法只在一个方向上的循环损失，并表明单一的循环是不足以正则化训练这个欠约束问题).`
+
+
+# Implementation
+&emsp; **Network Architecture** We adopt the architecture for our generative networks from Johnson et al. [23] who have shown impressive results for neural style transfer and superresolution. This network contains two stride-2 convolutions, several residual blocks [18], and two fractionallystrided convolutions with stride 12. We use 6 blocks for 128 × 128 images and 9 blocks for 256 × 256 and higherresolution training images. Similar to Johnson et al. [23], we use instance normalization [53]. For the discriminator networks we use 70 × 70 PatchGANs [22, 30, 29], which aim to classify whether 70 × 70 overlapping image patches are real or fake. Such a patch-level discriminator architecture has fewer parameters than a full-image discriminator and can work on arbitrarily-sized images in a fully convolutional fashion [22].
+
+
+**Training details** We apply two techniques from recent works to stabilize our model training procedure. First, for $\mathcal{L}_{GAN}$ (Equation 1), we replace the negative log likelihood objective by a `least-squares(最小二乘)` loss [35]. This loss is more stable during training and generates higher quality results. In particular, for a GAN loss $\mathcal{L}_{GAN}(G, D, X, Y)$, we train the $G$ to minimize $\mathbb{E}_{x∼p_{data}(x)} [(D(G(x)) - 1)^2]$ and train the $D$ to minimize $\mathbb{E}_{y∼p_{data}(y)} [(D(y) - 1)^2] + \mathbb{E}_{x∼p_{data}(x)} [D(G(x))^2]$.
+> 注意：相比原始GAN，本文使用最小二乘损失来代替最初的log似然损失。
+
+&emsp; Second, to reduce model oscillation(n. 振荡;振动;摆动) [15], we follow Shrivastava et al.’s strategy [46] and update the discriminators using a history of generated images rather than the ones produced by the latest generators. We keep an image buffer that stores the 50 previously created images. 
+
+
+&emsp; For all the experiments, we set $λ = 10$ in Equation 3. We use the Adam solver [26] with a batch size of 1. All networks were trained from scratch with a learning rate of 0.0002. We keep the same learning rate for the first 100 epochs and linearly decay the rate to zero over the next 100 epochs. Please see the appendix (Section 7) for more details about the datasets, architectures, and training procedures.
+
+
+

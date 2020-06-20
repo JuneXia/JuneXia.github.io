@@ -40,6 +40,10 @@ mathjax: true
 | 斜体 | log (x) | $log (x)$ |  |
 | 正体 | \text{log } (x) | $\text{log} (x)$ |  |
 | 正体 | \text{log } x | $\text{log } x$ | text中可以写空格 |
+| 花体 | \mathscr{L} | $\mathscr{L}$ |  |
+| 花体 | \mathcal{L} | $\mathcal{L}$ |  |
+
+
 
 
 $\max \limits_{f}$
