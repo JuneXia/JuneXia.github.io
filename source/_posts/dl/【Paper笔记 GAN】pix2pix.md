@@ -20,18 +20,42 @@ CVPR2017
 &emsp; Many problems in image processing, computer graphics, and computer vision can be posed as “translating” an input image into a corresponding output image. `Just as a concept may be expressed in either English or French (正如一个概念既可以用英语也可以用法语表达一样)`, a scene may be rendered as an RGB image, a gradient field, an edge map, a semantic label map, etc. In analogy to automatic language translation, we define automatic image-to-image translation as the task of translating one possible representation of a scene into another, given sufficient training data (see Figure 1). Traditionally, each of these tasks has been tackled(tackle 解决,处理,对付) with separate, special-purpose machinery (e.g., [16, 25, 20, 9, 11, 53, 33, 39, 18, 58, 62]), despite the fact that the setting is always the same: predict pixels from pixels. Our goal in this paper is to develop a common framework for all these problems.
 > summary: 就像language translation(语言翻译)一样，我们这里定义image-to-image 的转换问题。基本都是废话。
 
-》 未完待续。。。
 
-&emsp; The community has already taken significant steps in this direction, with convolutional neural nets (CNNs) becoming the common workhorse behind a wide variety of image prediction problems. CNNs learn to minimize a loss function – an objective that scores the quality of results – and although the learning process is automatic, a lot of manual effort still goes into designing effective losses. In other words, we still have to tell the CNN what we wish it to minimize. But, just like King Midas, we must be careful what we wish for! If we take a naive approach and ask the CNN to minimize the Euclidean distance between predicted and ground truth pixels, it will tend to produce blurry results [43, 62]. This is because Euclidean distance is minimized by averaging all plausible outputs, which causes blurring. Coming up with loss functions that force the CNN to do what we really want – e.g., output sharp, realistic images – is an open problem and generally requires expert knowledge.
-
-
-
-
+&emsp; The community has already taken significant steps in this direction, with convolutional neural nets (CNNs) becoming the common workhorse(n. 做重活的人;adj. 工作重的；吃苦耐劳的) behind a wide variety of image prediction problems. `CNNs learn to minimize a loss function – an objective that scores the quality of results – and although the learning process is automatic, a lot of manual effort still goes into designing effective losses. (尽管学习过程是自动的,但cnn学会了将损失函数最小化,这是一个衡量结果质量的目标, 设计有效损失仍然需要大量的手工工作.)` In other words, we still have to tell the CNN what we wish it to minimize. But, just like King Midas, we must be careful what we wish for! If we take a naive(adj.天真的,幼稚的) approach and ask the CNN to minimize the Euclidean distance between predicted and ground truth pixels, it will tend to produce blurry(adj.模糊的，失去焦距的) results [43, 62]. This is because Euclidean distance is minimized by averaging all plausible outputs, which causes blurring. \
+`Coming up with (提出；想出；赶上)` loss functions that force the CNN to do what we really want – e.g., output sharp, realistic images – is an open problem and generally requires expert knowledge. \
+提出损失功能，迫使CNN做我们真正想要的，例如，输出锐利的、逼真的图像是一个开放的问题，通常需要专家的知识.
+> summary: CNN 现在已经成了各种图像预测问题的常用工具，但是有效的损失函数仍然需要大量的手工操作。（主要就是要表达损失函数的设计很重要）
 
 
+&emsp; `It would be highly desirable if we could instead specify only a high-level goal, like “make the output indistinguishable(adj. 不能辨别的；不易察觉的) from reality”, and then automatically learn a loss function appropriate for satisfying this goal. (如果我们能指定一个高层次的目标，比如将输出与现实区分开来，然后自动学习一种适合于满足这个目标的损失功能，那将是非常可取的.)` Fortunately, this isexactly what is done by the recently proposed Generative Adversarial Networks (GANs) [24, 13, 44, 52, 63]. GANs learn a loss that tries to classify if the output image is real or fake, while simultaneously training a generative model to minimize this loss.  Blurry images will not be tolerated since they look obviously fake. `Because GANs learn a loss that adapts to the data, they can be applied to a multitude(n. 大量，多数；群众，人群) of tasks that traditionally would require very different kinds of loss functions. (由于GAN会学习适应数据的损失，因此它们可以应用于许多任务上，而这些任务如果要用传统方法去做 通常需要非常不同种类的损失函数.)`
+> GAN的损失很棒，GAN 会学习一个能够辨别输出图片真假的损失函数（其实就是判别器），同时训练一个生成器来减小这个loss (生成器)。GAN 的这些损失函数在[24, 13, 44, 52, 63]中已有所提及。
+> 
+> **值得注意的是：**\
+> 其实整个判别器可以看成是一个损失函数，只不过这个损失函数比较复杂，它是一个网络。
 
 
+&emsp; In this paper, we explore GANs in the conditional setting. Just as GANs learn a generative model of data, conditional GANs (cGANs) learn a conditional generative model[24]. This makes cGANs suitable for image-to-image translation tasks, where we condition on an input image and generate a corresponding output image.
+> GANs 学习一个生成模型，cGANs 学习一个条件生成模型。这使得cGANs适合于做 image-to-image 任务，而我们可以有条件的控制输入图片从而产生相应的输出图片。
 
+&emsp; GANs have been vigorously(adj.精力充沛的,有力的) studied in the last two years and many of the techniques we explore in this paper have been previously proposed. Nonetheless(adv.尽管如此,但是), earlier papers have focused on specific applications, and it has remained unclear how effective image-conditional GANs can be as a `general-purpose (通用的)` solution for image-to-image translation. **Our primary contribution is to demonstrate that on a wide variety of problems, conditional GANs produce reasonable results. Our second contribution is to present a simple framework sufficient(adj.足够的,充分的) to achieve good results, and to analyze the effects of several important architectural choices.** Code is available at https://github.com/phillipi/pix2pix.
+> 早期的GAN更多的是关注特定的应用，但是尚不清楚以image为conditional的 GANs 在 image-to-image 上的效果如何。我们的贡献如上文加粗字体所示。
+
+
+# Related work
+&emsp; **Structured losses for image modeling** Image-to-image translation problems are often formulated as per-pixel classification or regression (e.g.,[39, 58, 28, 35, 62]). These formulations treat the output space as “unstructured” in the sense that each output pixel is considered conditionally independent from all others given the input image. Conditional GANs instead learn a structured loss. Structured losses penalize(vt. 处罚；处刑；使不利) the joint configuration(n. 配置;结构;布局;外形) of the output. A large body of literature has considered losses of this kind, with methods including conditional random fields [10], the SSIM metric [56], feature matching [15], nonparametric losses [37], the convolutional pseudo-prior [57], and losses based on matching covariance(n.[数]协方差；共分散) statistics [30]. The conditional GAN is different in that **the loss is learned**, and can, in theory, penalize any possible structure that differs between output and target.
+> image-to-image 问题经常被定义为逐像素的分类或回归问题，这种论述会把输出空间当作非结构化来处理，在这种情况下对于给定的输入图片，每个输出像素之间被认为是相互独立的。而conditional-GANs学习一个结构化的损失，结构化损失能够惩罚输出的联合外形结构。已经有大量的文献考虑到了这种损失，但是conditional-GANs的不同在于它的loss是被学习到的，并且从理论上讲，conditional-GANs可以惩罚输出和目标之间任何不同的可能结构。
+
+&emsp; **Conditional GANs** We are not the first to apply GANs in the conditional setting.  Prior and concurrent(同时代) works have conditioned GANs on discrete(adj. 离散的，不连续的; n. 分立元件；独立部件) labels [41, 23, 13], text [46], and, indeed, images. The image-conditional models have tackled(tackle 解决，处理，对付) image prediction from a normal map [55], future frame prediction [40], product photo generation [59], and image generation from sparse(adj.稀少的, 稀疏的) annotations(n.注解, 评注) [31, 48] (c.f. [47]for an autoregressive approach to the same problem). Several other papers have also used GANs for image-to-image mappings, but only applied the GAN unconditionally, relying on other terms (such as L2 regression) to force the output to be conditioned on the input.  These papers have achieved impressive results on inpainting [43], future state prediction [64], image manipulation(n. 操纵；操作；处理；篡改) guided by user constraints(n. 约束；限制；约束条件) [65], style transfer [38], and superresolution [36]. Each of the methods was tailored(tailor v.专门制作,定制;使适应,迎合) for a specific application. `Our framework differs in that nothing is application-specific. This makes our setup considerably simpler than most others. (我们的框架的不同之处在于，没有什么是特定于应用程序的。这使我们的设置比大多数其他设置简单得多。)`
+> 我们不是第一个在GANs 中使用条件设置的，但是之前的方法都是针对某个特定的应用的。而我们的不同之处就是在于我们的方法并不是针对某个特定应用。
+
+
+&emsp; Our method also differs from the prior works in several architectural choices for the generator and discriminator. Unlike past work, for our generator we use a “U-Net”-based architecture [50], and for our discriminator we use a convolutional “PatchGAN” classifier, which only penalizes structure at the scale of image patches. A similar PatchGAN architecture was previously proposed in [38] to capture local style statistics. Here we show that this approach is effective on a wider range of problems, and we investigate the effect of changing the patch size.
+> 在 generator 和 discriminator 的网络结构选择上，我们也有一些不同，generator 基于U-Net，discriminator 基于 PatchGAN，我们还研究了不同pacth size的影响。
+
+未完待续
+
+# Method
+&emsp; GANs are generative models that learn a mapping from random noise vector z to output image y, G : z → y [24]. In contrast, conditional GANs learn a mapping from observed image x and random noise vector z, to y, G : {x,z} → y. The generator G is trained to produce outputs that cannot be distinguished from “real” images by an adversarially trained discriminator, D, which is trained to do as well as possible at detecting the generator’s “fakes”. This training procedure is diagrammed in Figure 2.
 
 
 

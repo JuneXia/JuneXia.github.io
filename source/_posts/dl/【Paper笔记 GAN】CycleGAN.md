@@ -45,7 +45,7 @@ These issues call for(要求；需要；提倡；邀请；为…叫喊) adding m
 > Summary: 在非配对 image-to-image 转换任务中，要遵循 cycle consistent 原则，即通过G生成的图片要尽可能被F解回去，即$F(G(x)) ≈ x$ and $G(F(y)) ≈ y$
 
 &emsp; We apply our method to a wide range of applications, including collection style transfer, object transfiguration(n. 变形；变容；变貌), season transfer and photo enhancement. `We also compare against previous approaches that rely either on hand-defined factorizations(n. [数]因式分解) of style and content, or on shared embedding functions,(我们还将以前的方法与依赖于手工定义的style和content的因式分解或共享的嵌入函数进行了比较),` and show that our method outperforms these  baselines. We provide both [PyTorch](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) and [Torch](https://github.com/junyanz/CycleGAN) implementations. Check out more results at our [website](https://junyanz.github.io/CycleGAN/).
-> summary: 将我们的方法应用在不同的生成式任上，结果表明我们的方法更好。
+> summary: 将我们的方法应用在不同的生成式任务上，结果表明我们的方法更好。
 
 
 # Related work
@@ -129,5 +129,95 @@ where $λ$ controls the relative importance of the two objectives. We aim to sol
 
 &emsp; For all the experiments, we set $λ = 10$ in Equation 3. We use the Adam solver [26] with a batch size of 1. All networks were trained from scratch with a learning rate of 0.0002. We keep the same learning rate for the first 100 epochs and linearly decay the rate to zero over the next 100 epochs. Please see the appendix (Section 7) for more details about the datasets, architectures, and training procedures.
 
+
+
+
+
+1. flowchart
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+
+
+```mermaid
+graph TB
+    c1-->a2
+    subgraph one
+    a1-->a2
+    end
+    subgraph two
+    b1-->b2
+    end
+    subgraph three
+    c1-->c2
+    end
+```
+
+
+2. Sequence diagrams
+```mermaid
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice->>John: Hello John, how are you?
+    loop Healthcheck
+        John->>John: Fight against hypochondria
+    end
+    Note right of John: Rational thoughts <br/>prevail!
+    John-->>Alice: Great!
+    John->>Bob: How about you?
+    Bob-->>John: Jolly good!
+```
+
+
+3. Class diagrams
+```mermaid
+classDiagram
+     Animal <|-- Duck
+     Animal <|-- Fish
+     Animal <|-- Zebra
+     Animal : +int age
+     Animal : +String gender
+     Animal: +isMammal()
+     Animal: +mate()
+     class Duck{
+         +String beakColor
+         +swim()
+         +quack()
+     }
+     class Fish{
+         -int sizeInFeet
+         -canEat()
+     }
+     class Zebra{
+         +bool is_wild
+         +run()
+     }
+```
+
+
+4. State diagrams
+```mermaid
+stateDiagram
+       [*] --> Active
+
+       state Active {
+           [*] --> NumLockOff
+           NumLockOff --> NumLockOn : EvNumLockPressed
+           NumLockOn --> NumLockOff : EvNumLockPressed
+           --
+           [*] --> CapsLockOff
+           CapsLockOff --> CapsLockOn : EvCapsLockPressed
+           CapsLockOn --> CapsLockOff : EvCapsLockPressed
+           --
+           [*] --> ScrollLockOff
+           ScrollLockOff --> ScrollLockOn : EvCapsLockPressed
+           ScrollLockOn --> ScrollLockOff : EvCapsLockPressed
+       }
+```
 
 
