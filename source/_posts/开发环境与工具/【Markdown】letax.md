@@ -42,13 +42,18 @@ mathjax: true
 | 正体 | \text{log } x | $\text{log } x$ | text中可以写空格 |
 | 花体 | \mathscr{L} | $\mathscr{L}$ |  |
 | 花体 | \mathcal{L} | $\mathcal{L}$ |  |
+| 空心字母 | \mathbb{R} | $\mathbb{R}$ | |	
+| 等号下面 | \underset{\text{heated}}{=} | $\underset{\text{heated}}{=}$ | 其实可以是任意符号下面 |
+| 等号上面 | \overset{\text{def}}{=} | $\overset{\text{def}}{=}$ | 其实可以是任意符号上面 |
+| 等号上面三角形 | \triangleq | $\triangleq$ | 表示“定义为” |
+| max下面 | \max \limits_{f} | $\max \limits_{f}$ |  |
+| min下面 | \min \limits_{f} | $\min \limits_{f}$ |  |
 
 
-
-
-$\max \limits_{f}$
 
 $f_{\limits_{f}}$
+
+
 
 ## 数学公式中的空格
 | | | | |
@@ -60,7 +65,7 @@ $f_{\limits_{f}}$
 | 小空格 | a\\,b | $a\,b$ | 1/6m宽度 |
 | 没有空格 | ab | $ab$ | |		 
 | 紧贴 | a\\!b | $a\!b$ | 缩进1/6m宽度 (**注意**: 这种写法在vscode中没问题，但发布到hexo后显示不正确。再hexo中正确的做法是: 1. 对于换行公式可以使用 \\! 紧贴; 2. 而对于行内公式要使用 \\\! 紧贴) |
-| 空心字母 | \mathbb{R} | $\mathbb{R}$ | |	
+| 符号尺寸 | \big( \bigg( \Big( \Bigg( | $\big( \bigg( \Big( \Bigg($ | 这里是以圆括号为例，实际上对于任意符号都可 |
 
 
 
