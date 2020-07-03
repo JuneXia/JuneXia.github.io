@@ -10,7 +10,8 @@ mathjax: true
 Jun-Yan Zhu ∗, Taesung Park ∗, Phillip Isola, Alexei A. Efros \
 Berkeley AI Research (BAIR) laboratory, UC Berkeley
 
-2017年
+ICCV 2017
+<!--more-->
 
 **Abstract**
 Image-to-image translation is a class of vision and graphics problems where the goal is to learn the mapping between an input image and an output image using a training set of aligned image pairs. However, for many tasks, paired training data will not be available. We present an approach for learning to translate an image from a source domain X to a target domain Y in the absence(n. 没有；缺乏；缺席；不注意) of paired examples. Our goal is to learn a mapping G : X → Y such that the distribution of images from G(X) is indistinguishable(adj. 不能区别的，不能辨别的；不易察觉的) from the distribution Y using an adversarial loss. Because this mapping is highly under-constrained(adj.约束过少的;未限定的), we couple(n. 对；夫妇；数个;vi. 结合；成婚;vt. 结合；连接；连合) it with an inverse mapping F : Y → X and introduce a cycle consistency(n. [计] 一致性；稠度；相容性) loss to enforce F (G(X)) ≈ X (and `vice versa(反之亦然)`). Qualitative(adj. 定性的；质的，性质上的) results are presented on several tasks where paired training data does not exist, including collection style transfer, object transfiguration(n. 变形；变容；变貌), season transfer, photo enhancement, etc. Quantitative(adj. 定量的；量的，数量的) comparisons against several prior methods demonstrate the superiority(n. 优越，优势；优越性) of our approach.
@@ -129,95 +130,167 @@ where $λ$ controls the relative importance of the two objectives. We aim to sol
 
 &emsp; For all the experiments, we set $λ = 10$ in Equation 3. We use the Adam solver [26] with a batch size of 1. All networks were trained from scratch with a learning rate of 0.0002. We keep the same learning rate for the first 100 epochs and linearly decay the rate to zero over the next 100 epochs. Please see the appendix (Section 7) for more details about the datasets, architectures, and training procedures.
 
+论文主要思想已说完，其他待续。。。
 
 
 
 
-1. flowchart
-```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
+------------------------
+
+
+# Coding Practice
+代码参考文献[1]
+
+train Generator 流图：\
+![](../../images/ml/CycleGAN-my1.jpg)
+
+train Discriminator 流图：\
+![](../../images/ml/CycleGAN-my2.jpg)
+
+
+
+## Generator 网络结构
+```bash
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+# initial convolution block
+   ReflectionPad2d-1          [-1, 3, 262, 262]               0
+            Conv2d-2         [-1, 64, 256, 256]           9,472
+    InstanceNorm2d-3         [-1, 64, 256, 256]               0
+              ReLU-4         [-1, 64, 256, 256]               0
+
+# Down sampling
+            Conv2d-5        [-1, 128, 128, 128]          73,856
+    InstanceNorm2d-6        [-1, 128, 128, 128]               0
+              ReLU-7        [-1, 128, 128, 128]               0
+            Conv2d-8          [-1, 256, 64, 64]         295,168
+    InstanceNorm2d-9          [-1, 256, 64, 64]               0
+             ReLU-10          [-1, 256, 64, 64]               0
+
+# 9 个如下所示的残差块：
+  ReflectionPad2d-11          [-1, 256, 66, 66]               0
+           Conv2d-12          [-1, 256, 64, 64]         590,080
+   InstanceNorm2d-13          [-1, 256, 64, 64]               0
+             ReLU-14          [-1, 256, 64, 64]               0
+             .
+             .
+             .
+
+# up sampling
+         Upsample-83        [-1, 256, 128, 128]               0
+           Conv2d-84        [-1, 128, 128, 128]         295,040
+   InstanceNorm2d-85        [-1, 128, 128, 128]               0
+             ReLU-86        [-1, 128, 128, 128]               0
+         Upsample-87        [-1, 128, 256, 256]               0
+           Conv2d-88         [-1, 64, 256, 256]          73,792
+   InstanceNorm2d-89         [-1, 64, 256, 256]               0
+             ReLU-90         [-1, 64, 256, 256]               0
+
+# output layer
+  ReflectionPad2d-91         [-1, 64, 262, 262]               0
+           Conv2d-92          [-1, 3, 256, 256]           9,411
+             Tanh-93          [-1, 3, 256, 256]               0
+================================================================
+Total params: 11,378,179
+Trainable params: 11,378,179
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.75
+Forward/backward pass size (MB): 1031.23
+Params size (MB): 43.40
+Estimated Total Size (MB): 1075.38
+----------------------------------------------------------------
 ```
 
 
-```mermaid
-graph TB
-    c1-->a2
-    subgraph one
-    a1-->a2
-    end
-    subgraph two
-    b1-->b2
-    end
-    subgraph three
-    c1-->c2
-    end
+## Discriminator 网络结构
+
+```
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1         [-1, 64, 128, 128]           3,136
+         LeakyReLU-2         [-1, 64, 128, 128]               0
+
+            Conv2d-3          [-1, 128, 64, 64]         131,200
+    InstanceNorm2d-4          [-1, 128, 64, 64]               0
+         LeakyReLU-5          [-1, 128, 64, 64]               0
+
+            Conv2d-6          [-1, 256, 32, 32]         524,544
+    InstanceNorm2d-7          [-1, 256, 32, 32]               0
+         LeakyReLU-8          [-1, 256, 32, 32]               0
+
+            Conv2d-9          [-1, 512, 16, 16]       2,097,664
+   InstanceNorm2d-10          [-1, 512, 16, 16]               0
+        LeakyReLU-11          [-1, 512, 16, 16]               0
+
+        ZeroPad2d-12          [-1, 512, 17, 17]               0
+           Conv2d-13            [-1, 1, 16, 16]           8,193
+================================================================
+Total params: 2,764,737
+Trainable params: 2,764,737
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.75
+Forward/backward pass size (MB): 38.13
+Params size (MB): 10.55
+Estimated Total Size (MB): 49.43
+----------------------------------------------------------------
 ```
 
 
-2. Sequence diagrams
-```mermaid
-sequenceDiagram
-    participant Alice
-    participant Bob
-    Alice->>John: Hello John, how are you?
-    loop Healthcheck
-        John->>John: Fight against hypochondria
-    end
-    Note right of John: Rational thoughts <br/>prevail!
-    John-->>Alice: Great!
-    John->>Bob: How about you?
-    Bob-->>John: Jolly good!
-```
+## 训练过程
+
+**step1: Generator 前向计算**
+$$
+\begin{aligned}
+    \text{labelReal} &= \mathbf{E} \\
+    \text{labelFake} &= \mathbf{O} \\
+    \text{fakeY} &= G_{XY} (x) \\
+    \text{fakeX} &= G_{YX} (y) \\
+    \text{identityY} &= G_{XY} (y) \\
+    \text{identityX} &= G_{YX} (x) \\
+    \text{reconX} &= G_{YX} (\text{fakeY}) \\
+    \text{reconY} &= G_{XY} (\text{fakeX}) \\
+\end{aligned}
+$$
+x 是来自 domain-X 的训练样本，y 是来自 domain-Y 的训练样本；labelReal 和 labelFake 都是target-label，其中 labelReal 全是1，labelFake 全是0，具体shape可参见代码。
 
 
-3. Class diagrams
-```mermaid
-classDiagram
-     Animal <|-- Duck
-     Animal <|-- Fish
-     Animal <|-- Zebra
-     Animal : +int age
-     Animal : +String gender
-     Animal: +isMammal()
-     Animal: +mate()
-     class Duck{
-         +String beakColor
-         +swim()
-         +quack()
-     }
-     class Fish{
-         -int sizeInFeet
-         -canEat()
-     }
-     class Zebra{
-         +bool is_wild
-         +run()
-     }
-```
+**step2: 训练Generator**
+
+Generator 的 loss 由三部分组成：
+$$
+\begin{aligned}
+    \text{identityLoss} &= \frac{1}{2} \Big[ L_1 (\text{identityX}, x) + L_1 (\text{identityY}, y) \Big] \\
+    \text{ganLoss} &= \frac{1}{2} \Big[ \text{MSE} \big (D_{X} (\text{fakeX}), \text{labelReal} \big ) + \text{MSE} \big (D_{Y} (\text{fakeY}), \text{labelReal} \big ) \Big] \\
+    \text{cycleLoss} &= \frac{1}{2} \Big[ L_1 (\text{reconX}, x) + L_1 (\text{reconY}, y) \Big] \\
+    \text{loss\_G} &= \text{ganLoss} + \lambda_1 \cdot \text{cycleLoss} + \lambda_2 \cdot \text{identityLoss}
+\end{aligned}
+$$
 
 
-4. State diagrams
-```mermaid
-stateDiagram
-       [*] --> Active
+**step3: 训练 Discriminator**
 
-       state Active {
-           [*] --> NumLockOff
-           NumLockOff --> NumLockOn : EvNumLockPressed
-           NumLockOn --> NumLockOff : EvNumLockPressed
-           --
-           [*] --> CapsLockOff
-           CapsLockOff --> CapsLockOn : EvCapsLockPressed
-           CapsLockOn --> CapsLockOff : EvCapsLockPressed
-           --
-           [*] --> ScrollLockOff
-           ScrollLockOff --> ScrollLockOn : EvCapsLockPressed
-           ScrollLockOn --> ScrollLockOff : EvCapsLockPressed
-       }
-```
+Discriminator 包括两部分，分别是 Discriminator-X 和 Discriminator-Y
+
+**step3.1 训练 Discriminator-X**
+$$
+\begin{aligned}
+    \text{loss}\_{D_X} &= \frac{1}{2} \Big[ \text{MSE} \big ( D_X (x), \text{labelReal} \big ) + \text{MSE} \big ( D_X (\text{fakeX}), \text{labelFake} \big ) \Big]
+\end{aligned}
+$$
 
 
+**step3.2 训练 Discriminator-Y**
+$$
+\begin{aligned}
+    \text{loss}\_{D_Y} &= \frac{1}{2} \Big[ \text{MSE} \big ( D_Y (y), \text{labelReal} \big ) + \text{MSE} \big ( D_Y (\text{fakeY}), \text{labelFake} \big ) \Big]
+\end{aligned}
+$$
+
+
+
+# 参考文献
+[1] [PyTorch-GAN -> cyclegan](https://github.com/eriklindernoren/PyTorch-GAN)

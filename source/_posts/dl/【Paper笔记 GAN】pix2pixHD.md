@@ -10,7 +10,7 @@ mathjax: true
 Ting-Chun Wang, Ming-Yu Liu, Jun-Yan Zhu, Andrew Tao, Jan Kautz, Bryan Catanzaro \
 NVIDIA Corporation, UC Berkeley \
 2018 CVPR
-
+<!--more-->
 
 **Abstract**
 &emsp; We present a new method for synthesizing high-resolution photo-realistic images from semantic label maps using conditional generative adversarial networks (conditional GANs). Conditional GANs have enabled a variety of applications, but the results are often limited to low-resolution and still far from realistic. In this work, we generate 2048 × 1024 visually appealing results **with a novel adversarial loss, as well as new multi-scale generator and discriminator architectures**. Furthermore, we **extend our framework to interactive(adj. 交互式的；相互作用的) visual manipulation with two additional features**. First, we **incorporate object instance segmentation information**, which enables object manipulations such as removing/adding objects and changing the object category. Second, we **propose a method to generate diverse(adj. 不同的，相异的；多种多样的，形形色色的) results given the same input**, allowing users to edit the object appearance interactively. Human opinion(n. 意见；主张) studies demonstrate that our method significantly outperforms existing methods, `advancing both the quality and the resolution of deep image synthesis(n.综合,[化学]合成) and editing. (提高了图像深度合成和编辑的质量和分辨率.)`
@@ -79,49 +79,100 @@ The pix2pix method adopts U-Net [43] as the generator and a patch-based fully co
 > summary: pix2pix 方法输入到 discriminator 的是语义标签图和对应的真实图片之间的逐通道连接，然而它所生成图片只达到了256 × 256. 我们有测试直接使用 pix2pix 来生成高分辨率的图像，但发现这样做训练不稳定且生成质量欠佳。
 
 
+## Improving Photorealism and Resolution
 &emsp; We improve the pix2pix framework by using a coarse-to-fine generator, a multi-scale discriminator architecture, and a robust adversarial learning objective function. 
 
 **Coarse-to-fine generator** We decompose(vi.分解;腐烂) the generator into two sub-networks: G1 and G2. We term G1 as the global generator network and G2 as the local enhancer network. The generator is then given by the tuple G = {G1, G2} as visualized in Fig. 2. The global generator network operates at a resolution of 1024 × 512, and `the local enhancer network outputs an image with a resolution that is 4× the output size of the previous one (2× along each image dimension).`   \
 局部增强网络以之前尺寸的4倍分辨率来输出图片. \
 For synthesizing images at an even higher resolution, additional local enhancer networks could be utilized(utilize v.利用). For example, the output image resolution of the generator G = {G1, G2} is 2048 × 1024, and the output image resolution of G = {G1, G2, G3} is 4096 × 2048.
-> 待总结。。。。。。。。。。，如果想要输出更高分辨率的图片，则可以继续附加 local enhancer network 来达到此目的。
+> summary: 我们将generator拆成两部分，具体如上。另外，如果想要输出更高分辨率的图片，则可以继续附加 local enhancer network 来达到此目的。
+
+![](../../images/ml/pix2pixHD-2.jpg)
+Figure 2: Network architecture of our generator. We first train a residual network G1 on lower resolution images. Then, an-other residual network G2 is appended to G1 and the two networks are trained jointly on high resolution images. Specifically, the input to the residual blocks in G2 is the element-wise sum of the feature map from G2 and the last feature map from G1.
 
 
+Our **global generator** is built on the architecture proposed by Johnson et al. [22], which has been proven successful for neural style transfer on images up to 512 ✖️ 512. It consists of 3 components: a convolutional front-end $G_1^{(F)}$ , a set of residual blocks $G_1^{(R)}$ [18], and a transposed convolutional back-end $G_1^{(B)}$ . A semantic label map of resolution 1024 ✖️ 512 is passed through the 3 components sequentially to output an image of resolution 1024 ✖️ 512.
 
 
-Our global generator is built on the architecture proposed by Johnson et al. [22], which has been proven successful for neural style transfer on images up to 512 512. It consists of 3 components: a convolutional front-end G(F ) 1 , a set of residual blocks G(R) 1 [18], and a transposed convolutional back-end G(B) 1 . A semantic label map of resolution 1024 512 is passed through the 3 components sequentially to output an image of resolution 1024 512.
+**The local enhancer network** also consists of 3 components: a convolutional front-end $G_2^{(F)}$ , a set of residual blocks $G_2^{(R)}$ , and a transposed convolutional back-end $G_2^{(B)}$. The resolution of the input label map to G2 is 2048 ✖️ 1024. Different from the global generator network, the input to the residual block $G_2^{(R)}$ is the element-wise sum of two feature maps: the output feature map of $G_2^{(F)}$ , and the last feature map of the back-end of the global generator network $G_1^{(B)}$ . **This helps integrating the global information from G1 to G2.**
 
 
-The local enhancer network also consists of 3 components: a convolutional front-end G(F ) 2 , a set of residual blocks G(R) 2 , and a transposed convolutional back-end G(B)^2. The resolution of the input label map to G2 is 2048 1024. Different from the global generator network, the input to the residual block G(R) 2 is the element-wise sum of two feature maps: the output feature map of G(F ) 2 , and the last feature map of the back-end of the global generator network G(B) 1 . This helps integrating the global information from G1 to G2.
+During training, we first train the global generator and then train the local enhancer `in the order of their resolutions (按照分辨率顺序)`. We then jointly fine-tune all the networks together. We use this generator design to effectively aggregate(v.集合;聚集;合计) global and local information for the image synthesis task. We note that such a multi-resolution pipeline is a well-established practice in computer vision [4] and two-scale is often enough [3]. Similar ideas but different architectures could be found in recent unconditional GANs [9, 19] and conditional image generation [5, 57].
 
 
-During training, we first train the global generator and then train the local enhancer in the order of their resolutions. We then jointly fine-tune all the networks together. We use this generator design to effectively aggregate global and local information for the image synthesis task. We note that such a multi-resolution pipeline is a wellestablished practice in computer vision [4] and two-scale is often enough [3]. Similar ideas but different architectures could be found in recent unconditional GANs [9, 19] and conditional image generation [5, 57].
+**Multi-scale discriminators** High-resolution image synthesis poses a great challenge to the GAN discriminator design. To differentiate high-resolution real and synthesized images, the discriminator **needs to have a large receptive field**. This would require either a deeper network or larger convolutional kernels. As both choices lead to an increased network capacity, overfitting would become more of a concern. Also, both choices require a larger memory footprint(n.足迹;脚印) for training, which is already a scarce(adj. 缺乏的，不足的；稀有的; adv. 仅仅；几乎不；几乎没有) resource for high-resolution image generation. 
+> summary: 高分辨率图像合成给discriminator带来了很大挑战，这时候discriminator通常需要很大的感受野，而满足这样的要求又需要很大的网络(容易过拟合)。而且对于高分辨率图片，通常硬件以及数据资源都有所受限。
 
 
-Multi-scale discriminators High-resolution image synthesis poses a great challenge to the GAN discriminator design. To differentiate high-resolution real and synthesized images, the discriminator needs to have a large receptive field. This would require either a deeper network or larger convolutional kernels. As both choices lead to an increased network capacity, overfitting would become more of a concern. Also, both choices require a larger memory footprint for training, which is already a scarce resource for highresolution image generation. 
+&emsp; To address the issue, we propose using multi-scale discriminators. We use 3 discriminators that have an identical network structure but operate at different image scales. We will `refer to(参考；涉及；指的是；适用于)` the discriminators as D1, D2 and D3. \
+Specifically, we downsample the real and synthesized high-resolution images by a factor of 2 and 4 to create an image pyramid of 3 scales. \
+特别地，我们将真实图片和合成的高分辨率图片下采样4倍，以创建3种尺度的图像金字塔。\
+The discriminators D1, D2 and D3 are then trained to differentiate real and synthesized images at the 3 different scales, respectively. Although the **discriminators have an identical(adj.相同的,同一的) architecture**, **the one that operates at the coarsest scale has the largest receptive field. It has a more global view of the image** and can guide the generator to generate globally consistent images. On the other hand, **the discriminator operating at the finest scale is specialized in guiding the generator to produce finer details.** This also makes training the coarse-to-fine generator easier, since extending a low-resolution model to a higher resolution only requires adding an additional discriminator at the finest level, rather than retraining from scratch. `Without the multi-scale discriminators, we observe that many repeated patterns often appear in the generated images. (在没有多尺度鉴别器的情况下，我们发现在生成的图像中会出现许多重复的模式.)`
+> 使用多尺度discriminator来解决高分辨率图片合成问题，需要主要的是：这里的多尺度discriminator具有相同的网络结构，只是输入到他们的图片具有多种尺度，不同的discriminator会鉴别不同的输入图片尺度。
 
 
-To address the issue, we propose using multi-scale discriminators. We use 3 discriminators that have an identical network structure but operate at different image scales. We will refer to the discriminators as D1, D2 and D3. Specifically, we downsample the real and synthesized highresolution images by a factor of 2 and 4 to create an image pyramid of 3 scales. The discriminators D1, D2 and D3 are then trained to differentiate real and synthesized images at the 3 different scales, respectively. Although the discriminators have an identical architecture, the one that operates at the coarsest scale has the largest receptive field. It has a more global view of the image and can guide the generator to generate globally consistent images. On the other hand, the discriminator operating at the finest scale is specialized in guiding the generator to produce finer details. This also makes training the coarse-to-fine generator easier, since extending a low-resolution model to a higher resolution only requires adding an additional discriminator at the finest level, rather than retraining from scratch. Without the multi-scale discriminators, we observe that many repeated patterns often appear in the generated images.
-
-
-
-With the discriminators, the learning problem in Eq. (1) then becomes a multi-task learning problem of
+&emsp; With the discriminators, the learning problem in Eq. (1) then becomes a multi-task learning problem of
 $$
 \min \limits_{G} \max \limits_{D_1, D_2, D_3} \sum_{k=1,2,3} \mathcal{L}_{GAN} (G, D_k).  \tag{3}
 $$
 
-Using multiple GAN discriminators at the same image scale has been proposed in unconditional GANs [12]. Iizuka et al. [20] add a global image classifier to conditional GANs to synthesize globally coherent content for inpainting. Here we extend the design to multiple discriminators at different image scales for modeling high-resolution images. Improved adversarial loss We improve the GAN loss in Eq. (2) by incorporating a feature matching loss based on the discriminator. This loss stabilizes the training as the generator has to produce natural statistics at multiple scales. Specifically, we extract features from multiple layers of the discriminator, and learn to match these intermediate representations from the real and the synthesized image. For ease of presentation, we denote the ith-layer feature extractor of discriminator Dk as D(i) k (from input to the ith layer of Dk). The feature matching loss LFM(G, Dk) is then calculated as:
+Using multiple GAN discriminators at the same image scale has been proposed in unconditional GANs [12]. Iizuka et al. [20] add a global image classifier to conditional GANs to synthesize globally coherent(adj.连贯的,一致的;条理分明的) content for inpainting. Here we extend the design to multiple discriminators at different image scales for modeling high-resolution images. 
+
+**Improved adversarial loss** We improve the GAN loss in Eq. (2) by incorporating(incorporate vt.组成公司;包含;使混合;使具体化;vi.包含;吸收;合并) a feature matching loss based on the discriminator. This loss stabilizes the training as the generator has to produce natural statistics at multiple scales. Specifically, we extract features from multiple layers of the discriminator, and learn to match these intermediate(adj.中间的,过渡的;中等的;v.调解;干涉) representations from the real and the synthesized image. For ease of presentation(n. 展示；描述，陈述；介绍；赠送), we denote the $i$th-layer feature extractor of discriminator $D_k$ as $D^{(i)}_k$ (from input to the $i$th layer of $D_k$). The feature matching loss $\mathcal{L}_{FM} (G, D_k)$ is then calculated as:
 $$
-\mathcal{L}_{FM} (G, D_k) = \mathbb{E}_{s, x} \sum^T_{i=1} \frac{1}{N_i} [ \Vert D_k^{(i)} (s, x) - D_k^{(i)} (s, G(s)) \Vert_1 ].  \tag{4}
+\mathcal{L}_{FM} (G, D_k) = \mathbb{E}_{(s, x)} \sum^T_{i=1} \frac{1}{N_i} [ \Vert D_k^{(i)} (s, x) - D_k^{(i)} (s, G(s)) \Vert_1 ].  \tag{4}
 $$
 
-where T is the total number of layers and Ni denotes the number of elements in each layer. Our GAN discriminator feature matching loss is related to the perceptual loss [11, 13,22], which has been shown to be useful for image superresolution [32] and style transfer [22]. In our experiments, we discuss how the discriminator feature matching loss and the perceptual loss can be jointly used for further improving the performance. We note that a similar loss is used for training VAE-GANs [30].
+where $T$ is the total number of layers and $N_i$ denotes the number of elements in each layer. Our GAN discriminator feature matching loss is related to the perceptual loss [11, 13,22], which has been shown to be useful for image superresolution [32] and style transfer [22]. In our experiments, **we discuss how the discriminator feature matching loss and the perceptual loss can be jointly used** for further improving the performance. We note that a similar loss is used for training VAE-GANs [30].
 
 
 Our full objective combines both GAN loss and feature matching loss as:
 $$
 \min \limits_{G} \bigg( \Big( \max \limits_{D_1, D_2, D_3} \sum_{k=1,2,3} \mathcal{L}_{GAN} (G, D_k) \Big) + \lambda \sum_{k=1,2,3} \mathcal{L}_{FM} (G, D_k) \bigg)  \tag{5}
 $$
+
+where λ controls the importance of the two terms. Note that for the feature matching loss $\mathcal{L}_{FM}$, $D_k$ only serves as a feature extractor and does not maximize the loss $\mathcal{L}_{FM}$.
+
+![](../../images/ml/pix2pixHD-3.jpg)
+Figure 3: Using instance maps: (a) a typical semantic label map. Note that all connected cars have the same label, which makes it hard to tell them apart(adv.分别地,分开地,有区别地; adj.分开的,分离的). (b) The extracted instance boundary map. With this information, separating different objects becomes much easier.
+
+![](../../images/ml/pip2pixHD-4.jpg)
+Figure 4: Comparison between results without and with instance maps. It can be seen that when instance boundary information is added, adjacent(adj.毗连的,邻近的,接近的) cars have sharper(sharp adj.急剧的;锋利的;强烈的;敏捷的;刺耳的) boundaries.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+未完待续。。。。
+
+
+## Using Instance Maps
+&emsp; Existing image synthesis methods only utilize semantic label maps [5, 21, 25], an image where each pixel value represents the object class that the pixel belongs to. This map does not differentiate objects of the same class. On the other hand, an instance-level semantic label map contains a unique object ID for each individual object. To incorporate the instance map, a simple way would be to directly pass it into the network, or encode it into a one-hot vector. However, both approaches are difficult to implement in practice, since different images may contain different numbers of ob-jects of the same category.  A simple solution would be topre-allocate a fixed number of channels (e.g.10) for eachclass,  but it fails when the number is set too small,  andwastes memory when the number is too large.
+
+
+&emsp; Instead, we argue that the most important informationthe instance map provides, which is not available in thesemantic label map, is the object boundary. For example,when a number of same-class objects are next to one an-other, looking at the semantic label map alone cannot tellthem apart. This is especially true for the street scene sincemany parked cars or walking pedestrians are often next toone  another, as shown in Fig. 3a. However, with the instance map, separating these objects becomes an easier task.
+
+&emsp; Therefore, to extract this information, we first computethe instance boundary map (Fig. 3b).  In our implementa-tion, a pixel in the instance boundary map is1if its objectID is different from any of its4-neighbors, and0otherwise.The instance boundary map is then concatenated with theone-hot vector representation of the semantic label map, andfed into the generator network.  Similarly, the input to thediscriminator is the channel-wise concatenation of instanceboundary map, semantic label map, and the real/synthesized image. Figure 4b shows an example demonstrating the im-provement by using object boundaries. Our user study inSec. 4 also shows the model trained with instance boundary maps renders more photo-realistic object boundaries.
+
+## Learning an Instance-level Feature Embedding
+&emsp; Image synthesis from semantic label maps is a one-to-many mapping problem. An ideal image synthesis algorithm should be able to generate diverse realistic images us-ing the same semantic label map. Recently, several workslearn to produce a fixed number of discrete outputs given thesame input [5, 15] or synthesize diverse modes controlled by a latent code that encodes the entire image [66]. Although these approaches tackle the multi-modal image syn-thesis problem, they are unsuitable for our image manipula-tion task mainly for two reasons. First, the user has no intu-itive control on which kinds of images the model would pro-duce [5, 15]. Second, these methods focus on global colorand texture changes and allow no object-level control on thegenerated contents.
+
+
+&emsp; To generate diverse images and allow instance-level con-trol, we propose adding additional low-dimensional featurechannels as the input to the generator network.  We showthat, by manipulating these features, we can have flexiblecontrol over the image synthesis process. Furthermore, notethat since the feature channels are continuous quantities, ourmodel is, in principle, capable of generating infinitely manyimages.
+
+&emsp; To generate the low-dimensional  features, we train anencoder network $E$ to find a low-dimensional feature vectorthat corresponds to the ground truth target for each instancein the image. Our feature encoder architecture is a standardencoder-decoder network. To ensure the features are con-sistent within each instance, we add an instance-wise aver-age pooling layer to the output of the encoder to computethe average feature for the instance. The average feature isthen broadcasted to all the pixel locations of the instance.Figure 5 visualizes an example of the encoded features.
+
+&emsp; We replaceG(s)withG(s,E(x))in Eq. (5) and trainthe encoder jointly with the generators and discriminators.After the encoder is trained, we run it on all instances in thetraining images and record the obtained features.  Then weperform aK-means clustering on these features for each se-mantic category. Each cluster thus encodes the features fora specific style, for example, the asphalt or cobblestone tex-ture for a road. At inference time, we randomly pick one ofthe cluster centers and use it as the encoded features. Thesefeatures are concatenated with the label map and used as theinput to our generator.  We tried to enforce the Kullback-Leibler loss [28] on the feature space for better test-timesampling as used in the recent work [66], but found it quiteinvolved for users to adjust the latent vectors for each ob-ject directly. Instead, for each object instance, we simplypresentKmodes for users to choose from.
+
+
+
+# Coding Practice
+
+
+```python
+norm_layer = get_norm_layer(norm_type='instance-normalize')
+```
+
+
+
 
 
 

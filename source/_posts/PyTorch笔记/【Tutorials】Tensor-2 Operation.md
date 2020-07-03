@@ -512,5 +512,47 @@ torch.atan2(input, other, out=None)
 ```
 
 
+## 数值裁剪
+
+```python
+    def clamp(self, min, max，out=None): # real signature unknown; restored from __doc__
+        """
+        clamp_(min, max) -> Tensor
+        
+        In-place version of :meth:`~Tensor.clamp`
+        """
+        pass
+```
+
+计算公式如下：
+$$
+y_i = 
+\begin{cases}
+    \text{min, if } x_i < \text{min} \\
+    x_i, \text{if min } <= x_i <= \text{max} \\
+    \text{max, if } x_i > \text{max}
+\end{cases}
+$$
+
+
+## 逻辑运算
+
+参考文献[2]
+```python
+torch.logical_xor
+
+torch.logical_not
+
+torch.logical_not
+
+# 似乎pytorch有些版本不支持逻辑或
+torch.logical_or
+```
+
+
+
+
+
 # 参考文献
-[1] DeepShare.net > PyTorch框架
+[1] DeepShare.net > PyTorch框架 \
+[2] [Pytorch官方文档](https://pytorch.org/docs/stable/torch.html?highlight=logical#torch.logical_xor)

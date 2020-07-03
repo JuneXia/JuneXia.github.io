@@ -8,7 +8,7 @@ mathjax: true
 代码已经调通，但还没有整理，待总结。
 <!-- more -->
 
-
+# 早期代码，待整理
 ```python
 from __future__ import print_function
 import torch
@@ -119,3 +119,24 @@ if True:
 
     exit(0)
 ```
+
+
+
+
+# 通过 torchsummary.summary 打印网络结构
+参考文献 [1]，亲测可用
+```python
+import torch
+import torchvision.models as models
+from torchsummary import summary
+ 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = models.resnet18().to(device)
+summary(model, (3,256,256))
+```
+
+
+[1] [pytorch查看网络结构图](https://blog.csdn.net/wangxiaowang1219/article/details/99875852)
+
+
+

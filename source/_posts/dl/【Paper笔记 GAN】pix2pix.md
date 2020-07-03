@@ -11,8 +11,9 @@ Berkeley AI Research (BAIR) Laboratory, UC Berkeley \
 {isola,junyanz,tinghuiz,efros}@eecs.berkeley.edu
 
 CVPR2017
+<!--more-->
 
-**Abstract**
+**Abstract** \
 &emsp; We investigate conditional adversarial networks as a `general-purpose(通用的)` solution to image-to-image translation problems. These networks **not only** learn the mapping from input image to output image, **but also learn a loss function to train this mapping**. This makes it possible to apply the same generic(adj.一般的,通用的;属的;非商标的) approach to problems that traditionally would require very different loss formulations. We demonstrate that this approach is effective at synthesizing photos from label maps, reconstructing objects from edge maps, and colorizing images, among other tasks. Indeed, since the release of the pix2pix software associated with this paper, a large number of internet users (many of them artists) have posted their own experiments with our system, further demonstrating its wide applicability and ease of adoption without the need for parameter tweaking(tweak v.扭,捏,拧;稍稍改进,对…稍作调整). `As a community, we no longer hand-engineer our mapping functions, and this work suggests we can achieve reasonable(adj.合理的,公道的;通情达理的) results without hand-engineering our loss functions either. (作为一个社区，我们不再手工设计我们的映射函数，而这项工作表明，我们也可以无需手工设计我们的损失函数就可以实现理想的结果).`
 > summary: 我们使用Conditional-GAN来作为image-to-image的解决方案，我们的网络不仅会学习input到output的映射，也会学习训练这个映射的损失函数。
 
@@ -53,7 +54,7 @@ CVPR2017
 > summary: 在 generator 和 discriminator 的网络结构选择上，我们也有一些不同，generator 基于U-Net，discriminator 基于 PatchGAN，我们还研究了不同pacth size的影响。
 
 
-[](../../images/ml/pix2pix-2.jpg)
+![](../../images/ml/pix2pix-2.jpg)
 Figure 2: Training a conditional GAN to map edges photo. The discriminator, D, learns to classify between fake (synthesized by the generator) and real {edge, photo} tuples. The generator, G, learns to fool the discriminator. **Unlike an unconditional GAN, both the generator and discriminator observe the input edge map.**
 > summary: 和非条件GAN不同，条件GAN的generator和discriminator都要观察输入的边缘图。
 
@@ -87,13 +88,16 @@ $$
 G^* = \text{arg} \min \limits_{G} \max \limits_{D} \mathcal{L}_{cGAN} (G, D) + \lambda \mathcal{L}_{L1} (G).  \tag{4}
 $$
 
-&emsp; Without z, the net could still learn a mapping from x to y, but would produce deterministic(adj.确定性的;命运注定论的) outputs, and therefore fail to match any distribution other than a delta function.
+&emsp; Without $z$, the net could still learn a mapping from $x4 to $y$, but would produce deterministic(adj.确定性的;命运注定论的) outputs, and therefore fail to match any distribution other than a delta function.
 没有z，网络仍然可以学习从x到y的映射，但会产生听天由命的输出，因此无法匹配除delta函数以外的任何分布。\
-Past conditional GANs have acknowledged this and provided Gaussian noise z as an input to the generator, `in addition to(除了…之外(还有，也))` x (e.g., [55]). In initial(最初的) experiments, we did not find this strategy effective – the generator simply(adv.简单地;仅仅;简直) learned to ignore the noise – which is consistent(adj.始终如一的,一致的;坚持的) with Mathieu et al. [40]. Instead, **for our final models, we provide noise only in the form of dropout, applied on several layers of our generator at both training and test time.**
+Past conditional GANs have acknowledged this and provided Gaussian noise $z$ as an input to the generator, `in addition to(除了…之外(还有，也))` $x$ (e.g., [55]). In initial(最初的) experiments, we did not find this strategy effective – the generator simply(adv.简单地;仅仅;简直) learned to ignore the noise – which is consistent(adj.始终如一的,一致的;坚持的) with Mathieu et al. [40]. Instead, **for our final models, we provide noise only in the form of dropout, applied on several layers of our generator at both training and test time.**
 > summary: 没有z，网络仍然可以学习从x到y的映射，但是所产生的y却是听天由命的了。过去的条件GANs也意识到了这一点，所以除了x之外还提供了高斯噪声z作为generator的输入。但在最初的实验中，我们并没有发现这个策略有效，因为generator似乎会学着忽略这一噪声，这一点跟Mathieu等人的想法[40]也一致。**而对于我们最终的模型，我们只使用了dropout形式的噪声。**
 
 `Despite the dropout noise, we observe only minor(adj.未成年的;次要的;较小的) stochasticity(随机性) in the output of our nets.(尽管有dropout噪声，但是在我们的网络输出中，我们观察到只有较小的随机性.)` \
 `Designing conditional GANs that produce highly stochastic output, and thereby(adv. 从而,因此) capture the full entropy of the conditional distributions they model, is an important question left(adj. 左边的;左派的;剩下的) open by the present work. (设计能够产生高度随机输出的条件GANs，从而获得它们所建模的条件分布的完全熵，是目前工作遗留下来的一个重要问题.)`
+
+![](../../images/ml/pix2pix-3.jpg)
+Figure 3: Two choices for the architecture of the generator. The“U-Net” [50] is an encoder-decoder with skip connections between mirrored layers in the encoder and decoder stacks.
 
 
 ## Network architectures
@@ -106,7 +110,7 @@ A defining feature of image-to-image translation problems is that they map a hig
 &emsp; Many previous solutions [43, 55, 30, 64, 59] to problems in this area have used an encoder-decoder network [26]. In such a network, the input is passed through a series of layers that progressively(adv.渐进地;日益增多地) downsample, until a bottleneck layer, at which point the process is reversed(reverse v.颠倒;翻转). Such a network requires that all information flow pass through all the layers, including the bottleneck. For many image translation problems, there is a great deal of low-level information shared between the input and output, and `it would be desirable(adj.可取的,值得拥有的,令人向往的) to shuttle(n. 航天飞机;穿梭;梭子;公共汽车等) this information directly across the net (因此直接通过网络传输这些信息是可取的).` For example, in the case of image colorization(着彩色;灰度图着色;颜色迁移), `the input and output share the location of prominent(adj. 突出的，显著的；杰出的；卓越的) edges. (输入和输出共享突出边缘的位置).`
 > summary: 在这一领域，之前的一些解决方案是使用一个 encoder=decoder 网络，在这样的网络中，输入经过一系列渐近下采样，直到一个bottleneck层。对于许多image translation问题，输入和输出之间有大量的低级共享信息。
 > 
-> **？？？。。。**
+> **？？？…… **
 
 
 &emsp; To give the generator a means to circumvent(v. 包围；智取；绕行，规避) the bottleneck for information like this, we **add skip connections, following the general shape of a “U-Net”** [50]. Specifically, we add skip connections between each layer i and layer n − i, where n is the total number of layers. Each skip connection simply concatenates all channels at layer i with those at layer n − i.
@@ -171,4 +175,170 @@ Therefore, we design a discriminator architecture – which we term a PatchGAN �
 
 
 
+# Coding Practice
 
+代码参考文献[1]
+
+画了个训练数据流图，辅助理解：\
+![](../../images/ml/pix2pix-my-1.jpg)
+
+## Generator 网络结构
+```python
+# input: (1, 3, 256, 256)
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+# down1
+            Conv2d-1         [-1, 64, 128, 128]           3,072
+         LeakyReLU-2         [-1, 64, 128, 128]               0
+          UNetDown-3         [-1, 64, 128, 128]               0
+
+# down2
+            Conv2d-4          [-1, 128, 64, 64]         131,072
+    InstanceNorm2d-5          [-1, 128, 64, 64]               0
+         LeakyReLU-6          [-1, 128, 64, 64]               0
+          UNetDown-7          [-1, 128, 64, 64]               0
+
+# down3
+            Conv2d-8          [-1, 256, 32, 32]         524,288
+    InstanceNorm2d-9          [-1, 256, 32, 32]               0
+        LeakyReLU-10          [-1, 256, 32, 32]               0
+         UNetDown-11          [-1, 256, 32, 32]               0
+
+# down4
+           Conv2d-12          [-1, 512, 16, 16]       2,097,152
+   InstanceNorm2d-13          [-1, 512, 16, 16]               0
+        LeakyReLU-14          [-1, 512, 16, 16]               0
+          Dropout-15          [-1, 512, 16, 16]               0
+         UNetDown-16          [-1, 512, 16, 16]               0
+
+# down5
+           Conv2d-17            [-1, 512, 8, 8]       4,194,304
+   InstanceNorm2d-18            [-1, 512, 8, 8]               0
+        LeakyReLU-19            [-1, 512, 8, 8]               0
+          Dropout-20            [-1, 512, 8, 8]               0
+         UNetDown-21            [-1, 512, 8, 8]               0
+
+# down6
+           Conv2d-22            [-1, 512, 4, 4]       4,194,304
+   InstanceNorm2d-23            [-1, 512, 4, 4]               0
+        LeakyReLU-24            [-1, 512, 4, 4]               0
+          Dropout-25            [-1, 512, 4, 4]               0
+         UNetDown-26            [-1, 512, 4, 4]               0
+
+# down7
+           Conv2d-27            [-1, 512, 2, 2]       4,194,304
+   InstanceNorm2d-28            [-1, 512, 2, 2]               0
+        LeakyReLU-29            [-1, 512, 2, 2]               0
+          Dropout-30            [-1, 512, 2, 2]               0
+         UNetDown-31            [-1, 512, 2, 2]               0
+
+# down8
+           Conv2d-32            [-1, 512, 1, 1]       4,194,304
+        LeakyReLU-33            [-1, 512, 1, 1]               0
+          Dropout-34            [-1, 512, 1, 1]               0
+         UNetDown-35            [-1, 512, 1, 1]               0
+
+# u1 = up1(d8, d7)  # 先对 d8 进行上采样，然后再与 d7 做 concat 操作, 下面类似
+  ConvTranspose2d-36            [-1, 512, 2, 2]       4,194,304
+   InstanceNorm2d-37            [-1, 512, 2, 2]               0
+             ReLU-38            [-1, 512, 2, 2]               0
+          Dropout-39            [-1, 512, 2, 2]               0
+           UNetUp-40           [-1, 1024, 2, 2]               0
+
+# u2 = up2(u1, d6)
+  ConvTranspose2d-41            [-1, 512, 4, 4]       8,388,608
+   InstanceNorm2d-42            [-1, 512, 4, 4]               0
+             ReLU-43            [-1, 512, 4, 4]               0
+          Dropout-44            [-1, 512, 4, 4]               0
+           UNetUp-45           [-1, 1024, 4, 4]               0
+
+# u3 = up3(u2, d5)
+  ConvTranspose2d-46            [-1, 512, 8, 8]       8,388,608
+   InstanceNorm2d-47            [-1, 512, 8, 8]               0
+             ReLU-48            [-1, 512, 8, 8]               0
+          Dropout-49            [-1, 512, 8, 8]               0
+           UNetUp-50           [-1, 1024, 8, 8]               0
+
+# u4 = up4(u3, d4)
+  ConvTranspose2d-51          [-1, 512, 16, 16]       8,388,608
+   InstanceNorm2d-52          [-1, 512, 16, 16]               0
+             ReLU-53          [-1, 512, 16, 16]               0
+          Dropout-54          [-1, 512, 16, 16]               0
+           UNetUp-55         [-1, 1024, 16, 16]               0
+
+# u5 = up5(u4, d3)
+  ConvTranspose2d-56          [-1, 256, 32, 32]       4,194,304
+   InstanceNorm2d-57          [-1, 256, 32, 32]               0
+             ReLU-58          [-1, 256, 32, 32]               0
+           UNetUp-59          [-1, 512, 32, 32]               0
+
+# u6 = up6(u5, d2)
+  ConvTranspose2d-60          [-1, 128, 64, 64]       1,048,576
+   InstanceNorm2d-61          [-1, 128, 64, 64]               0
+             ReLU-62          [-1, 128, 64, 64]               0
+           UNetUp-63          [-1, 256, 64, 64]               0
+
+# u7 = up7(u6, d1)
+  ConvTranspose2d-64         [-1, 64, 128, 128]         262,144
+   InstanceNorm2d-65         [-1, 64, 128, 128]               0
+             ReLU-66         [-1, 64, 128, 128]               0
+           UNetUp-67        [-1, 128, 128, 128]               0
+
+# final
+         Upsample-68        [-1, 128, 256, 256]               0
+        ZeroPad2d-69        [-1, 128, 257, 257]               0
+           Conv2d-70          [-1, 3, 256, 256]           6,147
+             Tanh-71          [-1, 3, 256, 256]               0
+================================================================
+Total params: 54,404,099
+Trainable params: 54,404,099
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.75
+Forward/backward pass size (MB): 264.13
+Params size (MB): 207.54
+Estimated Total Size (MB): 472.41
+----------------------------------------------------------------
+```
+
+
+
+## Discriminator 网络结构
+```python
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+
+            Conv2d-1         [-1, 64, 128, 128]           6,208
+         LeakyReLU-2         [-1, 64, 128, 128]               0
+
+            Conv2d-3          [-1, 128, 64, 64]         131,200
+    InstanceNorm2d-4          [-1, 128, 64, 64]               0
+         LeakyReLU-5          [-1, 128, 64, 64]               0
+
+            Conv2d-6          [-1, 256, 32, 32]         524,544
+    InstanceNorm2d-7          [-1, 256, 32, 32]               0
+         LeakyReLU-8          [-1, 256, 32, 32]               0
+
+            Conv2d-9          [-1, 512, 16, 16]       2,097,664
+   InstanceNorm2d-10          [-1, 512, 16, 16]               0
+        LeakyReLU-11          [-1, 512, 16, 16]               0
+        ZeroPad2d-12          [-1, 512, 17, 17]               0
+
+           Conv2d-13            [-1, 1, 16, 16]           8,192
+================================================================
+Total params: 2,767,808
+Trainable params: 2,767,808
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 147456.00
+Forward/backward pass size (MB): 38.13
+Params size (MB): 10.56
+Estimated Total Size (MB): 147504.69
+----------------------------------------------------------------
+```
+
+
+# 参考文献
+[1] [PyTorch-GAN -> pix2pix](https://github.com/eriklindernoren/PyTorch-GAN)
