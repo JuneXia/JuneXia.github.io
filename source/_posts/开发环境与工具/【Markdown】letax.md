@@ -48,6 +48,9 @@ mathjax: true
 | 等号上面三角形 | \triangleq | $\triangleq$ | 表示“定义为” |
 | max下面 | \max \limits_{f} | $\max \limits_{f}$ |  |
 | min下面 | \min \limits_{f} | $\min \limits_{f}$ |  |
+| 取整函数（Floor function） | \lfloor a+b \rfloor | $\lfloor a+b \rfloor$ |  |
+| 取整函数（Floor function） | \left \lfloor a+b \right \rfloor | $\left \lfloor a+b \right \rfloor$ | 似乎这种较上面更繁琐一些 |
+| 取顶函数（Ceiling function） | \lceil a+b \rceil | $\lceil a+b \rceil$ |  |
 
 
 
