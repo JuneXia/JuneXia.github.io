@@ -11,6 +11,7 @@ mathjax: true
 
 
 # Tensor拼接
+
 ## torch.cat
 ```python
 torch.cat(tensors,
@@ -103,7 +104,8 @@ shape:torch.Size([2, 3, 2])
 
 
 # Tensor切分
-## torch.split
+
+## torch.chunk
 ```python
 torch.chunk(input,
             chunks,
@@ -183,7 +185,8 @@ if flag:
 ```
 
 
-# tensor 索引
+# Tensor 索引
+
 ## torch.index_select
 ```python
 torch.index_select(input,
@@ -271,6 +274,7 @@ tensor([4, 5, 0, 5, 1, 2, 5])
 
 
 # Tensor 变换
+
 ## torch.reshape
 ```python
 torch.reshape(input,
@@ -409,7 +413,8 @@ torch.unsqueeze(input,
 - **dim**: 要扩展的维度
 
 
-# tensor数学运算
+# Tensor数学运算
+
 ## 加减乘除
 ```python
 torch.add()
@@ -548,6 +553,208 @@ torch.logical_not
 # 似乎pytorch有些版本不支持逻辑或
 torch.logical_or
 ```
+
+
+## 求逆矩阵
+
+### torch.inverse
+
+```python
+def inverse(self, input, out=None): # real signature unknown; restored from __doc__
+    """
+    inverse(input, out=None) -> Tensor
+    
+    Takes the inverse of the square matrix :attr:`input`. :attr:`input` can be batches
+    of 2D square tensors, in which case this function would return a tensor composed of
+    individual inverses.
+    
+    .. note::
+    
+        Irrespective of the original strides, the returned tensors will be
+        transposed, i.e. with strides like `input.contiguous().transpose(-2, -1).stride()`
+    
+    Args:
+        input (Tensor): the input tensor of size :math:`(*, n, n)` where `*` is zero or more
+                        batch dimensions
+        out (Tensor, optional): the optional output tensor
+    
+    Example::
+    
+        >>> x = torch.rand(4, 4)
+        >>> y = torch.inverse(x)
+        >>> z = torch.mm(x, y)
+        >>> z
+        tensor([[ 1.0000, -0.0000, -0.0000,  0.0000],
+                [ 0.0000,  1.0000,  0.0000,  0.0000],
+                [ 0.0000,  0.0000,  1.0000,  0.0000],
+                [ 0.0000, -0.0000, -0.0000,  1.0000]])
+        >>> torch.max(torch.abs(z - torch.eye(4))) # Max non-zero
+        tensor(1.1921e-07)
+        >>> # Batched inverse example
+        >>> x = torch.randn(2, 3, 4, 4)
+        >>> y = torch.inverse(x)
+        >>> z = torch.matmul(x, y)
+        >>> torch.max(torch.abs(z - torch.eye(4).expand_as(x))) # Max non-zero
+        tensor(1.9073e-06)
+    """
+    pass
+```
+
+**代码示例：**
+
+```python
+import torch
+
+if __name__ == '__main__':
+    t = torch.tensor([[1, 2], [3, 4]], dtype=torch.float32)
+    inverse_t = torch.inverse(t)
+    print(t, '\n')
+    print(inverse_t)
+
+    print('\n~~~~~~~~~~~~~~~~\n')
+
+    e = torch.eye(2)
+    inverse_e = torch.inverse(e)
+    print(e, '\n')
+    print(inverse_e)
+
+
+# output:
+tensor([[1., 2.],
+        [3., 4.]]) 
+tensor([[-2.0000,  1.0000],
+        [ 1.5000, -0.5000]])
+~~~~~~~~~~~~~~~~
+tensor([[1., 0.],
+        [0., 1.]]) 
+tensor([[1., -0.],
+        [0., 1.]])
+```
+
+
+# Tensor 扩展
+
+## tensor.expand
+
+```python
+def expand(self, *sizes): # real signature unknown; restored from __doc__
+    """
+    expand(*sizes) -> Tensor
+    
+    Returns a new view of the :attr:`self` tensor with singleton dimensions expanded
+    to a larger size.
+    
+    Passing -1 as the size for a dimension means not changing the size of
+    that dimension.
+    
+    Tensor can be also expanded to a larger number of dimensions, and the
+    new ones will be appended at the front. For the new dimensions, the
+    size cannot be set to -1.
+    
+    Expanding a tensor does not allocate new memory, but only creates a
+    new view on the existing tensor where a dimension of size one is
+    expanded to a larger size by setting the ``stride`` to 0. Any dimension
+    of size 1 can be expanded to an arbitrary value without allocating new
+    memory.
+    
+    Args:
+        *sizes (torch.Size or int...): the desired expanded size
+    
+    .. warning::
+    
+        More than one element of an expanded tensor may refer to a single
+        memory location. As a result, in-place operations (especially ones that
+        are vectorized) may result in incorrect behavior. If you need to write
+        to the tensors, please clone them first.
+    
+    Example::
+    
+        >>> x = torch.tensor([[1], [2], [3]])
+        >>> x.size()
+        torch.Size([3, 1])
+        >>> x.expand(3, 4)
+        tensor([[ 1,  1,  1,  1],
+                [ 2,  2,  2,  2],
+                [ 3,  3,  3,  3]])
+        >>> x.expand(-1, 4)   # -1 means not changing the size of that dimension
+        tensor([[ 1,  1,  1,  1],
+                [ 2,  2,  2,  2],
+                [ 3,  3,  3,  3]])
+    """
+    pass
+```
+
+
+## tensor.expand_as
+
+expand_as 和 expand 操作的区别是 expand_as 是 in-place 操作。
+
+```python
+def expand_as(self, other): # real signature unknown; restoredfrom __doc__
+    """
+    expand_as(other) -> Tensor
+    
+    Expand this tensor to the same size as :attr:`other`.
+    ``self.expand_as(other)`` is equivalent to ``self.expand(other.size())``.
+    
+    Please see :meth:`~Tensor.expand` for more information about ``expand``.
+    
+    Args:
+        other (:class:`torch.Tensor`): The result tensor has the same size
+            as :attr:`other`.
+    """
+    pass
+```
+
+
+功能难以形容，直接看代码吧。
+
+**代码示例：**
+
+```python
+import torch
+
+if __name__ == '__main__':
+    batch_size = 2
+    t = torch.tensor([[1], [2], [3]])
+    print(t.shape, ':\n', t)
+
+    # t1 = t.expand(6, 1)  # error
+    t1 = t.expand(3, 2)
+    print('t.expand(3, 2): ', t1.shape)
+    t1 = t.expand(batch_size, 3, 2)
+    print('t.expand(batch_size, 3, 2): ', t1.shape)
+
+
+    t = torch.tensor([[1, 2], [3, 4], [5, 6]])
+    print(t.shape, ':\n', t)
+
+    # t1 = t.expand(3, 4)  # error
+    # t1 = t.expand(6, 2)  # error
+    t1 = t.expand(batch_size, 3, 2)
+    print('t.expand(batch_size, 3, 2): ', t1.shape)
+
+    
+
+# output:
+torch.Size([3, 1]) :
+ tensor([[1],
+        [2],
+        [3]])
+t.expand(3, 2):  torch.Size([3, 2])
+t.expand(batch_size, 3, 2):  torch.Size([2, 3, 2])
+
+
+torch.Size([3, 2]) :
+ tensor([[1, 2],
+        [3, 4],
+        [5, 6]])
+t.expand(batch_size, 3, 2):  torch.Size([2, 3, 2])
+```
+
+
+
+
 
 
 

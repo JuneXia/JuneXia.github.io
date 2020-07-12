@@ -88,3 +88,5 @@ $ sudo touch mypackage.pth
 /path to your/project
 ```
 
+
+=C:/Users/Administrator/anaconda3/envs/python36env/Library
