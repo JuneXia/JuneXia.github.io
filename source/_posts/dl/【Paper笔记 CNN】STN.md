@@ -152,3 +152,22 @@ Placing spatial transformers within a CNN allows the network to learn how to act
 
 It is also possible to use spatial transformers to downsample or oversample a feature map, as one can define the output dimensions H ′ and W ′ to be different to the input dimensions H and W . However, with sampling kernels with a fixed, small spatial support (such as the bilinear kernel), downsampling with a spatial transformer can cause aliasing effects.
 
+
+
+
+
+------------------------
+
+tps 参考资料：
+https://hideoninternet.github.io/2019/11/06/d3c15ac3/   （强烈推荐此篇）
+
+
+有空看看：
+https://zhuanlan.zhihu.com/p/80034501
+https://blog.csdn.net/iverson_49/article/details/38160081
+https://blog.csdn.net/VictoriaW/article/details/70161180
+https://www.jianshu.com/p/2cc189dfbcc5
+
+参考代码：
+https://github.com/WarBean/tps_stn_pytorch
+https://github.com/cheind/py-thin-plate-spline/tree/master/thinplate
