@@ -2,7 +2,7 @@
 title: 
 date: 2020-7-17
 tags:
-categories: ["深度学习笔记"]
+categories: ["basics"]
 mathjax: true
 ---
 <!--more-->

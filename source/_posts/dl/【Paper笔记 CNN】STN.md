@@ -158,16 +158,22 @@ It is also possible to use spatial transformers to downsample or oversample a fe
 
 ------------------------
 
+
+
+
+
+
+
 tps 参考资料：
 https://hideoninternet.github.io/2019/11/06/d3c15ac3/   （强烈推荐此篇）
 
 
 有空看看：
-https://zhuanlan.zhihu.com/p/80034501
-https://blog.csdn.net/iverson_49/article/details/38160081
-https://blog.csdn.net/VictoriaW/article/details/70161180
+https://zhuanlan.zhihu.com/p/80034501 \
+https://blog.csdn.net/iverson_49/article/details/38160081 \
+https://blog.csdn.net/VictoriaW/article/details/70161180 \
 https://www.jianshu.com/p/2cc189dfbcc5
 
 参考代码：
-https://github.com/WarBean/tps_stn_pytorch
+https://github.com/WarBean/tps_stn_pytorch \
 https://github.com/cheind/py-thin-plate-spline/tree/master/thinplate
