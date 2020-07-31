@@ -753,7 +753,47 @@ t.expand(batch_size, 3, 2):  torch.Size([2, 3, 2])
 ```
 
 
+# Tensor 梯度相关
 
+## tensor.detach
+
+```python
+class _TensorBase(object):
+    
+    ...
+
+    def detach(self, *args, **kwargs): # real signature unknown
+        """
+        Returns a new Tensor, detached from the current graph.
+        
+            The result will never require gradient.
+        
+            .. note::
+        
+              Returned Tensor shares the same storage with the original one.
+              In-place modifications on either of them will be seen, and may trigger
+              errors in correctness checks.
+              IMPORTANT NOTE: Previously, in-place size / stride / storage changes
+              (such as `resize_` / `resize_as_` / `set_` / `transpose_`) to the returned tensor
+              also update the original tensor. Now, these in-place changes will not update the
+              original tensor anymore, and will instead trigger an error.
+              For sparse tensors:
+              In-place indices / values changes (such as `zero_` / `copy_` / `add_`) to the
+              returned tensor will not update the original tensor anymore, and will instead
+              trigger an error.
+        """
+        pass
+
+    def detach_(self, *args, **kwargs): # real signature unknown
+        """
+        Detaches the Tensor from the graph that created it, making it a leaf.
+            Views cannot be detached in-place.
+        """
+        pass
+
+```
+
+此部分待整理，暂且可参考文献[3]
 
 
 
@@ -763,3 +803,4 @@ t.expand(batch_size, 3, 2):  torch.Size([2, 3, 2])
 # 参考文献
 [1] DeepShare.net > PyTorch框架 \
 [2] [Pytorch官方文档](https://pytorch.org/docs/stable/torch.html?highlight=logical#torch.logical_xor)
+[3] [pytorch .detach() .detach_() 和 .data用于切断反向传播](https://www.cnblogs.com/wanghui-garcia/p/10677071.html)

@@ -2,7 +2,7 @@
 title: 
 date: 2020-02-01
 tags:
-categories: ["PyTorch笔记"]
+categories: ["Python笔记"]
 mathjax: true
 ---
 本节主要讲述Python的两个操作符\*和\*\*的作用。
