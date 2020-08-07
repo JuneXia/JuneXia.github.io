@@ -106,7 +106,9 @@ def interpolate(input, size=None, scale_factor=None, mode='nearest', align_corne
 
 **参数：** \
 **input** (Tensor) – 输入张量 \
-**size** (int or Tuple[int] or Tuple[int, int] or Tuple[int, int, int]) –输出大小. \
+**size** (int or Tuple[int] or Tuple[int, int] or Tuple[int, int, int]) –输出大小. 
+> **注意：** 如果 size 等于 input 尺寸，则 interpolate 的 output 等于 input. 比如说：input.shape = 28x28, F.interpolate(input, (28, 28)) 的输出的数值实际上是等于input中的数值的。
+
 **scale_factor** (float or Tuple[float]) – 指定输出为输入的多少倍数。如果输入为tuple，其也要制定为tuple类型 \
 **mode** (str) – 可使用的上采样算法，有'nearest', 'linear', 'bilinear', 'bicubic' , 'trilinear'和'area'. 默认使用'nearest' \
 **align_corners** (bool, optional) –几何上，我们认为输入和输出的像素是正方形，而不是点。如果设置为True，则输入和输出张量由其角像素的中心点对齐，从而保留角像素处的值。如果设置为False，则输入和输出张量由它们的角像素的角点对齐，插值使用边界外值的边值填充;当scale_factor保持不变时，使该操作独立于输入大小。仅当使用的算法为'linear', 'bilinear', 'bilinear'or 'trilinear'时可以使用。默认设置为False
