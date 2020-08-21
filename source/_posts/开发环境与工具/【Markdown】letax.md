@@ -37,6 +37,7 @@ mathjax: true
 | 点形式的求导符号 | \frac{ \dot y }{ \dot x } | $\frac{ \dot y }{ \dot x }$ | 一个点 |
 | 点形式的求导符号 | \frac{ \ddot y }{ \ddot x } | $\frac{ \ddot y }{ \ddot x }$ | 两个点 |
 | 波浪号 | \sim | $\sim$ |  |
+| 约等于 | \approx | $\approx$ |  |
 | 斜体 | log (x) | $log (x)$ |  |
 | 正体 | \text{log } (x) | $\text{log} (x)$ |  |
 | 正体 | \text{log } x | $\text{log } x$ | text中可以写空格 |

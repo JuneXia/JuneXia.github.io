@@ -67,6 +67,7 @@ Figure 5. The architecture of our eye in-painting network (AesGAN) based on eye
 [ClothFlow: A Flow-Based Model for Clothed Person Generation](https://openaccess.thecvf.com/content_ICCV_2019/papers/Han_ClothFlow_A_Flow-Based_Model_for_Clothed_Person_Generation_ICCV_2019_paper.pdf)
 
 
+StyleFlow
 
 
 
