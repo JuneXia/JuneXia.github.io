@@ -31,7 +31,7 @@ In this paper, we propose a novel deep learning based algorithm that can tackle 
 **本文的一个附加贡献：** \
 In addition, we also create a large-scale image matting dataset including 49300 training images and 1000 testing images.
 
-该数据集的创建方法：事先准备好493张独一无二的前景以及对应的 alpha-matte 图（需要手动抠图得来），再从COCO和VOC中挑选N张作为背景图，将他们随机组合再一次即可构成我们的image.
+该数据集的创建方法：事先准备好493张独一无二的前景以及对应的 alpha-matte 图（需要手动抠图得来），再从COCO和VOC中挑选N张作为背景图，将他们随机组合即可构成我们的image.
 
 
 **Method**
@@ -83,7 +83,7 @@ CVPR 2018
 **Method**
 
 ![](../../images/ml/SHM-figure3.jpg)
-Figure 3: Overview of our semantic human matting method. Given an input image, a T-Net, which is implemented as PSPNet-50, is used to predict the 3-channel trimap. The predicted trimap is then concatenated with the original image and fed into the M-Net to predict the raw alpha matte. Finally, both the predicted trimap and raw alpha matte are fed into the Fusion Module to generate the nal alpha matte according to Eq. 4. The entire network is trained in an end-to-end fashion.
+Figure 3: Overview of our semantic human matting method. Given an input image, a T-Net, which is implemented as PSPNet-50, is used to predict the 3-channel trimap. The predicted trimap is then concatenated with the original image and fed into the M-Net to predict the raw alpha matte. Finally, both the predicted trimap and raw alpha matte are fed into the Fusion Module to generate the final alpha matte according to Eq. 4. The entire network is trained in an end-to-end fashion.
 
 T-Net 是一个分割网络，它会生成一个trimap;
 
@@ -157,20 +157,62 @@ Figure 2: Overview of our approach. Given an input image I and background image 
 **训练方法：** \
 先用 Adobe-Train-Dataset 训练 $G_{Adobe}$，然后使用训练好的 $G_{Adobe}$ 作为 teacher 模型，用 Real-Train-Dataset 来训练 student 模型 $G_{Real}$.
 
+--------------------------
+Boosting Semantic Human Matting with Coarse Annotations
+
+**Jinlin Liu**1,2 Yuan Yao1 Wendi Hou1 Miaomiao Cui1
+Xuansong Xie1 Changshui Zhang2 Xian-sheng Hua1 
+
+1**Alibaba Group**, 2 **Department of Automation, Tsinghua University** (清华大学自动化系)
+
+{ljl191782, ryan.yy, wendi.hwd, miaomiao.cmm}@alibaba-inc.com xingtong.xxs@taobao.com \
+zcs@mail.tsinghua.edu.cn xiansheng.hxs@alibaba-inc.com
+
+![](../../images/ml/BoostingSHM-fig2.jpg)
+
+step1:训练 mask prediction network(MPN)
+
+**training-data:** include coarse annotated data and fine annotated data. \
+
+resize all training-data to resolution 192x160，训练20个epochs即停。
+
+low_resolution = DownSampling(coarse and fine annotated data) \
+bg_mask_pred, fg_mask_pred = MPN(low_resolution)
+
+loss_MPN = L1(fg_mask_pred, fg_mask_gt) + L1(bg_mask_pred, bg_mask_gt)
+
+> 疑惑：这里 fg_mask_pred、fg_mask_gt、bg_mask_pred、bg_mask_gt 中的mask不应该是alpha吗？
 
 
+step2: 训练 Quality Unification Network(QUN)
+
+固定 MPN 参数；
+
+> 训练QUN目的：The quality unification network aims to rectify the output quality of the mask prediction network to the same level, by improving the quality of coarse masks and lowering the quality of fine masks simultaneously. \
+
+x1 = concat(low_resolution, fg_mask_pred_from_coarse) \
+x2 = concat(low_resolution, fg_mask_pred_from_fine)
+
+loss_QUN_identity = L1( QUN(x1), x1 ) + L1( QUN(x2), x2 ) \
+loss_QUN_consist = L1( QUN(x1), QUN(x2) ) \
+loss_QUN = $\lambda_1$ loss_QUN_identity + $\lambda_2$ loss_QUN_consist
+
+> **Identity loss 目的：** forces the output of QUN not to change much from the original input. \
+> **Consistence loss 目的：** forces the output of QUN corresponding
+to accurate mask and inaccurate mask to be close.
+
+> NOTE: \
+> When training QUN, random filters(filter size set as 3 or 5), binarization and morphology operations(dilate and erode) are exerted to fine annotated data to generate paired high and low quality mask data.
 
 
+step3: 训练 Matting Refinement Network(MRN)
+固定 MPN、QUN 参数；
 
+fg_pred, alpha_pred = MRN( high_resolution, QUN(x) )
 
+loss_MRN = L1( fg_pred, fg_gt ) + L1( alpha_pred, alpha_gt )
 
-
-
-
-
-
-
-
+--------------------------------
 
 
 
