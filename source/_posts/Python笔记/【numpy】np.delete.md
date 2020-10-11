@@ -2,7 +2,7 @@
 title: 
 date: 2020-8-10
 tags:
-categories: ["basics"]
+categories: ["Python笔记"]
 mathjax: true
 ---
 

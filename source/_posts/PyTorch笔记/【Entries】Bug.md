@@ -2,11 +2,13 @@
 title: 
 date: 2020-7-2
 tags:
-categories: ["深度学习笔记"]
+categories: ["PyTorch笔记"]
 mathjax: true
 ---
 
 the fatal while debug pytorch-pix2pixHD with pycharm:
+
+<!--more-->
 
 ```bash
 RuntimeError: cuDNN error: CUDNN_STATUS_INTERNAL_ERROR
